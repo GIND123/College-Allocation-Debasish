@@ -8,6 +8,7 @@
     "node": ">=22.13"
   },
   "scripts": {
+    "build": "echo \"No build step: static files are served as-is.\"",
     "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/index.js",
     "dev": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning --watch server/index.js"
   },
