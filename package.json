@@ -1,0 +1,17 @@
+{
+  "name": "rankround",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RankRound — PG medical counselling cut-off predictor with OTP sign-in, admin data management and traffic analytics.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning --watch server/index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
