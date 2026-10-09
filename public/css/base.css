@@ -16,8 +16,12 @@
   --focus:#2457c5;
   --ok:#17663f; --ok-bg:#e4f1ea; --warn:#8a5a00; --warn-bg:#f8eed9; --err:#9e3426; --err-bg:#f9e6e2;
 
-  /* chance bands: one-hue ordinal ramp, validated (CVD-safe, light end ≥ 2:1) */
-  --b4:#0d366b; --b3:#1c5cab; --b2:#3987e5; --b1:#86b6ef;
+  /* chance bands: green → amber → red so the grade reads at a glance.
+     Each band has a swatch, a tinted badge background and a badge text colour;
+     the lightness steps keep them distinguishable for colour-blind readers too. */
+  --b4:#15803d; --b3:#65a30d; --b2:#d97706; --b1:#dc2626;
+  --b4-bg:#dcf2e3; --b3-bg:#ecf5d9; --b2-bg:#fcefd9; --b1-bg:#fbe3e1;
+  --b4-ink:#0f5a2b; --b3-ink:#3f6a08; --b2-ink:#8a4a03; --b1-ink:#9b1c1c;
   --series:#256abf; --series-wash:rgba(37,106,191,.10);
 
   --bar:#0b1422; --bar-ink:#e9edf3; --bar-muted:#8d97a8; --bar-rule:#1f2a3b;
@@ -35,7 +39,9 @@
     --brass:#d6ab5a; --brass-soft:#2a2214;
     --focus:#7ea6f0;
     --ok:#5cc48d; --ok-bg:#10261b; --warn:#e2b45c; --warn-bg:#2a2112; --err:#f09684; --err-bg:#2c1612;
-    --b4:#cde2fb; --b3:#86b6ef; --b2:#3987e5; --b1:#1c5cab;
+    --b4:#34c46e; --b3:#a3d65c; --b2:#f2a93b; --b1:#f26b5e;
+    --b4-bg:#0f2a1a; --b3-bg:#1c2610; --b2-bg:#2d1f0c; --b1-bg:#2f1513;
+    --b4-ink:#6ee09a; --b3-ink:#bfe68a; --b2-ink:#f7c47a; --b1-ink:#f8a39a;
     --series:#5598e7; --series-wash:rgba(85,152,231,.12);
     --bar:#070a10; --bar-rule:#1a2230;
     --shadow-pop:0 18px 50px -12px rgba(0,0,0,.7), 0 2px 6px rgba(0,0,0,.4);
@@ -51,7 +57,9 @@
   --brass:#d6ab5a; --brass-soft:#2a2214;
   --focus:#7ea6f0;
   --ok:#5cc48d; --ok-bg:#10261b; --warn:#e2b45c; --warn-bg:#2a2112; --err:#f09684; --err-bg:#2c1612;
-  --b4:#cde2fb; --b3:#86b6ef; --b2:#3987e5; --b1:#1c5cab;
+  --b4:#34c46e; --b3:#a3d65c; --b2:#f2a93b; --b1:#f26b5e;
+  --b4-bg:#0f2a1a; --b3-bg:#1c2610; --b2-bg:#2d1f0c; --b1-bg:#2f1513;
+  --b4-ink:#6ee09a; --b3-ink:#bfe68a; --b2-ink:#f7c47a; --b1-ink:#f8a39a;
   --series:#5598e7; --series-wash:rgba(85,152,231,.12);
   --bar:#070a10; --bar-rule:#1a2230;
   --shadow-pop:0 18px 50px -12px rgba(0,0,0,.7), 0 2px 6px rgba(0,0,0,.4);
@@ -149,6 +157,10 @@ button{font:inherit; color:inherit}
 .band i{display:block; width:10px; height:10px; flex:none}
 .b4 i, i.b4{background:var(--b4)} .b3 i, i.b3{background:var(--b3)}
 .b2 i, i.b2{background:var(--b2)} .b1 i, i.b1{background:var(--b1)}
+.band.chip{padding:3px 9px 3px 7px; border-radius:999px; font-size:12.5px; font-weight:600; gap:6px}
+.band.chip i{width:8px; height:8px; border-radius:50%}
+.chip.b4{background:var(--b4-bg); color:var(--b4-ink)} .chip.b3{background:var(--b3-bg); color:var(--b3-ink)}
+.chip.b2{background:var(--b2-bg); color:var(--b2-ink)} .chip.b1{background:var(--b1-bg); color:var(--b1-ink)}
 
 /* ---------- data table ---------- */
 .grid-wrap{overflow:auto; background:var(--surface); border:1px solid var(--rule)}

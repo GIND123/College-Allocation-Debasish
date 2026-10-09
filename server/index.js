@@ -28,9 +28,11 @@ app.use('/api/admin', express.json({ limit: '20mb' }));
 app.use(express.json({ limit: '64kb' }));
 app.use(attachUser, visitor);
 
-// Mutating API calls must be JSON — blocks cross-site form posts.
+// Mutating API calls that carry a body must be JSON — blocks cross-site form
+// posts. req.is() is null for body-less requests (browsers send DELETE with no
+// Content-Length at all), false only when a body of another type is present.
 app.use('/api', (req, _res, next) => {
-  if (req.method !== 'GET' && req.method !== 'HEAD' && req.headers['content-length'] !== '0' && !req.is('application/json'))
+  if (req.method !== 'GET' && req.method !== 'HEAD' && req.is('application/json') === false)
     return next(new HttpError(415, 'Expected JSON.'));
   next();
 });

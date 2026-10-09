@@ -574,7 +574,7 @@ function posSvg(open, close, rank, w = 100) {
     <rect class="rng" x="${x0.toFixed(1)}" y="4.5" width="${(x1 - x0).toFixed(1)}" height="7"/>
     <rect class="you" x="${(x(rank) - 1).toFixed(1)}" y="0" width="2" height="16"/></svg>`;
 }
-const bandHtml = b => b ? `<span class="band b${b}"><i></i>${BAND[b]}</span>` : '';
+const bandHtml = b => b ? `<span class="band chip b${b}"><i></i>${BAND[b]}</span>` : '';
 const starHtml = (kind, r) => {
   const on = !!slItem(kind, r._k);
   return `<button class="star" data-star aria-pressed="${on}" aria-label="${on ? 'Remove from' : 'Add to'} shortlist">${on ? icon.starFill : icon.star}</button>`;
@@ -676,9 +676,7 @@ function renderResults() {
     </div>` : '<div style="height:16px"></div>';
 
   res.innerHTML = `
-    <div class="res-head">${head}
-      <div class="res-actions"><button class="btn btn-line btn-sm" id="export" ${total ? '' : 'disabled'}>${icon.download} Export CSV</button></div>
-    </div>
+    <div class="res-head">${head}</div>
     ${dist}
     ${total && mobile.matches ? `
     <div class="sortbar"><label class="eyebrow" for="msort">Sort</label>
@@ -694,7 +692,6 @@ function renderResults() {
     <div class="grid-wrap"><div class="empty"><h3>${mode === 'predict' ? 'No seats in reach with these filters' : 'Nothing matches'}</h3>
       <p>${mode === 'predict' ? `In ${S.data.dataset.year}, no seat in this selection closed at or near ${K.rank} ${fmt(rank)}. Try widening the filters${kind === 'state' && f.stream ? ' or check your stream' : ''}.` : 'Try a different search or clear some filters.'}</p></div></div>`}`;
 
-  $('#export').onclick = exportResults;
   $$('th.sortable', res).forEach(th => th.onclick = () => {
     const id = th.dataset.col;
     const c = cols.find(x => x.id === id);
@@ -761,18 +758,6 @@ function bindRows() {
     tr.classList.add('active');
     openSeat(S.scope, r);
   };
-}
-function exportResults() {
-  const kind = S.scope, K = KIND[kind], f = S.f[kind];
-  const head = [...(S.mode === 'predict' ? ['Chance'] : []), 'College', ...(kind === 'aiq' ? ['Type'] : []), K.specLabel,
-    ...(kind === 'state' ? ['Programme', 'Stream'] : []), 'Category', `${K.rank} opening`, `${K.rank} closing`,
-    ...(kind === 'state' ? ['AIR opening', 'AIR closing'] : []), 'Seats', ...(kind === 'state' ? ['Rounds'] : [])];
-  const rows = S.list.map(r => [...(S.mode === 'predict' ? [BAND[r._b]] : []), r.college, ...(kind === 'aiq' ? [r.type] : []), r[K.spec],
-    ...(kind === 'state' ? [r.programme, r.stream] : []), r.category, r[K.open], r[K.close],
-    ...(kind === 'state' ? [r.air_open || '', r.air_close || ''] : []), r.seats, ...(kind === 'state' ? [r.rounds] : [])]);
-  const tag = S.mode === 'predict' ? `${K.rank.toLowerCase()}-${f.rank}` : 'cutoffs';
-  downloadCsv(`rankround-${kind}-${tag}.csv`, head, rows);
-  track('export', { scope: kind, mode: S.mode, rows: rows.length });
 }
 
 // =====================================================================
@@ -933,16 +918,21 @@ async function viewShortlist() {
     const b = e.target.closest('[data-act]');
     if (!b) return;
     const id = +b.dataset.id, act = b.dataset.act;
-    if (act === 'rm') S.shortlist = (await api('/api/shortlist/' + id, { method: 'DELETE' })).items;
-    else {
-      const it = S.shortlist.find(i => i.id === id);
-      const same = S.shortlist.filter(i => i.kind === it.kind);
-      const k = same.indexOf(it), j = act === 'up' ? k - 1 : k + 1;
-      if (j < 0 || j >= same.length) return;
-      [same[k], same[j]] = [same[j], same[k]];
-      const order = ['state', 'aiq'].flatMap(kd => kd === it.kind ? same : S.shortlist.filter(i => i.kind === kd));
-      S.shortlist = (await api('/api/shortlist/order', { method: 'PUT', body: { ids: order.map(i => i.id) } })).items;
-    }
+    b.disabled = true;
+    try {
+      if (act === 'rm') {
+        S.shortlist = (await api('/api/shortlist/' + id, { method: 'DELETE' })).items;
+        toast('Removed from shortlist.');
+      } else {
+        const it = S.shortlist.find(i => i.id === id);
+        const same = S.shortlist.filter(i => i.kind === it.kind);
+        const k = same.indexOf(it), j = act === 'up' ? k - 1 : k + 1;
+        if (j < 0 || j >= same.length) return;
+        [same[k], same[j]] = [same[j], same[k]];
+        const order = ['state', 'aiq'].flatMap(kd => kd === it.kind ? same : S.shortlist.filter(i => i.kind === kd));
+        S.shortlist = (await api('/api/shortlist/order', { method: 'PUT', body: { ids: order.map(i => i.id) } })).items;
+      }
+    } catch (err) { b.disabled = false; toast(err.message, true); return; }
     updateCount();
     view.onclick = null;
     viewShortlist();
