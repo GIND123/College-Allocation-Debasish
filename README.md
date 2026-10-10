@@ -33,6 +33,7 @@ npm start                 # http://localhost:3000
 | `server/db.js` | SQLite schema, settings, first-run seed |
 | `server/seed/` | The 2025 data extracted from the client's original page |
 | `public/` | Public app (`index.html`, `js/app.js`) and admin console (`admin.html`, `js/admin.js`) |
+| `public/counselling.html` | NEET-PG 2026 counselling guide (MCC, Gujarat, Karnataka, Kerala) at `/counselling`. Public, no sign-in. Self-contained: edit its live dates in the `DATES` block near the end of the file |
 
 ## Switching on real OTP (Firebase, by Google)
 

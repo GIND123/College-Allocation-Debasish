@@ -345,6 +345,7 @@ app.use('/api', (_req, _res, next) => next(new HttpError(404, 'Not found.')));
 // ======================================================================
 const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(PUBLIC, file)); };
 app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method'], page('index.html'));
+app.get(['/counselling', '/counselling/'], page('counselling.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
 app.use(express.static(PUBLIC, { index: false, maxAge: process.env.NODE_ENV === 'production' ? '1h' : 0 }));
 

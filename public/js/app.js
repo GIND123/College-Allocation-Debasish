@@ -992,6 +992,11 @@ function viewHome() {
   const cta = S.user ? `<a class="btn btn-primary btn-lg" href="/predict" data-link>Open the predictor ${icon.arrowR}</a>`
     : `<button class="btn btn-primary btn-lg" data-signin>Check my options ${icon.arrowR}</button>`;
   view.innerHTML = `
+  <a class="priority" href="/counselling"><div class="priority-in">
+    <span class="eyebrow">NEET-PG 2026 counselling</span>
+    <b>Live dates and step-by-step guides for All India (MCC), Gujarat, Karnataka and Kerala.</b>
+    <span class="priority-go">Open the guide ${icon.arrowR}</span>
+  </div></a>
   <section class="hero"><div class="hero-in">
     <div>
       <div class="eyebrow">Odisha PG medical · ${esc(st?.year || 2025)} counselling data</div>
