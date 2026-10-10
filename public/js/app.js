@@ -51,6 +51,8 @@ const shortCollege = n => {
   return m[1].replace(/Medical College (&|and) Hospital/i, 'MCH').replace(/\b([A-Z])\w+ ([A-Z])\w+ MCH/, '$1$2 MCH') + ' ' + m[2];
 };
 const mobile = matchMedia('(max-width:720px)');
+// A candidate is on exactly one merit list: direct or in-service (never both).
+const STREAMS = [['Direct', 'Direct'], ['In-service', 'In-service']];
 const freshFilters = () => ({
   state: { rank: '', stream: 'Direct', category: '', withOpen: true, programme: '', speciality: '', college: '', q: '' },
   aiq: { rank: '', category: '', withOpen: true, type: '', branch: '', college: '', q: '' }
@@ -67,6 +69,8 @@ const S = {
   data: null, mode: null, list: [], shown: STEP,
   path: null, intended: null
 };
+// Saved filters from older versions may hold '' (the removed "Both" option).
+if (!STREAMS.some(([v]) => v === S.f.state.stream)) S.f.state.stream = 'Direct';
 const view = $('#view');
 const saveFilters = debounce(() => store.set('rr-filters', S.f), 400);
 
@@ -495,7 +499,7 @@ function renderRail() {
       ${kind === 'state' ? `
         <div class="field" style="margin-top:16px"><span class="label">Stream</span>
           <div class="seg" role="group" aria-label="Stream">
-            ${[['Direct', 'Direct'], ['In-service', 'In-service'], ['', 'Both']].map(([v, t]) =>
+            ${STREAMS.map(([v, t]) =>
               `<button data-stream="${v}" aria-pressed="${f.stream === v}">${t}</button>`).join('')}
           </div>
         </div>
@@ -607,7 +611,7 @@ function columns(kind, mode, rank) {
 }
 
 const trackPredict = debounce((kind, f, n) => track('predict', {
-  scope: kind, rank: +f.rank, stream: f.stream || '', category: f.category, programme: f.programme || '',
+  scope: kind, rank: +f.rank, stream: kind === 'state' ? f.stream : '', category: f.category, programme: f.programme || '',
   spec: f.speciality || f.branch || '', college: f.college, type: f.type || '', results: n
 }), 1500);
 const trackSearch = debounce((kind, f, n) => track('search', {
@@ -655,13 +659,12 @@ function renderResults() {
   S.list = list; S.cols = cols;
 
   const total = list.length;
-  const who = [kind === 'state' ? (f.stream || 'both streams') : '', f.category ? f.category + (f.withOpen && f.category !== K.openCat ? ` + ${K.openCat}` : '') : 'all categories']
+  const who = [kind === 'state' ? f.stream : '', f.category ? f.category + (f.withOpen && f.category !== K.openCat ? ` + ${K.openCat}` : '') : 'all categories']
     .filter(Boolean).join(' · ');
   const head = mode === 'predict' ? `
       <div><div class="eyebrow">Seats in reach · ${esc(S.data.dataset.label)}</div>
         <div class="res-count"><strong>${fmt(total)}</strong><span>at ${K.rank} <b class="num">${fmt(rank)}</b> · ${esc(who)}</span></div>
-        <p class="res-sub">Seats whose ${S.data.dataset.year} closing rank was at or past yours, plus stretch seats up to 15% beyond it.
-          ${kind === 'state' && !f.stream ? '<b style="color:var(--warn)">Pick your stream for a true reading.</b>' : ''}</p></div>`
+        <p class="res-sub">Seats whose ${S.data.dataset.year} closing rank was at or past yours, plus stretch seats up to 15% beyond it.</p></div>`
     : `
       <div><div class="eyebrow">Cut-off table · ${esc(S.data.dataset.label)}</div>
         <div class="res-count"><strong>${fmt(total)}</strong><span>of ${fmt(S.data.rows.length)} seat groups · ${esc(who)}</span></div>
@@ -690,7 +693,7 @@ function renderResults() {
     </table></div>
     <div class="more" id="more" hidden></div>` : `
     <div class="grid-wrap"><div class="empty"><h3>${mode === 'predict' ? 'No seats in reach with these filters' : 'Nothing matches'}</h3>
-      <p>${mode === 'predict' ? `In ${S.data.dataset.year}, no seat in this selection closed at or near ${K.rank} ${fmt(rank)}. Try widening the filters${kind === 'state' && f.stream ? ' or check your stream' : ''}.` : 'Try a different search or clear some filters.'}</p></div></div>`}`;
+      <p>${mode === 'predict' ? `In ${S.data.dataset.year}, no seat in this selection closed at or near ${K.rank} ${fmt(rank)}. Try widening the filters${kind === 'state' ? ' or check your stream' : ''}.` : 'Try a different search or clear some filters.'}</p></div></div>`}`;
 
   $$('th.sortable', res).forEach(th => th.onclick = () => {
     const id = th.dataset.col;
