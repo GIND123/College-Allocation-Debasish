@@ -1,8 +1,9 @@
 # RankRound
 
-PG medical counselling cut-off predictor for Odisha. It covers state counselling (CMR) and the All India Quota (NEET AIR), with:
+PG medical counselling cut-off predictor. It covers state counselling (CMR) and the All India Quota (NEET AIR), with:
 
-- mobile-number OTP sign-in
+- a sign-up page that opens the site: name, mobile or email (one-time code), NEET-PG CMR and state
+- cut-off data shown per state: each candidate sees only the state they chose
 - a shortlist builder
 - an admin console with traffic analytics, leads, and data uploads
 
@@ -20,14 +21,15 @@ npm start                 # http://localhost:3000
 
 - Public site: `http://localhost:3000`
 - Admin console: `http://localhost:3000/admin`. Use the password set in `ADMIN_PASSWORD`.
-- While `AUTH_PROVIDER=mock` (the default), every mobile number signs in with code **1234** and no SMS is sent.
+- While `AUTH_PROVIDER=mock` (the default), every mobile number and email signs in with code **1234** and nothing is sent.
 
 ## What's where
 
 | Path | Purpose |
 |---|---|
 | `server/index.js` | HTTP routes: public API, admin API, pages |
-| `server/auth.js` | OTP sign-in (mock + Firebase), sessions, admin login, rate limits |
+| `server/auth.js` | Sign-up profile, OTP sign-in (mock, Firebase SMS, email codes), sessions, admin login, rate limits |
+| `server/states.js` | The states and UTs offered at sign-up; every dataset is tagged with one |
 | `server/analytics.js` | First-party event tracking and the dashboard queries |
 | `server/schema.js` | Upload columns, header aliases, validation, allotment → cut-off aggregation |
 | `server/db.js` | SQLite schema, settings, first-run seed |
@@ -54,6 +56,26 @@ Firebase Authentication phone sign-in sends the SMS and handles reCAPTCHA. Becau
 
 The sign-in screen switches to 6-digit codes automatically. To use another SMS provider later (MSG91, Twilio Verify and so on), replace the body of `requestOtp` in `server/auth.js` so it sends the code. Nothing else changes.
 
+## Email codes
+
+Candidates can get their one-time code by email instead of SMS. In mock mode this works with code 1234. For real emails the server uses [Brevo](https://www.brevo.com) (free tier: 300 emails a day):
+
+1. Create a Brevo account and verify a sender address (Senders & IPs → Senders).
+2. Create an API key (SMTP & API → API keys).
+3. Set these on the server and restart:
+   ```
+   BREVO_API_KEY=...
+   EMAIL_FROM=no-reply@your-domain.in
+   ```
+
+Without these, and with `AUTH_PROVIDER=firebase`, the sign-up form offers mobile only.
+
+## Sign-up and states
+
+The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which datasets they see: a candidate who chose Karnataka sees only datasets tagged Karnataka, and gets a "coming soon" page until one is published. Candidates can change their state, CMR or name from the account menu (Edit profile).
+
+Accounts created before sign-up asked for CMR and state are asked to complete their profile the next time they open the predictor.
+
 ## Adding data without a developer
 
 Go to Admin → Datasets → **Upload data**. CSV and Excel files are accepted, and a template can be downloaded from the upload dialog. There are two file layouts:
@@ -63,7 +85,7 @@ Go to Admin → Datasets → **Upload data**. CSV and Excel files are accepted, 
 
 Each upload is validated, and you see a preview before anything is saved. Messy headers ("Institute", "State Merit Rank", "Quota", …) and stream spellings ("in service", "IS") are recognised automatically.
 
-Every published dataset appears on the site, newest year first. Individual rows can be corrected in the row editor.
+Every dataset is tagged with a state when it is uploaded. A published dataset is shown to candidates who chose that state, newest year first. The state can be changed later under the dataset's details. Individual rows can be corrected in the row editor.
 
 ## Analytics
 
@@ -76,7 +98,7 @@ The dashboard shows:
 - speciality and college interest
 - traffic sources, devices and pages
 
-**Leads** lists every verified mobile with their last search, shortlist and activity timeline, and exports to CSV.
+**Leads** lists everyone who verified a mobile or email, with their state, NEET-PG CMR, last search, shortlist and activity timeline, and exports to CSV. The overview also shows sign-ups by state and by contact type (mobile or email).
 
 ## Deploying
 

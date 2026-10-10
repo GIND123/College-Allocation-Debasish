@@ -7,16 +7,19 @@ const FIREBASE_SDK = '10.12.2';
 const BAND = { 4: 'Very high', 3: 'High', 2: 'Moderate', 1: 'Low' };
 const KIND = {
   state: {
-    label: 'State counselling', rank: 'CMR', rankLong: 'Odisha CMR', spec: 'speciality', specLabel: 'Speciality',
+    label: 'State counselling', rank: 'CMR', spec: 'speciality', specLabel: 'Speciality',
     open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'category', 'programme', 'speciality', 'college'],
-    note: 'Ranked by the Odisha combined merit rank (CMR). Direct and in-service candidates are on separate merit lists.'
+    get rankLong() { return `${myState()} CMR`; },
+    get note() { return `Ranked by the ${myState()} combined merit rank (CMR). Direct and in-service candidates are on separate merit lists.`; }
   },
   aiq: {
     label: 'All India Quota', rank: 'AIR', rankLong: 'NEET All India Rank', spec: 'branch', specLabel: 'Branch',
     open: 'open_rank', close: 'close_rank', openCat: 'GENERAL', filters: ['category', 'type', 'branch', 'college'],
-    note: 'Seats in Odisha colleges filled by the MCC on NEET All India Rank — a national pool, separate from state counselling.'
+    get note() { return `Seats in ${myState()} colleges filled by the MCC on NEET All India Rank — a national pool, separate from state counselling.`; }
   }
 };
+const myState = () => S.user?.state || 'State';
+const profileComplete = () => !!(S.user?.name && S.user?.cmr && S.user?.state);
 const FILTER_LABEL = { stream: 'Stream', category: 'Category', programme: 'Programme', speciality: 'Speciality', branch: 'Branch', college: 'College', type: 'College type' };
 const ALL_LABEL = { category: 'All categories', programme: 'All programmes', speciality: 'All specialities', branch: 'All branches', college: 'All colleges', type: 'Government & private' };
 
@@ -81,7 +84,7 @@ async function boot() {
   try { S.cfg = await api('/api/config'); }
   catch (e) { view.innerHTML = `<div class="gate"><h1>We couldn't reach the server</h1><p>${esc(e.message)}</p></div>`; return; }
   S.user = S.cfg.user;
-  if (S.user) loadShortlist();
+  if (S.user) { applyProfile(); loadShortlist(); }
   const s = S.cfg.settings;
   if (s.brand) $('#footbrand').textContent = s.brand;
   if (s.announcement) {
@@ -114,6 +117,7 @@ async function route() {
   $('#nav').hidden = !S.user;
   document.body.classList.toggle('has-nav', !!S.user);
   if (GATED.has(p) && !S.user) viewGate(p);
+  else if (GATED.has(p) && !profileComplete()) viewProfile();
   else await ROUTES[p]();
   if (changed) { scrollTo(0, 0); track('pageview'); }
 }
@@ -154,9 +158,10 @@ function toggleMenu() {
   m.className = 'menu';
   m.setAttribute('role', 'menu');
   m.innerHTML = `
-    <div class="menu-head"><b>${esc(S.user.name)}</b><span>${esc(prettyPhone(S.user.phone))}</span></div>
+    <div class="menu-head"><b>${esc(S.user.name)}</b><span>${esc(prettyPhone(S.user.phone) || S.user.email || '')}</span>
+      ${S.user.state ? `<span>${esc(S.user.state)}${S.user.cmr ? ` · CMR ${fmt(S.user.cmr)}` : ''}</span>` : ''}</div>
     <a href="/shortlist" data-link role="menuitem">${icon.star} My shortlist</a>
-    <button role="menuitem" id="m-name">${icon.user} Edit name</button>
+    <button role="menuitem" id="m-name">${icon.user} Edit profile</button>
     <button role="menuitem" id="m-out">${icon.logout} Sign out</button>`;
   host.append(m);
   $('#acct').setAttribute('aria-expanded', 'true');
@@ -169,24 +174,83 @@ function toggleMenu() {
     renderTop(); go('/');
     toast('Signed out.');
   };
-  $('#m-name').onclick = () => { m.remove(); editName(); };
+  $('#m-name').onclick = () => { m.remove(); editProfile(); };
 }
-function editName() {
+function editProfile() {
   const d = openDialog(`
-    <div class="dialog-head"><h2>Your name</h2><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
-    <form class="dialog-body" id="nf">
-      <label class="field"><span class="label">Full name</span><input class="input" name="name" value="${esc(S.user.name)}" maxlength="80" autofocus required></label>
-      <div class="dialog-foot" style="margin:22px -22px -22px"><button type="button" class="btn btn-line" data-close>Cancel</button><button class="btn btn-primary">Save</button></div>
-    </form>`);
-  d.el.querySelector('#nf').onsubmit = async e => {
-    e.preventDefault();
-    try { S.user = (await api('/api/me', { method: 'PATCH', body: { name: e.target.name.value } })).user; renderTop(); d.close(); toast('Saved.'); }
-    catch (err) { toast(err.message, true); }
-  };
+    <div class="dialog-head"><h2>Your profile</h2><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
+    <div class="dialog-body" id="pf"></div>`);
+  profileForm(d.el.querySelector('#pf'), { onCancel: () => d.close(), onSaved: () => { d.close(); toast('Profile saved.'); route(); } });
 }
 
 // =====================================================================
-// Sign-in (mock OTP now, Firebase phone auth when configured)
+// Profile: name, NEET-PG CMR and state (the state decides which data shows)
+// =====================================================================
+function stateOptions(sel) {
+  const have = S.cfg.dataStates || [];
+  const opt = s => `<option ${s === sel ? 'selected' : ''}>${esc(s)}</option>`;
+  const rest = S.cfg.states.filter(s => !have.includes(s));
+  return `<option value="">Choose your state</option>` + (have.length
+    ? `<optgroup label="Cut-off data available">${have.map(opt).join('')}</optgroup><optgroup label="All states and UTs">${rest.map(opt).join('')}</optgroup>`
+    : rest.map(opt).join(''));
+}
+const cmrField = v => `<label class="field"><span class="label">NEET-PG CMR</span>
+  <input class="input num" name="cmr" inputmode="numeric" autocomplete="off" placeholder="e.g. 250" value="${esc(v ?? '')}" maxlength="7" required></label>`;
+const stateField = v => `<label class="field"><span class="label">State</span><select class="select" name="state" required>${stateOptions(v)}</select></label>`;
+
+/** The CMR given at sign-up is the starting rank for state counselling. */
+function applyProfile(force = false) {
+  if (S.user?.cmr && (force || !S.f.state.rank)) { S.f.state.rank = String(S.user.cmr); saveFilters(); }
+}
+
+function profileForm(host, { onSaved, onCancel }) {
+  const u = S.user;
+  const draw = err => {
+    host.innerHTML = `<form class="auth" novalidate>
+      <label class="field"><span class="label">Full name</span><input class="input" name="name" autocomplete="name" value="${esc(u.name)}" maxlength="80" required></label>
+      <div class="auth-pair">${cmrField(u.cmr)}${stateField(u.state)}</div>
+      ${err ? `<div class="alert alert-err form-err" role="alert">${esc(err)}</div>` : ''}
+      <div class="auth-actions">${onCancel ? '<button type="button" class="btn btn-line" data-cancel>Cancel</button>' : ''}
+        <button class="btn btn-primary">Save and continue</button></div>
+    </form>`;
+    const f = host.querySelector('form'), el = n => f.elements.namedItem(n);
+    if (onCancel) f.querySelector('[data-cancel]').onclick = onCancel;
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const body = { name: el('name').value.trim(), cmr: el('cmr').value.replace(/\D/g, ''), state: el('state').value };
+      if (body.name.length < 2) return draw('Enter your full name.');
+      if (!body.cmr) return draw('Enter your NEET-PG CMR.');
+      if (!body.state) return draw('Choose your state.');
+      try {
+        const prev = S.user;
+        S.user = (await api('/api/me', { method: 'PATCH', body })).user;
+        if (prev.state !== S.user.state) {
+          // Another state's data: start from clean filters and its datasets.
+          S.f = freshFilters(); S.dsId = { state: null, aiq: null };
+          S.cfg = await api('/api/config').catch(() => S.cfg);
+        }
+        applyProfile(prev.cmr !== S.user.cmr || prev.state !== S.user.state);
+        renderTop();
+        onSaved();
+      } catch (err) { draw(err.message); }
+    };
+  };
+  draw();
+}
+
+function viewProfile() {
+  view.innerHTML = `<div class="gate">
+    <div class="eyebrow">One more step</div>
+    <h1>Complete your profile</h1>
+    <p>We show cut-offs for the state you choose. Add your NEET-PG CMR and state to continue.</p>
+    <div class="auth-card" id="pf"></div>
+  </div>`;
+  profileForm($('#pf'), { onSaved: () => { toast('Profile saved.'); route(); } });
+}
+
+// =====================================================================
+// Sign-up / sign-in: mobile or email + one-time code (mock now; Firebase SMS
+// and email codes when configured on the server)
 // =====================================================================
 let fb = null;
 async function firebase() {
@@ -199,81 +263,106 @@ async function firebase() {
   return fb;
 }
 
-function openSignIn(then) {
-  if (then) S.intended = then;
-  track('signin_open');
-  const provider = S.cfg.auth.provider;
-  const len = S.cfg.auth.otpLength || 4;
-  let phone = '', name = '', confirmation = null, verifier = null, timer = null;
+/** Renders the sign-up / sign-in flow into `host`. Returns a cleanup function. */
+function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } = {}) {
+  const provider = S.cfg.auth.provider, len = S.cfg.auth.otpLength || 4, emailOk = S.cfg.auth.email;
+  const a = { mode, channel: 'phone', name: '', phone: '', email: '', cmr: '', state: '' };
+  let confirmation = null, verifier = null, timer = null, opened = false;
+  const viaFirebase = () => provider === 'firebase' && a.channel === 'phone';
+  const shown = () => a.channel === 'email' ? a.email : '+91 ' + a.phone.replace(/(\d{5})(\d{5})/, '$1 $2');
+  const profile = () => a.mode === 'signup' ? { name: a.name, cmr: a.cmr, state: a.state } : {};
+  host.addEventListener('focusin', () => { if (!opened) { opened = true; track('signin_open'); } });
 
-  const d = openDialog(`
-    <div class="dialog-head"><h2>Sign in to RankRound</h2><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
-    <div class="dialog-body" id="si"></div>`, { onClose: () => { clearInterval(timer); verifier?.clear?.(); } });
-  const body = d.el.querySelector('#si');
-
-  function stepOne(err) {
-    body.innerHTML = `
-      <p class="signin-lead">Enter your mobile number and we'll send a one-time code. Your shortlist is saved to this number.</p>
-      <form id="s1" novalidate>
-        <label class="field"><span class="label">Full name</span>
-          <input class="input" name="name" autocomplete="name" value="${esc(name)}" maxlength="80" required autofocus></label>
-        <label class="field"><span class="label">Mobile number</span>
-          <div class="phone"><span>+91</span><input class="input" name="phone" inputmode="numeric" autocomplete="tel-national"
-            placeholder="98765 43210" value="${esc(phone)}" maxlength="14" required></div></label>
-        ${err ? `<div class="alert alert-err form-err">${esc(err)}</div>` : ''}
-        <button class="btn btn-primary btn-lg" style="width:100%;margin-top:20px" id="send">Send code</button>
+  function form(err) {
+    clearInterval(timer);
+    onMode?.(a.mode);
+    const up = a.mode === 'signup';
+    host.innerHTML = `
+      <form class="auth" novalidate>
+        ${up ? `<label class="field"><span class="label">Full name</span>
+          <input class="input" name="name" autocomplete="name" value="${esc(a.name)}" maxlength="80" required></label>` : ''}
+        <div class="field"><span class="label">${emailOk ? 'Mobile or email' : 'Mobile number'} <span class="hint">for a one-time code</span></span>
+          ${emailOk ? `<div class="seg auth-ch" role="group" aria-label="Get the code by">
+            <button type="button" data-ch="phone" aria-pressed="${a.channel === 'phone'}">Mobile</button>
+            <button type="button" data-ch="email" aria-pressed="${a.channel === 'email'}">Email</button></div>` : ''}
+          ${a.channel === 'email'
+            ? `<input class="input" name="email" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(a.email)}" maxlength="254" aria-label="Email address" required>`
+            : `<div class="phone"><span>+91</span><input class="input" name="phone" inputmode="numeric" autocomplete="tel-national"
+                placeholder="98765 43210" value="${esc(a.phone)}" maxlength="14" aria-label="Mobile number" required></div>`}
+        </div>
+        ${up ? `<div class="auth-pair">${cmrField(a.cmr)}${stateField(a.state)}</div>` : ''}
+        ${err ? `<div class="alert alert-err form-err" role="alert">${esc(err)}</div>` : ''}
+        <button class="btn btn-primary btn-lg auth-go" id="send">${up ? 'Sign up' : 'Send code'} ${icon.arrowR}</button>
         <div id="recaptcha-box"></div>
-        <p class="fine">By continuing you agree that a RankRound counsellor may contact you on this number about PG admissions.
-          Standard SMS rates may apply.</p>
+        <p class="auth-switch">${up
+          ? 'Already registered? <button type="button" class="linkbtn" data-mode="signin">Sign in</button>'
+          : 'New here? <button type="button" class="linkbtn" data-mode="signup">Create an account</button>'}</p>
+        ${up ? `<p class="fine">You'll see cut-offs for the state you choose. By signing up you agree that a counsellor may contact you about PG admissions.</p>` : ''}
       </form>`;
-    const form = body.querySelector('#s1');
-    if (name) form.phone.focus();
-    form.onsubmit = async e => {
+    const f = host.querySelector('form'), el = n => f.elements.namedItem(n);
+    if (autofocus) f.querySelector('input').focus();
+    f.oninput = e => { if (e.target.name in a) a[e.target.name] = e.target.value; };
+    $$('[data-ch]', f).forEach(b => b.onclick = () => { a.channel = b.dataset.ch; form(); host.querySelector(`[name="${a.channel}"]`).focus(); });
+    $$('[data-mode]', f).forEach(b => b.onclick = () => { a.mode = b.dataset.mode; form(); host.querySelector('input').focus(); });
+    f.onsubmit = async e => {
       e.preventDefault();
-      name = form.name.value.trim();
-      phone = form.phone.value.replace(/\D/g, '').replace(/^(91|0)(?=\d{10}$)/, '');
-      if (name.length < 2) return stepOne('Enter your name.');
-      if (!/^[6-9]\d{9}$/.test(phone)) return stepOne('Enter a valid 10-digit Indian mobile number.');
-      const btn = form.querySelector('#send');
-      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Sending';
+      if (up) {
+        a.name = el('name').value.trim();
+        if (a.name.length < 2) return form('Enter your full name.');
+      }
+      if (a.channel === 'email') {
+        a.email = el('email').value.trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/.test(a.email)) return form('Enter a valid email address.');
+      } else {
+        a.phone = el('phone').value.replace(/\D/g, '').replace(/^(91|0)(?=\d{10}$)/, '');
+        if (!/^[6-9]\d{9}$/.test(a.phone)) return form('Enter a valid 10-digit Indian mobile number.');
+      }
+      if (up) {
+        a.cmr = el('cmr').value.replace(/\D/g, '');
+        a.state = el('state').value;
+        if (!(+a.cmr > 0)) return form('Enter your NEET-PG CMR — your rank on the state merit list.');
+        if (!a.state) return form('Choose your state.');
+      }
+      const btn = f.querySelector('#send');
+      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Sending code';
       try {
-        if (provider === 'firebase') {
+        if (viaFirebase()) {
           const { auth, mod } = await firebase();
           verifier?.clear?.();
           verifier = new mod.RecaptchaVerifier(auth, 'recaptcha-box', { size: 'invisible' });
-          confirmation = await mod.signInWithPhoneNumber(auth, '+91' + phone, verifier);
+          confirmation = await mod.signInWithPhoneNumber(auth, '+91' + a.phone, verifier);
         } else {
-          await api('/api/auth/otp/request', { method: 'POST', body: { phone, name } });
+          await api('/api/auth/otp/request', { method: 'POST', body: { mode: a.mode, channel: a.channel, phone: a.phone, email: a.email, ...profile() } });
         }
-        stepTwo();
+        code();
       } catch (err) {
-        stepOne(firebaseMessage(err) || err.message);
+        form(firebaseMessage(err) || err.message);
       }
     };
   }
 
-  function stepTwo(err) {
+  function code(err) {
     clearInterval(timer);
-    body.innerHTML = `
-      <p class="signin-lead">Enter the ${len}-digit code sent to <b class="num">+91 ${esc(phone.replace(/(\d{5})(\d{5})/, '$1 $2'))}</b>.
+    host.innerHTML = `
+      <p class="signin-lead">Enter the ${len}-digit code sent to <b class="num">${esc(shown())}</b>.
         <button class="linkbtn" id="chg">Change</button></p>
-      ${provider === 'mock' ? `<div class="alert alert-info" style="margin-bottom:18px">Test mode — no SMS is sent. Use code <b class="num">1234</b>.</div>` : ''}
+      ${provider === 'mock' ? `<div class="alert alert-info" style="margin-bottom:18px">Test mode — no SMS or email is sent. Use code <b class="num">1234</b>.</div>` : ''}
       <form id="s2">
         <div class="otp ${len > 4 ? 'six' : ''}" role="group" aria-label="One-time code">
           ${Array.from({ length: len }, (_, i) => `<input inputmode="numeric" maxlength="1" autocomplete="${i ? 'off' : 'one-time-code'}" aria-label="Digit ${i + 1}">`).join('')}
         </div>
         ${err ? `<div class="alert alert-err form-err">${esc(err)}</div>` : ''}
-        <button class="btn btn-primary btn-lg" style="width:100%;margin-top:20px" id="verify">Verify and continue</button>
+        <button class="btn btn-primary btn-lg auth-go" id="verify">Verify and continue</button>
         <div class="signin-row"><span id="cd"></span><button type="button" class="linkbtn" id="resend" disabled>Resend code</button></div>
       </form>`;
-    const boxes = $$('.otp input', body);
-    const code = () => boxes.map(b => b.value).join('');
+    const boxes = $$('.otp input', host);
+    const value = () => boxes.map(b => b.value).join('');
     boxes[0].focus();
     boxes.forEach((b, i) => {
       b.addEventListener('input', () => {
         b.value = b.value.replace(/\D/g, '').slice(-1);
         if (b.value && i < len - 1) boxes[i + 1].focus();
-        if (code().length === len) body.querySelector('#s2').requestSubmit();
+        if (value().length === len) host.querySelector('#s2').requestSubmit();
       });
       b.addEventListener('keydown', e => { if (e.key === 'Backspace' && !b.value && i) boxes[i - 1].focus(); });
       b.addEventListener('paste', e => {
@@ -282,41 +371,54 @@ function openSignIn(then) {
         e.preventDefault();
         t.split('').forEach((c, j) => { boxes[j].value = c; });
         boxes[Math.min(t.length, len - 1)].focus();
-        if (t.length === len) body.querySelector('#s2').requestSubmit();
+        if (t.length === len) host.querySelector('#s2').requestSubmit();
       });
     });
-    body.querySelector('#chg').onclick = () => stepOne();
+    host.querySelector('#chg').onclick = () => form();
     let left = 30;
-    const cd = body.querySelector('#cd'), rs = body.querySelector('#resend');
+    const cd = host.querySelector('#cd'), rs = host.querySelector('#resend');
     const tick = () => { cd.textContent = left > 0 ? `Resend available in ${left}s` : "Didn't get it?"; rs.disabled = left > 0; left--; };
     tick(); timer = setInterval(() => { tick(); if (left < -1) clearInterval(timer); }, 1000);
-    rs.onclick = () => { stepOne(); body.querySelector('#s1').requestSubmit(); };
+    rs.onclick = () => { form(); host.querySelector('form').requestSubmit(); };
 
-    body.querySelector('#s2').onsubmit = async e => {
+    host.querySelector('#s2').onsubmit = async e => {
       e.preventDefault();
-      const c = code();
+      const c = value();
       if (c.length !== len) return;
-      const btn = body.querySelector('#verify');
+      const btn = host.querySelector('#verify');
       btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Verifying';
       try {
         let r;
-        if (provider === 'firebase') {
+        if (viaFirebase()) {
           const cred = await confirmation.confirm(c);
           const idToken = await cred.user.getIdToken();
-          r = await api('/api/auth/firebase', { method: 'POST', body: { idToken, name } });
+          r = await api('/api/auth/firebase', { method: 'POST', body: { idToken, mode: a.mode, ...profile() } });
           fb.mod.signOut(fb.auth).catch(() => {});
         } else {
-          r = await api('/api/auth/otp/verify', { method: 'POST', body: { phone, code: c } });
+          r = await api('/api/auth/otp/verify', { method: 'POST', body: { channel: a.channel, phone: a.phone, email: a.email, code: c } });
         }
         clearInterval(timer);
-        d.close();
+        onDone?.();
         await signedIn(r.user, r.isNew);
       } catch (err) {
-        stepTwo(firebaseMessage(err) || err.message);
+        code(firebaseMessage(err) || err.message);
       }
     };
   }
-  stepOne();
+  form();
+  return () => { clearInterval(timer); verifier?.clear?.(); };
+}
+
+function openSignIn(then, mode = 'signin') {
+  if (then) S.intended = then;
+  let stop;
+  const d = openDialog(`
+    <div class="dialog-head"><h2 id="si-title"></h2><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
+    <div class="dialog-body" id="si"></div>`, { onClose: () => stop?.() });
+  stop = mountAuth(d.el.querySelector('#si'), {
+    mode, autofocus: true, onDone: () => d.close(),
+    onMode: m => { d.el.querySelector('#si-title').textContent = m === 'signup' ? 'Create your free account' : 'Sign in to RankRound'; }
+  });
 }
 function firebaseMessage(err) {
   const c = err?.code || '';
@@ -332,9 +434,12 @@ function firebaseMessage(err) {
 async function signedIn(user, isNew) {
   S.user = user;
   S.cfg = await api('/api/config').catch(() => S.cfg);
+  S.dsId = { state: null, aiq: null };
+  applyProfile(true);
   await loadShortlist();
   renderTop();
-  toast(isNew ? `Welcome, ${user.name.split(' ')[0]}. Your account is ready.` : `Welcome back, ${user.name.split(' ')[0]}.`);
+  const first = (user.name || '').split(' ')[0];
+  toast(isNew ? `Welcome${first ? ', ' + first : ''}. Your account is ready.` : `Welcome back${first ? ', ' + first : ''}.`);
   const next = S.intended || (GATED.has(location.pathname) ? location.pathname : '/predict');
   S.intended = null;
   S.path = null;
@@ -413,7 +518,7 @@ function ctxbar(kind) {
   return `
   <div class="ctxbar"><div class="ctxbar-in">
     <div class="scope" role="group" aria-label="Counselling">
-      <button data-scope="state" aria-pressed="${kind === 'state'}"><b>State counselling</b><span>Odisha · ranked by CMR</span></button>
+      <button data-scope="state" aria-pressed="${kind === 'state'}"><b>State counselling</b><span>${esc(myState())} · ranked by CMR</span></button>
       <button data-scope="aiq" aria-pressed="${kind === 'aiq'}"><b>All India Quota</b><span>MCC · ranked by NEET AIR</span></button>
     </div>
     <div class="ctx-ds">
@@ -455,7 +560,18 @@ async function viewWork(mode) {
   if (S.mode !== mode || S.scope !== kind) return;
   if (!data) {
     $('#rail').hidden = true;
-    $('#res').innerHTML = `<div class="empty"><h3>No ${esc(KIND[kind].label)} data published yet</h3><p>Check back soon.</p></div>`;
+    $('.workspace').classList.add('no-rail');
+    const have = S.cfg.dataStates || [];
+    const wa = waLink(`Hi, I would like help with ${myState()} PG counselling.`);
+    $('#res').innerHTML = `<div class="empty">
+      <h3>${esc(myState())} ${kind === 'state' ? 'state counselling' : 'All India Quota'} data is coming soon</h3>
+      <p>We're adding states one at a time${have.length ? ` — cut-offs are live for ${esc(have.join(', '))}` : ''}.
+        Your sign-up is saved, and ${esc(myState())} data will appear here as soon as it is published.</p>
+      <div class="empty-actions"><a class="btn btn-line" href="/counselling">2026 counselling guide</a>
+        <button class="btn btn-line" id="chg-state">Change state</button>
+        ${wa ? `<a class="btn btn-primary" href="${esc(wa)}" target="_blank" rel="noopener">${icon.chat} Talk to a counsellor</a>` : ''}</div>
+    </div>`;
+    $('#chg-state').onclick = editProfile;
     return;
   }
   S.data = data;
@@ -629,7 +745,7 @@ function renderResults() {
         <p class="res-sub">Type your ${esc(K.rankLong)} in the panel. We'll list every seat it reached in ${S.data.dataset.year}, graded by how comfortably.</p></div></div>
       <div class="empty" style="text-align:left;padding:28px 0">
         <p class="muted" style="max-width:62ch;line-height:1.65">${kind === 'state'
-          ? 'Your CMR is the rank on the Odisha state merit list — not your NEET All India Rank. Pick your stream (direct or in-service) first: the two lists are numbered separately.'
+          ? `Your CMR is the rank on the ${esc(myState())} state merit list — not your NEET All India Rank. Pick your stream (direct or in-service) first: the two lists are numbered separately.`
           : 'All India Quota seats are allotted by the MCC on your NEET All India Rank. Candidates from every state compete for these seats.'}</p>
       </div>`;
     return;
@@ -972,28 +1088,22 @@ function slGroup(kind, items) {
 // =====================================================================
 function viewGate(p) {
   const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist' }[p];
+  S.intended = p;
   view.innerHTML = `<div class="gate">
     <div class="eyebrow" style="display:inline-flex;gap:8px;align-items:center">${icon.lock.replace('<svg', '<svg style="width:13px;height:13px"')} Members' tool</div>
-    <h1>Sign in to open ${what}</h1>
-    <p>It takes one SMS code — no password. Your shortlist and filters are saved to your mobile number.</p>
-    <button class="btn btn-primary btn-lg" id="gate-in">Sign in with mobile</button>
+    <h1>Sign up to open ${what}</h1>
+    <p>Your name, mobile or email, NEET-PG CMR and state — then one code. We'll show cut-offs for your state.</p>
+    <div class="auth-card" id="gate-auth"></div>
   </div>`;
-  $('#gate-in').onclick = () => openSignIn(p);
-  openSignIn(p);
+  mountAuth($('#gate-auth'), { mode: 'signup' });
 }
 
-const SPECIMEN = [
-  ['PGIMER Bhubaneswar', 'General Surgery', 362, 362, 1],
-  ['SCB MCH Cuttack', 'Respiratory Medicine', 330, 330, 1],
-  ['MKCG MCH Berhampur', 'General Surgery', 279, 401, 4],
-  ['SCB MCH Cuttack', 'Ophthalmology', 298, 332, 2],
-  ['Hi-Tech MCH Bhubaneswar', 'General Medicine', 215, 336, 2]
-];
 function viewHome() {
-  const latest = kind => setsOf(kind)[0];
-  const st = latest('state'), aq = latest('aiq');
-  const cta = S.user ? `<a class="btn btn-primary btn-lg" href="/predict" data-link>Open the predictor ${icon.arrowR}</a>`
-    : `<button class="btn btn-primary btn-lg" data-signin>Check my options ${icon.arrowR}</button>`;
+  // Latest published dataset per state, so several years don't double count.
+  const latest = kind => { const seen = new Set(); return (S.cfg.datasets || []).filter(d => d.kind === kind && !seen.has(d.state) && seen.add(d.state)); };
+  const total = (list, k) => list.reduce((n, d) => n + (d[k] || 0), 0);
+  const st = latest('state'), aq = latest('aiq'), covered = S.cfg.dataStates || [];
+  const year = st[0]?.year || 2025;
   view.innerHTML = `
   <a class="priority" href="/counselling"><div class="priority-in">
     <span class="eyebrow">NEET-PG 2026 counselling</span>
@@ -1001,33 +1111,24 @@ function viewHome() {
     <span class="priority-go">Open the guide ${icon.arrowR}</span>
   </div></a>
   <section class="hero"><div class="hero-in">
-    <div>
-      <div class="eyebrow">Odisha PG medical · ${esc(st?.year || 2025)} counselling data</div>
+    <div class="hero-copy">
+      <div class="eyebrow">NEET-PG counselling · state quota and All India Quota</div>
       <h1>Know where your rank lands <em>before</em> you lock a choice.</h1>
-      <p class="hero-lede">Every seat from the Odisha state counselling and the All India Quota — by college, speciality, stream and
-        category — with the ranks that actually got in. Enter your rank and see what was within reach.</p>
-      <div class="hero-cta">${cta}<a class="btn btn-line btn-lg" href="/method" data-link>How it works</a></div>
+      <p class="hero-lede">Every seat in your state's counselling and the All India Quota — by college, speciality, stream and
+        category — with the ranks that actually got in. Sign up with your NEET-PG CMR and state to see what was within reach.</p>
+      <div class="hero-cta"><a class="btn btn-line btn-lg" href="/method" data-link>How it works</a></div>
     </div>
-    <div class="specimen" aria-label="Example result">
-      <div class="spec-head"><span class="eyebrow">Example · Direct · UR</span><span class="num muted">${esc(st?.label || '')}</span></div>
-      <div class="spec-q">
-        <div><span class="eyebrow">Odisha CMR</span><b>300</b></div>
-        <div><span class="eyebrow">In reach</span><b>${SPECIMEN.length}+</b></div>
-      </div>
-      <table>${SPECIMEN.map(([c, s, o, cl]) => {
-        const b = band(300, o, cl);
-        return `<tr><td><b>${esc(s)}</b><small>${esc(c)}</small></td><td>${bandHtml(b)}</td>
-          <td class="n">${o === cl ? fmt(cl) : `${fmt(o)}–${fmt(cl)}`}</td><td class="pos">${posSvg(o, cl, 300, 96)}</td></tr>`;
-      }).join('')}</table>
-      <div class="spec-foot">Illustrative extract. Closing CMR shown; your rank marked in gold.</div>
+    <div class="auth-card hero-auth" id="home-auth">
+      <div class="auth-card-head"><span class="eyebrow" id="ha-eye"></span><h2 id="ha-title"></h2></div>
+      <div id="home-auth-body"></div>
     </div>
   </div></section>
 
   <section class="stats"><div class="stats-in">
-    <div class="stat"><span class="eyebrow">State admissions</span><strong>${fmt(st?.seats || 0)}</strong><span>${fmt(st?.colleges || 0)} colleges, direct and in-service</span></div>
-    <div class="stat"><span class="eyebrow">All India Quota</span><strong>${fmt(aq?.seats || 0)}</strong><span>admissions in ${fmt(aq?.colleges || 0)} Odisha colleges</span></div>
-    <div class="stat"><span class="eyebrow">Seat groups</span><strong>${fmt((st?.rows || 0) + (aq?.rows || 0))}</strong><span>college × speciality × category cut-offs</span></div>
-    <div class="stat"><span class="eyebrow">Latest data</span><strong>${esc(st?.year || '—')}</strong><span>incl. stray and upgradation rounds</span></div>
+    <div class="stat"><span class="eyebrow">State admissions</span><strong>${fmt(total(st, 'seats'))}</strong><span>${fmt(total(st, 'colleges'))} colleges, direct and in-service</span></div>
+    <div class="stat"><span class="eyebrow">All India Quota</span><strong>${fmt(total(aq, 'seats'))}</strong><span>admissions in ${fmt(total(aq, 'colleges'))} colleges</span></div>
+    <div class="stat"><span class="eyebrow">Seat groups</span><strong>${fmt(total(st, 'rows') + total(aq, 'rows'))}</strong><span>college × speciality × category cut-offs</span></div>
+    <div class="stat"><span class="eyebrow">States with data</span><strong>${fmt(covered.length)}</strong><span>${esc(covered.join(', ') || '—')} · more being added</span></div>
   </div></section>
 
   <section class="section">
@@ -1037,8 +1138,8 @@ function viewHome() {
         comfortably — before you spend a single preference on them.</p>
     </div>
     <div class="steps">
-      <div class="step"><span class="num">01</span><h3>Enter your rank</h3><p>Your Odisha CMR for state counselling, or your NEET All India Rank for the All India Quota. Pick your stream and category.</p></div>
-      <div class="step"><span class="num">02</span><h3>See what was in reach</h3><p>Every seat that closed at or past your rank, graded from very high to low, with the margin and the round it went in.</p></div>
+      <div class="step"><span class="num">01</span><h3>Sign up with your rank</h3><p>Your NEET-PG CMR and your state. For the All India Quota, enter your NEET All India Rank. Pick your stream and category.</p></div>
+      <div class="step"><span class="num">02</span><h3>See what was in reach</h3><p>Every seat in your state that closed at or past your rank, graded from very high to low, with the margin and the round it went in.</p></div>
       <div class="step"><span class="num">03</span><h3>Build your shortlist</h3><p>Star seats, put them in preference order, and export or print the list to take into choice filling.</p></div>
     </div>
   </section>
@@ -1046,7 +1147,7 @@ function viewHome() {
   <section class="section" style="padding-top:0">
     <div class="section-head">
       <div><div class="eyebrow">Reading the chance</div><h2>Graded against the real range.</h2></div>
-      <p>Each seat has the best and worst rank admitted in ${esc(st?.year || 2025)}. Where your rank falls in that range sets the grade.
+      <p>Each seat has the best and worst rank admitted in ${esc(year)}. Where your rank falls in that range sets the grade.
         It is history, not a forecast — cut-offs move every round and every year.</p>
     </div>
     <div class="band-key">
@@ -1058,10 +1159,19 @@ function viewHome() {
 
   <section class="cta-band"><div class="section">
     <h2>Choice filling is a one-shot decision. Go in with the numbers.</h2>
-    ${S.user ? `<a class="btn btn-primary btn-lg" href="/predict" data-link>Open the predictor ${icon.arrowR}</a>`
-      : `<button class="btn btn-primary btn-lg" data-signin>Sign in with mobile ${icon.arrowR}</button>`}
+    <button class="btn btn-primary btn-lg" id="to-signup">Sign up free ${icon.arrowR}</button>
   </div></section>`;
-  $$('[data-signin]').forEach(b => b.onclick = () => openSignIn('/predict'));
+  mountAuth($('#home-auth-body'), {
+    mode: 'signup',
+    onMode: m => {
+      $('#ha-eye').textContent = m === 'signup' ? 'Free sign-up' : 'Welcome back';
+      $('#ha-title').textContent = m === 'signup' ? 'Create your account' : 'Sign in';
+    }
+  });
+  $('#to-signup').onclick = () => {
+    $('#home-auth').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    $('#home-auth input')?.focus({ preventScroll: true });
+  };
 }
 
 function viewMethod() {

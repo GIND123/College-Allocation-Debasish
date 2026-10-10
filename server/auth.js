@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
-import { db, now } from './db.js';
+import { db, now, getSettings } from './db.js';
+import { normState } from './states.js';
 
 const PROD = process.env.NODE_ENV === 'production';
 export const PROVIDER = (process.env.AUTH_PROVIDER || 'mock').toLowerCase();
@@ -8,6 +9,11 @@ export const OTP_LENGTH = PROVIDER === 'firebase' ? 6 : MOCK_OTP.length;
 const USER_TTL = 30 * 24 * 3600e3;
 const ADMIN_TTL = 12 * 3600e3;
 const OTP_TTL = 10 * 60e3;
+
+// Email codes: always on in mock mode; for real sends, set BREVO_API_KEY and EMAIL_FROM.
+const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
+const EMAIL_FROM = process.env.EMAIL_FROM || '';
+export const EMAIL_ENABLED = PROVIDER === 'mock' || !!(BREVO_API_KEY && EMAIL_FROM);
 
 export const FIREBASE = {
   apiKey: process.env.FIREBASE_API_KEY || '',
@@ -20,6 +26,8 @@ if (PROVIDER === 'mock' && PROD)
   console.warn(`[auth] WARNING: AUTH_PROVIDER=mock in production — every phone signs in with ${MOCK_OTP}.`);
 if (PROVIDER === 'firebase' && !FIREBASE.projectId)
   console.warn('[auth] WARNING: AUTH_PROVIDER=firebase but FIREBASE_PROJECT_ID is not set.');
+if (PROVIDER !== 'mock' && !EMAIL_ENABLED)
+  console.warn('[auth] Email sign-in is off: set BREVO_API_KEY and EMAIL_FROM to send email codes.');
 if (!process.env.ADMIN_PASSWORD)
   console.warn('[auth] WARNING: ADMIN_PASSWORD is not set — admin sign-in is disabled.');
 
@@ -98,9 +106,11 @@ export function requireAdmin(req, _res, next) {
 }
 export const isAdmin = req => !!readSession(req, 'rr_admin', 'admin');
 
-export const publicUser = u => u && ({ id: u.id, name: u.name, phone: u.phone, since: u.created_at });
+export const publicUser = u => u && ({
+  id: u.id, name: u.name, phone: u.phone, email: u.email, cmr: u.cmr, state: u.state, since: u.created_at
+});
 
-// ---- phone numbers -----------------------------------------------------
+// ---- contact details + profile -----------------------------------------
 /** Indian mobile numbers only, stored as +91XXXXXXXXXX. */
 export function normPhone(raw) {
   let d = String(raw || '').replace(/\D/g, '');
@@ -109,52 +119,109 @@ export function normPhone(raw) {
   if (!/^[6-9]\d{9}$/.test(d)) throw new HttpError(400, 'Enter a valid 10-digit Indian mobile number.');
   return '+91' + d;
 }
+export function normEmail(raw) {
+  const e = String(raw || '').trim().toLowerCase();
+  if (e.length > 254 || !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/.test(e)) throw new HttpError(400, 'Enter a valid email address.');
+  return e;
+}
+/** { channel: 'phone' | 'email', contact } from a request body. */
+function readContact(b) {
+  const channel = b.channel === 'email' ? 'email' : 'phone';
+  return { channel, contact: channel === 'email' ? normEmail(b.email) : normPhone(b.phone) };
+}
 const cleanName = n => String(n || '').replace(/\s+/g, ' ').trim().slice(0, 80);
 
-function signIn(res, phone, name) {
+/**
+ * Name, NEET-PG CMR and state from a request body. Fields left out stay out
+ * of the result; with `required` all three must be given (sign-up).
+ */
+export function readProfile(b = {}, required = false) {
+  const out = {};
+  if (b.name !== undefined && b.name !== '') {
+    out.name = cleanName(b.name);
+    if (out.name.length < 2) throw new HttpError(400, 'Enter your name.');
+  }
+  if (b.cmr !== undefined && b.cmr !== '' && b.cmr !== null) {
+    const n = Number(String(b.cmr).replace(/[\s,]/g, ''));
+    if (!Number.isInteger(n) || n < 1 || n > 500000) throw new HttpError(400, 'Enter your NEET-PG CMR as a whole number.');
+    out.cmr = n;
+  }
+  if (b.state !== undefined && b.state !== '') {
+    out.state = normState(b.state);
+    if (!out.state) throw new HttpError(400, 'Choose your state from the list.');
+  }
+  if (required) {
+    if (!out.name) throw new HttpError(400, 'Enter your name.');
+    if (!out.cmr) throw new HttpError(400, 'Enter your NEET-PG CMR.');
+    if (!out.state) throw new HttpError(400, 'Choose your state.');
+  }
+  return out;
+}
+
+function signIn(res, { channel, contact }, profile) {
   const t = now();
-  let u = db.prepare('SELECT * FROM users WHERE phone = ?').get(phone);
+  const find = () => db.prepare(`SELECT * FROM users WHERE ${channel} = ?`).get(contact);
+  let u = find();
   const isNew = !u;
   if (isNew) {
-    db.prepare('INSERT INTO users (phone, name, created_at, last_seen_at, logins) VALUES (?, ?, ?, ?, 1)').run(phone, name, t, t);
+    db.prepare(`INSERT INTO users (${channel}, name, cmr, state, created_at, last_seen_at, logins) VALUES (?, ?, ?, ?, ?, ?, 1)`)
+      .run(contact, profile.name || '', profile.cmr ?? null, profile.state || '', t, t);
   } else {
-    db.prepare('UPDATE users SET logins = logins + 1, last_seen_at = ?, name = CASE WHEN ? <> \'\' THEN ? ELSE name END WHERE id = ?')
-      .run(t, name, name, u.id);
+    // Signing up again with the same contact refreshes the details given.
+    db.prepare(`UPDATE users SET logins = logins + 1, last_seen_at = ?,
+        name = COALESCE(?, name), cmr = COALESCE(?, cmr), state = COALESCE(?, state) WHERE id = ?`)
+      .run(t, profile.name ?? null, profile.cmr ?? null, profile.state ?? null, u.id);
   }
-  u = db.prepare('SELECT * FROM users WHERE phone = ?').get(phone);
+  u = find();
   createSession(res, 'user', u.id);
   return { user: u, isNew };
 }
 
-// ---- OTP: mock provider ------------------------------------------------
-export function requestOtp(req, { phone: rawPhone, name: rawName }) {
-  if (PROVIDER !== 'mock') throw new HttpError(400, 'OTP is sent by the sign-in provider on this server.');
-  const phone = normPhone(rawPhone);
-  const name = cleanName(rawName);
-  if (name.length < 2) throw new HttpError(400, 'Enter your name.');
-  limit('otp-ip:' + req.ip, 20, 3600e3);
-  limit('otp-phone:' + phone, 5, 3600e3);
-  limit('otp-phone-burst:' + phone, 1, 25e3);
-  const code = MOCK_OTP; // a real provider would generate and send a random code here
-  db.prepare('INSERT INTO otp_requests (phone, code_hash, name, created_at, expires_at) VALUES (?, ?, ?, ?, ?)')
-    .run(phone, sha(phone + ':' + code), name, now(), now() + OTP_TTL);
-  return { phone, expiresIn: OTP_TTL / 1000 };
+// ---- OTP: codes we issue ourselves (mock mode, and email) ---------------
+async function sendEmailCode(to, code) {
+  const brand = getSettings().brand || 'RankRound';
+  const r = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: { 'api-key': BREVO_API_KEY, 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      sender: { email: EMAIL_FROM, name: brand },
+      to: [{ email: to }],
+      subject: `${code} is your ${brand} sign-in code`,
+      textContent: `Your ${brand} sign-in code is ${code}. It expires in 10 minutes.\n\nIf you did not ask for this code, you can ignore this email.`
+    })
+  }).catch(() => null);
+  if (!r?.ok) throw new HttpError(502, 'We could not send the email just now. Try again, or use your mobile number.');
 }
 
-export function verifyOtp(req, res, { phone: rawPhone, code }) {
-  if (PROVIDER !== 'mock') throw new HttpError(400, 'Use the sign-in provider configured on this server.');
-  const phone = normPhone(rawPhone);
+export async function requestOtp(req, body) {
+  const { channel, contact } = readContact(body);
+  if (channel === 'phone' && PROVIDER !== 'mock') throw new HttpError(400, 'SMS codes are sent by the sign-in provider on this server.');
+  if (channel === 'email' && !EMAIL_ENABLED) throw new HttpError(400, 'Email sign-in is not available yet. Use your mobile number.');
+  const profile = readProfile(body, body.mode === 'signup');
+  limit('otp-ip:' + req.ip, 20, 3600e3);
+  limit('otp-contact:' + contact, 5, 3600e3);
+  limit('otp-contact-burst:' + contact, 1, 25e3);
+  const code = PROVIDER === 'mock' ? MOCK_OTP : String(crypto.randomInt(0, 10 ** OTP_LENGTH)).padStart(OTP_LENGTH, '0');
+  if (PROVIDER !== 'mock') await sendEmailCode(contact, code);
+  db.prepare('INSERT INTO otp_requests (contact, code_hash, profile, created_at, expires_at) VALUES (?, ?, ?, ?, ?)')
+    .run(contact, sha(contact + ':' + code), JSON.stringify(profile), now(), now() + OTP_TTL);
+  return { channel, expiresIn: OTP_TTL / 1000 };
+}
+
+export function verifyOtp(req, res, body) {
+  const { channel, contact } = readContact(body);
+  if (channel === 'phone' && PROVIDER !== 'mock') throw new HttpError(400, 'Use the sign-in provider configured on this server.');
   limit('verify-ip:' + req.ip, 30, 3600e3);
-  const r = db.prepare('SELECT * FROM otp_requests WHERE phone = ? AND used = 0 ORDER BY id DESC LIMIT 1').get(phone);
+  const r = db.prepare('SELECT * FROM otp_requests WHERE contact = ? AND used = 0 ORDER BY id DESC LIMIT 1').get(contact);
   if (!r || r.expires_at < now()) throw new HttpError(400, 'That code has expired. Request a new one.');
   if (r.attempts >= 5) throw new HttpError(429, 'Too many wrong codes. Request a new one.');
-  const ok = crypto.timingSafeEqual(Buffer.from(sha(phone + ':' + String(code || '').trim())), Buffer.from(r.code_hash));
+  const ok = crypto.timingSafeEqual(Buffer.from(sha(contact + ':' + String(body.code || '').trim())), Buffer.from(r.code_hash));
   if (!ok) {
     db.prepare('UPDATE otp_requests SET attempts = attempts + 1 WHERE id = ?').run(r.id);
     throw new HttpError(400, `Incorrect code. ${4 - r.attempts} attempt${4 - r.attempts === 1 ? '' : 's'} left.`);
   }
   db.prepare('UPDATE otp_requests SET used = 1 WHERE id = ?').run(r.id);
-  return signIn(res, phone, r.name);
+  return signIn(res, { channel, contact }, JSON.parse(r.profile));
 }
 
 // ---- OTP: Firebase phone auth ------------------------------------------
@@ -190,11 +257,12 @@ export async function verifyFirebaseToken(idToken) {
   return claims;
 }
 
-export async function firebaseSignIn(req, res, { idToken, name }) {
+export async function firebaseSignIn(req, res, body) {
   if (PROVIDER !== 'firebase') throw new HttpError(400, 'Firebase sign-in is not enabled.');
   limit('fb-ip:' + req.ip, 30, 3600e3);
-  const claims = await verifyFirebaseToken(idToken);
-  return signIn(res, normPhone(claims.phone_number), cleanName(name));
+  const profile = readProfile(body, body.mode === 'signup');
+  const claims = await verifyFirebaseToken(body.idToken);
+  return signIn(res, { channel: 'phone', contact: normPhone(claims.phone_number) }, profile);
 }
 
 // ---- admin -------------------------------------------------------------

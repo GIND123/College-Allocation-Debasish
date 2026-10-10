@@ -4,10 +4,11 @@ import { fileURLToPath } from 'node:url';
 import { db, now, tx, insertRows, getSettings, putSettings } from './db.js';
 import { KINDS, parseTable, aggregate, validateRecord } from './schema.js';
 import {
-  PROVIDER, FIREBASE, OTP_LENGTH, HttpError, attachUser, requireUser, requireAdmin, isAdmin, publicUser,
-  requestOtp, verifyOtp, firebaseSignIn, adminLogin, endSession
+  PROVIDER, FIREBASE, OTP_LENGTH, EMAIL_ENABLED, HttpError, attachUser, requireUser, requireAdmin, isAdmin, publicUser,
+  readProfile, requestOtp, verifyOtp, firebaseSignIn, adminLogin, endSession
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
+import { STATES, normState } from './states.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(here, '..', 'public');
@@ -28,11 +29,12 @@ app.use('/api/admin', express.json({ limit: '20mb' }));
 app.use(express.json({ limit: '64kb' }));
 app.use(attachUser, visitor);
 
-// Mutating API calls that carry a body must be JSON — blocks cross-site form
-// posts. req.is() is null for body-less requests (browsers send DELETE with no
-// Content-Length at all), false only when a body of another type is present.
+// Mutating API calls must be JSON — blocks cross-site form posts. A body-less
+// fetch POST (sign-out) still sends Content-Length: 0 but no Content-Type, so a
+// request with no type and no content passes; anything else must be JSON.
 app.use('/api', (req, _res, next) => {
-  if (req.method !== 'GET' && req.method !== 'HEAD' && req.is('application/json') === false)
+  const empty = !req.headers['content-type'] && !(Number(req.headers['content-length']) > 0);
+  if (req.method !== 'GET' && req.method !== 'HEAD' && !empty && !req.is('application/json'))
     return next(new HttpError(415, 'Expected JSON.'));
   next();
 });
@@ -44,10 +46,14 @@ const kindOf = k => { if (!KINDS[k]) throw new HttpError(400, 'Unknown dataset k
 function datasetSummary(d) {
   const t = KINDS[d.kind].table;
   const s = db.prepare(`SELECT COUNT(*) rows, COALESCE(SUM(seats),0) seats, COUNT(DISTINCT college) colleges FROM ${t} WHERE dataset_id = ?`).get(d.id);
-  return { id: d.id, kind: d.kind, label: d.label, year: d.year, notes: d.notes, published: !!d.published,
+  return { id: d.id, kind: d.kind, state: d.state, label: d.label, year: d.year, notes: d.notes, published: !!d.published,
     updatedAt: d.updated_at, createdAt: d.created_at, ...s };
 }
-const publishedSets = () => db.prepare('SELECT * FROM datasets WHERE published = 1 ORDER BY year DESC, id DESC').all().map(datasetSummary);
+// Signed-in candidates see only their own state's data; visitors see what exists.
+const publishedSets = user => (user
+  ? db.prepare('SELECT * FROM datasets WHERE published = 1 AND state = ? ORDER BY year DESC, id DESC').all(user.state)
+  : db.prepare('SELECT * FROM datasets WHERE published = 1 ORDER BY year DESC, id DESC').all()).map(datasetSummary);
+const dataStates = () => db.prepare('SELECT DISTINCT state FROM datasets WHERE published = 1 ORDER BY state').all().map(r => r.state);
 
 // ======================================================================
 // Public
@@ -55,16 +61,18 @@ const publishedSets = () => db.prepare('SELECT * FROM datasets WHERE published =
 app.get('/api/config', (req, res) => {
   const s = getSettings();
   res.json({
-    auth: { provider: PROVIDER, otpLength: OTP_LENGTH, firebase: PROVIDER === 'firebase' ? FIREBASE : null },
+    auth: { provider: PROVIDER, otpLength: OTP_LENGTH, email: EMAIL_ENABLED, firebase: PROVIDER === 'firebase' ? FIREBASE : null },
     settings: { brand: s.brand, announcement: s.announcement, whatsapp: s.whatsapp, contactEmail: s.contact_email },
-    datasets: publishedSets(),
+    states: STATES,
+    dataStates: dataStates(),
+    datasets: publishedSets(req.user),
     user: publicUser(req.user)
   });
 });
 
-app.post('/api/auth/otp/request', wrap((req, res) => {
-  const out = requestOtp(req, req.body || {});
-  record(req, 'otp_request', {});
+app.post('/api/auth/otp/request', wrap(async (req, res) => {
+  const out = await requestOtp(req, req.body || {});
+  record(req, 'otp_request', { channel: out.channel });
   res.json({ ok: true, ...out, mock: PROVIDER === 'mock' });
 }));
 app.post('/api/auth/otp/verify', wrap((req, res) => {
@@ -80,17 +88,19 @@ app.post('/api/auth/firebase', wrap(async (req, res) => {
 app.post('/api/auth/logout', (req, res) => { endSession(req, res, 'user'); res.json({ ok: true }); });
 app.get('/api/me', (req, res) => res.json({ user: publicUser(req.user) }));
 app.patch('/api/me', requireUser, (req, res) => {
-  const name = String(req.body?.name || '').replace(/\s+/g, ' ').trim().slice(0, 80);
-  if (name.length < 2) throw new HttpError(400, 'Enter your name.');
-  db.prepare('UPDATE users SET name = ? WHERE id = ?').run(name, req.user.id);
-  res.json({ user: publicUser({ ...req.user, name }) });
+  const p = readProfile(req.body || {});
+  const u = { ...req.user, ...p };
+  if (!u.name || !u.cmr || !u.state) throw new HttpError(400, 'Enter your name, NEET-PG CMR and state.');
+  db.prepare('UPDATE users SET name = ?, cmr = ?, state = ? WHERE id = ?').run(u.name, u.cmr, u.state, u.id);
+  if (u.state !== req.user.state || u.cmr !== req.user.cmr) record(req, 'profile_update', { state: u.state, cmr: u.cmr });
+  res.json({ user: publicUser(u) });
 });
 
 app.post('/api/events', ingest);
 
 // Row data is only for signed-in users.
 app.get('/api/datasets/:id', requireUser, (req, res) => {
-  const d = db.prepare('SELECT * FROM datasets WHERE id = ? AND published = 1').get(int(req.params.id));
+  const d = db.prepare('SELECT * FROM datasets WHERE id = ? AND published = 1 AND state = ?').get(int(req.params.id), req.user.state);
   if (!d) throw new HttpError(404, 'Dataset not found.');
   const def = KINDS[d.kind];
   const cols = def.columns.map(c => c.name);
@@ -136,7 +146,7 @@ app.put('/api/shortlist/order', requireUser, (req, res) => {
 // ======================================================================
 app.post('/api/admin/login', (req, res) => { adminLogin(req, res, req.body?.password); res.json({ ok: true }); });
 app.post('/api/admin/logout', (req, res) => { endSession(req, res, 'admin'); res.json({ ok: true }); });
-app.get('/api/admin/me', (req, res) => res.json({ admin: isAdmin(req), provider: PROVIDER }));
+app.get('/api/admin/me', (req, res) => res.json({ admin: isAdmin(req), provider: PROVIDER, email: EMAIL_ENABLED, states: STATES }));
 app.use('/api/admin', requireAdmin);
 
 app.get('/api/admin/analytics', (req, res) => {
@@ -147,14 +157,16 @@ app.get('/api/admin/analytics', (req, res) => {
 // ---- leads -------------------------------------------------------------
 function leads(q) {
   const like = '%' + String(q || '').trim() + '%';
-  return db.prepare(`SELECT u.id, u.name, u.phone, u.created_at, u.last_seen_at, u.logins,
+  return db.prepare(`SELECT u.id, u.name, u.phone, u.email, u.cmr, u.state, u.created_at, u.last_seen_at, u.logins,
       (SELECT COUNT(*) FROM events e WHERE e.user_id = u.id AND e.type = 'predict') predictions,
       (SELECT props FROM events e WHERE e.user_id = u.id AND e.type = 'predict' ORDER BY e.ts DESC LIMIT 1) last_predict,
       (SELECT COUNT(*) FROM shortlist s WHERE s.user_id = u.id) shortlisted
-    FROM users u WHERE u.phone LIKE ? OR u.name LIKE ? ORDER BY u.created_at DESC LIMIT 2000`).all(like, like)
+    FROM users u WHERE u.phone LIKE ? OR u.email LIKE ? OR u.name LIKE ? OR u.state LIKE ?
+    ORDER BY u.created_at DESC LIMIT 2000`).all(like, like, like, like)
     .map(u => {
       const p = u.last_predict ? JSON.parse(u.last_predict) : {};
-      return { id: u.id, name: u.name, phone: u.phone, createdAt: u.created_at, lastSeenAt: u.last_seen_at, logins: u.logins,
+      return { id: u.id, name: u.name, phone: u.phone, email: u.email, cmr: u.cmr, state: u.state,
+        createdAt: u.created_at, lastSeenAt: u.last_seen_at, logins: u.logins,
         predictions: u.predictions, shortlisted: u.shortlisted,
         lastScope: p.scope || '', lastRank: p.rank || null, lastStream: p.stream || '', lastCategory: p.category || '' };
     });
@@ -171,8 +183,8 @@ app.get('/api/admin/leads', (req, res) => {
   const list = leads(req.query.q);
   if (req.query.format !== 'csv') return res.json({ leads: list });
   sendCsv(res, `rankround-leads-${new Date().toISOString().slice(0, 10)}.csv`, csv(
-    ['Name', 'Mobile', 'Signed up (IST)', 'Last active (IST)', 'Sign-ins', 'Predictions', 'Shortlisted', 'Last counselling', 'Last rank', 'Last stream', 'Last category'],
-    list.map(l => [l.name, l.phone, istDate(l.createdAt), istDate(l.lastSeenAt), l.logins, l.predictions, l.shortlisted,
+    ['Name', 'Mobile', 'Email', 'State', 'NEET-PG CMR', 'Signed up (IST)', 'Last active (IST)', 'Sign-ins', 'Predictions', 'Shortlisted', 'Last counselling', 'Last rank', 'Last stream', 'Last category'],
+    list.map(l => [l.name, l.phone, l.email, l.state, l.cmr ?? '', istDate(l.createdAt), istDate(l.lastSeenAt), l.logins, l.predictions, l.shortlisted,
       l.lastScope === 'state' ? 'State' : l.lastScope === 'aiq' ? 'AIQ' : '', l.lastRank ?? '', l.lastStream, l.lastCategory])));
 });
 app.get('/api/admin/leads/:id', (req, res) => {
@@ -181,7 +193,8 @@ app.get('/api/admin/leads/:id', (req, res) => {
   if (!u) throw new HttpError(404, 'Not found.');
   const activity = db.prepare(`SELECT ts, type, path, props FROM events WHERE user_id = ? AND type <> 'pageview' ORDER BY ts DESC LIMIT 40`).all(id)
     .map(e => ({ ...e, props: JSON.parse(e.props) }));
-  res.json({ user: { id: u.id, name: u.name, phone: u.phone, createdAt: u.created_at, lastSeenAt: u.last_seen_at, logins: u.logins },
+  res.json({ user: { id: u.id, name: u.name, phone: u.phone, email: u.email, cmr: u.cmr, state: u.state,
+    createdAt: u.created_at, lastSeenAt: u.last_seen_at, logins: u.logins },
     shortlist: shortlistOf(id), activity });
 });
 app.delete('/api/admin/leads/:id', (req, res) => {
@@ -229,7 +242,7 @@ const uploadReport = p => ({
 });
 
 app.get('/api/admin/datasets', (_req, res) =>
-  res.json({ datasets: db.prepare('SELECT * FROM datasets ORDER BY kind, year DESC, id DESC').all().map(datasetSummary) }));
+  res.json({ datasets: db.prepare('SELECT * FROM datasets ORDER BY kind, state, year DESC, id DESC').all().map(datasetSummary) }));
 
 app.post('/api/admin/datasets/preview', (req, res) => res.json(uploadReport(prepareUpload(req.body || {}))));
 
@@ -240,12 +253,14 @@ app.post('/api/admin/datasets', (req, res) => {
   if (!p.rows.length) throw new HttpError(400, 'No valid rows to import.');
   const label = String(b.label || '').trim().slice(0, 120);
   const year = parseInt(b.year, 10);
+  const state = normState(b.state);
+  if (!state) throw new HttpError(400, 'Choose the state this data is for.');
   if (!label) throw new HttpError(400, 'Give the dataset a name.');
   if (!(year >= 2000 && year <= 2100)) throw new HttpError(400, 'Enter the counselling year.');
   const id = tx(() => {
     const t = now();
-    const r = db.prepare('INSERT INTO datasets (kind, label, year, notes, published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
-      .run(p.kind, label, year, String(b.notes || '').slice(0, 1000), b.publish ? 1 : 0, t, t);
+    const r = db.prepare('INSERT INTO datasets (kind, state, label, year, notes, published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+      .run(p.kind, state, label, year, String(b.notes || '').slice(0, 1000), b.publish ? 1 : 0, t, t);
     insertRows(p.kind, Number(r.lastInsertRowid), p.rows);
     return Number(r.lastInsertRowid);
   });
@@ -278,10 +293,12 @@ app.patch('/api/admin/datasets/:id', (req, res) => {
   const b = req.body || {};
   const label = b.label !== undefined ? String(b.label).trim().slice(0, 120) : d.label;
   const year = b.year !== undefined ? parseInt(b.year, 10) : d.year;
+  const state = b.state !== undefined ? normState(b.state) : d.state;
+  if (!state) throw new HttpError(400, 'Choose the state this data is for.');
   if (!label) throw new HttpError(400, 'Give the dataset a name.');
   if (!(year >= 2000 && year <= 2100)) throw new HttpError(400, 'Enter the counselling year.');
-  db.prepare('UPDATE datasets SET label = ?, year = ?, notes = ?, published = ?, updated_at = ? WHERE id = ?')
-    .run(label, year, b.notes !== undefined ? String(b.notes).slice(0, 1000) : d.notes,
+  db.prepare('UPDATE datasets SET state = ?, label = ?, year = ?, notes = ?, published = ?, updated_at = ? WHERE id = ?')
+    .run(state, label, year, b.notes !== undefined ? String(b.notes).slice(0, 1000) : d.notes,
       b.published !== undefined ? (b.published ? 1 : 0) : d.published, now(), d.id);
   res.json({ dataset: datasetSummary(getDataset(d.id)) });
 });

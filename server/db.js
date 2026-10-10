@@ -11,15 +11,26 @@ fs.mkdirSync(path.dirname(file), { recursive: true });
 export const db = new DatabaseSync(file);
 db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;');
 
-db.exec(`
-CREATE TABLE IF NOT EXISTS users (
+// A candidate signs up with a mobile number or an email (at least one).
+const usersTable = name => `
+CREATE TABLE IF NOT EXISTS ${name} (
   id INTEGER PRIMARY KEY,
-  phone TEXT NOT NULL UNIQUE,
+  phone TEXT UNIQUE,
+  email TEXT UNIQUE,
   name TEXT NOT NULL DEFAULT '',
+  cmr INTEGER,
+  state TEXT NOT NULL DEFAULT '',
   created_at INTEGER NOT NULL,
   last_seen_at INTEGER NOT NULL,
-  logins INTEGER NOT NULL DEFAULT 0
-);
+  logins INTEGER NOT NULL DEFAULT 0,
+  CHECK (phone IS NOT NULL OR email IS NOT NULL)
+);`;
+const columns = table => db.prepare(`PRAGMA table_info(${table})`).all().map(c => c.name);
+
+// Pending codes live for minutes only, so an old-layout table is simply replaced.
+if (columns('otp_requests').includes('phone')) db.exec('DROP TABLE otp_requests');
+
+db.exec(usersTable('users') + `
 CREATE TABLE IF NOT EXISTS sessions (
   token_hash TEXT PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -29,19 +40,20 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 CREATE TABLE IF NOT EXISTS otp_requests (
   id INTEGER PRIMARY KEY,
-  phone TEXT NOT NULL,
+  contact TEXT NOT NULL,
   code_hash TEXT NOT NULL,
-  name TEXT NOT NULL DEFAULT '',
+  profile TEXT NOT NULL DEFAULT '{}',
   created_at INTEGER NOT NULL,
   expires_at INTEGER NOT NULL,
   attempts INTEGER NOT NULL DEFAULT 0,
   used INTEGER NOT NULL DEFAULT 0
 );
-CREATE INDEX IF NOT EXISTS otp_phone ON otp_requests(phone, created_at);
+CREATE INDEX IF NOT EXISTS otp_contact ON otp_requests(contact, created_at);
 
 CREATE TABLE IF NOT EXISTS datasets (
   id INTEGER PRIMARY KEY,
   kind TEXT NOT NULL,
+  state TEXT NOT NULL DEFAULT '',
   label TEXT NOT NULL,
   year INTEGER NOT NULL,
   notes TEXT NOT NULL DEFAULT '',
@@ -115,6 +127,24 @@ export function insertRows(kind, datasetId, rows) {
   for (const r of rows) stmt.run(datasetId, ...cols.map(c => r[c]));
 }
 
+// ---- migrations for databases created before sign-up asked for CMR + state
+if (!columns('users').includes('email')) {
+  // SQLite can't relax NOT NULL in place: rebuild the table. Foreign keys are
+  // off for the swap so dropping the old table doesn't cascade to sessions.
+  db.exec('PRAGMA foreign_keys = OFF');
+  tx(() => db.exec(usersTable('users_new') + `
+    INSERT INTO users_new (id, phone, name, created_at, last_seen_at, logins)
+      SELECT id, phone, name, created_at, last_seen_at, logins FROM users;
+    DROP TABLE users;
+    ALTER TABLE users_new RENAME TO users;`));
+  db.exec('PRAGMA foreign_keys = ON');
+}
+if (!columns('datasets').includes('state')) {
+  // Every dataset before per-state data was the client's Odisha data.
+  db.exec(`ALTER TABLE datasets ADD COLUMN state TEXT NOT NULL DEFAULT '';
+    UPDATE datasets SET state = 'Odisha';`);
+}
+
 // ---- settings ----------------------------------------------------------
 export const SETTING_DEFAULTS = {
   brand: 'RankRound',
@@ -141,7 +171,7 @@ if (!db.prepare('SELECT 1 FROM datasets LIMIT 1').get()) {
     tx(() => {
       const t = now();
       const { lastInsertRowid } = db.prepare(
-        'INSERT INTO datasets (kind, label, year, notes, published, created_at, updated_at) VALUES (?, ?, 2025, ?, 1, ?, ?)')
+        "INSERT INTO datasets (kind, state, label, year, notes, published, created_at, updated_at) VALUES (?, 'Odisha', ?, 2025, ?, 1, ?, ?)")
         .run(kind, label, 'Imported from the original RankRound Odisha page.', t, t);
       insertRows(kind, Number(lastInsertRowid), rows);
     });

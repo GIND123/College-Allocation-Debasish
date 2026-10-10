@@ -124,6 +124,10 @@ export function dashboard(days) {
   const referrers = top(`SELECT COALESCE(NULLIF(referrer,''),'Direct / none') label, COUNT(DISTINCT visitor_id) count
       FROM events WHERE type='pageview' AND ts >= ? GROUP BY label ORDER BY count DESC`);
   const pages = top(`SELECT path label, COUNT(*) count FROM events WHERE type='pageview' AND ts >= ? GROUP BY path ORDER BY count DESC`);
+  const states = top(`SELECT COALESCE(NULLIF(state,''),'Not given') label, COUNT(*) count FROM users
+      WHERE created_at >= ? GROUP BY label ORDER BY count DESC`, 12);
+  const channels = top(`SELECT CASE WHEN phone IS NOT NULL THEN 'Mobile' ELSE 'Email' END label, COUNT(*) count FROM users
+      WHERE created_at >= ? GROUP BY label ORDER BY count DESC`);
 
   const ranks = scope => db.prepare(`SELECT CAST(json_extract(props,'$.rank') AS INTEGER) r FROM events
       WHERE type='predict' AND ts >= ? AND json_extract(props,'$.scope') = ?`).all(from, scope).map(x => x.r).filter(r => r > 0);
@@ -136,7 +140,7 @@ export function dashboard(days) {
     days, generatedAt: t,
     kpi: kpi(from, t), prev: kpi(prevFrom, from),
     live: db.prepare("SELECT COUNT(DISTINCT visitor_id) n FROM events WHERE ts >= ?").get(t - 5 * 60e3).n,
-    series, funnel, interest, colleges, categories, devices, referrers, pages, cmr, air,
+    series, funnel, interest, colleges, categories, devices, referrers, pages, states, channels, cmr, air,
     totals: {
       users: db.prepare('SELECT COUNT(*) n FROM users').get().n,
       events: db.prepare('SELECT COUNT(*) n FROM events').get().n

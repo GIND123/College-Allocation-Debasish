@@ -3,10 +3,12 @@ import {
 } from './lib.js';
 
 const app = $('#app');
-const A = { provider: 'mock', schema: null, days: 30, dash: null };
+const A = { provider: 'mock', states: [], schema: null, days: 30, dash: null };
 const SHEETJS = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs';
 const ROWS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5h18v14H3zM3 10h18M3 15h18M9 5v14"/></svg>';
 const KLABEL = { state: 'State counselling', aiq: 'All India Quota' };
+const MAIL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg>';
+const stateSelect = (attrs, sel) => `<select class="select" ${attrs}><option value="">Choose a state</option>${A.states.map(s => `<option ${s === sel ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>`;
 
 const nav = {
   overview: ['Overview', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>'],
@@ -25,6 +27,7 @@ async function boot() {
   try {
     const me = await api('/api/admin/me');
     A.provider = me.provider;
+    A.states = me.states || [];
     me.admin ? shell() : login();
   } catch (e) { app.innerHTML = `<div class="login"><div class="login-card"><header><b>Can't reach the server</b><span>${esc(e.message)}</span></header></div></div>`; }
 }
@@ -233,6 +236,10 @@ async function overview() {
         <div class="panel-body"><div class="chart" id="c-pr"></div></div></div>
     </div>
     <div class="row r2">
+      <div class="panel"><div class="panel-head"><h2>Sign-ups by state</h2><span>state chosen at sign-up</span></div><div class="panel-body">${barList(d.states, { unit: 'sign-ups' })}</div></div>
+      <div class="panel"><div class="panel-head"><h2>Sign-ups by contact</h2><span>mobile or email</span></div><div class="panel-body">${barList(d.channels, { unit: 'sign-ups' })}</div></div>
+    </div>
+    <div class="row r2">
       <div class="panel"><div class="panel-head"><h2>Ranks searched · state CMR</h2><span>what candidates entered</span></div>
         <div class="panel-body"><div class="chart" id="c-cmr"></div></div></div>
       <div class="panel"><div class="panel-head"><h2>Ranks searched · NEET AIR</h2><span>All India Quota look-ups</span></div>
@@ -266,13 +273,17 @@ addEventListener('resize', debounce(drawCharts, 150));
 // =====================================================================
 const lastSearch = l => l.lastRank ? `${l.lastScope === 'aiq' ? 'AIQ · AIR' : 'State · CMR'} ${fmt(l.lastRank)}${[l.lastStream, l.lastCategory].filter(Boolean).map(s => ' · ' + esc(s)).join('')}` : '—';
 const waNum = p => p.replace(/\D/g, '');
+const contactOf = l => l.phone || l.email || '';
+const reachHtml = l => l.phone
+  ? `<a class="icon-btn" href="https://wa.me/${waNum(l.phone)}" target="_blank" rel="noopener" aria-label="WhatsApp ${esc(l.name)}" data-stop>${icon.chat}</a>`
+  : `<a class="icon-btn" href="mailto:${esc(l.email)}" aria-label="Email ${esc(l.name)}" data-stop>${MAIL_ICON}</a>`;
 
 async function leads() {
   const page = $('#page');
-  page.innerHTML = head('Sign-ups', 'Leads', 'Everyone who verified a mobile number. Click a row for their shortlist and activity.',
+  page.innerHTML = head('Sign-ups', 'Leads', 'Everyone who verified a mobile number or email. Click a row for their shortlist and activity.',
     `<a class="btn btn-line btn-sm" id="lcsv" href="/api/admin/leads?format=csv">${icon.download} Export CSV</a>`) + `
     <div class="mbody">
-      <div class="toolbar"><div class="search-wrap">${icon.search}<input class="input" id="lq" type="search" placeholder="Search name or mobile"></div><span class="count" id="lc"></span></div>
+      <div class="toolbar"><div class="search-wrap">${icon.search}<input class="input" id="lq" type="search" placeholder="Search name, mobile, email or state"></div><span class="count" id="lc"></span></div>
       <div id="lt"><div class="empty"><span class="spinner"></span></div></div>
     </div>`;
   const load = async () => {
@@ -282,14 +293,15 @@ async function leads() {
     try { r = await call('/api/admin/leads?q=' + encodeURIComponent(q)); } catch (e) { $('#lt').innerHTML = `<div class="alert alert-err">${esc(e.message)}</div>`; return; }
     $('#lc').textContent = `${fmt(r.leads.length)} lead${r.leads.length === 1 ? '' : 's'}`;
     $('#lt').innerHTML = r.leads.length ? `<div class="grid-wrap"><table class="grid">
-      <thead><tr><th>Name</th><th>Mobile</th><th>Signed up</th><th>Last active</th><th class="r">Sign-ins</th><th class="r">Predictions</th><th class="r">Shortlisted</th><th>Last search</th><th></th></tr></thead>
+      <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">CMR</th><th>Signed up</th><th>Last active</th><th class="r">Sign-ins</th><th class="r">Predictions</th><th class="r">Shortlisted</th><th>Last search</th><th></th></tr></thead>
       <tbody>${r.leads.map(l => `<tr class="clickable" data-id="${l.id}">
-        <td class="strong">${esc(l.name || '—')}</td><td class="nowrap num">${esc(l.phone)}</td>
+        <td class="strong">${esc(l.name || '—')}</td><td class="nowrap num">${esc(contactOf(l))}</td>
+        <td class="nowrap">${esc(l.state || '—')}</td><td class="n">${fmt(l.cmr)}</td>
         <td class="nowrap">${dateIN(l.createdAt)}</td><td class="nowrap">${ago(l.lastSeenAt)}</td>
         <td class="n">${fmt(l.logins)}</td><td class="n">${fmt(l.predictions)}</td><td class="n">${fmt(l.shortlisted)}</td>
         <td class="nowrap">${lastSearch(l)}</td>
-        <td><div class="actions"><a class="icon-btn" href="https://wa.me/${waNum(l.phone)}" target="_blank" rel="noopener" aria-label="WhatsApp ${esc(l.name)}" data-stop>${icon.chat}</a></div></td></tr>`).join('')}</tbody>
-    </table></div>` : `<div class="panel"><div class="empty"><h3>${q ? 'No matching leads' : 'No sign-ups yet'}</h3><p>${q ? 'Try another name or number.' : 'Leads appear here as soon as someone verifies their mobile.'}</p></div></div>`;
+        <td><div class="actions">${reachHtml(l)}</div></td></tr>`).join('')}</tbody>
+    </table></div>` : `<div class="panel"><div class="empty"><h3>${q ? 'No matching leads' : 'No sign-ups yet'}</h3><p>${q ? 'Try another name, number or email.' : 'Leads appear here as soon as someone verifies their mobile or email.'}</p></div></div>`;
     $('#lt tbody')?.addEventListener('click', e => {
       if (e.target.closest('[data-stop]')) return;
       const tr = e.target.closest('tr[data-id]');
@@ -307,7 +319,8 @@ const EV = {
   export: p => `Exported ${esc(p.mode)} (${fmt(p.rows)} rows)`,
   contact_click: () => 'Clicked “Talk to a counsellor”',
   login: p => p.isNew ? 'Signed up' : 'Signed in',
-  signin_open: () => 'Opened sign-in', otp_request: () => 'Requested OTP'
+  signin_open: () => 'Opened sign-in', otp_request: p => `Requested a code by ${p.channel === 'email' ? 'email' : 'SMS'}`,
+  profile_update: p => `Updated profile — ${esc(p.state)}${p.cmr ? ' · CMR ' + fmt(p.cmr) : ''}`
 };
 async function leadDrawer(id, reload) {
   let r;
@@ -318,10 +331,12 @@ async function leadDrawer(id, reload) {
       <div class="eyebrow">Lead · joined ${dateIN(u.createdAt)}</div>
       <button class="icon-btn" data-close aria-label="Close" style="position:absolute;right:16px;top:16px">${icon.x}</button>
       <h2 style="margin:10px 0 4px;font:600 24px/1.2 var(--serif)">${esc(u.name || 'No name')}</h2>
-      <p class="num" style="margin:0;color:var(--ink-2)">${esc(u.phone)}</p>
+      <p class="num" style="margin:0;color:var(--ink-2)">${esc(contactOf(u))}</p>
+      <p style="margin:4px 0 0;color:var(--ink-2);font-size:13px">${esc(u.state || 'State not given')}${u.cmr ? ` · NEET-PG CMR <b class="num">${fmt(u.cmr)}</b>` : ''}</p>
       <div style="display:flex;gap:8px;margin-top:14px">
-        <a class="btn btn-primary btn-sm" href="https://wa.me/${waNum(u.phone)}" target="_blank" rel="noopener">${icon.chat} WhatsApp</a>
-        <a class="btn btn-line btn-sm" href="tel:${esc(u.phone)}">Call</a>
+        ${u.phone ? `<a class="btn btn-primary btn-sm" href="https://wa.me/${waNum(u.phone)}" target="_blank" rel="noopener">${icon.chat} WhatsApp</a>
+        <a class="btn btn-line btn-sm" href="tel:${esc(u.phone)}">Call</a>`
+          : `<a class="btn btn-primary btn-sm" href="mailto:${esc(u.email)}">${MAIL_ICON} Email</a>`}
         <button class="btn btn-danger btn-sm" id="ldel" style="margin-left:auto">${icon.trash} Delete</button>
       </div>
     </div>
@@ -359,11 +374,12 @@ async function datasets(arg) {
   try { r = await call('/api/admin/datasets'); } catch (e) { $('#dl').innerHTML = `<div class="alert alert-err">${esc(e.message)}</div>`; return; }
   $('#dl').innerHTML = ['state', 'aiq'].map(kind => {
     const list = r.datasets.filter(d => d.kind === kind);
-    return `<section class="ds-group"><h2>${KLABEL[kind]} <span>${kind === 'state' ? 'ranked by Odisha CMR' : 'ranked by NEET AIR'} · ${list.filter(d => d.published).length} published</span></h2>
+    return `<section class="ds-group"><h2>${KLABEL[kind]} <span>${kind === 'state' ? 'ranked by state CMR' : 'ranked by NEET AIR'} · ${list.filter(d => d.published).length} published</span></h2>
       ${list.length ? `<div class="grid-wrap"><table class="grid">
-        <thead><tr><th>Dataset</th><th>Year</th><th>Status</th><th class="r">Seat groups</th><th class="r">Admissions</th><th class="r">Colleges</th><th>Updated</th><th></th></tr></thead>
+        <thead><tr><th>Dataset</th><th>State</th><th>Year</th><th>Status</th><th class="r">Seat groups</th><th class="r">Admissions</th><th class="r">Colleges</th><th>Updated</th><th></th></tr></thead>
         <tbody>${list.map(d => `<tr data-id="${d.id}">
           <td class="strong"><a href="#datasets/${d.id}" style="color:inherit">${esc(d.label)}</a>${d.notes ? `<span class="sub">${esc(d.notes)}</span>` : ''}</td>
+          <td class="nowrap">${esc(d.state || '—')}</td>
           <td class="nowrap">${d.year}</td>
           <td>${d.published ? '<span class="tag tag-ok">Published</span>' : '<span class="tag">Draft</span>'}</td>
           <td class="n">${fmt(d.rows)}</td><td class="n">${fmt(d.seats)}</td><td class="n">${fmt(d.colleges)}</td>
@@ -373,13 +389,13 @@ async function datasets(arg) {
             <a class="icon-btn" href="#datasets/${d.id}" aria-label="Browse and edit rows" title="Browse and edit rows">${ROWS_ICON}</a>
             <button class="icon-btn" data-a="replace" aria-label="Replace data" title="Upload replacement data">${icon.upload}</button>
             <a class="icon-btn" href="/api/admin/datasets/${d.id}/export" aria-label="Download CSV" title="Download CSV">${icon.download}</a>
-            <button class="icon-btn" data-a="meta" aria-label="Rename" title="Name, year and notes">${icon.edit}</button>
+            <button class="icon-btn" data-a="meta" aria-label="Edit details" title="Name, state, year and notes">${icon.edit}</button>
             <button class="icon-btn" data-a="del" aria-label="Delete" title="Delete dataset">${icon.trash}</button>
           </div></td></tr>`).join('')}</tbody></table></div>`
         : `<div class="panel"><div class="empty"><h3>No ${KLABEL[kind]} data</h3><p>Upload a file to add one.</p></div></div>`}
     </section>`;
-  }).join('') + `<p class="muted" style="font-size:12.5px;margin-top:20px;max-width:80ch">Every published dataset appears on the public site,
-    newest year first; when there is more than one per counselling, visitors get a dataset picker. Drafts are visible only here.</p>`;
+  }).join('') + `<p class="muted" style="font-size:12.5px;margin-top:20px;max-width:80ch">Each published dataset is shown to candidates who chose
+    its state at sign-up, newest year first; when a state has more than one per counselling, they get a dataset picker. Drafts are visible only here.</p>`;
 
   $('#dl').onclick = async e => {
     const b = e.target.closest('[data-a]');
@@ -403,6 +419,7 @@ function metaDialog(d) {
     <div class="dialog-head"><h2>Dataset details</h2><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
     <form id="mf"><div class="dialog-body"><div class="form-grid">
       <label class="field span2"><span class="label">Name shown on the site</span><input class="input" name="label" value="${esc(d.label)}" required maxlength="120"></label>
+      <label class="field"><span class="label">State <span class="hint">who sees it</span></span>${stateSelect('name="state" required', d.state)}</label>
       <label class="field"><span class="label">Counselling year</span><input class="input" name="year" type="number" value="${d.year}" min="2000" max="2100" required></label>
       <label class="field span2"><span class="label">Internal notes</span><textarea class="textarea" name="notes" maxlength="1000">${esc(d.notes)}</textarea></label>
     </div></div>
@@ -410,7 +427,7 @@ function metaDialog(d) {
   $('#mf', dlg.el).onsubmit = async e => {
     e.preventDefault();
     const f = e.target;
-    try { await call('/api/admin/datasets/' + d.id, { method: 'PATCH', body: { label: f.label.value, year: f.year.value, notes: f.notes.value } }); dlg.close(); toast('Saved.'); datasets(); }
+    try { await call('/api/admin/datasets/' + d.id, { method: 'PATCH', body: { label: f.label.value, state: f.state.value, year: f.year.value, notes: f.notes.value } }); dlg.close(); toast('Saved.'); datasets(); }
     catch (err) { toast(err.message, true); }
   };
 }
@@ -447,7 +464,7 @@ async function readTable(file) {
 // ---- upload wizard (new dataset, or replace an existing one) -------------
 async function uploadWizard(existing) {
   const sc = await schema();
-  const st = { kind: existing?.kind || 'state', format: 'columns', table: null, file: '', mode: 'replace' };
+  const st = { kind: existing?.kind || 'state', format: 'columns', table: null, file: '', mode: 'replace', state: A.lastState || '' };
   const dlg = openDialog(`
     <div class="dialog-head"><h2>${existing ? 'Replace data' : 'Upload data'}</h2><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
     <div id="wz"></div>`, { wide: true });
@@ -496,6 +513,11 @@ async function uploadWizard(existing) {
     $('#chk', wz).onclick = check;
   }
 
+  const defaultLabel = year => {
+    const where = st.state || 'State';
+    return `${st.kind === 'state' ? `${where} state counselling` : `All India Quota — ${where} colleges`} ${year}`;
+  };
+
   async function check() {
     $('#chk', wz).innerHTML = '<span class="spinner"></span> Checking';
     let rep;
@@ -517,7 +539,8 @@ async function uploadWizard(existing) {
         <tbody>${rep.sample.map(r => `<tr>${cols.map(c => `<td class="${c.type === 'int' ? 'n' : 'nowrap'}">${c.type === 'int' ? fmt(r[c.name]) : esc(r[c.name])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
       <p class="muted" style="font-size:12px;margin:8px 0 0">First ${rep.sample.length} of ${fmt(rep.rows)} rows as they will be stored.</p>
       ${existing ? '' : `<div class="form-grid" style="margin-top:20px">
-        <label class="field"><span class="label">Name shown on the site</span><input class="input" id="lbl" maxlength="120" value="${esc(`${st.kind === 'state' ? 'Odisha state counselling' : 'All India Quota — Odisha colleges'} ${yearGuess}`)}"></label>
+        <label class="field"><span class="label">State <span class="hint">candidates who chose it see this data</span></span>${stateSelect('id="dst"', st.state)}</label>
+        <label class="field"><span class="label">Name shown on the site</span><input class="input" id="lbl" maxlength="120" value="${esc(defaultLabel(yearGuess))}"></label>
         <label class="field"><span class="label">Counselling year</span><input class="input" id="yr" type="number" min="2000" max="2100" value="${yearGuess}"></label>
         <label class="field span2"><span class="label">Internal notes <span class="hint">optional — e.g. source, round</span></span><input class="input" id="nt" maxlength="1000" value="${esc('Uploaded from ' + st.file)}"></label>
       </div>`}
@@ -527,13 +550,21 @@ async function uploadWizard(existing) {
         : `<button class="btn btn-line" id="draft" ${rep.rows ? '' : 'disabled'}>Save as draft</button><button class="btn btn-primary" id="pub" ${rep.rows ? '' : 'disabled'}>Save and publish</button>`}
     </div>`;
     $('#back', wz).onclick = () => step1();
+    // Keep the suggested name in step with the state until the admin edits it.
+    $('#dst', wz)?.addEventListener('change', e => {
+      const lbl = $('#lbl', wz), was = defaultLabel(yearGuess);
+      st.state = e.target.value;
+      if (lbl.value === was) lbl.value = defaultLabel(yearGuess);
+    });
     const save = async publish => {
       try {
         if (existing) {
           await call(`/api/admin/datasets/${existing.id}/replace`, { method: 'POST', body: { format: st.format, table: st.table, mode: st.mode } });
           toast('Data updated.');
         } else {
-          await call('/api/admin/datasets', { method: 'POST', body: { kind: st.kind, format: st.format, table: st.table, label: $('#lbl', wz).value, year: $('#yr', wz).value, notes: $('#nt', wz).value, publish } });
+          if (!st.state) return toast('Choose the state this data is for.', true);
+          await call('/api/admin/datasets', { method: 'POST', body: { kind: st.kind, state: st.state, format: st.format, table: st.table, label: $('#lbl', wz).value, year: $('#yr', wz).value, notes: $('#nt', wz).value, publish } });
+          A.lastState = st.state;
           toast(publish ? 'Dataset published.' : 'Saved as draft.');
         }
         dlg.close();
