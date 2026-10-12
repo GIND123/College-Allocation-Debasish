@@ -54,7 +54,13 @@ Firebase Authentication phone sign-in sends the SMS and handles reCAPTCHA. Becau
    FIREBASE_APP_ID=...
    ```
 
-The sign-in screen switches to 6-digit codes automatically. To use another SMS provider later (MSG91, Twilio Verify and so on), replace the body of `requestOtp` in `server/auth.js` so it sends the code. Nothing else changes.
+The sign-in screen switches to 6-digit codes automatically. Only `apiKey`, `authDomain`, `projectId` and `appId` from the Firebase config are used; nothing needs to be installed (`npm install firebase` and `firebase-admin` are not needed), because the browser loads the Firebase SDK from Google's CDN and the server verifies tokens itself. Moving to another Firebase project later means changing only these four values: accounts are keyed by mobile number, so nobody loses their account.
+
+Testing on your own machine:
+- Firebase often rejects the reCAPTCHA check on `localhost` with `invalid-app-credential`. Open the site at `http://127.0.0.1:3000` instead, and add `127.0.0.1` to Authorized domains.
+- To test without paying for SMS, add a number under Authentication → Sign-in method → Phone → Phone numbers for testing. It must be an Indian number (for example `+91 9999999999` with code `123456`), because the site accepts Indian mobiles only.
+
+To use another SMS provider later (MSG91, Twilio Verify and so on), replace the body of `requestOtp` in `server/auth.js` so it sends the code. Nothing else changes.
 
 ## Email codes
 

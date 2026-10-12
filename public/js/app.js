@@ -3,7 +3,7 @@ import {
 } from './lib.js';
 
 const STEP = 150;
-const FIREBASE_SDK = '10.12.2';
+const FIREBASE_SDK = '12.19.0';
 const BAND = { 4: 'Very high', 3: 'High', 2: 'Moderate', 1: 'Low' };
 const KIND = {
   state: {
@@ -423,13 +423,26 @@ function openSignIn(then, mode = 'signin') {
 function firebaseMessage(err) {
   const c = err?.code || '';
   if (!c.startsWith('auth/')) return '';
-  return {
+  console.error('Firebase sign-in error', c, err);
+  // Mistakes the candidate can fix themselves need no code.
+  const own = {
     'auth/invalid-verification-code': 'Incorrect code. Check the SMS and try again.',
     'auth/code-expired': 'That code has expired. Request a new one.',
     'auth/too-many-requests': 'Too many attempts from this device. Try again later.',
     'auth/invalid-phone-number': 'Enter a valid 10-digit Indian mobile number.',
-    'auth/quota-exceeded': 'SMS limit reached for today. Please try again later.'
+    'auth/network-request-failed': 'Network problem. Check your connection and try again.'
+  }[c];
+  if (own) return own;
+  // Set-up problems on our side: show the code so it can be reported and fixed.
+  const setup = {
+    'auth/quota-exceeded': 'SMS limit reached for today. Please try again later.',
+    'auth/billing-not-enabled': 'SMS sign-in is not available right now. Please try again later.',
+    'auth/operation-not-allowed': 'SMS sign-in is not available right now. Please try again later.',
+    'auth/unauthorized-domain': 'Sign-in is not enabled on this web address yet.',
+    'auth/captcha-check-failed': 'The security check failed. Reload the page and try again.',
+    'auth/invalid-app-credential': 'The security check failed. Reload the page and try again.'
   }[c] || 'Sign-in failed. Please try again.';
+  return `${setup} (${c.slice(5)})`;
 }
 async function signedIn(user, isNew) {
   S.user = user;
