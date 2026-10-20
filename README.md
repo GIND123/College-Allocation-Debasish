@@ -113,3 +113,4 @@ The dashboard shows:
 - Set `AUTH_PROVIDER=firebase` before going live. The server logs a warning while mock mode is on in production.
 - Point `DB_PATH` at a **persistent disk**. On Render, Railway or Fly, attach a volume, otherwise data is lost on redeploy. Back up that one file.
 - Behind a reverse proxy, set `TRUST_PROXY=1` so rate limits see real client IPs.
+- JavaScript and CSS are served with `Cache-Control: no-cache`, so every visitor gets the newly deployed version on their next page load. Unchanged files cost a quick 304.

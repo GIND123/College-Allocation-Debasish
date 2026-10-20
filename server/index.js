@@ -364,7 +364,9 @@ const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.
 app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method'], page('index.html'));
 app.get(['/counselling', '/counselling/'], page('counselling.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
-app.use(express.static(PUBLIC, { index: false, maxAge: process.env.NODE_ENV === 'production' ? '1h' : 0 }));
+// no-cache = revalidate on every load (a cheap 304 when unchanged). With a max-age, a browser
+// could pair a freshly deployed app.js with a cached lib.js for up to an hour after a deploy.
+app.use(express.static(PUBLIC, { index: false, setHeaders: res => res.set('Cache-Control', 'no-cache') }));
 
 app.use((err, _req, res, _next) => {
   if (err.type === 'entity.too.large') err = new HttpError(413, 'That upload is too large.');
