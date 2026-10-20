@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kerala PG Medical 2026</title>
+<meta name="description" content="Plain-language analysis of the Kerala PG Medical Degree Prospectus 2026-27 (G.O.(Ms) No.313/2026/H&FWD)">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee; --surface:#ffffff; --ink:#1d2321; --muted:#5d6762; --line:#e2ded3;
+  --brand:#0f6b57; --brand-soft:#e1f0eb; --warn:#b4531a; --warn-soft:#fbeee4;
+  --danger:#b3261e; --danger-soft:#fbe7e5; --gold:#a17a12; --gold-soft:#f8f0d8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121615; --surface:#1b201f; --ink:#e8ece9; --muted:#9aa5a0; --line:#2c3331;
+    --brand:#4fbf9f; --brand-soft:#173a31; --warn:#f0a06a; --warn-soft:#3a271a;
+    --danger:#f28b82; --danger-soft:#3b1d1b; --gold:#e3c15a; --gold-soft:#352d14;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121615; --surface:#1b201f; --ink:#e8ece9; --muted:#9aa5a0; --line:#2c3331;
+  --brand:#4fbf9f; --brand-soft:#173a31; --warn:#f0a06a; --warn-soft:#3a271a;
+  --danger:#f28b82; --danger-soft:#3b1d1b; --gold:#e3c15a; --gold-soft:#352d14;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 64px}
+header{padding:36px 0 20px;border-bottom:1px solid var(--line)}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);font-weight:600}
+h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(28px,6vw,44px);line-height:1.1;margin:8px 0 10px}
+h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:24px;margin:0 0 6px}
+h3{font-size:16px;margin:18px 0 6px}
+.sub{color:var(--muted);margin:0}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px;padding:10px 16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+nav a:hover{border-color:var(--brand);color:var(--brand)}
+section{padding:32px 0 8px;scroll-margin-top:56px}
+.lead{color:var(--muted);margin:0 0 16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat b{display:block;font-family:Fraunces,Georgia,serif;font-size:28px;color:var(--brand);line-height:1.1}
+.stat span{font-size:13px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:15px}
+.note.warn{border-color:var(--warn);background:var(--warn-soft)}
+.note.danger{border-color:var(--danger);background:var(--danger-soft)}
+.tbl{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+ul{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--brand-soft);color:var(--brand)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.danger{background:var(--danger-soft);color:var(--danger)}
+/* reservation bars */
+.bars{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:150px 1fr 44px;align-items:center;gap:10px;font-size:14px}
+.bar .track{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar .fill{height:100%;background:var(--brand);border-radius:6px}
+.bar .fill.alt{background:var(--gold)}
+.bar .fill.sm{background:var(--muted)}
+.bar em{font-style:normal;font-variant-numeric:tabular-nums;text-align:right;color:var(--muted)}
+@media(max-width:480px){.bar{grid-template-columns:110px 1fr 40px;font-size:13px}}
+/* checker */
+.checker{display:grid;gap:10px}
+select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.result{font-size:15px;padding:12px 14px;border-radius:10px;background:var(--gold-soft);border:1px solid var(--line)}
+.result b{font-family:Fraunces,Georgia,serif;font-size:22px;color:var(--gold)}
+/* timeline */
+.timeline{position:relative;margin-top:12px;padding-left:28px}
+.timeline:before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin-bottom:14px}
+.step:before{content:"";position:absolute;left:-25px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--brand)}
+.step.hot:before{border-color:var(--danger)}
+.step .card{margin:0}
+.step h3{margin:0 0 4px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+/* checklist */
+.check label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px;cursor:pointer}
+.check label:last-child{border-bottom:0}
+.check input{margin-top:4px;accent-color:var(--brand);width:16px;height:16px;flex:0 0 auto}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+summary{cursor:pointer;font-weight:600}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.links a{font-size:13px;font-weight:600;text-decoration:none;color:var(--brand);background:var(--surface);border:1px solid var(--line);padding:8px 12px;border-radius:10px}
+.links a.primary{background:var(--brand);color:var(--surface);border-color:var(--brand)}
+.links a:hover{border-color:var(--brand)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Kerala State Quota · NEET PG 2026</div>
+  <h1>Kerala PG Medical Degree Prospectus 2026‑27, explained</h1>
+  <p class="sub">A plain-language analysis of G.O.(Ms) No.313/2026/H&amp;FWD dated 04‑10‑2026 — admission to MD/MS in Government Medical Colleges and RCC Thiruvananthapuram.</p>
+  <div class="links">
+    <a href="https://cee.kerala.gov.in" target="_blank" rel="noopener" class="primary">Apply · cee.kerala.gov.in</a>
+    <a href="tel:04712332120">Call 0471‑2332120</a>
+    <a href="tel:04712338487">Call 0471‑2338487</a>
+    <a href="mailto:ceekinfo.cee@kerala.gov.in">Email CEE</a>
+    <a href="https://natboard.edu.in" target="_blank" rel="noopener">NBE (NEET PG)</a>
+    <a href="https://mcc.nic.in" target="_blank" rel="noopener">MCC (AIQ)</a>
+    <a href="https://www.nmc.org.in" target="_blank" rel="noopener">NMC (seat status)</a>
+    <a href="https://kuhs.ac.in" target="_blank" rel="noopener">KUHS</a>
+    <a href="https://rcctvm.gov.in" target="_blank" rel="noopener">RCC fees</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>964</b><span>Govt MC degree seats (last year)</span></div>
+    <div class="stat"><b>731</b><span>Self-financing seats (last year)</span></div>
+    <div class="stat"><b>₹81,050</b><span>1st-year fee, Govt MC</span></div>
+    <div class="stat"><b>₹50 L</b><span>Penalty for leaving after stray round</span></div>
+  </div>
+</header>
+
+<section id="actnow" style="padding-top:20px">
+  <div class="card" style="border:2px solid var(--danger)">
+    <span class="pill danger">Act now · CEE notice 07‑10‑2026</span>
+    <h2 style="margin-top:8px">Get your certificates before applications open</h2>
+    <p class="sub" style="margin-bottom:10px">Only certificates uploaded with the online application, by the deadline and within validity, will count for reservation or NRI quota. No late submissions.</p>
+    <ol style="padding-left:20px;margin:6px 0">
+      <li><b>Apply for fresh certificates today</b> — Non-Creamy Layer (Kerala education purpose), income, EWS or Tahsildar community certificate. Old ones may be rejected.</li>
+      <li><b>Check your school certificate.</b> No birthplace? Get a Village Officer nativity certificate that names it. No community (for minority quota)? Get a community certificate.</li>
+      <li><b>NRI candidates:</b> sponsor’s visa must be valid until the Phase 3 allotment. Start embassy attestation and the notarised ₹200 affidavit early — attested papers last only 6 months.</li>
+      <li><b>Scan in colour as PDF, under 300 KB each</b>, so you’re ready to upload.</li>
+    </ol>  </div>
+</section>
+
+<nav>
+  <a href="#glance">At a glance</a>
+  <a href="#eligibility">Eligibility</a>
+  <a href="#reservation">Reservation</a>
+  <a href="#service">Service quota</a>
+  <a href="#apply">How to apply</a>
+  <a href="#cap">Counselling rounds</a>
+  <a href="#money">Money at stake</a>
+  <a href="#bond">Bond</a>
+  <a href="#residency">Life as a PG</a>
+  <a href="#docs">Documents</a>
+  <a href="#flags">Watch-outs</a>
+</nav>
+
+<section id="glance">
+  <h2>At a glance</h2>
+  <p class="lead">The seven things every candidate should know before opening the portal.</p>
+  <div class="grid2">
+    <div class="card"><h3>Who runs it</h3>Commissioner for Entrance Examinations (CEE), Kerala, using a state rank list built from NEET PG 2026 ranks. Apply only at <b>cee.kerala.gov.in</b>.</div>
+    <div class="card"><h3>What it covers</h3>State quota seats in Govt MCs and RCC, plus <b>all</b> seats in self-financing colleges (incl. NRI &amp; minority). AIQ is run by MCC, but AIQ joiners in Kerala Govt MCs must follow this prospectus too.</div>
+    <div class="card"><h3>Seat matrix</h3><span class="pill warn">Not yet out</span> College-wise and category-wise distribution (Annexure III &amp; IV) “will be notified later”.</div>
+    <div class="card"><h3>Rounds</h3>Phase 1 → Phase 2 → Phase 3 → Stray vacancy. Each state round runs after the matching MCC round.</div>
+    <div class="card"><h3>Course length</h3>3 years. 2 years if you hold a 2-year PG Diploma in the same subject (passed by 30/04/2026).</div>
+    <div class="card"><h3>The big catch</h3>Getting a seat in Phase 3 locks you out of all further counselling (state &amp; AIQ). Leaving after the stray round costs ₹50 lakh.</div>
+    <div class="card"><h3>After the course</h3>General merit (incl. AIQ) candidates owe <b>1 year</b> of Senior Residency to Kerala. Service candidates owe <b>10 years</b>.</div>
+  </div>
+</section>
+
+<section id="eligibility">
+  <h2>Eligibility</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Academic</h3>
+      <ul>
+        <li>MBBS (NMC recognised), registered with NMC or a State Council.</li>
+        <li>Internship complete on or before <b>30/09/2026</b>.</li>
+        <li>Kerala State Medical Council registration needed before admission.</li>
+      </ul>
+      <h3>Age</h3>
+      <ul>
+        <li>No upper limit for general candidates.</li>
+        <li>Medical Education Service Quota: max 49.</li>
+        <li>Health Service / Insurance Medical Service Quota: max 47.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Nativity — any one of</h3>
+      <ul>
+        <li>Indian citizen of Kerala origin.</li>
+        <li>OCI cardholder — treated like Indian citizens but only for <b>General (UR) and NRI</b> seats; no reservation.</li>
+        <li>Non-Keralite who did MBBS in Kerala — eligible, but <b>no</b> communal / special / PwD reservation, and must sign the 1-year bond.</li>
+        <li>Non-Keralite in-service doctors can apply under service quota (Kerala HC, WP(C) 24607/2023).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Minimum NEET PG percentile — quick check</h3>
+  <div class="card checker">
+    <select id="cat" aria-label="Your category">
+      <option value="50|General (UR) or EWS">General (UR) / EWS</option>
+      <option value="40|SC, ST or any SEBC group">SC / ST / SEBC (Ezhava, Muslim, OBH, LA, OBX, Kudumbi)</option>
+      <option value="40|SC-PwD, ST-PwD or SEBC-PwD">SC-PwD / ST-PwD / SEBC-PwD</option>
+      <option value="45|General-PwD or EWS-PwD">General-PwD / EWS-PwD</option>
+      <option value="40|service quota candidate from SC/ST/SEBC">Service quota — SC/ST/SEBC</option>
+    </select>
+    <div class="result" id="res"></div>
+  </div>
+</section>
+
+<section id="reservation">
+  <h2>Reservation (State Quota, Govt MCs)</h2>
+  <p class="lead">10% goes to service candidates first. The rest is split as below; whatever is left (≈ 52%) is State Merit.</p>
+  <div class="card bars">
+    <div class="bar"><span>State Merit (SM)</span><div class="track"><div class="fill sm" style="width:52%"></div></div><em>~52%</em></div>
+    <div class="bar"><span>EWS</span><div class="track"><div class="fill alt" style="width:10%"></div></div><em>10%</em></div>
+    <div class="bar"><span>Scheduled Caste</span><div class="track"><div class="fill" style="width:8%"></div></div><em>8%</em></div>
+    <div class="bar"><span>Ezhava (EZ)</span><div class="track"><div class="fill" style="width:8%"></div></div><em>8%</em></div>
+    <div class="bar"><span>Muslim (MU)</span><div class="track"><div class="fill" style="width:7%"></div></div><em>7%</em></div>
+    <div class="bar"><span>Other Bkwd Hindu</span><div class="track"><div class="fill" style="width:7%"></div></div><em>7%</em></div>
+    <div class="bar"><span>Latin Cath./Anglo</span><div class="track"><div class="fill" style="width:3%"></div></div><em>3%</em></div>
+    <div class="bar"><span>Scheduled Tribe</span><div class="track"><div class="fill" style="width:2%"></div></div><em>2%</em></div>
+    <div class="bar"><span>Other Bkwd Christian</span><div class="track"><div class="fill" style="width:1%"></div></div><em>1%</em></div>
+    <div class="bar"><span>Kudumbi</span><div class="track"><div class="fill" style="width:1%"></div></div><em>1%</em></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Layered on top</h3>
+      <ul>
+        <li><b>PwD:</b> 5% horizontal, split inside each category. Minimum 40% benchmark disability; a State Level Medical Board decides fitness per course. UDID card + affidavit accepted. No certificate upload at application — just tick the box.</li>
+        <li><b>Ex-Serviceman:</b> 1 seat.</li>
+        <li><b>Dependent of Jawan killed in action</b> (else dependent of Ex-serviceman): 1 seat.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Rules that trip people up</h3>
+      <ul>
+        <li>SEBC (27% total) needs a <b>Non-Creamy Layer certificate for Kerala State Education purpose</b> from the Village Officer. A plain community certificate gets fee concession only, not reservation.</li>
+        <li>SC/ST certificate must be from a Tahsildar, in the candidate’s own name, issued for this purpose.</li>
+        <li>Inter-caste children: pick one parent’s SEBC community in the form — it can’t be changed later.</li>
+        <li>Fake Non-Creamy Layer certificate → cancellation + up to 2-year debarment.</li>
+      </ul>
+    </div>
+  </div>
+  <details>
+    <summary>What happens to unfilled reserved seats (conversion in Phase 3 &amp; stray)</summary>
+    <div class="tbl"><table>
+      <tr><th>Unfilled seat</th><th>Goes to</th></tr>
+      <tr><td>SC ↔ ST</td><td>Each other, then OEC, then State Merit</td></tr>
+      <tr><td>Any SEBC group, EWS, General-PwD</td><td>State Merit</td></tr>
+      <tr><td>SC-PwD / ST-PwD / SEBC-PwD / EWS-PwD</td><td>Parent category (SC / ST / SEBC / EWS)</td></tr>
+      <tr><td>Ex-serviceman</td><td>State Merit</td></tr>
+      <tr><td>Dependent of Jawan → Dependent of Ex-serviceman</td><td>Then State Merit</td></tr>
+      <tr><td>NRI Minority → NRI Open</td><td>Then State Merit</td></tr>
+      <tr><td>Service Quota, Muslim Minority, Christian Minority</td><td>State Merit</td></tr>
+    </table></div>
+    <p class="sub" style="margin-top:8px">Conversion happens even if eligible candidates exist but didn’t put that seat in their Phase 3 options.</p>
+  </details>
+</section>
+
+<section id="service">
+  <h2>Service Quota (10%)</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Split 45 : 45 : 10</h3>
+      <ul>
+        <li><b>MESQ</b> — Lecturers in Govt MCs (and IIMS Palakkad, pending a Supreme Court verdict). Usually only the same specialty.</li>
+        <li><b>HSQ</b> — Medical Officers under DHS.</li>
+        <li><b>IMSQ</b> — Medical Officers under Insurance Medical Services.</li>
+      </ul>
+      <p class="sub">Unfilled MESQ seats: 20% to IMSQ, 80% to HSQ; leftovers to State Merit.</p>
+    </div>
+    <div class="card">
+      <h3>Weightage on NEET marks (capped at 30%)</h3>
+      <div class="tbl"><table>
+        <tr><th>Type of service</th><th>Per year</th></tr>
+        <tr><td>Regular service</td><td class="num">+1%</td></tr>
+        <tr><td>Rural</td><td class="num">+2%</td></tr>
+        <tr><td>Difficult rural (Annexure XI list)</td><td class="num">+5%</td></tr>
+      </table></div>
+    </div>
+  </div>
+  <div class="note warn">Must have completed probation. Can be used only <b>once</b> in a career. Not joining or quitting after Phase 3 = barred from service quota forever. Ranks are prepared by your department head (DME/DHS/DIMS), not CEE — submit documents to your controlling officer.</div>
+</section>
+
+<section id="apply">
+  <h2>How to apply</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>5 steps on cee.kerala.gov.in</h3>
+      <ol style="padding-left:20px;margin:6px 0">
+        <li>Register with NEET application no. + DOB (same as NEET). Note your 7-digit application number.</li>
+        <li>Fill application → <b>Save &amp; Finalize</b> (no edits after this).</li>
+        <li>Pay fee online.</li>
+        <li>Upload signature &amp; certificates.</li>
+        <li>Print the acknowledgement page. Nothing is posted to CEE.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Fees &amp; file specs</h3>
+      <div class="tbl"><table>
+        <tr><td>Application — General / Service</td><td class="num">₹1,000</td></tr>
+        <tr><td>Application — SC/ST</td><td class="num">₹500</td></tr>
+        <tr><td>Service candidate also applying for general seats</td><td class="num">+₹1,000</td></tr>
+        <tr><td>Signature</td><td>JPG, 150×100 px, &lt;30 KB</td></tr>
+        <tr><td>Certificates</td><td>PDF, colour scan of original, &lt;300 KB</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="cap">
+  <h2>Counselling rounds (CAP)</h2>
+  <p class="lead">The order of your options is everything: if you’re allotted an option, you must take it or lose all your options.</p>
+  <div class="timeline">
+    <div class="step"><div class="card">
+      <h3>Phase 1 <span class="pill">Fresh options</span></h3>
+      Pay a <b>security deposit of ₹10,000</b> (₹5,000 for SC/ST/OEC &amp; concession groups), refunded after counselling. If allotted, join or lose everything. Options <i>below</i> your allotted one are deleted automatically.
+    </div></div>
+    <div class="step"><div class="card">
+      <h3>Phase 2 <span class="pill warn">No new options</span></h3>
+      You can only confirm, delete or re-order existing options. <b>Confirmation is compulsory</b> to stay in. Happy with your Phase 1 seat? Don’t confirm (or delete all) — your seat stays safe.
+    </div></div>
+    <div class="step hot"><div class="card">
+      <h3>Phase 3 <span class="pill danger">Lock-in round</span></h3>
+      Fresh options again. Registration fee = <b>annual tuition of the seat</b> (Govt only) or <b>₹1,00,000</b> if private seats are included (half for concession groups). Adjusted in fees if you join; forfeited if allotted and you don’t join. Seats get converted between categories here. Anyone allotted in Phase 3 is reported to MCC and barred from further state and AIQ rounds.
+    </div></div>
+    <div class="step hot"><div class="card">
+      <h3>Stray vacancy <span class="pill danger">₹50 L penalty</span></h3>
+      Fresh options. Vacating any joined seat after this point = <b>₹50 lakh liquidated damages</b>, revenue recovery, and up to 2 years’ debarment.
+    </div></div>
+  </div>
+  <div class="note">Tip from the prospectus itself: only list colleges you will genuinely join, save often, don’t hit refresh/back, and don’t open the page in multiple tabs.</div>
+</section>
+
+<section id="money">
+  <h2>Money at stake</h2>
+  <div class="tbl card"><table>
+    <tr><th>Item</th><th>Amount</th><th>Notes</th></tr>
+    <tr><td>Annual tuition (Govt MC)</td><td class="num">₹57,890</td><td>As per 2023 G.O.; subject to change</td></tr>
+    <tr><td>Annual miscellaneous fee</td><td class="num">₹11,580</td><td></td></tr>
+    <tr><td>Caution deposit</td><td class="num">₹11,580</td><td>Refundable</td></tr>
+    <tr><td><b>First-year total</b></td><td class="num"><b>₹81,050</b></td><td>+ University fee at admission</td></tr>
+    <tr><td>Self-financing / RCC fees</td><td>—</td><td>Announced separately / RCC website</td></tr>
+    <tr><td>Phase 1 security deposit</td><td class="num">₹10,000 / ₹5,000</td><td>Refundable</td></tr>
+    <tr><td>Phase 3 registration fee</td><td class="num">Tuition or ₹1 L</td><td>Forfeited if you don’t join</td></tr>
+    <tr><td>Leaving after stray / breaking bond</td><td class="num">₹50,00,000</td><td>+ stipend recovered with interest</td></tr>
+  </table></div>
+  <h3>Who studies free?</h3>
+  <ul>
+    <li>SC / ST candidates (merit or reserved seats).</li>
+    <li>OEC candidates (Annexure I) — need community or Non-Creamy Layer certificate.</li>
+    <li>Annexure II communities with family income ≤ ₹6 lakh (income certificate for 2026‑27).</li>
+    <li>Children of registered fishermen; inmates of Sree Chitra / Nirbhaya / Juvenile Homes.</li>
+  </ul>
+  <div class="note warn">Concessions don’t apply to NRI or minority quota seats, the application fee, or the option registration fee.</div>
+</section>
+
+<section id="bond">
+  <h2>The bond</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>General merit &amp; AIQ candidates</h3>
+      <ul>
+        <li>1 year as Senior Resident (or Lecturer / Asst. Surgeon etc.) in Kerala, immediately after results.</li>
+        <li>Can be relieved for a DM/MCh; total bonded service then capped at 2 years.</li>
+        <li>Released if you get a regular government job elsewhere (with proof).</li>
+        <li>Absolved if the Government doesn’t offer a post within 1 year.</li>
+        <li>Original certificates are held by the college until the bond is done.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Service candidates</h3>
+      <ul>
+        <li>10 years (or till retirement), with 2 years in difficult/remote areas right after the course.</li>
+        <li>Breaking it: pay total salary for the obligatory period, plus stipend at 8% interest.</li>
+      </ul>
+      <h3>Signing</h3>
+      <ul>
+        <li>₹200 Kerala stamp paper, all pages. Two sureties (parents/guardian; spouse allowed for service).</li>
+        <li>Must be executed within 7 days of joining or admission is cancelled.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="residency">
+  <h2>Life as a PG (Junior Resident)</h2>
+  <div class="grid2">
+    <div class="card"><ul>
+      <li>All 365 days are working days; 1 weekly off (not cumulative).</li>
+      <li>20 days casual leave/year, max 7 at a stretch.</li>
+      <li>Up to 15 days special leave for CMEs/workshops.</li>
+      <li>80% attendance needed <i>each year</i> separately.</li>
+    </ul></div>
+    <div class="card"><ul>
+      <li>Absent without leave &gt; 10 days → termination + damages.</li>
+      <li>No leaving India without DME sanction.</li>
+      <li>No private practice of any kind.</li>
+      <li>Maternity stipend once during the course.</li>
+      <li>Anti-ragging &amp; dowry undertakings mandatory.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="docs">
+  <h2>Document checklist</h2>
+  <div class="note danger"><b>CEE notice, 07‑10‑2026:</b> applications open soon. Get reservation/concession certificates <b>now</b>. Only certificates uploaded with the online application by the deadline will be considered, and each must be within its validity period.</div>
+
+  <h3>Upload with the application — by category</h3>
+  <div class="tbl card"><table>
+    <tr><th>You are claiming</th><th>Certificate</th><th>Issued by</th></tr>
+    <tr><td>SC / ST reservation</td><td>Community certificate (Annexure XXI), in the candidate’s own name</td><td>Tahsildar</td></tr>
+    <tr><td>SEBC / OEC reservation</td><td>Non-Creamy Layer certificate <b>for Kerala Govt education purpose</b> (Annexure IX)</td><td>Village Officer</td></tr>
+    <tr><td>Income-based fee concession (Annexure II communities)</td><td>Income certificate (family income ≤ ₹6 lakh) + community certificate</td><td>Village Officer</td></tr>
+    <tr><td>EWS</td><td>Income &amp; assets certificate (Annexure XVIII)</td><td>Village Officer</td></tr>
+    <tr><td>Kerala nativity (birthplace not on school certificate)</td><td>Nativity certificate showing place of birth</td><td>Village Officer</td></tr>
+    <tr><td>Minority quota (caste/community not on school certificate)</td><td>Caste / community certificate</td><td>Village Officer</td></tr>
+    <tr><td>Ex-service / dependent of Jawan</td><td>Discharge certificate / Zilla Sainik certificate</td><td>Competent authority</td></tr>
+    <tr><td>PwD</td><td>Nothing to upload — just tick PwD in the form</td><td>Medical Board checks later</td></tr>
+  </table></div>
+
+  <h3>NRI quota — 4 documents</h3>
+  <div class="card"><ol style="padding-left:20px;margin:6px 0">
+    <li>Sponsor’s passport copy + visa / green card / Norka Roots ID / OCI, clearly showing the sponsor’s job. <b>Visa must be valid up to the Phase 3 allotment.</b></li>
+    <li>If the job isn’t shown on those papers: sponsor’s employment certificate attested by the Indian Embassy/Consulate.</li>
+    <li>Relationship certificate from revenue authorities, explaining the exact link. If the sponsor is father/mother, school records showing both names are enough.</li>
+    <li>Sponsor’s affidavit on ₹200 stamp paper, notarised, promising to pay all course expenses (tuition and special fees).</li>
+  </ol>
+  <p class="sub">Relaxations: UAE-type Resident ID or Golden Visa accepted without embassy attestation; embassy-attested papers valid for 6 months.</p></div>
+
+  <h3>Bring originals at admission</h3>
+  <p class="lead">Tap to tick off.</p>
+  <div class="card check" id="checklist">
+    <label><input type="checkbox"><span>Nativity proof (SSLC / passport / birth cert. showing Kerala birth, or Village Officer nativity certificate)</span></label>
+    <label><input type="checkbox"><span>NEET PG 2026 admit card &amp; score sheet</span></label>
+    <label><input type="checkbox"><span>MBBS degree / pass certificate</span></label>
+    <label><input type="checkbox"><span>Internship (CRRI) completion certificate</span></label>
+    <label><input type="checkbox"><span>Kerala State Medical Council permanent registration</span></label>
+    <label><input type="checkbox"><span>KUHS eligibility certificate (if MBBS outside Kerala)</span></label>
+    <label><input type="checkbox"><span>Date of birth proof</span></label>
+    <label><input type="checkbox"><span>Transfer Certificate from last institution</span></label>
+    <label><input type="checkbox"><span>Non-Creamy Layer (SEBC/OEC) or Tahsildar community certificate (SC/ST), if claiming</span></label>
+    <label><input type="checkbox"><span>EWS certificate (Annexure XVIII format), if claiming</span></label>
+    <label><input type="checkbox"><span>Income certificate (Annexure II communities), if claiming concession</span></label>
+    <label><input type="checkbox"><span>Ex-service / Zilla Sainik certificate, if claiming</span></label>
+    <label><input type="checkbox"><span>NRI sponsor documents + ₹200 notarised affidavit, if NRI quota</span></label>
+    <label><input type="checkbox"><span>Service candidates: declaration (Annex XIX), AG service details, HoD service details, probation order, relieving order</span></label>
+    <label><input type="checkbox"><span>Allotment memo + signed bonds</span></label>
+  </div>
+</section>
+
+<section id="flags">
+  <h2>Watch-outs &amp; gaps in the document</h2>
+  <div class="note danger"><b>Internship cut-off has already passed.</b> The deadline was 30/09/2026 — earlier than the prospectus was approved (04/10/2026). Candidates finishing internship later are not eligible.</div>
+  <div class="note warn"><b>Seat matrix missing.</b> Annexure III &amp; IV are “to be notified later”, so nobody can yet see how many seats each college/subject/category has.</div>
+  <div class="note warn"><b>Fee may change.</b> Fees are from a 2023 order and marked “subject to change”; self-financing fees aren’t published yet.</div>
+  <div class="note warn"><b>Phase 3 is a one-way door.</b> A Phase 3 allotment ends your AIQ chances too — decide your AIQ vs Kerala priority before then.</div>
+  <details>
+    <summary>About the CEE notice of 07‑10‑2026 (CEE/208/2026‑TA2)</summary>
+    <h3>New compared with the prospectus</h3>
+    <ul>
+      <li>Strict cut-off: certificates not uploaded by the application deadline won’t be considered for reservation or NRI quota.</li>
+      <li>Each certificate must be within its validity period — last year’s certificates may fail.</li>
+      <li>NRI sponsor’s visa must remain valid up to the Phase 3 allotment.</li>
+      <li>Minority quota: a Village Officer community certificate is needed if the school certificate doesn’t show community.</li>
+      <li>Nativity certificate must state the place of birth.</li>
+      <li>If the NRI sponsor is a parent, school records with both names are enough to prove the relationship.</li>
+    </ul>
+    <h3>Not covered by the notice</h3>
+    <ul>
+      <li>No application dates yet.</li>
+      <li>EWS, Ex-service, fishermen’s children and Home inmates aren’t mentioned — their certificates are still required under the prospectus.</li>
+      <li>GO 243 is printed as “2024” though dated 06.08.2014 (prospectus correctly says 243/2014).</li>
+      <li>Issued only in Malayalam — non-Keralite and NRI applicants may miss it.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Drafting errors noticed (worth checking with CEE)</summary>
+    <ul>
+      <li>Cover page leaves the approving G.O. number blank (“G.O……”).</li>
+      <li>Bond forms XV and XVI still refer to “PG Medical Prospectus 2025‑26 / 2025”.</li>
+      <li>Bond XVI cites “G.O.(P) No.016/2017/Fin” — the actual deputation order is No.106/2017/Fin.</li>
+      <li>Annexure index labels Annexure IV as “2024‑25”; the annexure itself says “2025‑2026”; Annexure III heading says 2025.</li>
+      <li>PwD assessment refers to NMC interim guidelines for AY 2025‑26.</li>
+      <li>Annexure numbering in the index is out of order and repeats numbers.</li>
+      <li>SC/ST leftover rule says “SC ↔ ST → OEC → State Merit”, but the conversion table only lists SC ↔ ST; the bullet below it confirms the OEC step.</li>
+      <li>IIMS Palakkad lecturers’ inclusion in MESQ is still pending in the Supreme Court.</li>
+    </ul>
+  </details>
+</section>
+
+<footer>
+  Source: Government of Kerala, Health &amp; Family Welfare (S) Dept, G.O.(Ms) No.313/2026/H&amp;FWD, 04‑10‑2026, with the appended DME Prospectus for Medical PG Degree Courses 2026‑27. This is a summary for guidance — always confirm with the official prospectus and notifications at cee.kerala.gov.in.
+</footer>
+</div>
+<script>
+(function(){
+  var sel=document.getElementById('cat'), res=document.getElementById('res');
+  function upd(){var p=sel.value.split('|');res.innerHTML='Minimum required: <b>'+p[0]+'th percentile</b><br><span style="color:var(--muted)">for '+p[1]+' candidates in NEET PG 2026</span>';}
+  sel.addEventListener('change',upd);upd();
+})();
+</script>
+</body>
+</html>

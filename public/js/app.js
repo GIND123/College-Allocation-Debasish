@@ -96,7 +96,10 @@ async function boot() {
   route();
 }
 
-const ROUTES = { '/': viewHome, '/predict': () => viewWork('predict'), '/cutoffs': () => viewWork('cutoffs'), '/shortlist': viewShortlist, '/method': viewMethod };
+const ROUTES = {
+  '/': viewHome, '/predict': () => viewWork('predict'), '/cutoffs': () => viewWork('cutoffs'), '/shortlist': viewShortlist,
+  '/method': viewMethod, '/counselling': viewGuides
+};
 const GATED = new Set(['/predict', '/cutoffs', '/shortlist']);
 
 function go(path) { history.pushState({}, '', path); route(); }
@@ -107,9 +110,11 @@ document.addEventListener('click', e => {
   go(a.pathname);
 });
 addEventListener('popstate', () => { if (location.pathname !== S.path) route(); });
+addEventListener('hashchange', () => { if (S.path === '/counselling') viewGuides(); }); // old /counselling#state links
 
 async function route() {
-  let p = ROUTES[location.pathname] ? location.pathname : '/';
+  const path = location.pathname.replace(/(.)\/+$/, '$1');
+  let p = ROUTES[path] ? path : '/';
   if (p === '/' && S.user) { history.replaceState({}, '', '/predict'); p = '/predict'; }
   const changed = p !== S.path;
   S.path = p;
@@ -448,6 +453,9 @@ async function signedIn(user, isNew) {
   S.user = user;
   S.cfg = await api('/api/config').catch(() => S.cfg);
   S.dsId = { state: null, aiq: null };
+  // Each sign-in starts on state counselling, where the CMR given at sign-up is filled in;
+  // a shared computer shouldn't carry over the previous student's view.
+  S.scope = 'state'; store.set('rr-scope', 'state');
   applyProfile(true);
   await loadShortlist();
   renderTop();
@@ -540,8 +548,13 @@ function ctxbar(kind) {
         ? `<select class="select" id="ds">${sets.map(d => `<option value="${d.id}" ${d.id === S.dsId[kind] ? 'selected' : ''}>${esc(d.label)}</option>`).join('')}</select>`
         : `<b style="font-weight:500">${esc(sets[0]?.label || 'None published')}</b>`}
     </div>
-    <p class="ctx-note">${esc(KIND[kind].note)}</p>
+    <p class="ctx-note">${esc(KIND[kind].note)}${ctxGuide(kind)}</p>
   </div></div>`;
+}
+// The student's own counselling guide, next to their data (MCC's for the All India Quota).
+function ctxGuide(kind) {
+  const g = guidesFor(kind === 'aiq' ? ALL_INDIA : myState())[0];
+  return g ? `<a class="ctx-guide" href="/counselling/${esc(g.slug)}">${esc(kind === 'aiq' ? 'MCC counselling guide' : `${myState()} counselling guide`)} ${icon.arrowR}</a>` : '';
 }
 function bindCtx() {
   $$('[data-scope]').forEach(b => b.onclick = () => {
@@ -580,7 +593,9 @@ async function viewWork(mode) {
       <h3>${esc(myState())} ${kind === 'state' ? 'state counselling' : 'All India Quota'} data is coming soon</h3>
       <p>We're adding states one at a time${have.length ? ` — cut-offs are live for ${esc(have.join(', '))}` : ''}.
         Your sign-up is saved, and ${esc(myState())} data will appear here as soon as it is published.</p>
-      <div class="empty-actions"><a class="btn btn-line" href="/counselling">2026 counselling guide</a>
+      <div class="empty-actions">${guidesFor(myState()).length
+        ? `<a class="btn btn-line" href="/counselling/${esc(guidesFor(myState())[0].slug)}">${esc(myState())} counselling guide</a>`
+        : '<a class="btn btn-line" href="/counselling" data-link>Counselling guides</a>'}
         <button class="btn btn-line" id="chg-state">Change state</button>
         ${wa ? `<a class="btn btn-primary" href="${esc(wa)}" target="_blank" rel="noopener">${icon.chat} Talk to a counsellor</a>` : ''}</div>
     </div>`;
@@ -1097,6 +1112,147 @@ function slGroup(kind, items) {
 }
 
 // =====================================================================
+// Counselling guides: /counselling lists the guides with their live dates. The guide
+// pages themselves are separate documents at /counselling/<slug> (server/guides.js).
+// =====================================================================
+const ALL_INDIA = 'All India';
+const guidesFor = region => (S.cfg.guides || []).filter(g => g.region === region);
+function guideBanner() {
+  const states = [...new Set((S.cfg.guides || []).filter(g => g.region !== ALL_INDIA).map(g => g.region))].sort();
+  return states.length
+    ? `Live dates and plain-language guides for the All India Quota and ${states.length} states, from ${states[0]} to ${states[states.length - 1]}.`
+    : 'Live dates and plain-language guides for the All India Quota.';
+}
+
+const istDay = ms => Math.floor((ms + 19800e3) / 86400e3); // calendar day in India
+const istClock = ms => new Date(ms).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' });
+const istWhen = ms => new Date(ms).toLocaleString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' });
+function timeLeft(ms) {
+  const h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  return h >= 48 ? `${Math.floor(h / 24)} days left` : h >= 1 ? `${h}h ${m}m left` : `${Math.max(m, 1)} min left`;
+}
+/** Where one dated step stands now. tone: open | urgent | soon | done | info | wait. */
+function stepStatus(d, now = Date.now()) {
+  if (d.label) return { tone: d.label === 'Awaited' ? 'wait' : 'info', text: d.label };
+  if (d.on) {
+    const days = istDay(Date.parse(d.on)) - istDay(now);
+    if (days < 0) return { tone: 'done', text: 'Done' };
+    return days === 0 ? { tone: 'open', text: 'Today' } : { tone: 'soon', text: days === 1 ? 'Tomorrow' : `In ${days} days` };
+  }
+  const end = Date.parse(d.to), start = d.from ? Date.parse(d.from) : -Infinity;
+  if (now > end) return { tone: 'done', text: 'Closed' };
+  if (now < start) {
+    const days = istDay(start) - istDay(now);
+    return { tone: 'soon', text: days === 0 ? `Opens ${istClock(start)}` : days === 1 ? 'Opens tomorrow' : `Opens in ${days} days` };
+  }
+  return end - now < 48 * 36e5 ? { tone: 'urgent', text: timeLeft(end - now) } : { tone: 'open', text: `Open · ${timeLeft(end - now)}` };
+}
+const stepPill = i => { const st = stepStatus(S.gdSteps[i]); return `<span class="gd-pill ${st.tone}" data-step="${i}">${esc(st.text)}</span>`; };
+
+/** One card per state (holding all its guides); each All India guide gets its own card. */
+function guideCards(guides) {
+  const cards = [];
+  for (const g of guides) {
+    const key = g.region === ALL_INDIA ? g.slug : g.region;
+    let c = cards.find(x => x.key === key);
+    if (!c) cards.push(c = { key, region: g.region, title: g.region === ALL_INDIA ? g.title : g.region, authority: g.authority, guides: [], steps: [] });
+    c.guides.push(g);
+    c.steps.push(...(g.dates || []).map(d => ({ ...d, card: c.title, slug: g.slug })));
+  }
+  return cards;
+}
+
+async function viewGuides() {
+  // Links to the old one-page hub (/counselling#kerala) open the matching guide.
+  const old = { mcc: 'mcc', gujarat: 'gujarat', karnataka: 'karnataka', kerala: 'kerala-prospectus' }[location.hash.slice(1)];
+  if (old) { location.replace('/counselling/' + old); return; }
+  if (!S.guideIndex) view.innerHTML = '<div class="gd"><div class="empty"><span class="spinner"></span></div></div>';
+  try { S.guideIndex ||= await api('/api/guides'); }
+  catch (e) { view.innerHTML = `<div class="gd"><div class="empty"><h3>Couldn't load the guides</h3><p>${esc(e.message)}</p></div></div>`; return; }
+  if (S.path !== '/counselling') return;
+  const { guides, compare } = S.guideIndex;
+  const cards = guideCards(guides);
+  S.gdSteps = cards.flatMap(c => c.steps);
+  const mine = S.user?.state || '';
+  const states = cards.filter(c => c.region !== ALL_INDIA)
+    .sort((a, b) => (b.region === mine) - (a.region === mine) || a.title.localeCompare(b.title));
+  const card = c => `
+    <article class="gd-card${c.region === mine ? ' mine' : ''}" data-q="${esc([c.title, c.authority, ...c.guides.flatMap(g => [g.title, g.label])].join(' ').toLowerCase())}">
+      <div class="gd-card-head">
+        ${c.region === mine ? '<span class="gd-mine">Your state</span>' : ''}
+        <h3>${esc(c.title)}</h3>
+        <p>${esc(c.authority)}</p>
+      </div>
+      ${c.steps.length ? `<ul class="gd-steps">${c.steps.map(d => `<li>
+        <span class="gd-what">${esc(d.what)}<small>${esc(d.when)}</small></span>${stepPill(S.gdSteps.indexOf(d))}</li>`).join('')}</ul>` : ''}
+      <div class="gd-links">${c.guides.map(g => `<a class="gd-link" href="/counselling/${esc(g.slug)}">
+        <span><b>${esc(c.guides.length > 1 ? g.label : 'Open the guide')}</b><small>${esc(g.summary)}</small></span>${icon.arrowR}</a>`).join('')}</div>
+    </article>`;
+  view.innerHTML = `<div class="gd">
+    <div class="gd-head">
+      <div class="eyebrow">NEET-PG 2026 · Counselling guides</div>
+      <h1>Every counselling, in plain language.</h1>
+      <p class="gd-lede">Dates, eligibility, documents, fees and bonds for the All India Quota and each state's counselling, summarised
+        from the official notices. Always confirm on the official website before acting.</p>
+      <label class="gd-search">${icon.search}<input class="input" type="search" id="gd-q" placeholder="Find your state or a guide"
+        autocomplete="off" aria-label="Find your state or a guide"></label>
+      ${guidesFor(mine).length ? `<p class="gd-yours"><span class="eyebrow">Your state · ${esc(mine)}</span>${guidesFor(mine)
+        .map(g => `<a href="/counselling/${esc(g.slug)}">${esc(g.label)} ${icon.arrowR}</a>`).join('')}</p>` : ''}
+    </div>
+    <div id="gd-soon"></div>
+    <section class="gd-sec" data-sec>
+      <div class="gd-sec-head"><h2>All India</h2>
+        <p>MCC counsels the All India Quota, deemed universities, central institutes and DNB seats.</p></div>
+      <div class="gd-grid">${cards.filter(c => c.region === ALL_INDIA).map(card).join('')}</div>
+    </section>
+    <section class="gd-sec" data-sec>
+      <div class="gd-sec-head"><h2>State quota</h2>
+        <p>Each state counsels its own quota. ${states.length} states so far, with more added as their notices come out.${mine && !states.some(c => c.region === mine)
+          ? ` There's no ${esc(mine)} guide yet.` : ''}</p></div>
+      <div class="gd-grid">${states.map(card).join('')}</div>
+    </section>
+    <p class="gd-none" id="gd-none" hidden></p>
+    ${compare ? `<details class="gd-compare"><summary>${esc(compare.title)}</summary>
+      <div class="grid-wrap"><table class="grid">
+        <thead><tr><th>Point</th>${compare.columns.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead>
+        <tbody>${compare.rows.map(r => `<tr><td class="strong">${esc(r.label)}</td>${r.cells.map(c => `<td>${c.href
+          ? `<a href="${esc(c.href)}" target="_blank" rel="noopener">${esc(c.text)}</a>`
+          : c.gap ? `<span class="gd-gap">${esc(c.text)}</span>` : esc(c.text)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+      ${compare.note ? `<p class="gd-note">${esc(compare.note)}</p>` : ''}</details>` : ''}
+  </div>`;
+  renderSoon();
+  $('#gd-q').oninput = e => {
+    const raw = e.target.value.trim(), terms = raw.toLowerCase().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    $$('.gd-card').forEach(c => { c.hidden = !terms.every(t => c.dataset.q.includes(t)); shown += !c.hidden; });
+    $$('[data-sec]').forEach(sec => { sec.hidden = !sec.querySelector('.gd-card:not([hidden])'); });
+    const none = $('#gd-none');
+    none.hidden = shown > 0;
+    none.textContent = shown ? '' : `No guide matches “${raw}” yet. We add states as their notices come out.`;
+  };
+  // Keep the pills current while the page stays open.
+  clearInterval(S.gdTimer);
+  S.gdTimer = setInterval(() => {
+    if (S.path !== '/counselling' || !$('#gd-soon')) return clearInterval(S.gdTimer);
+    $$('[data-step]').forEach(el => { const st = stepStatus(S.gdSteps[+el.dataset.step]); el.className = `gd-pill ${st.tone}`; el.textContent = st.text; });
+    renderSoon();
+  }, 30e3);
+}
+
+/** The "closing in the next 3 days" strip on /counselling. */
+function renderSoon() {
+  const now = Date.now();
+  const soon = S.gdSteps.filter(d => d.to && !d.label && (!d.from || Date.parse(d.from) <= now)
+    && Date.parse(d.to) > now && Date.parse(d.to) - now < 72 * 36e5).sort((a, b) => Date.parse(a.to) - Date.parse(b.to));
+  $('#gd-soon').innerHTML = soon.length ? `<section class="gd-soon" aria-label="Closing soon">
+    <div class="eyebrow">Closing in the next 3 days</div>
+    <ul>${soon.map(d => `<li><a href="/counselling/${esc(d.slug)}"><b>${esc(d.card)}</b>
+      <span>${esc(d.what)} · closes ${esc(istWhen(Date.parse(d.to)))}</span></a>${stepPill(S.gdSteps.indexOf(d))}</li>`).join('')}</ul>
+  </section>` : '';
+}
+
+// =====================================================================
 // Gate, home, method
 // =====================================================================
 function viewGate(p) {
@@ -1118,9 +1274,9 @@ function viewHome() {
   const st = latest('state'), aq = latest('aiq'), covered = S.cfg.dataStates || [];
   const year = st[0]?.year || 2025;
   view.innerHTML = `
-  <a class="priority" href="/counselling"><div class="priority-in">
+  <a class="priority" href="/counselling" data-link><div class="priority-in">
     <span class="eyebrow">NEET-PG 2026 counselling</span>
-    <b>Live dates and step-by-step guides for All India (MCC), Gujarat, Karnataka and Kerala.</b>
+    <b>${esc(guideBanner())}</b>
     <span class="priority-go">Open the guide ${icon.arrowR}</span>
   </div></a>
   <section class="hero"><div class="hero-in">

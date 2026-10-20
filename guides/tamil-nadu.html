@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TN PG Counselling 2026–27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: single reading column, a comparison ledger up top, then rules grouped by what the candidate must act on */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --ink:#18213a; --muted:#56607a; --line:#dde1ea;
+  --accent:#1f4fa8; --accent-soft:#e7eefb; --gq:#0f6b5c; --gq-soft:#e2f2ee; --mq:#8a4b0f; --mq-soft:#f8ecdf;
+  --warn:#a3261b; --warn-soft:#fbe9e6;
+  --f-display:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151f; --surface:#1a2030; --ink:#e6e9f2; --muted:#9aa3ba; --line:#2c3447;
+  --accent:#8fb2ff; --accent-soft:#1f2b48; --gq:#5fd0b8; --gq-soft:#14302b; --mq:#f0b273; --mq-soft:#3a2816;
+  --warn:#ff8f82; --warn-soft:#3a1c19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151f; --surface:#1a2030; --ink:#e6e9f2; --muted:#9aa3ba; --line:#2c3447;
+  --accent:#8fb2ff; --accent-soft:#1f2b48; --gq:#5fd0b8; --gq-soft:#14302b; --mq:#f0b273; --mq-soft:#3a2816;
+  --warn:#ff8f82; --warn-soft:#3a1c19; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(1.9rem,5vw,2.6rem)}
+h2{font-size:1.45rem}
+h3{font-size:1.08rem;font-family:var(--f-body);font-weight:700}
+p{margin:0;max-width:66ch}
+.eyebrow{font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+header{display:flex;flex-direction:column;gap:12px}
+.lede{color:var(--muted)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.05em;padding:2px 8px;border-radius:4px;vertical-align:1px}
+.tag.gq{background:var(--gq-soft);color:var(--gq)} .tag.mq{background:var(--mq-soft);color:var(--mq)}
+.deadline{background:var(--warn-soft);border:1px solid var(--warn);border-radius:10px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+.deadline strong{font-family:var(--f-display);font-size:1.25rem;color:var(--warn)}
+.deadline .left{font-family:var(--f-num);font-size:.9rem;color:var(--warn)}
+section{display:flex;flex-direction:column;gap:14px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+thead th{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--bg)}
+thead th.gq{color:var(--gq)} thead th.mq{color:var(--mq)}
+td:first-child{font-weight:600;width:28%}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:.88rem}
+.same{color:var(--muted)}
+ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;max-width:68ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel.gq{border-top:3px solid var(--gq)} .panel.mq{border-top:3px solid var(--mq)}
+.flag{display:flex;flex-direction:column;gap:12px}
+.flag li::marker{color:var(--warn)}
+.ladder td:nth-child(2),.ladder td:nth-child(3){white-space:normal}
+.pill{display:inline-block;font-size:.75rem;font-weight:700;padding:1px 8px;border-radius:999px}
+.ok{background:var(--gq-soft);color:var(--gq)} .lim{background:var(--mq-soft);color:var(--mq)} .no{background:var(--warn-soft);color:var(--warn)}
+.note{font-size:.86rem;color:var(--muted)}
+.apply{display:inline-block;background:var(--warn);color:var(--surface);font-weight:700;text-decoration:none;padding:10px 18px;border-radius:8px}
+.apply:hover{filter:brightness(1.1)}
+.apply:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.apply-url{font-family:var(--f-num);word-break:break-all}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 16px}
+summary{cursor:pointer;font-weight:700;padding:12px 0}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{font-size:.9rem;padding-bottom:14px;max-width:none}
+footer{font-size:.84rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Tamil Nadu Selection Committee · DME, Chennai</span>
+  <h1>TN PG Medical Counselling 2026–27</h1>
+  <p class="lede">A plain-language reading of both state prospectuses for MD / MS / PG Diploma admission: the <span class="tag gq">GQ</span> Government Quota (G.O.(D) No.1142) and the <span class="tag mq">MQ</span> Management &amp; NRI Quota (G.O.(D) No.1143), both dated 07.10.2026.</p>
+  <div class="deadline" role="note">
+    <strong>Apply by 15 Oct 2026, 5:00 PM IST</strong>
+    <span class="left" id="left"></span>
+    <p class="note" style="color:var(--ink)">One window for both quotas, opened 9 Oct at noon. No extensions, and no edits after submitting. Prospectus and notices: <a href="https://www.tnmedicalselection.net" target="_blank" rel="noopener">tnmedicalselection.net</a>.</p>
+    <a class="apply" href="https://regpg.tnmedicalonline.co.in/pgmed26/" target="_blank" rel="noopener">Apply online →</a>
+    <span class="note apply-url">regpg.tnmedicalonline.co.in/pgmed26</span>
+  </div>
+</header>
+
+<section>
+  <h2>GQ and MQ side by side</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th class="gq">Government Quota</th><th class="mq">Management / NRI Quota</th></tr></thead>
+    <tbody>
+      <tr><td>Seats covered</td><td>State's 50% of government college seats, plus government-quota seats in self-financing colleges</td><td>Management seats in self-financing colleges; up to 15% of sanctioned seats for NRI</td></tr>
+      <tr><td>Application fee</td><td class="num">₹3,000<br><span class="note">Waived for TN-native SC, SC(A), ST</span></td><td class="num">₹5,000<br><span class="note">No waiver mentioned</span></td></tr>
+      <tr><td>Registration fee</td><td colspan="2" class="num same">₹1,000 per round (both)</td></tr>
+      <tr><td>Security deposit</td><td class="num">₹30,000 govt college<br>₹1,00,000 self-financing</td><td class="num">₹2,00,000</td></tr>
+      <tr><td>Tuition</td><td>Govt colleges: <span class="num">₹40,000 + ₹10,000</span>/yr (degree), <span class="num">₹20,000</span>/yr (diploma). Self-financing: fee committee rate</td><td>Fee committee rate, not printed. Full fee paid online to download the allotment order</td></tr>
+      <tr><td>Who can apply</td><td>TN natives (any MBBS location) in their community; other-state natives with MBBS + internship in TN, Open category only</td><td>Any eligible Indian citizen or OCI. No nativity condition. NRI seats need a bona fide NRI sponsor</td></tr>
+      <tr><td>Rank basis</td><td>NEET-PG marks + up to 30% weightage for in-service doctors in rural / hilly / difficult postings</td><td>NEET-PG marks only</td></tr>
+      <tr><td>Reservation</td><td>69%: OC 31, BC 30 (incl. BCM 3.5), MBC/DNC 20, SC 18 (SCA sub-quota), ST 1. Half of state seats for in-service doctors. 5% PwD</td><td>Not spelt out. Clause 20 says "rule of reservation"; clause 27 says "as per rank"</td></tr>
+      <tr><td>Service bond</td><td>₹40 lakh degree / ₹20 lakh diploma, 3 sureties. Serve TN 2 years within 3 years of finishing (non-service)</td><td>None in the prospectus</td></tr>
+      <tr><td>Stipend</td><td>Yes for non-service candidates in govt colleges; salary for service candidates</td><td>Not addressed</td></tr>
+      <tr><td>Exit penalty</td><td colspan="2" class="num same">₹15 lakh degree / ₹10 lakh diploma after the cut-off date (both)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Common to both: NEET-PG cut-offs printed as 262 General (50th), 244 General-PwD (45th), 226 SC/ST/OBC (40th); internship must finish by 30 Sept 2026; four rounds (1, 2, 3, Stray).</p>
+</section>
+
+<section>
+  <h2>Getting out of a seat, round by round</h2>
+  <p>The rules are the same in both quotas. Freedom shrinks each round, so candidates should only list colleges they would actually join from Round 3 on.</p>
+  <div class="tbl ladder"><table>
+    <thead><tr><th>Round</th><th>Can you leave?</th><th>Cost of leaving</th></tr></thead>
+    <tbody>
+      <tr><td>Round 1</td><td><span class="pill ok">Yes</span> Free exit, or resign within the window</td><td>Nothing forfeited. Still eligible for later rounds</td></tr>
+      <tr><td>Round 2</td><td><span class="pill lim">Within window</span> Resign before the stipulated date</td><td>Not joining: lose ₹1,000 registration. Resigning after the date: ₹15L / ₹10L penalty + all fees, and out of Round 3</td></tr>
+      <tr><td>Round 3</td><td><span class="pill no">No</span> Must join</td><td>Lose registration, security deposit and tuition. After joining, full penalty. No further rounds</td></tr>
+      <tr><td>Stray</td><td><span class="pill no">No</span> Must join</td><td>Same as Round 3</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Cross-quota rule (GQ prospectus): a candidate allotted a GQ seat in Round 3 cannot claim an MQ seat in MQ Round 3.</p>
+</section>
+
+<section>
+  <h2>Documents to upload with the form</h2>
+  <p>A Madras High Court order makes upload at the application stage mandatory. Missing or unclear copies mean rejection with no appeal.</p>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Everyone</h3>
+      <ul>
+        <li>NEET-PG 2026 score card and admit card</li>
+        <li>MBBS degree or provisional certificate; CRRI completion</li>
+        <li>NMC or State Medical Council registration</li>
+        <li>Aadhaar, plus passport, voter ID or driving licence</li>
+        <li>The same photo used on the NEET-PG form</li>
+        <li>TN Dr. MGR University eligibility certificate, if MBBS was from another university</li>
+      </ul>
+    </div>
+    <div class="panel gq">
+      <h3><span class="tag gq">GQ</span> extra</h3>
+      <ul>
+        <li>TN nativity certificate</li>
+        <li>Two community certificates: own and one parent's, from TN Revenue</li>
+        <li>Parents' Aadhaar and school certificates</li>
+        <li>Service candidates: certified service proforma, TNPSC / MRB posting order</li>
+        <li>PwD: medical board certificate under 3 months old</li>
+      </ul>
+    </div>
+    <div class="panel mq">
+      <h3><span class="tag mq">MQ</span> extra</h3>
+      <ul>
+        <li>Postcard photo 4×6 inch, 50–300 KB</li>
+        <li>Minority certificate from a Tahsildar, with nativity certificate (if claiming minority)</li>
+        <li>OCI card, if applicable</li>
+      </ul>
+    </div>
+    <div class="panel mq">
+      <h3><span class="tag mq">NRI</span> extra</h3>
+      <ul>
+        <li>Sponsor's NRI status from the Indian Embassy</li>
+        <li>Relationship certificate from Revenue, plus sponsor's passport</li>
+        <li>Sponsor's NRE bank passbook</li>
+        <li>Ward declaration (Annexure III)</li>
+        <li>Court guardianship order, if the sponsor is a guardian</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>NRI quota in brief</h2>
+  <ul>
+    <li>The sponsor must be a parent, spouse, blood relative (uncles, aunts, grandparents, first cousins) or a court-appointed guardian, and must be an NRI.</li>
+    <li>The Embassy verifies documents. Fake papers lead to seat cancellation, criminal action, a 3-year bar and no refund.</li>
+    <li>Unfilled NRI seats go back to the management pool.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="tag gq">GQ</span> In-service doctors</h2>
+  <div class="grid2">
+    <div class="panel gq">
+      <h3>Who counts as a service candidate</h3>
+      <ul>
+        <li>Medical officers selected by TNPSC or MRB through a competitive exam, working in Tamil Nadu Medical Services</li>
+        <li>Medical officers in Tamil Nadu local bodies</li>
+        <li>Both need 2 years of continuous service as on 31.03.2026, and at least 5 years of service left when the course ends</li>
+        <li>Temporary appointees, and staff of registered societies or self-financing colleges, apply as non-service candidates</li>
+        <li>A government doctor who applies as a private candidate and hides it loses the application or seat</li>
+      </ul>
+    </div>
+    <div class="panel gq">
+      <h3>What they get</h3>
+      <ul>
+        <li>Half of the state-quota seats are reserved for them. The other half is open to everyone</li>
+        <li>Extra marks: 10% of NEET-PG marks per year of service in hilly, remote, difficult or rural areas, up to 30%</li>
+        <li>Half of PG Diploma seats go to officers with 3+ years in such areas. They must serve 2 more years there afterwards</li>
+        <li>Full salary during the course</li>
+        <li>Unfilled service seats go to general candidates</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="tag gq">GQ</span> Bond and service obligation</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Point</th><th>Service candidates</th><th>Non-service candidates</th></tr></thead>
+    <tbody>
+      <tr><td>Bond amount</td><td class="num">₹40 lakh degree / ₹20 lakh diploma</td><td class="num">₹40 lakh degree / ₹20 lakh diploma</td></tr>
+      <tr><td>Promise</td><td>Serve Tamil Nadu until retirement. If less than 5 years remain, serve 5 years after passing</td><td>Serve Tamil Nadu 2 years, within 3 years of finishing, if the government asks. Paid as a new TN Medical Service recruit</td></tr>
+      <tr><td>Breaking it</td><td>₹40 lakh (or a proportionate amount) plus interest at the TN housing-loan rate</td><td>₹40 lakh (or proportionate) plus interest. Leaving the course midway: penalty plus all stipend received</td></tr>
+      <tr><td>Sureties</td><td colspan="2">Three. Two must be permanent government employees of the same or higher rank; one must be a spouse or parent. PAN numbers needed</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>This also applies to All India Quota candidates</strong> who join a Tamil Nadu government college. Many miss this.</li>
+    <li>Original certificates stay with the college until the bond is fulfilled.</li>
+    <li>Recovery can be made under the Revenue Recovery Act. The bond needs no stamp paper.</li>
+    <li>Non-service stipend is paid only up to age 60.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="tag gq">GQ</span> How reserved seats are filled</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Seats in a branch</th><th>Method</th></tr></thead>
+    <tbody>
+      <tr><td>1 seat</td><td>Goes by rank only</td></tr>
+      <tr><td>2 to 7 seats</td><td>200-point roster (the order in which each community gets its turn)</td></tr>
+      <tr><td>8 or more</td><td>Percentages: OC 31, BC 30 (BC Muslim 3.5 within it), MBC/DNC 20, SC 18 (16% of this for Arunthathiyar), ST 1</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Unfilled Arunthathiyar seats go to SC, and the reverse. Extra Arunthathiyar candidates also compete for general SC seats on merit.</li>
+    <li>Unfilled ST seats go to SC. Unfilled BC Muslim seats go to BC.</li>
+    <li>So SC candidates should also choose SCA and ST seats, and BC candidates should also choose BCM seats.</li>
+    <li>PwD seats (5% in government colleges) are allotted before general ones. No change of college afterwards. Unfilled PwD seats go to general.</li>
+    <li>No mutual transfers or college-change requests.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="tag gq">GQ</span> Disability (PwD) rules</h2>
+  <p>The certificate must come from a medical board at Stanley (Chennai), Madurai, Coimbatore or Thanjavur medical college, or the appellate board at Rajiv Gandhi Government General Hospital, and be under 3 months old. Both hands must be intact with normal sensation, strength and movement.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Disability</th><th>General seat only</th><th>PwD quota</th><th>Not eligible</th></tr></thead>
+    <tbody>
+      <tr><td>Locomotor (incl. polio, amputation, cerebral palsy, dwarfism, muscular dystrophy, leprosy-cured, acid attack)</td><td class="num">&lt;40%</td><td class="num">40–80%<br><span class="note">Above 80% case by case with aids</span></td><td class="num">&gt;80%</td></tr>
+      <tr><td>Visual or hearing</td><td class="num">&lt;40%</td><td>40%+ only if aids bring it below 40%. Hearing also needs speech discrimination above 60%</td><td>—</td></tr>
+      <tr><td>Speech and language</td><td class="num">≤40%</td><td>—</td><td>Above 40% (SIA score over 3, or aphasia quotient over 40%)</td></tr>
+      <tr><td>Specific learning disability</td><td class="num">&lt;40%</td><td class="num">40–80%<br><span class="note">Expert panel decides</span></td><td>&gt;80% or intellectual disability</td></tr>
+      <tr><td>Autism spectrum</td><td>Mild, or up to 60% (ISAA) if an expert panel finds fit</td><td>Not offered yet</td><td>&gt;60% or intellectual disability</td></tr>
+      <tr><td>Mental illness</td><td>Under 40% (IDEAS). No disorder is barred</td><td>Not offered yet</td><td>—</td></tr>
+      <tr><td>MS, Parkinsonism, haemophilia, thalassaemia, sickle cell</td><td class="num">&lt;40%</td><td class="num">40–80%</td><td class="num">&gt;80%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Multiple disabilities are combined as a + b(90 − a) ÷ 90, where a is the higher percentage.</p>
+</section>
+
+<section>
+  <h2>Course length and who cannot apply <span class="tag gq">GQ</span> <span class="tag mq">MQ</span></h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Course length</h3>
+      <ul>
+        <li>MD / MS: 3 years</li>
+        <li>Holders of a 2-year diploma: 2 years in the same specialty, 3 in another</li>
+        <li>No reduction for 1-year diplomas, Clinical Pathology or Diabetology diplomas</li>
+        <li>PG Diploma: 2 years</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Not eligible</h3>
+      <ul>
+        <li>Anyone currently doing a PG degree, DNB or diploma</li>
+        <li>Anyone who has finished a PG degree or DNB</li>
+        <li>A diploma holder applying for another diploma (a degree is allowed)</li>
+        <li>Diploma students may apply for a degree only if they finish before 9 Oct 2026</li>
+      </ul>
+    </div>
+  </div>
+  <ul>
+    <li>Absence of 15 days or more without leave counts as leaving the course, with the penalty if past the cut-off date.</li>
+    <li>Ragging, strikes or agitation lead to expulsion and criminal action.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="tag gq">GQ</span> Tamil Nadu community lists</h2>
+  <p class="note">As printed in the GQ annexure. An asterisk (*) means the community is listed only for certain districts, or is classed differently in some districts (often Kanniyakumari and Shencottah taluk). Always check the official list for the candidate's district.</p>
+  <details><summary>Backward Classes (BC)</summary><p class="list">Agamudayar (incl. Thozhu / Thuluva Vellala) · Agaram Vellan Chettiar · Alwar, Azhavar, Alavar* · Servai* · Nulayar* · Archakarai Vellala · Aryavathi* · Ayira Vaisyar · Badagar · Billava · Bondil · Boyas, Pedda Boyar, Oddars, Kaloddars, Nellorepet Oddars, Sooramari Oddars* · Chakkala* · Chavalakarar* · Chettu / Chetty (Kottar, Elur, Pathira, Valayal, Pudukadai)* · Chowdry · Converts to Christianity from SC* · C.S.I. (formerly S.I.U.C.)* · Donga Dasaris* · Devangar, Sedar · Dombs, Dommars* · Enadi · Ezhavathy* · Ezhuthachar* · Ezhuva* · Gangavar · Gavara, Gavarai, Vadugar (Vaduvar) · Gounder · Gowda (incl. Gammala, Kalali, Anuppa Gounder) · Hegde · Idiga · Illathu Pillaimar, Illuvar, Ezhuvar, Illathar · Jhetty · Jogis* · Kabbera · Kaikolar, Sengunthar · Kaladi* · Kalari Kurup, Kalari Panicker* · Kalingi · Kallar, Easanattu Kallar and other Kallar groups* · Kallar Kula Thondaman · Kalveli Gounder · Kambar · Kammalar / Viswakarma (incl. Thattar, Porkollar, Kannar, Karumar, Kollar, Thacher, Kamsala, Viswa Brahmin) · Kani, Kanisu, Kaniyar Panicker · Kaniyala Vellalar · Kannada Saineegar, Kannadiyar, Dasapalanjika* · Kannadiya Naidu · Karpoora Chettiar · Karuneegar (all sub-groups) · Kasukkara Chettiar · Katesar, Pattamkatti · Kavuthiyar · Kerala Mudali · Kharvi · Khatri · Kongu Vaishnava · Kongu Vellalars (incl. Vellala Gounder, Nattu Gounder and others) · Koppala Velama · Koteyar · Krishnavaka* · Kudikara Vellalar · Kudumbi* · Kuga Vellalar · Kunchidigar · Latin Catholics* · Lambadi · Lingayat (Jangama) · Mahratta, non-Brahmin (incl. Namdev) · Malayar · Male · Maniagar · Maravars, Karumaravars and other Maravar groups* · Moondrumandai Enbathunalu (84) Ur Sozhia Vellalar · Mooppan · Muthuraja, Muthiriyar, Muttiriyar, Mutharaiyar · Nadar, Shanar, Gramani (incl. Christian) · Nagaram · Naikkar* · Nangudi Vellalar · Nanjil Mudali* · Odar* · Odiya · Oottruvalanattu Vellalar · O.P.S. Vellalar · Ovachar · Paiyur Kotta Vellalar · Pamulu · Panar* · Pandiya Vellalar · Kathikarar* · Pannirandam Chettiar / Uthama Chettiar · Parkavakulam (incl. Surithimar, Nathamar, Malayamar, Moopanar, Nainar) · Perike (incl. Perike Balija) · Perumkollar* · Podikara Vellalar · Pooluva Gounder · Poraya · Pulavar* · Pulluvar / Pooluvar · Pusala · Reddy (Ganjam) · Sadhu Chetty (incl. Telugu Chetty) · Sakkaravar / Kavathi* · Salivagana · Saliyar, Padmasaliyar, Pattusaliyar, Pattariyar, Adhaviyar · Savalakkarar · Senaithalaivar, Senaikudiyar, Illaivaniar · Serakula Vellalar · Sourashtra (Patnulkarar) · Sozhiavellalar (incl. Sozha Vellalar, Vetrilaikarar, Kodikalkarar, Keeraikarar) · Srisayar · Sundaram Chetty · Thiyya · Thogatta Veerakshatriya · Tholkollar* · Tholuva Naicker, Vetalakara Naicker · Thoriyar · Ukkirakula Kshatriya Naicker · Uppara, Uppillia, Sagara · Urali Gounder, Orudaya Gounder* · Urikkara Nayakkar · Virakodi Vellala · Vallambar · Vallanattu Chettiar · Valmiki · Vaniyar, Vania Chettiar (incl. Gandla, Ganika, Telikula, Chekkalar) · Veduvar, Vedar* · Veerasaiva* · Velar · Vellan Chettiar · Veluthodathu Nair* · Vokkaligar (incl. Okkaligar, Kappiliyar) · Wynad Chetty* · Yadhava (incl. Idaiyar, Vaduga Ayar, Golla) · Yavana · Yerukula · Converts to Christianity from BC, MBC or DNC* · Orphans and destitute children*</p></details>
+  <details><summary>Backward Class Muslims (BCM)</summary><p class="list">Ansar · Dekkani Muslims · Dudekula · Labbais (incl. Rowthar, Marakayar) · Mapilla · Sheik · Syed</p></details>
+  <details><summary>Most Backward Classes (MBC)</summary><p class="list">Ambalakarar · Andipandaram · Arayar* · Bestha, Siviar · Bhatraju · Boyar, Oddar · Dasari · Dommara · Eravallar* · Isaivellalar · Jambuvanodai · Jangam · Jogi · Kongu Chettiar* · Koracha · Kulala (incl. Kuyavar, Kumbarar) · Kunnuvar Mannadi · Kurumba, Kurumba Gounder · Kuruhini Chetty · Latin Catholic Christian Vannar* · Maruthuvar, Navithar, Mangala, Velakattalavar, Velakatalanair, Pronopakari · Mond Golla · Moundadan Chetty · Mahendra, Medara · Mutlakampatti · Narikoravar (Kurivikars) · Nokkar · Panisaivan / Panisivan · Vanniakula Kshatriya (incl. Vanniyar, Vannia Gounder, Padayachi, Palli, Agnikula Kshatriya) · Paravar* · Paravar converts to Christianity · Meenavar (Parvatharajakulam, Pattanavar, Sembadavar), incl. converts · Mukkuvar / Mukayar, incl. converts · Punnan Vettuva Gounder · Pannayar* · Sathatha Srivaishnava · Sozhia Chetty · Telugupatty Chetty · Thottia Naicker (incl. Rajakambalam, Gollavar) · Thondaman · Thoraiyar (Nilgiris and Plains) · Transgender (Thirunangai / Aravani) · Valaiyar · Vannar* · Vettaikarar · Vettuva Gounder · Yogeeswarar</p></details>
+  <details><summary>Denotified Communities (DNC), mostly district-specific</summary><p class="list">Attur Kilnad Koravars · Attur Melnad Koravars · Appanad Kondayam Kottai Maravar · Ambalakarar · Ambalakkarar (Suriyanur) · Boyas · Battu Turkas · C.K. Koravars · Chakkala · Changyampudi Koravars · Chettinad Valayars · Dombs · Dobba Koravars · Dommars · Donga Boya · Donga Ur. Korachas · Devagudi Talayaris · Dobbai Korachas · Dabi Koravars · Donga Dasaris · Gorrela Dodda Boya · Gudu Dasaris · Gandarvakottai Koravars · Gandarvakottai Kallars · Inji Koravars · Jogis · Jambavanodai · Kaladis · Kal Oddars · Koravars · Kalinji Dabikoravars · Kootappal Kallars · Kala Koravars · Kalavathila Boyas · Kepmaris · Maravars · Monda Koravars · Monda Golla · Mutlakampatti · Nokkars · Nellorepet Oddars · Oddars · Pedda Boyas · Ponnai Koravars · Piramalai Kallars · Peria Suriyur Kallars · Padayachi (Vellayan Kuppam, Tennore) · Punnan Vettuva Gounder · Servai · Salem Melnad Koravars · Salem Uppu Koravars · Sakkaraithamadai Koravars · Saranga Palli Koravars · Sooramari Oddars · Sembanad Maravars · Thalli Koravars · Telungapatti Chetis · Thottia Naickers · Thogamalai Koravars / Kepmaris · Uppukoravars / Settipalli Koravars · Urali Gounders · Wayalpad / Nawalpeta Korachas · Vaduvarpatti Koravars · Valayars · Vettaikarar · Vetta Koravars · Varaganeri Koravars · Vettuva Gounder</p></details>
+  <details><summary>Scheduled Castes (SC)</summary><p class="list">Adi Andhra · Adi Dravida · Adi Karnataka · Ajila · Arunthathiyar · Ayyanavar* · Baira · Bakuda · Bandi · Bellara · Bharata* · Chakkiliyan · Chalavadi · Chamar, Muchi · Chandala · Cheruman · Devendrakula Velalar (incl. Kadaiyan*, Kalladi, Kudumban, Pallan, Pannadi, Vathiriyan) · Dom, Dombara, Paidi, Pano · Domban · Godagali · Godda · Gosangi · Holeya · Jaggali · Jambuvulu · Kadaiyan* · Kakkalan* · Kanakkan, Padanna* · Karimpalan · Kavara* · Koliyan · Koosa · Kootan, Koodan* · Kuravan, Sidhanar · Madari · Madiga · Maila · Mala · Mannan* · Mavilan · Mager · Mundala · Nalakeyava · Nayadi · Padannan* · Pagadi · Palluvan · Pambada · Panan* · Panchama · Panniandi · Paraiyan, Parayan, Sambavar · Paravan* · Pathiyan* · Pulayan, Cheramar · Puthirai Vannan · Raneyar · Samagara · Samban · Sapari · Semman · Thandan* · Thoti · Tiruvalluvar · Vallon · Valluvan · Vannan* · Velan · Vetan* · Vettiyan · Vettuvan*</p></details>
+  <details><summary>Scheduled Tribes (ST)</summary><p class="list">Adiyan · Aranadan · Eravallan · Irular · Kadar · Kammara* · Kanikaran, Kanikkar* · Kaniyan, Kanyan · Kattunayakan · Kochu Velan · Konda Kapus · Kondareddis · Koraga · Kota* · Kudiya, Melakudi · Kurichchan · Kurumbas* · Kurumans · Maha Malasar · Malai Arayan · Malai Pandaram · Malai Vedan · Malakkuravan · Malasar · Malayali* · Malayakandi · Mannan · Mudugar, Muduvan · Muthuvan · Pallayan · Palliyan · Palliyar · Paniyan · Sholaga · Toda* · Uraly</p></details>
+</section>
+
+<section>
+  <h2>Problems found in the documents</h2>
+  <ul class="flag">
+    <li><strong>Redistributed copies.</strong> Every page of both files carries a WhatsApp stamp advertising paid counselling. Both prospectuses warn against agents. Use the clean copies from the official site.</li>
+    <li><strong>MQ reservation is unclear.</strong> Clause 20 says seats follow the rule of reservation; clause 27 says vacancies are filled by rank. Worth confirming with the Selection Committee.</li>
+    <li><strong>MQ Round 2 table wording.</strong> The penalty row says "opting for upgradation"; the GQ version says "not opting". One of them is a typo.</li>
+    <li><strong>MQ Round 3 non-joining.</strong> Clause 11(b) treats it as discontinuation with the full penalty; the round table only lists forfeiture of fees.</li>
+    <li><strong>Outdated regulator.</strong> MQ clauses 32–34 still refer to the MCI; GQ uses the NMC.</li>
+    <li><strong>Missing annexures.</strong> Both cite an Annexure IV on ragging that isn't included. GQ mentions a special-category (PwD) form that isn't attached. MQ clause 16(m) is an orphaned line.</li>
+    <li><strong>GQ PwD limit.</strong> Clause 35 bars disability above 80%; Annexure II allows case-by-case review for locomotor disability.</li>
+    <li><strong>Cut-off scores.</strong> Check 262 / 244 / 226 against the official NBE 2026 notice before relying on them.</li>
+  </ul>
+</section>
+
+<footer>
+  <span>Prepared from the GQ and MQ prospectuses dated 07.10.2026. Both are subject to change by DGHS / MCC and court orders.</span>
+  <span>Selection Committee, 162 Periyar E.V.R. High Road, Kilpauk, Chennai 600 010 · 044-28364884</span>
+</footer>
+</div>
+
+<script>
+(function(){
+  var el=document.getElementById('left');
+  var end=Date.UTC(2026,9,15,11,30); // 15 Oct 2026 17:00 IST
+  var ms=end-Date.now();
+  if(ms<=0){el.textContent='Window closed';return;}
+  var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5);
+  el.textContent=d+' days '+h+' hrs left';
+})();
+</script>
+</body>
+</html>

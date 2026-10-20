@@ -9,6 +9,9 @@ import {
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, normState } from './states.js';
+import { registry, guideList, compareTable, guidePage, GUIDES_DIR } from './guides.js';
+
+registry(); // a malformed guides/guides.json stops the server here, with the reason
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(here, '..', 'public');
@@ -66,8 +69,13 @@ app.get('/api/config', (req, res) => {
     states: STATES,
     dataStates: dataStates(),
     datasets: publishedSets(req.user),
+    guides: guideList().map(({ slug, region, title, label }) => ({ slug, region, title, label })),
     user: publicUser(req.user)
   });
+});
+app.get('/api/guides', (_req, res) => {
+  res.set('Cache-Control', 'no-cache');
+  res.json({ guides: guideList(), compare: compareTable() });
 });
 
 app.post('/api/auth/otp/request', wrap(async (req, res) => {
@@ -361,9 +369,18 @@ app.use('/api', (_req, _res, next) => next(new HttpError(404, 'Not found.')));
 // Pages
 // ======================================================================
 const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(PUBLIC, file)); };
-app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method'], page('index.html'));
-app.get(['/counselling', '/counselling/'], page('counselling.html'));
+app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method', '/counselling', '/counselling/'], page('index.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
+
+// Counselling guides: one page per guide, framed by server/guides.js.
+app.get('/counselling.html', (_req, res) => res.redirect(301, '/counselling'));
+app.use('/counselling/assets', express.static(path.join(GUIDES_DIR, 'assets'), { index: false, maxAge: '1d' }));
+app.get('/counselling/:slug', (req, res) => {
+  const html = guidePage(req.params.slug);
+  if (!html) return res.redirect(302, '/counselling');
+  res.set('Cache-Control', 'no-cache').type('html').send(html);
+});
+
 // no-cache = revalidate on every load (a cheap 304 when unchanged). With a max-age, a browser
 // could pair a freshly deployed app.js with a cached lib.js for up to an hour after a deploy.
 app.use(express.static(PUBLIC, { index: false, setHeaders: res => res.set('Cache-Control', 'no-cache') }));

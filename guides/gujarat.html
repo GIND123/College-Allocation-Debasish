@@ -1,0 +1,343 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gujarat PG Counselling 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: single reading column, sticky section nav, process as a numbered rail, checklist + filterable centre list as the working tools */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --ink:#14212e; --muted:#566473; --line:#d9e0e6;
+  --accent:#0f5c6e; --accent-soft:#e1eef1; --saffron:#c26a0a; --saffron-soft:#fbeedd;
+  --warn:#9a3412; --warn-soft:#fdeee6;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e161d; --surface:#15212b; --ink:#e6edf2; --muted:#9aa9b6; --line:#263643;
+  --accent:#5fb6c9; --accent-soft:#16323b; --saffron:#f0a24a; --saffron-soft:#352614;
+  --warn:#f4a582; --warn-soft:#3a2219; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e161d; --surface:#15212b; --ink:#e6edf2; --muted:#9aa9b6; --line:#263643;
+  --accent:#5fb6c9; --accent-soft:#16323b; --saffron:#f0a24a; --saffron-soft:#352614;
+  --warn:#f4a582; --warn-soft:#3a2219; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:18px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,3.1rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:700;margin-bottom:.6rem}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0;max-width:65ch}
+a{color:var(--accent)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+header{display:grid;gap:12px;padding-block:8px 20px}
+header p{color:var(--muted)}
+.cta{display:grid;gap:2px;justify-self:start;max-width:100%;margin-top:6px;padding:14px 22px;border-radius:10px;background:var(--accent);color:var(--bg);text-decoration:none}
+.cta:hover{filter:brightness(1.08)}
+.cta:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
+.cta-main{font-family:var(--display);font-weight:700;font-size:1.15rem}
+.cta-main::after{content:" \2197"}
+.cta-sub{font-size:.88rem;opacity:.85;overflow-wrap:anywhere}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-18px;padding:10px 18px;overflow-x:auto;white-space:nowrap}
+nav a{display:inline-block;margin-right:16px;font-weight:600;text-decoration:none;color:var(--muted);font-size:.95rem}
+nav a:hover,nav a:focus-visible{color:var(--accent)}
+section{padding-top:40px;display:grid;gap:14px;scroll-margin-top:56px}
+.lede{color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Deadlines */
+.deadlines{display:grid;gap:10px}
+.dl{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:baseline;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.dl .what{font-weight:600}
+.dl .when{font-family:var(--mono);font-size:.9rem;color:var(--muted);text-align:right}
+.dl .status{grid-column:1/-1;font-size:.88rem;font-weight:700}
+.dl[data-state="closing"]{border-color:var(--saffron);background:var(--saffron-soft)}
+.dl[data-state="closing"] .status{color:var(--saffron)}
+.dl[data-state="closed"] .status{color:var(--muted)}
+.dl[data-state="open"] .status{color:var(--accent)}
+.note{font-size:.9rem;color:var(--muted)}
+
+/* Process rail */
+ol.rail{list-style:none;margin:0;padding:0;display:grid;gap:0}
+ol.rail li{display:grid;grid-template-columns:44px 1fr;gap:14px;position:relative;padding-bottom:22px}
+ol.rail li::before{content:"";position:absolute;left:21px;top:40px;bottom:0;width:2px;background:var(--line)}
+ol.rail li:last-child::before{display:none}
+.num{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.15rem}
+.step{display:grid;gap:6px;min-width:0;padding-top:8px}
+.step p{color:var(--muted)}
+.sub{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.sub span{font-size:.85rem;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:3px 9px}
+
+/* Eligibility */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.path{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:8px;align-content:start}
+.path ul{margin:0;padding-left:1.1em;color:var(--muted)}
+
+/* Checklist */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:.92rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.chip:focus-visible,.cbx input:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+.progress{display:flex;align-items:center;gap:12px;font-weight:600}
+.bar{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cbx{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:12px 16px;border-top:1px solid var(--line);cursor:pointer}
+.cbx:first-child{border-top:0}
+.cbx input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--accent)}
+.cbx .t{font-weight:600}
+.cbx .d{font-size:.9rem;color:var(--muted)}
+.cbx:has(input:checked) .t{text-decoration:line-through;color:var(--muted)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--saffron);margin-left:6px}
+.reset{font:inherit;font-size:.9rem;background:none;border:0;color:var(--accent);cursor:pointer;text-decoration:underline;padding:0;justify-self:start}
+
+/* Watch-outs */
+.watch{display:grid;gap:10px}
+.w{background:var(--warn-soft);border-radius:10px;padding:14px 16px;display:grid;gap:4px}
+.w strong{color:var(--warn)}
+
+/* Centres */
+.search{font:inherit;width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.search:focus-visible{outline:3px solid var(--saffron);outline-offset:1px}
+.centres{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.c{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.c .city{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.c .name{font-weight:600}
+.c .addr{font-size:.9rem;color:var(--muted)}
+.empty{color:var(--muted)}
+
+/* Contact */
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.row .k{width:80px;color:var(--muted);font-size:.9rem}
+.row .v{font-weight:600;user-select:all;min-width:0;overflow-wrap:anywhere}
+.copy{font:inherit;font-size:.82rem;border:1px solid var(--line);background:none;color:var(--accent);border-radius:6px;padding:2px 10px;cursor:pointer}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted);display:grid;gap:6px}
+@media (max-width:520px){.dl{grid-template-columns:1fr}.dl .when{text-align:left}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">MD · MS · Diploma · State quota · 2026–27</span>
+    <h1>Gujarat PG Counselling 2026</h1>
+    <p>A plain guide to the ACPPGMEC admission process for NEET-PG candidates: the six steps, the documents to carry, where to get them verified, and the points that trip people up.</p>
+    <a class="cta" href="https://www.medadmgujarat.org" target="_blank" rel="noopener">
+      <span class="cta-main">Go to the official admission website</span>
+      <span class="cta-sub">www.medadmgujarat.org · buy PIN and register here</span>
+    </a>
+  </header>
+
+  <nav aria-label="Sections">
+    <a href="#dates">Key dates</a><a href="#steps">Six steps</a><a href="#eligible">Who can apply</a><a href="#docs">Document checklist</a><a href="#watch">Watch out</a><a href="#centres">Help centres</a><a href="#contact">Contact</a>
+  </nav>
+
+  <section id="dates">
+    <h2>Key dates</h2>
+    <div class="deadlines" id="deadlines"></div>
+    <p class="note">Dates as reported from the ACPPGMEC schedule notice. Always confirm on <a href="https://www.medadmgujarat.org" target="_blank" rel="noopener">medadmgujarat.org</a> before acting.</p>
+  </section>
+
+  <section id="steps">
+    <h2>The six steps</h2>
+    <ol class="rail">
+      <li><div class="num">1</div><div class="step"><h3>Register online and upload documents</h3>
+        <p>Buy a PIN online at medadmgujarat.org, then fill in your details on the same site.</p>
+        <div class="sub"><span>Enter NEET-PG details + PIN</span><span>Fill details, upload documents</span><span>Create password</span><span>Confirm details</span><span>Print registration form</span></div></div></li>
+      <li><div class="num">2</div><div class="step"><h3>Get documents verified at a help centre</h3>
+        <p>Visit any of the 17 help centres with your originals. Your registration is confirmed only after this.</p></div></li>
+      <li><div class="num">3</div><div class="step"><h3>Check the merit list</h3>
+        <p>ACPPGMEC publishes the merit list of eligible candidates. Check that your merit number and category match your registration.</p></div></li>
+      <li><div class="num">4</div><div class="step"><h3>Fill choices and see your allotment</h3>
+        <p>Choice filling opens online for each round. After it closes, log in with your user ID to see your allotment.</p></div></li>
+      <li><div class="num">5</div><div class="step"><h3>Pay one term of fees</h3>
+        <p>Pay six months of tuition fees by cash or DD at a designated Axis Bank branch, or online, within the time limit.</p></div></li>
+      <li><div class="num">6</div><div class="step"><h3>Submit originals to confirm admission</h3>
+        <p>Take your allotment letter, fee receipt and original documents to a help centre. Your admission is confirmed here.</p></div></li>
+    </ol>
+  </section>
+
+  <section id="eligible">
+    <h2>Who can apply</h2>
+    <p class="lede">You must have qualified NEET-PG 2026. Beyond that, eligibility depends on where you studied MBBS.</p>
+    <div class="paths">
+      <div class="path"><h3>MBBS from Gujarat</h3><ul><li>Degree from a university set up under Gujarat law and located in Gujarat.</li></ul></div>
+      <div class="path"><h3>MBBS from outside Gujarat</h3><ul><li>From another state or abroad, meeting NMC eligibility.</li><li>12th with B or AB group, from the Gujarat Board or a school in Gujarat.</li><li>Born in Gujarat, or hold a Gujarat domicile certificate.</li></ul></div>
+    </div>
+    <p class="note">Based on earlier versions of the eligibility notice. Check the 2026 eligibility PDF on the official site for any changes.</p>
+  </section>
+
+  <section id="docs">
+    <h2>Document checklist</h2>
+    <p class="lede">Tick off each document as you get it ready. Choose what applies to you to see the extra documents you need. Your ticks are saved on this device only.</p>
+    <div class="filters" id="filters" role="group" aria-label="What applies to you">
+      <button class="chip" data-f="sebc" aria-pressed="false">SEBC</button>
+      <button class="chip" data-f="scst" aria-pressed="false">SC / ST</button>
+      <button class="chip" data-f="ews" aria-pressed="false">EWS</button>
+      <button class="chip" data-f="pwd" aria-pressed="false">PwD</button>
+      <button class="chip" data-f="outside" aria-pressed="false">MBBS outside Gujarat</button>
+      <button class="chip" data-f="foreign" aria-pressed="false">Dual / foreign citizen</button>
+      <button class="chip" data-f="nri" aria-pressed="false">NRI</button>
+    </div>
+    <div class="progress"><span id="count" class="mono">0 / 0</span><div class="bar"><i id="fill"></i></div></div>
+    <div class="list" id="list"></div>
+    <button class="reset" id="reset" type="button">Clear all ticks</button>
+    <p class="note">At final submission (step 6), also carry the ACPPGMEC allotment letter and the Axis Bank fee receipt for one term.</p>
+  </section>
+
+  <section id="watch">
+    <h2>Watch out for these</h2>
+    <div class="watch">
+      <div class="w"><strong>Certificates must be from Gujarat</strong><p>Caste, non-creamy layer and EWS certificates are accepted only if issued by Gujarat State authorities.</p></div>
+      <div class="w"><strong>Check the certificate date</strong><p>This notice says SEBC non-creamy layer and EWS certificates must be dated on or after 01/04/2024. Another 2026 notice reportedly says on or after 01/04/2026. Get a fresh certificate if you can.</p></div>
+      <div class="w"><strong>Internship cut-off date</strong><p>This notice says internship must be complete on or before 30/09/2026. Some reports of the 2026 notice show 31/05/2026. Confirm which applies.</p></div>
+      <div class="w"><strong>Carry all marksheets</strong><p>The upload list asks for final-year marksheets, but the final submission list asks for all years. Carry every year, every attempt.</p></div>
+      <div class="w"><strong>Disability certificate</strong><p>An original is asked for at verification and a photocopy at final submission. Carry both.</p></div>
+      <div class="w"><strong>NRI certificate</strong><p>It appears only in the final submission list. Prepare it from the start anyway.</p></div>
+      <div class="w"><strong>Not covered in this notice</strong><p>Seat resignation, fee forfeiture, upgrades between rounds, stray rounds and service bonds. Read the PG admission rules and their amendments on the official site.</p></div>
+    </div>
+  </section>
+
+  <section id="centres">
+    <h2>Help centres</h2>
+    <p class="lede">Go to any one of these 17 centres for document verification and final submission.</p>
+    <label for="q" class="eyebrow">Search by city or college</label>
+    <input id="q" class="search" type="search" placeholder="e.g. Rajkot, Surat, GMERS" autocomplete="off">
+    <div class="centres" id="centreList"></div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact ACPPGMEC</h2>
+    <div class="contact">
+      <div class="row"><span class="k">Office</span><span class="v">Ground Floor, GMERS Medical College, Sector-12, Gandhinagar – 382016</span></div>
+      <div class="row"><span class="k">Phone</span><span class="v mono" id="ph">9099074536</span><button class="copy" data-copy="ph" type="button">Copy</button></div>
+      <div class="row"><span class="k">Email</span><span class="v" id="em">medadmgujarat@gmail.com</span><button class="copy" data-copy="em" type="button">Copy</button></div>
+      <div class="row"><span class="k">Website</span><a class="v" href="https://www.medadmgujarat.org" target="_blank" rel="noopener">www.medadmgujarat.org</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Prepared from the ACPPGMEC "Process of Online Admission" notice for 2026–27 and related public notices. This is an unofficial guide. The official website and notices always take priority.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  /* Deadlines (IST) */
+  var D=[
+    {what:"PIN purchase closes",at:"2026-10-08T15:00:00+05:30",open:"2026-10-01T00:00:00+05:30",label:"8 Oct 2026, 3:00 pm"},
+    {what:"Online registration closes",at:"2026-10-08T17:00:00+05:30",open:"2026-10-01T00:00:00+05:30",label:"8 Oct 2026, 5:00 pm"},
+    {what:"Document verification at help centres",at:"2026-10-09T16:00:00+05:30",open:"2026-10-03T10:00:00+05:30",label:"3 Oct 10:00 am – 9 Oct 4:00 pm"}
+  ];
+  var box=document.getElementById("deadlines");
+  function fmtLeft(ms){var h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);if(h>=48)return Math.floor(h/24)+" days left";if(h>=1)return h+" h "+m+" min left";return m+" min left"}
+  function renderDates(){
+    var now=Date.now();box.innerHTML="";
+    D.forEach(function(d){
+      var end=Date.parse(d.at),st=Date.parse(d.open),state,txt;
+      if(now>end){state="closed";txt="Closed"}
+      else if(now<st){state="open";txt="Opens soon"}
+      else if(end-now<36*36e5){state="closing";txt="Closing soon · "+fmtLeft(end-now)}
+      else{state="open";txt="Open · "+fmtLeft(end-now)}
+      var el=document.createElement("div");el.className="dl";el.dataset.state=state;
+      el.innerHTML='<span class="what"></span><span class="when"></span><span class="status"></span>';
+      el.children[0].textContent=d.what;el.children[1].textContent=d.label;el.children[2].textContent=txt;
+      box.appendChild(el);
+    });
+  }
+  renderDates();setInterval(renderDates,60000);
+
+  /* Checklist */
+  var DOCS=[
+    {id:"mbbs",t:"MBBS / BDS marksheets",d:"All years, attempt-wise. The upload list says final year; carry every year to be safe."},
+    {id:"neet",t:"NEET-PG 2026 marksheet",d:"Copy of the current year's scorecard."},
+    {id:"intern",t:"Internship completion certificate",d:"Internship must be complete by the cut-off date in the notice."},
+    {id:"reg",t:"Medical council registration",d:"Provisional registration if you just finished internship; permanent registration if you passed out earlier. State council or national council."},
+    {id:"birth",t:"Proof of date and place of birth and Indian citizenship",d:"School leaving certificate, transfer certificate, passport or birth certificate."},
+    {id:"caste",f:["sebc","scst"],t:"Caste certificate",tag:"SEBC / SC / ST",d:"Issued by Gujarat State authorities only."},
+    {id:"ncl",f:["sebc"],t:"Non-creamy layer certificate (Parishishta 4)",tag:"SEBC",d:"Gujarati or English, from Gujarat State authorities, with a recent date."},
+    {id:"ews",f:["ews"],t:"EWS certificate",tag:"EWS",d:"From Gujarat State authorities, with a recent date."},
+    {id:"pwd",f:["pwd"],t:"Disability certificate",tag:"PwD",d:"From the competent authority. Carry the original and a photocopy."},
+    {id:"pass",f:["foreign"],t:"Passport copy",tag:"Dual / foreign",d:"Needed if your citizenship is dual or foreign."},
+    {id:"twelve",f:["outside"],t:"12th marksheet",tag:"Outside Gujarat",d:"For candidates who did MBBS outside Gujarat."},
+    {id:"dom",f:["outside"],t:"Gujarat domicile certificate",tag:"Outside Gujarat",d:"Only if you did MBBS outside Gujarat and were born outside Gujarat."},
+    {id:"nri",f:["nri"],t:"NRI certificate",tag:"NRI",d:"Listed for final submission. Prepare it early."}
+  ];
+  var K="gjpg26-";
+  function get(k,def){try{var v=localStorage.getItem(K+k);return v?JSON.parse(v):def}catch(e){return def}}
+  function set(k,v){try{localStorage.setItem(K+k,JSON.stringify(v))}catch(e){}}
+  var ticks=get("ticks",{}),active=get("filters",[]);
+  var list=document.getElementById("list"),count=document.getElementById("count"),fill=document.getElementById("fill");
+  function visible(d){return !d.f||d.f.some(function(x){return active.indexOf(x)>-1})}
+  function renderDocs(){
+    list.innerHTML="";var shown=0,done=0;
+    DOCS.filter(visible).forEach(function(d){
+      shown++;if(ticks[d.id])done++;
+      var l=document.createElement("label");l.className="cbx";l.setAttribute("for","doc-"+d.id);
+      var i=document.createElement("input");i.type="checkbox";i.id="doc-"+d.id;i.checked=!!ticks[d.id];
+      i.addEventListener("change",function(){ticks[d.id]=i.checked;set("ticks",ticks);renderDocs();document.getElementById("doc-"+d.id).focus()});
+      var w=document.createElement("div");
+      var t=document.createElement("div");t.className="t";t.textContent=d.t;
+      if(d.tag){var g=document.createElement("span");g.className="tag";g.textContent=d.tag;t.appendChild(g)}
+      var p=document.createElement("div");p.className="d";p.textContent=d.d;
+      w.appendChild(t);w.appendChild(p);l.appendChild(i);l.appendChild(w);list.appendChild(l);
+    });
+    count.textContent=done+" / "+shown+" ready";
+    fill.style.width=(shown?done/shown*100:0)+"%";
+  }
+  document.querySelectorAll(".chip").forEach(function(b){
+    var f=b.dataset.f;b.setAttribute("aria-pressed",active.indexOf(f)>-1?"true":"false");
+    b.addEventListener("click",function(){
+      var i=active.indexOf(f);if(i>-1)active.splice(i,1);else active.push(f);
+      b.setAttribute("aria-pressed",i>-1?"false":"true");set("filters",active);renderDocs();
+    });
+  });
+  document.getElementById("reset").addEventListener("click",function(){ticks={};set("ticks",ticks);renderDocs()});
+  renderDocs();
+
+  /* Help centres */
+  var C=[
+    ["Ahmedabad","B J Medical College","New Civil Hospital, Asarwa, Ahmedabad – 380016"],
+    ["Vadodara","Govt. Medical College, Baroda","S.S.G. Hospital Campus, Anandpura, Vadodara – 390001"],
+    ["Bhavnagar","Govt. Medical College, Bhavnagar","Old Court Hall, Maharaja Krishnakumarsinhji Bhavnagar University, Bhavnagar – 364002"],
+    ["Surat","Govt. Medical College, Surat","Opp. Income Tax Department Office, Majura Gate, Surat – 395001"],
+    ["Jamnagar","M. P. Shah Govt. Medical College","Nehru Road, Guru Gobind Singh Hospital Campus, Indradeep Society, Jamnagar – 361008"],
+    ["Rajkot","P. D. U. Medical College","Civil Hospital Campus, Rajkot – 360001"],
+    ["Ahmedabad","GMERS Medical College, Sola","Near Gujarat High Court, S.G. Highway, Ahmedabad"],
+    ["Gandhinagar","GMERS Medical College, Gandhinagar","Civil Hospital Campus, Sector-12, Gandhinagar – 382016"],
+    ["Patan","GMERS Medical College, Patan","Patan-Unjha Highway, Dharpur, Patan – 384265"],
+    ["Ahmedabad","GCS Medical College, Hospital & Research Centre","Opp. DRM Office, Naroda Road, Ahmedabad – 380025"],
+    ["Ahmedabad","AMC MET Medical College","Sheth L.G. Hospital Campus, Maninagar, Ahmedabad – 380008"],
+    ["Surat","Surat Municipal Institute of Medical Education and Research","Opp. Bombay Market, Umarwada, Surat – 395010"],
+    ["Anand","Pramukh Swami Medical College, Karamsad","Gokal Nagar, Karamsad, Anand – 388325"],
+    ["Surendranagar","C.U. Shah Medical College","Dudhrej Road, Surendranagar – 363001"],
+    ["Bhuj","Gujarat Adani Institute of Medical Sciences","G. K. General Hospital Campus, Bhuj, Kachchh – 370001"],
+    ["Ahmedabad","Smt. NHL Municipal Medical College","V.S. General Hospital, Ellis Bridge, Ahmedabad – 380006"],
+    ["Vadodara","Parul Institute of Medical Sciences & Research","C/O Parul University Extension Office, First Floor, Roshani Technology Park, Opp. Karelibaug Water Tank, Karelibaug, Vadodara – 390018"]
+  ];
+  var cl=document.getElementById("centreList"),q=document.getElementById("q");
+  function renderC(){
+    var s=q.value.trim().toLowerCase();cl.innerHTML="";var n=0;
+    C.forEach(function(c){
+      if(s&&c.join(" ").toLowerCase().indexOf(s)<0)return;n++;
+      var el=document.createElement("div");el.className="c";
+      ["city","name","addr"].forEach(function(k,j){var x=document.createElement("div");x.className=k;x.textContent=c[j];el.appendChild(x)});
+      cl.appendChild(el);
+    });
+    if(!n){var e=document.createElement("p");e.className="empty";e.textContent="No centre matches that search. Try a city name such as Rajkot or Surat.";cl.appendChild(e)}
+  }
+  q.addEventListener("input",renderC);renderC();
+
+  /* Copy buttons */
+  document.querySelectorAll(".copy").forEach(function(b){
+    b.addEventListener("click",function(){
+      var el=document.getElementById(b.dataset.copy),txt=el.textContent;
+      function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected"}
+      try{navigator.clipboard.writeText(txt).then(function(){b.textContent="Copied"},sel)}catch(e){sel()}
+      setTimeout(function(){b.textContent="Copy"},1800);
+    });
+  });
+})();
+</script>
+
+</body></html>

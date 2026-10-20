@@ -1,0 +1,334 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Karnataka PGET 2026 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: single readable column; deadline strip and jump links up top, then steps, eligibility, documents, rounds, money rules */
+:root{
+  --bg:#f5f7f6; --surface:#ffffff; --fg:#17231f; --muted:#56635e; --line:#d9e1dd;
+  --accent:#0f6b5c; --accent-soft:#e3f1ed; --warn:#9a4a07; --warn-soft:#fdf1e3; --danger:#a1262b; --danger-soft:#fbeaea;
+  --display:"Literata", Georgia, "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1614; --surface:#17211e; --fg:#e6eeeb; --muted:#9fb0aa; --line:#2a3833;
+  --accent:#5cc7b0; --accent-soft:#16302a; --warn:#f0a35c; --warn-soft:#2e2116; --danger:#f08a8e; --danger-soft:#331a1c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1614; --surface:#17211e; --fg:#e6eeeb; --muted:#9fb0aa; --line:#2a3833;
+  --accent:#5cc7b0; --accent-soft:#16302a; --warn:#f0a35c; --warn-soft:#2e2116; --danger:#f08a8e; --danger-soft:#331a1c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:flex;flex-direction:column;gap:36px}
+h1,h2{font-family:var(--display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(1.7rem,5vw,2.3rem)}
+h2{font-size:1.35rem}
+h3{margin:0;font-size:1.02rem}
+p{margin:0}
+strong{font-weight:700}
+.eyebrow{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);max-width:64ch}
+header{display:flex;flex-direction:column;gap:10px}
+
+.deadline{background:var(--accent);color:var(--bg);border-radius:12px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between}
+.deadline .lbl{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.deadline .date{font-family:var(--display);font-size:1.2rem;font-weight:700}
+.deadline .left{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.05rem}
+
+nav.jump{display:flex;flex-wrap:wrap;gap:8px}
+nav.jump a{font-size:.88rem;font-weight:600;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:6px 12px;border-radius:999px}
+nav.jump a:hover{text-decoration:underline}
+
+section{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;position:relative;padding-bottom:22px}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line)}
+.num{width:40px;height:40px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface)}
+.steps .body{min-width:0;display:flex;flex-direction:column;gap:4px;padding-top:6px}
+.steps p{color:var(--muted)}
+.url{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86rem;word-break:break-all;color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card p{color:var(--muted);font-size:.95rem}
+.tag{align-self:flex-start;font-size:.75rem;font-weight:700;letter-spacing:.05em;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:6px}
+
+ul.check{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+ul.check li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+ul.check li::before{content:"";width:16px;height:16px;margin-top:4px;border:2px solid var(--accent);border-radius:4px}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+ul.plain li{color:var(--fg)}
+.small{font-size:.9rem;color:var(--muted)}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:.93rem}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--accent-soft)}
+tr:last-child td{border-bottom:0}
+td.num-c{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+td code{font-weight:700;color:var(--accent);font-family:ui-monospace,Menlo,Consolas,monospace}
+
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+details summary{cursor:pointer;padding:14px 16px;font-weight:600;list-style-position:inside}
+details summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details .inner{padding:0 16px 16px;display:flex;flex-direction:column;gap:10px}
+
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.choice{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.choice .k{font-family:var(--display);font-weight:700;color:var(--accent);font-size:1.05rem}
+.choice p{color:var(--muted);font-size:.93rem}
+.choice .imp{font-size:.88rem;color:var(--fg);border-top:1px dashed var(--line);padding-top:6px}
+
+.warn{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.warn h3{color:var(--warn)}
+.warn ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.danger{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:0 10px 10px 0;padding:14px 18px}
+.danger p{color:var(--fg)}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">KEA · PGET-2026 · Medical PG</span>
+    <h1>Karnataka PG Medical Counselling 2026: Step-by-Step Guide</h1>
+    <p class="lede">For MD / MS / Diploma seats in Karnataka, and DNB &amp; Diploma seats for Karnataka in-service doctors. Based on KEA's PGET-2026 notification and the PG Medical &amp; Dental Information Bulletin 2026.</p>
+  </header>
+
+  <div class="deadline" role="note">
+    <div>
+      <div class="lbl">Registration window</div>
+      <div class="date">5 Oct, 11:00 am → 15 Oct 2026, 11:00 am</div>
+    </div>
+    <div class="left" id="countdown">Closes 15 Oct, 11:00 am IST</div>
+  </div>
+
+  <nav class="jump" aria-label="Jump to section">
+    <a href="#steps">Steps</a>
+    <a href="#fees">Fees</a>
+    <a href="#seats">Seat types</a>
+    <a href="#clauses">Eligibility clauses</a>
+    <a href="#documents">Documents</a>
+    <a href="#rounds">Rounds</a>
+    <a href="#bonds">Bonds &amp; penalties</a>
+  </nav>
+
+  <section id="steps">
+    <h2>Steps to follow</h2>
+    <ol class="steps">
+      <li><span class="num">1</span><div class="body">
+        <h3>Check you are eligible</h3>
+        <p>50th percentile or above in NEET-PG 2026. Non-Karnataka candidates must meet the General (UR) cut-off. Anyone already holding a clinical PG degree cannot apply.</p></div></li>
+      <li><span class="num">2</span><div class="body">
+        <h3>Read the Information Bulletin</h3>
+        <p>It covers eligibility clauses, seat types, documents and allotment rules.</p>
+        <span class="url">cetonline.karnataka.gov.in/KEA/pgetmed2026</span></div></li>
+      <li><span class="num">3</span><div class="body">
+        <h3>Create your profile</h3>
+        <p>Enter your NEET-PG roll number. Name, parents' names, date of birth, score and mobile number come from NBE data. An OTP goes to the mobile number you gave NBE.</p></div></li>
+      <li><span class="num">4</span><div class="body">
+        <h3>Fill the form</h3>
+        <p>Choose your eligibility clause code, reservation category, education details and in-service status. Upload photo, left thumb impression and signature.</p></div></li>
+      <li><span class="num">5</span><div class="body">
+        <h3>Check everything, then declare</h3>
+        <p>You can edit any number of times before the declaration. After declaring, nothing can be changed, including category and income.</p></div></li>
+      <li><span class="num">6</span><div class="body">
+        <h3>Pay the fee and print the form</h3>
+        <p>Pay online through the payment gateway. Save your Application ID / Login ID and keep the printout until counselling ends.</p></div></li>
+      <li><span class="num">7</span><div class="body">
+        <h3>Book a slot and attend verification</h3>
+        <p>Book on the KEA website (Annexure 18–19). Go in person to KEA, 18th Cross, Malleswaram, Bengaluru with originals. Collect your <strong>document verification slip</strong>. Without it you cannot enter options.</p></div></li>
+      <li><span class="num">8</span><div class="body">
+        <h3>Enter options and check mock allotment</h3>
+        <p>Options are entered once and carry through the rounds. A mock allotment lets you reorder, add or delete options before the real one.</p></div></li>
+      <li><span class="num">9</span><div class="body">
+        <h3>Act on your allotment</h3>
+        <p>After round 1, pick one of four choices. After later rounds you must join the allotted college. See <a href="#rounds">Rounds</a>.</p></div></li>
+    </ol>
+  </section>
+
+  <section id="fees">
+    <h2>Registration fee</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Category</th><th>Fee</th></tr></thead>
+      <tbody>
+        <tr><td>SC / ST / Category-1 / PwD (Karnataka)</td><td class="num-c">₹750</td></tr>
+        <tr><td>General / 2A / 2B / 3A / 3B (Karnataka)</td><td class="num-c">₹1,500</td></tr>
+        <tr><td>Non-Karnataka candidates</td><td class="num-c">₹4,000</td></tr>
+        <tr><td>NRI / OCI / PIO / Foreign nationals</td><td class="num-c">₹7,000</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">The fee is not refunded for any reason. Missed the mock option entry? Eligible candidates can still enter options by paying a non-refundable ₹750.</p>
+  </section>
+
+  <section id="seats">
+    <h2>Seat types</h2>
+    <div class="grid">
+      <div class="card"><span class="tag">G · Government</span>
+        <p>50% of seats in government colleges (other 50% go to All India Quota via MCC), 33% in private non-minority, 20% in private minority, and 40% in private university colleges.</p></div>
+      <div class="card"><span class="tag">P · Private</span>
+        <p>42% in KPCF colleges, split equally into GMP (Karnataka merit) and OPN (all-India, Indian citizens). 55% in KRLMPCA / AMPCK colleges: 66% for the minority group, the rest split GMP / OPN. 40% in private universities.</p></div>
+      <div class="card"><span class="tag">N · NRI</span>
+        <p>15% of seats in KPCF, KRLMPCA, AMPCK colleges and private universities. For NRI, NRI wards, PIO, OCI and foreign nationals.</p></div>
+      <div class="card"><span class="tag">Q · Others</span>
+        <p>10% in KPCF, KRLMPCA and AMPCK colleges, 5% in private universities. Open to all NEET-PG qualified candidates except NRI / PIO / OCI / foreign nationals.</p></div>
+    </div>
+    <p class="small">Minority seat codes: MC (Christian), MM (Muslim), MA (Tamil), ME (Telugu), MK (Kodava), MU (Tulu). Linguistic minority needs Tamil, Telugu, Kodava or Tulu as mother tongue plus 10 years of study in Karnataka. St. John's Medical College has its own four categories.</p>
+  </section>
+
+  <section id="clauses">
+    <h2>Eligibility clauses</h2>
+    <p class="lede">You choose one clause code in the form. It decides which seats you can take and which documents you must show.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Code</th><th>Who it covers</th><th>Seats</th></tr></thead>
+      <tbody>
+        <tr><td><code>a</code></td><td>Indian citizen who passed MBBS in Karnataka</td><td>G</td></tr>
+        <tr><td><code>b</code></td><td>10 years of study (1st–12th) in Karnataka, passed SSLC or 2nd PUC in Karnataka, and MBBS in Karnataka</td><td>G, GMP</td></tr>
+        <tr><td><code>c</code></td><td>10 years of study in Karnataka, passed SSLC or 2nd PUC in Karnataka, but MBBS outside Karnataka</td><td>G, GMP</td></tr>
+        <tr><td><code>d</code></td><td>Child of All India Service officer (Karnataka cadre) posted outside the state</td><td>G</td></tr>
+        <tr><td><code>e</code></td><td>Child of a central govt / PSU employee who declared a Karnataka home town and studied 10 years in Karnataka</td><td>G</td></tr>
+        <tr><td><code>f</code></td><td>Child of an MP elected from Karnataka (study period in Delhi counts)</td><td>G</td></tr>
+        <tr><td><code>g</code></td><td>Child of serving defence personnel or ex-servicemen with Karnataka home town</td><td>G</td></tr>
+        <tr><td><code>y</code></td><td>Indian citizen with MBBS from outside Karnataka</td><td>OPN, Q</td></tr>
+        <tr><td><code>z</code></td><td>OCI / PIO / NRI / foreign national</td><td>N</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">OPN and Q seats are open to any Indian citizen with an MBBS, whatever their clause. Only natural-born children count (not adopted children or grandchildren). Repeating a class counts as one year. Foreign medical graduates must have passed FMGE.</p>
+  </section>
+
+  <section id="documents">
+    <h2>Documents for verification</h2>
+    <p class="lede">Carry originals plus one set of photocopies. Mandatory for everyone:</p>
+    <ul class="check">
+      <li>KEA PGET-2026 application printout</li>
+      <li>Photo ID with address (Aadhaar, PAN, passport, voter ID, driving licence or ration card)</li>
+      <li>NEET-PG 2026 admit card and scorecard</li>
+      <li>SSLC / 10th marks card (date of birth proof)</li>
+      <li>2nd PUC / 12th marks card</li>
+      <li>MBBS marks cards of all phases</li>
+      <li>MBBS degree certificate (provisional degree certificate only if passed in 2026)</li>
+      <li>Internship completion certificate (Annexure 5)</li>
+      <li>Certificate from head of institution that your college is NMC-recognised</li>
+      <li>Permanent medical council registration (provisional accepted only if passed in 2026)</li>
+      <li>Undertaking in Annexure 7, on white paper and on ₹100 e-stamp paper</li>
+      <li>371(J) Kalyana Karnataka certificate (Annexure 8), if claiming that reservation</li>
+    </ul>
+
+    <details>
+      <summary>Extra documents by clause and category</summary>
+      <div class="inner">
+        <ul class="plain">
+          <li><strong>Clause b, c:</strong> 10-year study certificate in Annexure 11, countersigned by BEO / DDPI, plus SSLC or 2nd PUC marks card from Karnataka.</li>
+          <li><strong>Clause d:</strong> DPAR certificate showing the parent's All India Service cadre and period served outside Karnataka.</li>
+          <li><strong>Clause e:</strong> Parent's 10-year study certificate (Annexure 11) and employer's home-town declaration showing transferable service.</li>
+          <li><strong>Clause f:</strong> Parliament Secretariat certificate and the candidate's 10-year study certificate.</li>
+          <li><strong>Clause g:</strong> Parent's home-town declaration from the defence records office, or from Sainik Welfare for ex-servicemen.</li>
+          <li><strong>Clause z:</strong> Passport / visa, parents' residence proof from the embassy, citizenship proof, income tax documents.</li>
+          <li><strong>Reservation:</strong> Caste / income certificate from the Tahsildar. SC/ST in Form-D, Category-1 in Form-E, 2A/2B/3A/3B in Form-F. Must be in the name of candidate and father (married women: with husband's name and income).</li>
+          <li><strong>Religious minority:</strong> Tahsildar certificate (Annexure 11 &amp; 12).</li>
+          <li><strong>Linguistic minority:</strong> Certificate from BEO / DDPI (Annexure 9 &amp; 10).</li>
+          <li><strong>NRI ward:</strong> Annexure 17 and 17(A), with an embassy certificate of the sponsor issued within 6 months.</li>
+        </ul>
+        <p class="small">Submit at the college after admission: RGUHS eligibility certificate and migration certificate (if MBBS was not from RGUHS).</p>
+      </div>
+    </details>
+
+    <div class="danger" role="note"><p><strong>Karnataka SC candidates:</strong> Your caste certificate must show the internal sub-group <strong>SCA, SCB or SCC</strong>, and you must enter its RD number. Without it you cannot take SC-reserved seats.</p></div>
+  </section>
+
+  <section id="rounds">
+    <h2>Counselling rounds</h2>
+    <p class="lede">Allotment goes by NEET rank, your option order and the government roster. There are three rounds plus a stray vacancy round, all online through KEA.</p>
+
+    <h3>After Round 1: pick one of four choices</h3>
+    <div class="choices">
+      <div class="choice"><span class="k">Choice 1</span><p>Fully happy with the seat. Pay fees, submit originals, collect the admission order, join and update joining status on the KEA portal.</p><p class="imp">Out of all later rounds.</p></div>
+      <div class="choice"><span class="k">Choice 2</span><p>Keep this seat but try for a better one. Pay fees and deposit originals. Your current seat becomes your last option.</p><p class="imp">If upgraded, the old seat is lost automatically.</p></div>
+      <div class="choice"><span class="k">Choice 3</span><p>Give up this seat and try again in Round 2. No fee to pay, but deposit originals.</p><p class="imp">No claim on the surrendered seat.</p></div>
+      <div class="choice"><span class="k">Choice 4</span><p>Quit KEA counselling (for example, you got a seat elsewhere).</p><p class="imp">Seat cancelled, out of all later rounds.</p></div>
+    </div>
+    <p class="small">Not picking any choice by the deadline cancels the seat and removes you from later rounds.</p>
+
+    <h3>Round 2</h3>
+    <ul class="plain">
+      <li>Open to Choice 2 and Choice 3 candidates, and those with no Round 1 seat, who deposited originals.</li>
+      <li>You can reorder or delete options but cannot add new ones.</li>
+      <li>No choices after the result. If allotted, you must pay and join.</li>
+    </ul>
+
+    <h3>Round 3 (Mop-up)</h3>
+    <ul class="plain">
+      <li>Open to those with no seat after Round 2, and to those who joined a KEA-allotted college (for upgrade).</li>
+      <li>Fresh option entry. Earlier options are not carried over.</li>
+      <li>Not open to those who joined a seat through MCC / deemed university / other boards.</li>
+      <li>A new seat here cancels your earlier seat with no way back.</li>
+    </ul>
+
+    <h3>Stray vacancy round</h3>
+    <ul class="plain">
+      <li>Only for candidates who never got a KEA PG seat in any round and have not joined a seat elsewhere.</li>
+    </ul>
+  </section>
+
+  <section id="bonds">
+    <h2>Bonds, service and penalties</h2>
+    <div class="grid">
+      <div class="card"><h3>1-year compulsory service</h3><p>After PG, everyone (except those who already did rural service after MBBS) serves one year in a government hospital. Only temporary registration until then. Bond on ₹100 stamp paper (Annexure 1).</p></div>
+      <div class="card"><h3>3-year government service</h3><p>Government seat holders (including AIQ) sign an undertaking on ₹200 stamp paper (Annexure 2) to serve 3 years if asked. Breaking it: ₹50 lakh (degree) or ₹25 lakh (diploma).</p></div>
+    </div>
+
+    <div class="tablewrap"><table>
+      <thead><tr><th>When you cancel or leave</th><th>Degree</th><th>Diploma</th></tr></thead>
+      <tbody>
+        <tr><td>After Round 1 admission, up to one day before Round 2</td><td class="num-c">₹25,000</td><td class="num-c">₹25,000</td></tr>
+        <tr><td>Allotted a clinical seat in Round 2 but not joining</td><td class="num-c">₹1,50,000</td><td class="num-c">₹60,000</td></tr>
+        <tr><td>After Round 2 joining date, before mop-up (clinical)</td><td class="num-c">₹7,00,000</td><td class="num-c">₹3,00,000</td></tr>
+        <tr><td>After mop-up round (medical clinical)</td><td class="num-c">₹18,00,000</td><td class="num-c">₹18,00,000</td></tr>
+        <tr><td>Leaving the course midway (bond)</td><td class="num-c">₹10,00,000</td><td class="num-c">₹4,00,000</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Lower penalties apply to pre-clinical (₹1 lakh) and para-clinical (₹2 lakh degree, ₹75,000 diploma) seats. Fees paid are forfeited. Leaving after the last admission date also bars you from any PG seat for 3 years, and you must repay the full course fee and stipend.</p>
+
+    <h3>Fee concessions</h3>
+    <ul class="plain">
+      <li><strong>Karnataka SC/ST, income below ₹2.5 lakh:</strong> no tuition fee on government seats.</li>
+      <li><strong>Karnataka SC/ST, income ₹2.5–10 lakh:</strong> pay 50% of tuition fee on government seats.</li>
+      <li><strong>Category-1, income below ₹2.5 lakh:</strong> no fee in government colleges.</li>
+      <li><strong>OBC:</strong> pay the fee, then claim reimbursement from the Backward Class Department.</li>
+      <li>Private seats: full fee. In-service candidates pay full fee and claim from their department. NRI and Q seats need a bank guarantee.</li>
+    </ul>
+  </section>
+
+  <div class="warn" role="note">
+    <h3>Important</h3>
+    <ul>
+      <li>Qualifying NEET-PG alone does not give you a seat. You must complete registration <strong>and</strong> document verification.</li>
+      <li>Details entered before the declaration are final. KEA will not change them later.</li>
+      <li>Once a seat is allotted from your options, you cannot refuse it. Only enter colleges you will actually join, after checking the fee.</li>
+      <li>Not reporting to an allotted college counts as seat blocking. It attracts penalties and possible legal action.</li>
+      <li>PwD reservation is for Karnataka candidates only, with a compulsory medical exam at KEA.</li>
+      <li>Ignore touts promising seats. Report them to <strong>keauthority-ka@nic.in</strong>. Trust only notices on the KEA website, not WhatsApp numbers added to copies of notices.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>Sources: KEA PGET-2026 notification (PG Medical courses 2026-27) and KEA Information Bulletin for PG Medical &amp; Dental 2026 (dated 14-08-2026).</p>
+    <p>The bulletin says its PG Medical rules take effect after MCC announcements. Always confirm the latest rules, dates and documents on the official KEA website.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var el=document.getElementById('countdown');
+  var end=new Date('2026-10-15T11:00:00+05:30').getTime();
+  function tick(){
+    var ms=end-Date.now();
+    if(ms<=0){el.textContent='Registration closed';return;}
+    var d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5);
+    el.textContent=d+' days '+h+' hrs left';
+  }
+  tick(); setInterval(tick,60000);
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,154 @@
+/* Counselling guide pages (served by server/guides.js).
+   1. The RankRound frame: top bar, guide bar and footer, same look as the app.
+   2. A thin layer that gives every guide RankRound's fonts and neutral colours.
+      Each guide keeps its own accent and status colours: those often carry meaning
+      (Government vs Management quota, freeze vs float, govt vs private seats). */
+
+:root{
+  --rr-sans:"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --rr-serif:"Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --rr-mono:"Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --rr-page:#f6f5f1; --rr-surface:#ffffff; --rr-sunk:#f1efe9;
+  --rr-ink:#0e1420; --rr-ink-2:#384050; --rr-muted:#6c6961;
+  --rr-rule:#e3dfd6; --rr-rule-2:#cdc8bc;
+  --rr-link:#1c4f9c; --rr-focus:#2457c5; --rr-gold:#d6ab5a;
+  --rr-bar:#0b1422; --rr-bar-ink:#e9edf3; --rr-bar-muted:#8d97a8; --rr-bar-rule:#1f2a3b;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --rr-page:#0a0e15; --rr-surface:#11161f; --rr-sunk:#0d121a;
+    --rr-ink:#e8ebf0; --rr-ink-2:#bac1cc; --rr-muted:#8c94a2;
+    --rr-rule:#212a37; --rr-rule-2:#323d4d;
+    --rr-link:#9dbcf0; --rr-focus:#7ea6f0;
+    --rr-bar:#070a10; --rr-bar-rule:#1a2230;
+  }
+}
+:root[data-theme="dark"]{
+  --rr-page:#0a0e15; --rr-surface:#11161f; --rr-sunk:#0d121a;
+  --rr-ink:#e8ebf0; --rr-ink-2:#bac1cc; --rr-muted:#8c94a2;
+  --rr-rule:#212a37; --rr-rule-2:#323d4d;
+  --rr-link:#9dbcf0; --rr-focus:#7ea6f0;
+  --rr-bar:#070a10; --rr-bar-rule:#1a2230;
+}
+
+/* ---------- 2. RankRound fonts and neutrals inside the guides ----------
+   html:root:root outranks the guides' own :root, :root[data-theme] and
+   :root:not([data-theme]) blocks in both light and dark. Muted text is a step lighter
+   than the app's in dark mode: the guides set it on tinted boxes as well as on cards. */
+:root{--rr-guide-muted:#6c6961}
+@media (prefers-color-scheme: dark){ html:root:root:not([data-theme="light"]){--rr-guide-muted:#9aa3b1; color-scheme:dark} }
+html:root:root[data-theme="dark"]{--rr-guide-muted:#9aa3b1; color-scheme:dark}
+html:root:root[data-theme="light"]{color-scheme:light}
+html:root:root{
+  --bg:var(--rr-page); --surface:var(--rr-surface); --card:var(--rr-surface); --chip:var(--rr-sunk);
+  --ink:var(--rr-ink); --text:var(--rr-ink); --fg:var(--rr-ink);
+  --muted:var(--rr-guide-muted); --line:var(--rr-rule);
+  --display:var(--rr-serif); --f-display:var(--rr-serif);
+  --body:var(--rr-sans); --f-body:var(--rr-sans);
+  --mono:var(--rr-mono); --f-num:var(--rr-mono);
+}
+/* :not(#rr) adds id weight so these beat the guides' class-level font rules. */
+html body:not(#rr){font-family:var(--rr-sans); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale}
+html body :is(h1, h2):not(#rr){font-family:var(--rr-serif); font-weight:600; letter-spacing:-.012em}
+[hidden]{display:none !important}
+
+/* ---------- 1. frame ---------- */
+[data-rr], [data-rr] *{box-sizing:border-box}
+[data-rr]{font:400 14px/1.5 var(--rr-sans); letter-spacing:normal; text-align:left; -webkit-font-smoothing:antialiased}
+[data-rr] p{margin:0}
+[data-rr] a{text-decoration:none}
+[data-rr] a:hover{text-decoration:underline; text-underline-offset:3px}
+[data-rr] svg{display:block; flex:none; width:16px; height:16px}
+[data-rr] a:focus-visible, [data-rr] button:focus-visible{outline:2px solid var(--rr-focus); outline-offset:2px}
+
+.rr-top{background:var(--rr-bar); color:var(--rr-bar-ink); border-bottom:1px solid var(--rr-bar-rule)}
+.rr-top-in{max-width:1480px; margin:0 auto; height:56px; padding:0 24px; display:flex; align-items:center; gap:28px}
+.rr-top .rr-mark{display:flex; align-items:baseline; gap:10px; flex:none; color:var(--rr-bar-ink)}
+.rr-top .rr-mark:hover{text-decoration:none}
+.rr-top .rr-mark b{font:600 21px/1 var(--rr-serif); letter-spacing:-.015em; color:var(--rr-bar-ink)}
+.rr-top .rr-mark em{font-style:normal; color:var(--rr-gold)}
+.rr-top .rr-mark small{font:600 9.5px/1 var(--rr-sans); letter-spacing:.16em; text-transform:uppercase; color:var(--rr-bar-muted);
+  padding-left:10px; border-left:1px solid var(--rr-bar-rule)}
+.rr-top .rr-nav{display:flex; align-self:stretch; gap:2px}
+.rr-top .rr-nav a{display:flex; align-items:center; gap:7px; padding:0 13px; color:var(--rr-bar-muted); font:500 13.5px/1 var(--rr-sans);
+  border-bottom:2px solid transparent; margin-bottom:-1px}
+.rr-top .rr-nav a:hover{color:var(--rr-bar-ink); text-decoration:none}
+.rr-top .rr-nav a[aria-current="page"]{color:var(--rr-gold); border-bottom-color:var(--rr-gold)}
+.rr-top .rr-nav i{width:6px; height:6px; border-radius:50%; background:var(--rr-gold)}
+.rr-top .rr-right{margin-left:auto; display:flex; align-items:center; gap:8px}
+.rr-top .rr-icon{display:inline-grid; place-items:center; width:30px; height:30px; padding:0; margin:0; border:0; border-radius:2px;
+  background:transparent; color:var(--rr-bar-muted); cursor:pointer}
+.rr-top .rr-icon:hover{color:var(--rr-bar-ink); background:var(--rr-bar-rule)}
+.rr-top .rr-cta{display:inline-flex; align-items:center; height:30px; padding:0 11px; border-radius:2px; background:#e9edf3; color:#0b1422;
+  font:500 12.5px/1 var(--rr-sans); white-space:nowrap}
+.rr-top .rr-cta:hover{background:#fff; text-decoration:none}
+
+.rr-guidebar{background:var(--rr-surface); color:var(--rr-ink); border-bottom:1px solid var(--rr-rule)}
+.rr-guidebar-in{max-width:1480px; margin:0 auto; padding:10px 24px; display:flex; align-items:center; flex-wrap:wrap; gap:8px 14px; font-size:13px}
+.rr-guidebar .rr-back{display:inline-flex; align-items:center; gap:6px; color:var(--rr-link); font-weight:500}
+.rr-guidebar .rr-back svg{width:15px; height:15px}
+.rr-guidebar .rr-where{font:600 10.5px/1 var(--rr-sans); letter-spacing:.14em; text-transform:uppercase; color:var(--rr-muted);
+  padding-left:14px; border-left:1px solid var(--rr-rule)}
+.rr-guidebar .rr-doc{color:var(--rr-ink); font-weight:500}
+.rr-guidebar .rr-docs{display:flex; flex-wrap:wrap; gap:4px}
+.rr-guidebar .rr-docs a{padding:5px 10px; border:1px solid var(--rr-rule-2); border-radius:2px; color:var(--rr-ink-2); font-weight:500; line-height:1.2}
+.rr-guidebar .rr-docs a:hover{border-color:var(--rr-ink); text-decoration:none}
+.rr-guidebar .rr-docs a[aria-current="page"]{background:var(--rr-ink); border-color:var(--rr-ink); color:var(--rr-page)}
+.rr-guidebar .rr-meta{margin-left:auto; display:flex; align-items:center; flex-wrap:wrap; gap:4px 14px; color:var(--rr-muted)}
+.rr-guidebar .rr-meta a{display:inline-flex; align-items:center; gap:4px; color:var(--rr-link); font-weight:500}
+.rr-guidebar .rr-meta svg{width:13px; height:13px}
+
+.rr-foot{margin-top:40px; border-top:1px solid var(--rr-rule); background:var(--rr-page); color:var(--rr-muted)}
+.rr-foot-in{max-width:1480px; margin:0 auto; padding:28px 24px 40px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:48px;
+  font-size:12px; line-height:1.7}
+.rr-foot .rr-wm{display:block; margin-bottom:10px; font:600 17px/1 var(--rr-serif); color:var(--rr-ink)}
+.rr-foot p{margin:0 0 8px}
+.rr-foot p b{color:var(--rr-ink-2); font-weight:600}
+.rr-foot a{color:var(--rr-link)}
+
+@media (max-width:960px){
+  .rr-top-in{gap:14px; padding:0 16px}
+  .rr-top .rr-mark small, .rr-top .rr-nav{display:none}
+  .rr-guidebar-in{padding:10px 16px}
+  .rr-foot-in{grid-template-columns:1fr; gap:16px; padding:24px 16px 32px}
+}
+@media (max-width:560px){
+  .rr-guidebar .rr-meta{margin-left:0; flex-basis:100%}
+}
+@media print{
+  [data-rr]{display:none !important}
+}
+
+/* ---------- per-guide adjustments ----------
+   Found by a contrast audit of every guide in both themes (WCAG AA: 4.5:1, 3:1 for large text). */
+
+/* DNB seat matrix has its own light/dark button; the top bar's switch covers every guide. */
+html[data-guide="dnb-seats"] #theme{display:none}
+
+/* White text sits on the accent colour, which these guides lighten in dark mode (about 2:1).
+   Keep each guide's deep accent behind white text in both themes. */
+html[data-guide="mcc"] header,
+html[data-guide="mcc"] .btn,
+html[data-guide="mcc"] .steps li::before,
+html[data-guide="mcc"] .seg button[aria-pressed="true"],
+html[data-guide="mcc"] .qbtn:hover,
+html[data-guide="mcc"] nav a.active,
+html[data-guide="mcc"] #toTop,
+html[data-guide="mcc"] .tabbar button[aria-selected="true"]{background-color:#0e6b5c; border-color:#0e6b5c}
+html[data-guide="mcc"] header .badge{background:rgba(0,0,0,.24)}
+html[data-guide="dnb-seats"] button.primary{background:#0b6e4f; border-color:#0b6e4f}
+html[data-guide="central-quota-seats"] button.primary{background:#0f6b5c; border-color:#0f6b5c}
+
+/* DNB greys out zero seat counts; still lighter than real counts, now readable. */
+html[data-guide="dnb-seats"]:root:root{--zero:#6f7780}
+@media (prefers-color-scheme: dark){ html[data-guide="dnb-seats"]:root:root:not([data-theme="light"]){--zero:#7d8693} }
+html[data-guide="dnb-seats"]:root:root[data-theme="dark"]{--zero:#7d8693}
+
+/* Kerala prospectus: amber pill text was 4.4:1 on its pale background in light mode. */
+@media (prefers-color-scheme: light){ html[data-guide="kerala-prospectus"]:not([data-theme="dark"]) .pill.warn{color:#9a4513} }
+html[data-guide="kerala-prospectus"][data-theme="light"] .pill.warn{color:#9a4513}
+
+/* Telangana: ".contacts a" outranks ".btn", so the Apply buttons were blue on blue in light mode. */
+html[data-guide="telangana"] .contacts a.btn{color:#fff}
+@media (prefers-color-scheme: dark){ html[data-guide="telangana"]:not([data-theme="light"]) .contacts a.btn{color:#0f131a} }
+html[data-guide="telangana"][data-theme="dark"] .contacts a.btn{color:#0f131a}

@@ -5,6 +5,7 @@ PG medical counselling cut-off predictor. It covers state counselling (CMR) and 
 - a sign-up page that opens the site: name, mobile or email (one-time code), NEET-PG CMR and state
 - cut-off data shown per state: each candidate sees only the state they chose
 - a shortlist builder
+- plain-language NEET-PG 2026 counselling guides for the All India Quota and each state, with live dates
 - an admin console with traffic analytics, leads, and data uploads
 
 The 2025 Odisha data from the original `odisha_1.html` is loaded automatically on first start.
@@ -17,6 +18,7 @@ Requires Node.js 22.13 or newer. No database server is needed: data lives in a s
 npm install
 cp .env.example .env      # then edit ADMIN_PASSWORD
 npm start                 # http://localhost:3000
+npm test                  # unit and API tests on a throw-away database
 ```
 
 - Public site: `http://localhost:3000`
@@ -34,8 +36,10 @@ npm start                 # http://localhost:3000
 | `server/schema.js` | Upload columns, header aliases, validation, allotment → cut-off aggregation |
 | `server/db.js` | SQLite schema, settings, first-run seed |
 | `server/seed/` | The 2025 data extracted from the client's original page |
-| `public/` | Public app (`index.html`, `js/app.js`) and admin console (`admin.html`, `js/admin.js`) |
-| `public/counselling.html` | NEET-PG 2026 counselling guide (MCC, Gujarat, Karnataka, Kerala) at `/counselling`. Public, no sign-in. Self-contained: edit its live dates in the `DATES` block near the end of the file |
+| `server/guides.js` | Serves each counselling guide at `/counselling/<guide>` inside the RankRound frame |
+| `guides/` | The counselling guides as the client sent them, `guides.json` (the list, with key dates), and `assets/` (notice scans and PDFs) |
+| `public/` | Public app (`index.html`, `js/app.js`), admin console (`admin.html`, `js/admin.js`), and the guide frame (`css/guide.css`, `js/guide.js`) |
+| `test/` | `npm test`: unit tests for the guide frame, API tests against a real server |
 
 ## Switching on real OTP (Firebase, by Google)
 
@@ -81,6 +85,43 @@ Without these, and with `AUTH_PROVIDER=firebase`, the sign-up form offers mobile
 The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which datasets they see: a candidate who chose Karnataka sees only datasets tagged Karnataka, and gets a "coming soon" page until one is published. Candidates can change their state, CMR or name from the account menu (Edit profile).
 
 Accounts created before sign-up asked for CMR and state are asked to complete their profile the next time they open the predictor.
+
+## Counselling guides
+
+`/counselling` lists every guide with its key dates (open, closing soon, closed), a "closing in the next 3 days" strip and a state search. A signed-in student sees their own state first, and the predictor and cut-off pages link to their state's guide (and to the MCC guide for the All India Quota).
+
+Each guide is a stand-alone HTML file in `guides/`, kept exactly as the client sent it, and served at `/counselling/<slug>`. As it is served, the page gets:
+
+- RankRound's top bar, a guide bar (back to all guides, the other guides for the same state, the notice date, the official site) and footer;
+- RankRound's fonts and background, card, text and border colours, and the site's light/dark switch. Each guide keeps its own accent and status colours, which often carry meaning;
+- page tracking, so guide visits show under Pages in the admin overview.
+
+No iframes are involved, so each guide scrolls, searches and jumps between sections the way its author built it.
+
+**To update a guide**, replace its file in `guides/` with the new version. **To add one**, put the file in `guides/` and add an entry to `guides/guides.json`:
+
+```jsonc
+{
+  "slug": "punjab",                       // the address: /counselling/punjab
+  "file": "punjab.html",
+  "region": "Punjab",                     // a state name from server/states.js, or "All India"
+  "title": "Punjab PG medical counselling 2026",
+  "label": "State counselling guide",     // link text; tells guides for the same state apart
+  "authority": "BFUHS · State quota",
+  "summary": "One line about what the guide covers.",
+  "asOf": "2026-10-20",                   // date of the notice it is based on
+  "official": "https://bfuhs.ac.in",
+  "dates": [
+    { "what": "Online application", "when": "21 Oct, 10 am – 28 Oct, 5 pm", "from": "2026-10-21T10:00:00+05:30", "to": "2026-10-28T17:00:00+05:30" },
+    { "what": "Merit list", "when": "30 Oct", "on": "2026-10-30T00:00:00+05:30" },
+    { "what": "Round 1", "when": "To be announced", "label": "Awaited" }
+  ]
+}
+```
+
+(The comments above are for explanation only; JSON files can't contain them.) A date step is a window (`from`/`to`; `from` is optional), a single day (`on`), or a fixed status (`label`: `Awaited`, `Published` or `Reference`). Times are Indian Standard Time. The server checks `guides.json` when it starts and refuses to run with a clear message if an entry is wrong, for example a misspelt state or a missing file.
+
+Big files a guide links to (scanned notices, PDFs) belong in `guides/assets/` and are linked as `/counselling/assets/<file>`, rather than embedded in the page.
 
 ## Adding data without a developer
 

@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEET-PG 2026 Counselling Guide</title>
+<style>
+:root{
+  --bg:#f7f8fa; --card:#ffffff; --text:#1d2330; --muted:#5b6475; --line:#e3e6ec;
+  --accent:#0e6b5c; --accent-soft:#e3f2ef; --warn:#a4470b; --warn-soft:#fdf0e6;
+  --danger:#a61b29; --danger-soft:#fbe9eb; --info:#24539c; --info-soft:#e8eff9;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#12151b; --card:#1b2029; --text:#e6e9ef; --muted:#9aa3b2; --line:#2c3340;
+    --accent:#4cc3ab; --accent-soft:#16302b; --warn:#f0a35e; --warn-soft:#33251a;
+    --danger:#f0848f; --danger-soft:#3a1d22; --info:#8ab4f0; --info-soft:#1b2639;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+header{background:var(--accent);color:#fff;padding:28px 16px 22px}
+header .wrap{max-width:900px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:1.6rem;line-height:1.25}
+header p{margin:0;opacity:.92;font-size:.95rem}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 10px;font-size:.78rem;margin-top:10px}
+nav{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+nav .wrap{max-width:900px;margin:0 auto;padding:8px 12px}
+nav a{display:inline-block;color:var(--text);text-decoration:none;font-size:.85rem;padding:6px 10px;border-radius:999px;border:1px solid var(--line);margin-right:6px}
+nav a:hover{background:var(--accent-soft);border-color:var(--accent)}
+main{max-width:900px;margin:0 auto;padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin:16px 0;scroll-margin-top:130px}
+h2{margin:0 0 10px;font-size:1.25rem;color:var(--accent)}
+h3{margin:18px 0 6px;font-size:1.05rem}
+p{margin:8px 0}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+.muted{color:var(--muted);font-size:.9rem}
+.note{border-left:4px solid var(--info);background:var(--info-soft);padding:10px 12px;border-radius:8px;margin:12px 0}
+.warn{border-left:4px solid var(--warn);background:var(--warn-soft);padding:10px 12px;border-radius:8px;margin:12px 0}
+.danger{border-left:4px solid var(--danger);background:var(--danger-soft);padding:10px 12px;border-radius:8px;margin:12px 0}
+.tip{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 12px;border-radius:8px;margin:12px 0}
+.tablewrap{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:520px}
+th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:12px;padding:12px}
+.card h3{margin-top:0}
+.freeze{border-top:5px solid var(--info)}
+.float{border-top:5px solid var(--accent)}
+details{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0}
+details summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:8px 8px 8px 44px;border:1px solid var(--line);border-radius:10px;margin:8px 0}
+.steps li::before{content:counter(s);position:absolute;left:10px;top:8px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+.pill{display:inline-block;font-size:.75rem;padding:1px 8px;border-radius:999px;font-weight:600}
+.p-green{background:var(--accent-soft);color:var(--accent)}
+.p-amber{background:var(--warn-soft);color:var(--warn)}
+.p-red{background:var(--danger-soft);color:var(--danger)}
+a{color:var(--info)}
+footer{max-width:900px;margin:0 auto;padding:10px 16px 40px;color:var(--muted);font-size:.85rem}
+.pages{display:grid;grid-template-columns:1fr;gap:12px;margin:10px 0}
+.pg{display:block;margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:var(--text);background:#fff}
+.pg img{display:block;width:100%;height:auto}
+.pg figcaption{display:block;padding:6px 10px;font-size:.85rem;background:var(--card)}
+.btn{display:inline-block;background:var(--accent);color:#fff !important;text-decoration:none;padding:9px 16px;border-radius:999px;font-weight:600;font-size:.9rem}
+
+.tools-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.tool{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--bg)}
+.tool h3{margin:0 0 8px}
+.tool label.f{display:block;font-size:.85rem;color:var(--muted);margin:8px 0 4px}
+.tool select{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.qbtn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 12px;border-radius:999px;font:inherit;font-size:.88rem;cursor:pointer}
+.seg button[aria-pressed="true"],.qbtn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.out{margin-top:12px;padding:12px;border-radius:10px;background:var(--card);border:1px solid var(--line)}
+.out .big{font-size:1.5rem;font-weight:700;color:var(--accent)}
+.out.good{border-left:5px solid var(--accent)} .out.mid{border-left:5px solid var(--warn)} .out.bad{border-left:5px solid var(--danger)}
+.cd-list{list-style:none;padding:0;margin:8px 0 0}
+.cd-list li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin:6px 0;background:var(--card)}
+.cd-list li:first-child{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.cd-time{font-weight:700;white-space:nowrap;color:var(--accent);font-variant-numeric:tabular-nums}
+.cd-date{display:block;font-size:.8rem;color:var(--muted)}
+.stage{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.85rem;font-weight:600}
+.searchbar{position:sticky;top:46px;z-index:4;max-width:900px;margin:0 auto;padding:8px 16px;background:var(--bg)}
+.searchbar input{width:100%;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.searchbar .hint{font-size:.8rem;color:var(--muted);margin:4px 6px 0;min-height:1em}
+mark{background:#ffe27a;color:#1d2330;border-radius:3px;padding:0 1px}
+section.hidden-by-search{display:none}
+nav a.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.check{list-style:none;padding-left:0}
+.check li{margin:4px 0}
+.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:6px 8px;border-radius:8px}
+.check label:hover{background:var(--accent-soft)}
+.check input{margin-top:5px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.check input:checked + span{text-decoration:line-through;color:var(--muted)}
+.progress{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.mini{font-size:.8rem;color:var(--muted)}
+.linkbtn{background:none;border:none;color:var(--info);cursor:pointer;font:inherit;font-size:.85rem;padding:0;text-decoration:underline}
+#toTop{position:fixed;right:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:1.2rem;box-shadow:0 4px 12px rgba(0,0,0,.2);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
+#toTop.show{opacity:1;pointer-events:auto}
+.tabbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tabbar button{border:1px solid var(--line);background:var(--card);color:var(--text);padding:7px 12px;border-radius:999px;font:inherit;font-size:.85rem;cursor:pointer}
+.tabbar button[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tabpanel[hidden]{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>NEET-PG 2026 Counselling Guide</h1>
+    <p>MD / MS / DNB counselling by the Medical Counselling Committee (MCC). This is a plain-language summary of the 2026 Information Bulletin.</p>
+    <span class="badge">Based on DRAFT V10 · 05.10.2026 · subject to change</span>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#overview">Overview</a>
+  <a href="#tools">🧰 Tools</a>
+  <a href="#schedule">📅 Schedule</a>
+  <a href="#new">What's new</a>
+  <a href="#process">Step-by-step</a>
+  <a href="#rounds">Rounds</a>
+  <a href="#fees">Fees &amp; deposit</a>
+  <a href="#seats">Seats &amp; quotas</a>
+  <a href="#central">Central Univs</a>
+  <a href="#deemed">Deemed &amp; NRI</a>
+  <a href="#pwbd">PwBD</a>
+  <a href="#afms">AFMS</a>
+  <a href="#docs">Documents</a>
+  <a href="#choices">Choice filling</a>
+  <a href="#refund">Refunds</a>
+  <a href="#mistakes">Mistakes to avoid</a>
+  <a href="#errors">Draft errors</a>
+  <a href="#help">Helpline</a>
+  <a href="#sources">📄 Source PDFs</a>
+</div></nav>
+<div class="searchbar"><input id="q" type="search" placeholder="🔍 Search the guide (e.g. deposit, NRI, internship, OBC)" aria-label="Search the guide"><div class="hint" id="q-hint"></div></div>
+
+
+<main>
+
+<div class="warn"><strong>Important:</strong> This guide is based on a <strong>draft</strong> bulletin (Version 10, dated 05 Oct 2026). Rules, dates and fees can change in the final version. Always confirm on the official MCC website <a href="https://mcc.nic.in" target="_blank" rel="noopener">mcc.nic.in</a> before acting. MCC never contacts candidates individually, and nobody can "arrange" a seat for you.</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <h2>1. Overview</h2>
+  <p>The MCC (under DGHS, Ministry of Health) runs <strong>online</strong> counselling for these PG seats:</p>
+  <ul>
+    <li><strong>50% All India Quota (AIQ)</strong> seats of government medical colleges</li>
+    <li><strong>100%</strong> seats of <strong>Deemed Universities</strong></li>
+    <li><strong>Central Universities / Institutes</strong>: DU, AMU, BHU, IP University central institutes, CIP Ranchi, LGBRIMH Tezpur</li>
+    <li><strong>100% DNB</strong> seats (not in-service DNB)</li>
+    <li><strong>AFMS</strong> institutes (Priority III, IV and V candidates)</li>
+  </ul>
+  <p>There are <strong>4 rounds</strong>: Round 1, Round 2, Round 3 and the Stray Vacancy Round. Allotment depends on <strong>NEET-PG rank + your choices + your eligibility</strong>. State quota and private college seats are handled by your State counselling authority, not MCC.</p>
+  <h3>How big is PG counselling?</h3>
+  <div class="tablewrap"><table>
+    <tr><th>PG</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr>
+    <tr><td>Seats</td><td>22,818</td><td>24,917</td><td>26,894</td><td>28,750</td></tr>
+    <tr><td>Participating institutes</td><td>1,283</td><td>1,425</td><td>1,599</td><td>1,985</td></tr>
+    <tr><td>Candidates</td><td>61,014</td><td>83,156</td><td>89,864</td><td>1,03,596</td></tr>
+  </table></div>
+</section>
+
+
+<!-- TOOLS -->
+<section id="tools">
+  <h2>🧰 Interactive tools</h2>
+  <p class="muted">Quick answers for your own situation. Everything works offline, inside this page.</p>
+  <div class="tabbar" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="t-deadline">⏰ Deadlines</button>
+    <button role="tab" aria-selected="false" data-tab="t-fee">💰 Fees</button>
+    <button role="tab" aria-selected="false" data-tab="t-ff">❄️🌊 Freeze or Float?</button>
+    <button role="tab" aria-selected="false" data-tab="t-cons">⚠️ If I don't join…</button>
+    <button role="tab" aria-selected="false" data-tab="t-pwbd">♿ PwBD check</button>
+  </div>
+
+  <div class="tool tabpanel" id="t-deadline">
+    <h3>Next deadlines</h3>
+    <div>Right now: <span class="stage" id="cd-stage">…</span></div>
+    <ul class="cd-list" id="cd-list"></ul>
+    <p class="mini">Times are MCC server time (IST) from the tentative schedule. Countdowns update live. <button class="linkbtn" id="cd-all">Show all dates</button></p>
+  </div>
+
+  <div class="tool tabpanel" id="t-fee" hidden>
+    <h3>Registration fee calculator</h3>
+    <label class="f">Your category</label>
+    <div class="seg" data-group="cat">
+      <button aria-pressed="true" data-v="ur">UR / EWS</button>
+      <button aria-pressed="false" data-v="res">SC / ST / OBC / PwD</button>
+    </div>
+    <label class="f">Which seats will you apply for?</label>
+    <div class="seg" data-group="seat">
+      <button aria-pressed="true" data-v="aiq">AIQ / Central / DNB only</button>
+      <button aria-pressed="false" data-v="deemed">Deemed only</button>
+      <button aria-pressed="false" data-v="both">Both</button>
+    </div>
+    <div class="out good" id="fee-out"></div>
+  </div>
+
+  <div class="tool tabpanel" id="t-ff" hidden>
+    <h3>Freeze or Float? Answer a few questions</h3>
+    <div id="ff-box"></div>
+  </div>
+
+  <div class="tool tabpanel" id="t-cons" hidden>
+    <h3>What happens if I…</h3>
+    <label class="f" for="cons-round">Seat allotted in</label>
+    <select id="cons-round">
+      <option value="r1">Round 1</option><option value="r2">Round 2</option>
+      <option value="r3">Round 3</option><option value="sv">Stray Vacancy Round</option>
+    </select>
+    <label class="f" for="cons-act">and I…</label>
+    <select id="cons-act">
+      <option value="nojoin">don't report / don't join</option>
+      <option value="resign">join, then resign</option>
+      <option value="upg">get upgraded next round but don't join the new seat</option>
+      <option value="state">get a better State quota seat</option>
+    </select>
+    <div class="out" id="cons-out"></div>
+  </div>
+
+  <div class="tool tabpanel" id="t-pwbd" hidden>
+    <h3>PwBD suitability lookup (simplified)</h3>
+    <label class="f" for="pw-dis">Disability</label>
+    <select id="pw-dis">
+      <option value="ul">Locomotor: upper limb</option><option value="ll">Locomotor: lower limb</option>
+      <option value="vis">Visual impairment</option><option value="hear">Hearing impairment</option>
+      <option value="sp">Speech &amp; language</option><option value="mi">Mental illness / ASD / SLD / ID</option>
+      <option value="bl">Blood disorders</option><option value="neu">Chronic neurological</option>
+      <option value="mul">Multiple disabilities</option>
+    </select>
+    <label class="f" for="pw-grp">Specialty group</label>
+    <select id="pw-grp">
+      <option value="A">A: Surgical (Surgery, OBG, Ortho, ENT, Ophthal, Anaesthesia, EM, PMR…)</option>
+      <option value="B">B: Other clinical (Medicine, Paeds, Psychiatry, Derm, Radiology…)</option>
+      <option value="C">C: Pre-clinical (Anatomy, Physiology, Biochemistry)</option>
+      <option value="D">D: Para-clinical (Pathology, Micro, Pharmac, FMT)</option>
+    </select>
+    <div class="out" id="pw-out"></div>
+    <p class="mini">Final eligibility is decided only by a designated Medical Assessment Board after a functional assessment. Benchmark disability must be at least 40%.</p>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <h2>📅 Counselling Schedule 2026 (tentative)</h2>
+  <p class="muted">Covers 50% AIQ, 100% Deemed and Central Universities, and AFMS (registration only). All times are <strong>MCC server time</strong>. Dates are tentative and may change.</p>
+
+  <h3>Key dates at a glance</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Stage</th><th>Round 1</th><th>Round 2</th><th>Round 3</th><th>Stray Vacancy</th></tr>
+    <tr><td>Seat matrix check (colleges)</td><td>10–12 Oct</td><td>6–7 Nov (till 1 PM)</td><td>25–26 Nov</td><td>15 Dec</td></tr>
+    <tr><td><strong>Registration</strong></td><td>12–21 Oct<br>(till 12 noon)</td><td>6–11 Nov<br>(till 12 noon)</td><td>26 Nov–1 Dec<br>(till 12 noon)</td><td>16–21 Dec<br>(till 12 noon)</td></tr>
+    <tr><td><strong>Payment closes</strong></td><td>21 Oct, 3 PM</td><td>11 Nov, 3 PM</td><td>1 Dec, 3 PM</td><td>21 Dec, 3 PM</td></tr>
+    <tr><td><strong>Choice filling</strong></td><td>13 Oct–22 Oct, 10 AM</td><td>7 Nov–12 Nov, 10 AM</td><td>27 Nov–2 Dec, 10 AM</td><td>16 Dec–21 Dec, <strong>11:55 PM</strong></td></tr>
+    <tr><td><strong>Choice locking window</strong></td><td>21 Oct 4 PM → 22 Oct 10 AM</td><td>11 Nov 4 PM → 12 Nov 10 AM</td><td>1 Dec 4 PM → 2 Dec 10 AM</td><td>21 Dec 4 PM → 11:55 PM</td></tr>
+    <tr><td>Seat allotment processing</td><td>22–23 Oct</td><td>12–13 Nov</td><td>2–3 Dec</td><td>22–23 Dec</td></tr>
+    <tr><td><strong>Result</strong></td><td><strong>24 Oct</strong></td><td><strong>14 Nov</strong></td><td><strong>4 Dec</strong></td><td><strong>24 Dec</strong></td></tr>
+    <tr><td><strong>Reporting / joining</strong></td><td>26 Oct–2 Nov</td><td>16–23 Nov</td><td>5–12 Dec</td><td>24–31 Dec</td></tr>
+    <tr><td>Joined-data verification</td><td>3 Nov</td><td>24 Nov</td><td>14 Dec</td><td>—</td></tr>
+  </table></div>
+
+  <div class="note"><strong>PG academic session 2026 starts: 20 November 2026.</strong> Colleges are told to treat Saturdays, Sundays and gazetted holidays as working days during counselling.</div>
+
+  <h3>Deadlines that catch students out</h3>
+  <ul>
+    <li><strong>Registration closes at 12 noon</strong>, but <strong>payment stays open until 3 PM</strong> the same day. Registering without paying in full doesn't count.</li>
+    <li>Choice locking opens at <strong>4 PM</strong> the day registration closes and ends at <strong>10 AM</strong> the next morning (Rounds 1–3). It is only an 18-hour window.</li>
+    <li>In the <strong>Stray round</strong>, everything ends the same day: choice filling and locking both close at <strong>11:55 PM on 21 Dec</strong>.</li>
+    <li>Reporting windows are only <strong>8 days</strong>. Float candidates should upload documents within the first 2–3 days.</li>
+    <li>Round 3 has no resignation, so decide carefully during the Round 3 choice filling (27 Nov–2 Dec).</li>
+  </ul>
+
+  <div class="warn"><strong>Date clash to note:</strong> the session officially starts on <strong>20 Nov</strong>, while Round 2 reporting runs until 23 Nov and Rounds 3 and Stray continue into December. Candidates joining in later rounds will start after the session has begun.</div>
+
+  <h3>AIQ vs State counselling: side by side</h3>
+  <p class="muted">State quota counselling runs in parallel, a few days behind MCC. State dates below come from a combined AIQ + State schedule circulated on 08.10.2026 (not the MCC document itself), so <strong>confirm with your State DME / counselling authority</strong>.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Round</th><th>AIQ / Deemed / Central (MCC)</th><th>MCC shares joined data</th><th>State counselling</th><th>States share joined data</th></tr>
+    <tr><td><strong>Round 1</strong></td><td>12–24 Oct</td><td>3 Nov</td><td>21 Oct–2 Nov</td><td>11 Nov</td></tr>
+    <tr><td>Last date to join, Round 1</td><td>2 Nov</td><td>—</td><td>10 Nov</td><td>—</td></tr>
+    <tr><td><strong>Round 2</strong></td><td>6–14 Nov</td><td>24 Nov</td><td>14–23 Nov</td><td>1 Dec</td></tr>
+    <tr><td>Last date to join, Round 2</td><td>23 Nov</td><td>—</td><td>30 Nov</td><td>—</td></tr>
+    <tr><td><strong>Round 3</strong></td><td>26 Nov–4 Dec</td><td>14 Dec</td><td>4–12 Dec</td><td>19 Dec</td></tr>
+    <tr><td>Last date to join, Round 3</td><td>12 Dec</td><td>—</td><td>18 Dec</td><td>—</td></tr>
+    <tr><td><strong>Stray Vacancy</strong></td><td>16–24 Dec</td><td>Allotted data shared 24 Dec</td><td>22–25 Dec</td><td>—</td></tr>
+    <tr><td>Last date to join, Stray</td><td>31 Dec</td><td>—</td><td>31 Dec</td><td>—</td></tr>
+    <tr><td><strong>Academic session starts</strong></td><td colspan="4">20 Nov 2026</td></tr>
+  </table></div>
+  <div class="tip"><strong>How the two interact:</strong>
+    <ul style="margin:6px 0 0">
+      <li>The AIQ Round 1 result (24 Oct) comes <strong>before</strong> State Round 1 ends (2 Nov). Holding an AIQ Round 1 seat while you wait for the State result is safe, because leaving an AIQ Round 1 seat is a <strong>free exit</strong>.</li>
+      <li>If you get a State seat you prefer: Float candidates resign the AIQ seat <strong>online</strong>; Freeze candidates resign <strong>at the AIQ college</strong>. From Round 2 onwards, leaving an AIQ seat <strong>costs the security deposit</strong>.</li>
+      <li>AIQ Round 2 joining closes 23 Nov, the same day State Round 2 ends. Plan which seat you will keep before AIQ Round 2 choice locking (12 Nov).</li>
+      <li>MCC and States swap joined-candidate data after each round. Anyone holding a State Round 3 seat is <strong>removed</strong> before the AIQ Stray round.</li>
+    </ul>
+  </div>
+
+  <h3>Planner (copy into your calendar)</h3>
+  <ul class="check">
+    <li><label><input type="checkbox" id="chk1"><span><strong>12 Oct</strong>: Round 1 registration opens</span></label></li>
+    <li><label><input type="checkbox" id="chk2"><span><strong>21 Oct, 12 noon</strong>: last chance to register (pay by 3 PM)</span></label></li>
+    <li><label><input type="checkbox" id="chk3"><span><strong>22 Oct, 10 AM</strong>: lock Round 1 choices</span></label></li>
+    <li><label><input type="checkbox" id="chk4"><span><strong>24 Oct</strong>: Round 1 result. Decide Freeze, Float or free exit.</span></label></li>
+    <li><label><input type="checkbox" id="chk5"><span><strong>2 Nov</strong>: last day to join or upload for Round 1</span></label></li>
+    <li><label><input type="checkbox" id="chk6"><span><strong>12 Nov, 10 AM</strong>: lock Round 2 choices</span></label></li>
+    <li><label><input type="checkbox" id="chk7"><span><strong>14 Nov</strong>: Round 2 result (non-joining now costs the deposit)</span></label></li>
+    <li><label><input type="checkbox" id="chk8"><span><strong>23 Nov</strong>: last day to join for Round 2</span></label></li>
+    <li><label><input type="checkbox" id="chk9"><span><strong>2 Dec, 10 AM</strong>: lock Round 3 choices (final upgrade chance)</span></label></li>
+    <li><label><input type="checkbox" id="chk10"><span><strong>4 Dec</strong>: Round 3 result. Joining is mandatory, with no resignation.</span></label></li>
+    <li><label><input type="checkbox" id="chk11"><span><strong>12 Dec</strong>: last day to report for Round 3</span></label></li>
+    <li><label><input type="checkbox" id="chk12"><span><strong>21 Dec, 11:55 PM</strong>: Stray round choices close</span></label></li>
+    <li><label><input type="checkbox" id="chk13"><span><strong>24–31 Dec</strong>: Stray round result and reporting</span></label></li>
+  </ul>
+</section>
+
+<!-- WHAT'S NEW -->
+<section id="new">
+  <h2>2. What's new in 2026: Freeze vs Float</h2>
+  <p>Until 2025, every candidate had to <strong>travel to the allotted college</strong> with original documents, even if they only wanted to upgrade in the next round. From 2026, after a seat is allotted you choose one of two paths:</p>
+  <div class="grid2">
+    <div class="card freeze">
+      <h3>❄️ FREEZE: "I'm happy with this seat"</h3>
+      <ul>
+        <li>No upgradation in the next round</li>
+        <li>Upload documents on the MCC portal (one-time)</li>
+        <li><strong>Go physically</strong> to the college with originals</li>
+        <li>The college verifies documents and you pay the admission fee</li>
+        <li>Documents valid → admission confirmed. Discrepancy → admission cancelled</li>
+      </ul>
+    </div>
+    <div class="card float">
+      <h3>🌊 FLOAT: "I want a better seat next round"</h3>
+      <ul>
+        <li>Give <strong>willingness for upgradation online</strong></li>
+        <li>Upload documents on the MCC portal (one-time)</li>
+        <li><strong>No need to travel</strong>. The college's nodal officer verifies online</li>
+        <li>If there is a query (blurred copy, wrong certificate, category mismatch, missing document), re-upload quickly</li>
+        <li>Verified → provisional seat confirmed and you can fill choices for the next round</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tip"><strong>Upload documents within 2–3 days</strong> of the final allotment. This leaves time to fix any query raised by the college. If you miss the deadline, the seat can be cancelled.</div>
+  <div class="note">After the <strong>Round 3</strong> result, reporting in person is <strong>mandatory</strong> for everyone allotted in Round 3, and for Float candidates of Round 1/2 who did not get upgraded.</div>
+  <h3>Resigning (surrendering) a seat</h3>
+  <ul>
+    <li><strong>Freeze candidates:</strong> must go to the college in person to resign within the scheduled time.</li>
+    <li><strong>Float candidates:</strong> resign online via Candidate Login → "Resignation/Surrender".</li>
+    <li>Resignation is allowed only for Round 1 and Round 2 seats. <strong>Round 3 seats cannot be resigned.</strong></li>
+    <li>Once you resign, you have no claim on that seat.</li>
+    <li>All admissions and resignations must be generated <strong>online through the MCC portal</strong>. Offline letters from colleges are not accepted.</li>
+  </ul>
+  <div class="danger"><strong>Note:</strong> The bulletin (Annexure-6) says the new upgradation scheme still needs approval from the Supreme Court. Watch for updates.</div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <h2>3. Step-by-step process</h2>
+  <ol class="steps">
+    <li><strong>Registration &amp; fee payment</strong>: online only on mcc.nic.in. Use the same mobile number and email you gave NBE. These are pre-filled, and OTPs go only there. You can submit only <em>one</em> registration form; duplicates mean you are debarred.</li>
+    <li><strong>Choice filling &amp; locking</strong>: select courses and colleges in order of preference, then lock them.</li>
+    <li><strong>Seat allotment</strong>: a provisional result comes first, then the final result. Don't book travel on the provisional result.</li>
+    <li><strong>Download the allotment letter</strong> and decide: <strong>Freeze</strong> or <strong>Float</strong>.</li>
+    <li><strong>Upload documents</strong> (mandatory for both, one-time for all rounds).</li>
+    <li><strong>Join physically (Freeze)</strong> or <strong>get online verification (Float)</strong>.</li>
+    <li><strong>No seat?</strong> You move to the next round automatically (as per rules) without registering again.</li>
+  </ol>
+  <div class="note">Use a <strong>laptop or computer</strong> with a recent browser and stable internet for registration and choice filling. Candidates with international numbers must also give an Indian mobile number.</div>
+</section>
+
+<!-- ROUNDS -->
+<section id="rounds">
+  <h2>4. Round-by-round rules</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Round</th><th>Seats shown</th><th>If you don't join / you resign</th><th>Upgrade possible?</th></tr>
+    <tr><td><strong>Round 1</strong></td><td>Clear-cut vacancies only</td><td><span class="pill p-green">Free exit</span> No penalty. Go straight to Round 2.</td><td>Yes (Float)</td></tr>
+    <tr><td><strong>Round 2</strong></td><td>Clear-cut + <em>virtual</em> vacancies</td><td><span class="pill p-amber">Forfeiture</span> Security deposit lost</td><td>Yes (Float), to Round 3</td></tr>
+    <tr><td><strong>Round 3</strong></td><td>Net vacant seats + converted seats</td><td><span class="pill p-red">Forfeiture + out</span> Deposit lost and barred from further MCC rounds. No resignation allowed.</td><td>No</td></tr>
+    <tr><td><strong>Stray Vacancy</strong></td><td>Remaining seats</td><td><span class="pill p-amber">Forfeiture</span> Must join</td><td>No</td></tr>
+  </table></div>
+  <p class="muted"><strong>Virtual vacancy:</strong> a Round 1 seat whose holder chose to upgrade. You can choose it in Round 2, but you get it only if the holder actually moves up.</p>
+  <p class="muted">Each round is separate and has its own rules. Once a round starts, its rules apply to everyone, including people allotted in earlier rounds.</p>
+
+  <p><button class="linkbtn" onclick="document.querySelectorAll('#rounds details').forEach(d=>d.open=!d.open)">Open / close all</button></p>
+  <details><summary>Who can take part in Round 2?</summary>
+    <ul>
+      <li>Registered in Round 1 but got no seat</li>
+      <li>Round 1 seat cancelled at verification because of a category change (e.g., reserved → UR, PwD → non-PwD), but still eligible under the new category</li>
+      <li>Joined the Round 1 seat and chose "Yes" to upgrade</li>
+      <li>Took the free exit in Round 1 (log in with old details)</li>
+      <li>Did not register in Round 1: fresh registration allowed</li>
+    </ul>
+    <p>If upgraded in Round 2, the Round 1 seat is <strong>automatically cancelled</strong>. You must take online relieving and join the new seat, or you lose the deposit. If you change your mind about upgrading, simply <strong>don't fill fresh choices</strong> for Round 2 and you keep your Round 1 seat.</p>
+  </details>
+
+  <details><summary>Who can take part in Round 3?</summary>
+    <ul>
+      <li>First-time registrants (fresh registration fee)</li>
+      <li>Registered but not allotted in Round 1 and Round 2</li>
+      <li>Exited Round 2 with forfeiture, or resigned from Round 2: can join with <strong>fresh payment</strong> of fees</li>
+      <li>Holding a Round 1/2 seat with "Yes" to upgrade</li>
+    </ul>
+    <p><strong>Not eligible:</strong> those holding a Round 1/2 AIQ seat who did not choose to upgrade.</p>
+    <p>Fresh choices must be filled. Unused reserved seats are converted (see the table below).</p>
+  </details>
+
+  <details><summary>Who can take part in the Stray Vacancy Round?</summary>
+    <ul>
+      <li>Candidates <strong>not holding any seat</strong> (AIQ, State or Deemed), including fresh registrants</li>
+      <li>Fresh registration and fresh choice filling are required. Round 3 choices are not carried over.</li>
+      <li><strong>Not eligible:</strong> those allotted in Round 3 who did not join</li>
+      <li>MCC and the States share data after State Round 3. Anyone on the State's list is removed before the stray round.</li>
+    </ul>
+  </details>
+
+  <h3>Seat conversion (happens only in Round 3)</h3>
+  <p>If a reserved seat stays unfilled after all eligible candidates of that category are exhausted, it is converted as follows:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Unfilled seat</th><th>Converted to</th></tr>
+    <tr><td>ST-PwD / SC-PwD / UR-PwD / OBC-PwD</td><td>ST / SC / UR / OBC</td></tr>
+    <tr><td>ST</td><td>SC</td></tr>
+    <tr><td>SC</td><td>UR</td></tr>
+    <tr><td>EWS</td><td>UR</td></tr>
+    <tr><td>NRI / Jain Minority / Muslim Minority (Deemed)</td><td>UR (Deemed merit)</td></tr>
+  </table></div>
+</section>
+
+<!-- FEES -->
+<section id="fees">
+  <h2>5. Fees &amp; security deposit</h2>
+  <div class="tablewrap"><table>
+    <tr><th></th><th>Registration fee (non-refundable)</th><th>Security deposit (refundable)</th></tr>
+    <tr><td><strong>AIQ / Central: UR &amp; EWS</strong></td><td>₹1,000</td><td>₹25,000</td></tr>
+    <tr><td><strong>AIQ / Central: SC, ST, OBC, PwD</strong></td><td>₹500</td><td>₹10,000</td></tr>
+    <tr><td><strong>Deemed Universities (all)</strong></td><td>₹5,000</td><td>₹2,00,000</td></tr>
+  </table></div>
+  <p>Applying for <strong>both AIQ and Deemed</strong>? You pay only the higher amount (₹5,000 + ₹2 lakh).</p>
+  <h3>When is the deposit forfeited (lost)?</h3>
+  <ul>
+    <li>You are allotted a seat in <strong>Round 2, Round 3 or the Stray round</strong> and do not join</li>
+    <li>You resign or surrender a Round 2 (or later) seat</li>
+    <li>Your admission is cancelled for any reason, e.g., wrong information at registration or failure to produce documents</li>
+    <li>You give incorrect eligibility information for an internal quota</li>
+  </ul>
+  <div class="note">Round 1 non-joining is a <strong>free exit</strong>, so the deposit is safe.</div>
+  <p class="muted">Fees and bonds of individual colleges (especially Deemed Universities) are <strong>not</strong> MCC's responsibility. Confirm them with the college before filling choices.</p>
+</section>
+
+<!-- SEATS -->
+<section id="seats">
+  <h2>6. Seat types, quotas &amp; reservation</h2>
+  <h3>Open, domicile-free seats</h3>
+  <ul>
+    <li>50% AIQ seats contributed by States</li>
+    <li>50% seats of BHU and AMU</li>
+    <li>50% AIQ seats of DU and the central institutes (VMMC &amp; SJH, ABVIMS &amp; RML, ESIC Basaidarapur)</li>
+    <li>100% DNB seats</li>
+    <li>100% Deemed University seats</li>
+  </ul>
+  <h3>Central Government reservation (AIQ &amp; central institutions)</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Category</th><th>Share</th></tr>
+    <tr><td>SC</td><td>15%</td></tr>
+    <tr><td>ST</td><td>7.5%</td></tr>
+    <tr><td>OBC (Non-Creamy Layer, Central list)</td><td>27%</td></tr>
+    <tr><td>EWS</td><td>10%</td></tr>
+    <tr><td>PwD</td><td>5% (horizontal, i.e., within each category)</td></tr>
+  </table></div>
+  <ul>
+    <li>A <strong>3200-point roster</strong> is applied to AIQ seats.</li>
+    <li><strong>Private DNB</strong> institutes: no reservation. Government DNB seats follow the Central policy.</li>
+    <li>DNB admission fees are collected by <strong>NBE</strong>, not MCC.</li>
+    <li>MCC allots only NMC-approved seats. Some seats may be "permitted" but not yet "recognised", so check before choosing.</li>
+  </ul>
+</section>
+
+<!-- CENTRAL -->
+<section id="central">
+  <h2>7. Central Universities &amp; Institutes</h2>
+  <p>AIQ, internal quota and AIQ choices are filled on the <strong>same software</strong>. Arrange them all in one preference list.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Institution</th><th>Seat split</th><th>Internal quota eligibility (set by the university, not MCC)</th></tr>
+    <tr><td><strong>Delhi University</strong> (LHMC, UCMS, MAMC)</td><td>50% AIQ + 50% internal</td><td>MBBS from DU. Internship completed on or before <strong>31 July 2026</strong> (subject to NMC change). Reservation applies.</td></tr>
+    <tr><td><strong>AMU</strong> (JNMC Aligarh)</td><td>50% AIQ + 50% internal</td><td>Passed the qualifying exam from AMU as a regular student within 3 academic years. Internship cut-off 30 Sept 2026 for this session. <strong>No reservation</strong> on internal seats.</td></tr>
+    <tr><td><strong>BHU</strong> (IMS)</td><td>50% AIQ + 50% internal</td><td>Passed MBBS from IMS-BHU in <strong>Feb/March 2025</strong>, internship before 30 Sept 2026, and qualified NEET-PG 2026. Earlier batches and current internal-quota PG students are not eligible.</td></tr>
+    <tr><td><strong>IP University central institutes</strong> (VMMC &amp; SJH, ABVIMS &amp; RML, ESIC Basaidarapur)</td><td>50% AIQ + 50% internal</td><td>MBBS from IP University colleges: VMMC, ABVIMS-RML, BSA Medical College, Army College of Medical Sciences, NDMC Medical College (Hindu Rao)</td></tr>
+    <tr><td><strong>CIP Ranchi</strong></td><td>100% open</td><td>No internal quota</td></tr>
+    <tr><td><strong>LGBRIMH Tezpur</strong></td><td>100% open</td><td>No internal quota</td></tr>
+  </table></div>
+  <div class="warn">Confirm your internal-quota eligibility <strong>before</strong> choosing these seats. False eligibility claims mean cancellation and loss of the deposit.</div>
+</section>
+
+<!-- DEEMED & NRI -->
+<section id="deemed">
+  <h2>8. Deemed Universities &amp; NRI quota</h2>
+  <ul>
+    <li>MCC counsels <strong>100%</strong> of Deemed seats in all 4 rounds, including the stray round (Supreme Court order of 12.12.2022).</li>
+    <li><strong>15%</strong> of Deemed seats are reserved for NRI candidates.</li>
+    <li>Some Deemed Universities have <strong>Jain or Muslim minority</strong> seats. Check your eligibility.</li>
+    <li>An NRI-quota candidate <strong>cannot</strong> also claim minority or any other quota. NRI candidates can still compete for Deemed merit seats.</li>
+    <li><strong>OCI cardholders</strong> are treated on par with Indian citizens and are eligible for UR and NRI seats.</li>
+  </ul>
+
+  <h3>Who counts as an NRI sponsor?</h3>
+  <p>A parent, real brother or real sister who is an NRI living abroad. A <em>close blood relative</em> (uncle, aunt, grandparent, first cousin) also qualifies if they are an NRI living abroad <strong>and</strong> have actually looked after the candidate as a guardian, with an affidavit and proof.</p>
+
+  <h3>NRI sub-categories</h3>
+  <details><summary>Category I: NRI candidate / parents / real brother or sister</summary>
+    <p>Birth certificate · Class 10 &amp; 12 marksheets (or AIU equivalence) · MBBS 1st–3rd prof. marksheets · FMGE scorecard (if MBBS abroad) · NEET-PG scorecard · Candidate's passport · NRI certificate from the Embassy or Consulate · Notarised ₹100 affidavit from the sponsor promising full fees and living costs, backed by an NRE/NRO passbook · Relationship verified by a revenue officer (Tehsildar/Patwari).</p>
+  </details>
+  <details><summary>Category II: OCI candidates</summary>
+    <p>Birth certificate · Class 10 &amp; 12 · MBBS marksheets · FMGE (if abroad) · NEET-PG scorecard · Passport · OCI card.</p>
+  </details>
+  <details><summary>Category III: Foreign nationals</summary>
+    <p>Birth certificate · Class 10 &amp; 12 · MBBS marksheets · FMGE (if abroad) · NEET-PG scorecard · Foreign passport · Citizenship certificate.</p>
+  </details>
+  <details><summary>Category IV: Indian → NRI (changing category for counselling)</summary>
+    <p>Same academic documents + passport + the NRI's certificate + proof of relationship. A <strong>notarised affidavit from the guardian</strong> must state that they have genuinely cared for and financially supported the candidate, and will fund the full course through an NRE account. Supporting proof: fee receipts paid by the guardian, education records, bank or payment records.</p>
+    <p class="tip"><strong>New:</strong> since candidates are adults, a court guardianship order (Guardians and Wards Act) is <strong>no longer needed</strong>. The affidavit alone is not enough without genuine supporting proof.</p>
+  </details>
+
+  <h3>NRI verification process</h3>
+  <ol>
+    <li>Select NRI quota at MCC registration (even if you chose NRI in the NBE form)</li>
+    <li>Pick your sub-category (I–IV)</li>
+    <li>Upload documents</li>
+    <li>MCC's NRI committee checks them online</li>
+    <li>If there are problems, you get an SMS/email and a <strong>correction window</strong></li>
+    <li>Approved → category converted to NRI (provisionally) and NRI seats become visible</li>
+    <li>Missed Round 1? You can still convert and take part from Round 2</li>
+  </ol>
+  <p class="muted">Bring all originals at admission. Conversion online is provisional.</p>
+</section>
+
+<!-- PWBD -->
+<section id="pwbd">
+  <h2>9. Persons with Benchmark Disabilities (PwBD)</h2>
+  <p>New <strong>NMC Guidelines 2026</strong> (letter dated 16.09.2026). The main idea: eligibility depends on <strong>whether you can do the work of the chosen specialty</strong> (with reasonable support), not only on your disability percentage.</p>
+
+  <h3>Basic requirements</h3>
+  <ul>
+    <li>Benchmark disability of <strong>at least 40%</strong> (any of the 21 disabilities under the RPwD Act 2016)</li>
+    <li>A valid <strong>UDID card</strong></li>
+    <li>A condition that is stable, without frequent flare-ups</li>
+    <li>An <strong>Eligibility Certificate</strong> (earlier called "Disability Certificate") from a <strong>designated MCC Medical Assessment Board</strong>, generated online <strong>before choice filling</strong>. Certificates from other hospitals are not accepted.</li>
+  </ul>
+
+  <h3>What to carry to the Assessment Board</h3>
+  <ul>
+    <li>NEET-PG 2026 scorecard</li>
+    <li>UDID card</li>
+    <li>Self-certified affidavit of functional abilities (Appendix A)</li>
+    <li>Disability-specific affidavit: B (hearing), C (upper limb), D (lower limb), E (mental illness/SLD/ASD/speech), F (visual)</li>
+    <li>Appendix G (declaration): <strong>mandatory for all</strong> PwBD applicants</li>
+  </ul>
+  <p class="muted">Other disabilities (blood disorders, chronic neurological conditions, etc.) submit Appendix A only, plus G.</p>
+
+  <h3>Possible outcomes</h3>
+  <ul>
+    <li><span class="pill p-green">Eligible</span></li>
+    <li><span class="pill p-amber">Eligible with reasonable accommodation</span> The certificate lists the support needed.</li>
+    <li><span class="pill p-red">Ineligible</span> The board must give a written, reasoned order explaining which skill is affected and why support won't help.</li>
+  </ul>
+  <p>Nobody can be rejected <em>only</em> because of diagnosis, category or percentage. The certificate is valid for <strong>this session only</strong>. A fake UDID or affidavit means seat cancellation and legal action.</p>
+
+  <h3>Suitability by specialty group (simplified)</h3>
+  <p class="muted">Group A (surgical skills): Anaesthesia, Surgery, OBG, Ophthalmology, Orthopaedics, ENT, Emergency Medicine, PMR, Sports Medicine, etc.<br>
+  Group B (other clinical): Medicine, Paediatrics, Psychiatry, Dermatology, Radiology, Radiotherapy, Respiratory Medicine, Community Medicine, etc.<br>
+  Group C (pre-clinical): Anatomy, Physiology, Biochemistry, Biophysics.<br>
+  Group D (para-clinical): Pharmacology, Pathology, Microbiology, Forensic Medicine.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Disability</th><th>A: Surgical</th><th>B: Other clinical</th><th>C: Pre-clinical</th><th>D: Para-clinical</th></tr>
+    <tr><td>Upper limb</td><td><span class="pill p-red">Generally not</span></td><td rowspan="2"><span class="pill p-amber">Maybe</span> if both upper limbs usable as needed</td><td rowspan="2"><span class="pill p-green">Yes</span></td><td rowspan="2"><span class="pill p-green">Yes</span></td></tr>
+    <tr><td>Lower limb</td><td><span class="pill p-amber">Maybe</span> if functionally competent</td></tr>
+    <tr><td>Visual</td><td>Only if corrective <strong>lenses</strong> bring it below 40%</td><td>If below 40% with hands-free adaptive devices</td><td>If below 40% with a low-vision aid</td><td>If below 40% with digital aids</td></tr>
+    <tr><td>Hearing</td><td colspan="4"><span class="pill p-green">Yes</span> if functional with hearing aids or cochlear implant <strong>and</strong> speech is intelligible</td></tr>
+    <tr><td>Speech</td><td><span class="pill p-red">Not suitable</span></td><td>Yes, if speech is intelligible</td><td>Printed as "No" (unclear in draft)</td><td><span class="pill p-green">Yes</span></td></tr>
+    <tr><td>Mental illness / ASD / SLD / ID</td><td colspan="4">Yes, if functionally competent (individual assessment of communication, following instructions, behaviour, safety)</td></tr>
+    <tr><td>Blood disorders</td><td>Case by case</td><td colspan="3"><span class="pill p-green">Yes</span></td></tr>
+    <tr><td>Chronic neurological</td><td colspan="4">Yes if stable. Excluded if seizures are uncontrolled, relapses are frequent, or the condition is progressive and degenerative.</td></tr>
+    <tr><td>Multiple disabilities</td><td><span class="pill p-red">Generally not</span></td><td>Yes, with functional adequacy</td><td><span class="pill p-green">Yes</span></td><td>Case specific</td></tr>
+  </table></div>
+
+  <h3>If you are declared ineligible: appeal</h3>
+  <p>Email <strong>disabilityappeal-chair@gov.in</strong> and <strong>disabilityappeal-convener@gov.in</strong> <strong>before the round starts</strong>, naming your preferred Appellate Board:</p>
+  <ul>
+    <li>VMMC &amp; Safdarjung Hospital, New Delhi</li>
+    <li>Grant Govt Medical College &amp; JJ Hospital, Mumbai</li>
+    <li>IPGMER &amp; SSKM Hospital, Kolkata</li>
+    <li>Madras Medical College, Chennai</li>
+    <li>Banaras Hindu University, Varanasi</li>
+  </ul>
+  <p>The appellate decision is final. Around 65 primary Assessment Boards across states and UTs are listed in Annexure-1 of the bulletin. Check which specialities each board can assess before you visit.</p>
+</section>
+
+<!-- AFMS -->
+<section id="afms">
+  <h2>10. Armed Forces Medical Services (AFMS)</h2>
+  <p>AFMS PG seats are mainly for serving officers. Surplus seats go to others in this priority order:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Priority</th><th>Who</th><th>Counselled by</th></tr>
+    <tr><td>I A / I B</td><td>Permanent / Short Service Commissioned AFMS officers</td><td rowspan="2">DGAFMS (during MCC Round 1)</td></tr>
+    <tr><td>II</td><td>Friendly foreign country nominees; AFMS officers on study leave</td></tr>
+    <tr><td>III</td><td>Doctors sponsored by paramilitary or other GoI organisations</td><td rowspan="3">MCC (Round 2)</td></tr>
+    <tr><td>IV</td><td>Ex-SSC AFMS officers within 3 years of release</td></tr>
+    <tr><td>V</td><td><strong>Civilian candidates</strong></td></tr>
+  </table></div>
+  <h3>Key conditions for civilians (Priority V)</h3>
+  <ul>
+    <li>Age <strong>under 30 on 31 Dec 2026</strong> (born on or after 01 Jan 1997)</li>
+    <li>Must pass a <strong>military medical fitness</strong> exam before admission</li>
+    <li>Must serve <strong>5 years</strong> as a Short Service Commissioned officer after PG</li>
+    <li>Bond: <strong>₹60.5 lakh</strong> (MD/MS/DNB) or <strong>₹55.5 lakh</strong> (MDS) if you refuse the commission</li>
+    <li>Leaving mid-course: about ₹20.17 lakh per year of study. Early release from service: ₹12.1 lakh per unserved year.</li>
+    <li>Must finish PG before age 35, otherwise you become "Non-Service Liability" and the bond applies</li>
+    <li>Wasting an AFMS seat (cancelling, not reporting, leaving mid-course) means a <strong>3-year debarment</strong> from AFMS counselling</li>
+  </ul>
+  <p class="muted">Full rules: AFMS bulletin on afmcdg1d.gov.in. Disputes go only to courts in New Delhi.</p>
+</section>
+
+<!-- DOCUMENTS -->
+<section id="docs">
+  <h2>11. Documents checklist for joining</h2>
+  <p>Bring <strong>originals</strong>. The college keeps them until you upgrade or resign.</p>
+  <ul class="check">
+    <li><label><input type="checkbox" id="chk14"><span>MCC allotment letter</span></label></li>
+    <li><label><input type="checkbox" id="chk15"><span>NBE admit card</span></label></li>
+    <li><label><input type="checkbox" id="chk16"><span>NBE result / rank letter</span></label></li>
+    <li><label><input type="checkbox" id="chk17"><span>MBBS 1st, 2nd &amp; 3rd professional marksheets</span></label></li>
+    <li><label><input type="checkbox" id="chk18"><span>MBBS degree or provisional certificate</span></label></li>
+    <li><label><input type="checkbox" id="chk19"><span>Internship completion certificate, or a principal's certificate that it will be done by <strong>30 Sept 2026</strong></span></label></li>
+    <li><label><input type="checkbox" id="chk20"><span>Permanent or provisional State Medical Council registration (provisional is accepted only if internship ends by 30 Sept 2026)</span></label></li>
+    <li><label><input type="checkbox" id="chk21"><span>Class 10 certificate or birth certificate (proof of date of birth)</span></label></li>
+    <li><label><input type="checkbox" id="chk22"><span>Photo ID: Aadhaar, PAN, Passport, Voter ID or Driving Licence</span></label></li>
+    <li><label><input type="checkbox" id="chk23"><span><em>If applicable:</em> SC/ST certificate (with sub-caste) · OBC-NCL certificate (Central list) · EWS certificate · PwBD Eligibility Certificate · NRI/OCI documents</span></label></li>
+  </ul>
+  <div class="warn">
+    <ul style="margin:0">
+      <li>Certificates must be in <strong>English or Hindi</strong>. Translations must be certified by a Gazetted Officer.</li>
+      <li>OBC and EWS income must be based on the <strong>financial year ending 31 March 2026</strong>.</li>
+      <li>A letter saying "originals are deposited elsewhere" is <strong>not accepted</strong>.</li>
+      <li>Name spelling differs across documents? Carry an affidavit proving they belong to you.</li>
+      <li>Colleges may ask for extra documents, so check with the college before going.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CHOICES -->
+<section id="choices">
+  <h2>12. Choice filling tips</h2>
+  <ul>
+    <li>There is <strong>no limit</strong> on choices. MCC suggests about <strong>30–40</strong>.</li>
+    <li>Order matters: you get the <strong>highest choice available</strong> at your rank. Never list a seat you wouldn't join.</li>
+    <li>Make a draft list on paper first, after studying the seat matrix.</li>
+    <li>Check each college's <strong>fee, stipend, bond and service rules</strong> on its website before choosing. MCC takes no responsibility for these.</li>
+    <li>Check previous years' allotments on mcc.nic.in → Archives → PG to estimate your chances (indicative only).</li>
+    <li>Fresh choices are needed in every round.</li>
+    <li>Unlocked choices are <strong>auto-locked</strong> at the deadline. Locked choices <strong>cannot be changed</strong>, even by MCC. Lock early and print your list.</li>
+    <li>Keep your password private. MCC cannot retrieve it; reset it using your security question.</li>
+  </ul>
+</section>
+
+<!-- REFUNDS -->
+<section id="refund">
+  <h2>13. Refunds</h2>
+  <ul>
+    <li>Refunds happen only <strong>after all rounds are over</strong>. Don't email before that.</li>
+    <li>The money goes back to the <strong>same account or card</strong> that paid. Keep it <strong>active</strong>.</li>
+    <li>MCC publishes the eligible list. The Financial Custodian (<strong>HLL Lifecare Ltd</strong>) starts refunds within 15 days and completes them within 30 days.</li>
+    <li>No interest is paid.</li>
+    <li><strong>Don't raise a chargeback</strong> with your bank. It blocks the direct refund and causes long delays.</li>
+    <li>Don't pay from an NRI (NRE) account. Transfer to an NRO account first.</li>
+    <li>Paid twice by mistake? Contact the custodian 10 days after registration closes. They deduct 50% of the registration fee or ₹500, whichever is less.</li>
+    <li>Bank charges are yours to bear. Net banking is usually cheapest.</li>
+  </ul>
+</section>
+
+<!-- MISTAKES -->
+<section id="mistakes">
+  <h2>14. Common mistakes to avoid</h2>
+  <ol>
+    <li>Choosing <strong>Float</strong> but not uploading clear documents on time, which leads to seat cancellation.</li>
+    <li>Not joining a <strong>Round 2</strong> upgraded seat, which loses the deposit (and the Round 1 seat is already gone).</li>
+    <li>Joining a <strong>Round 3</strong> seat you don't really want. You cannot resign or move on.</li>
+    <li>Listing colleges you wouldn't actually join.</li>
+    <li>Ignoring Deemed University fees (often very high).</li>
+    <li>Using a different phone or email from your NBE form.</li>
+    <li>Paying through an agent or third party, or trusting "guaranteed seat" offers.</li>
+    <li>Getting a PwBD certificate from a hospital that is not a designated board.</li>
+    <li>Old OBC/EWS certificates (they must be for FY ending 31 March 2026).</li>
+    <li>Closing the bank account or card used for payment before the refund arrives.</li>
+  </ol>
+</section>
+
+<!-- ERRORS -->
+<section id="errors">
+  <h2>15. Errors &amp; unclear points in the draft</h2>
+  <p class="muted">Useful for counsellors. Watch whether these are fixed in the final bulletin.</p>
+  <ol>
+    <li>The website address is written as "www.https://mcc.nic.in" throughout.</li>
+    <li>The NMC cover letter title says "2025" while the guidelines say 2026. It cites Section 25 of the NMC Act, while Chapter 5 cites Section 24.</li>
+    <li>Chapter 5 refers to the "Graduate Medical Education Regulations, 2023" instead of the PG regulations. The RPwD Act appears once as "2015" (should be 2016).</li>
+    <li>The PwD Assessment Board list is called Annexure-1 in some places and Annexure-2 in others.</li>
+    <li><strong>The EWS certificate format (Annexure-5) is blank</strong>, apparently a stray page from an older document.</li>
+    <li>AMU internal eligibility mentions internships ending by 31 March 2026, then a 30 Sept 2026 cut-off.</li>
+    <li>The DU internship cut-off (31 July 2026) differs from the general cut-off (30 Sept 2026).</li>
+    <li>Annexure-6 says the new upgradation scheme still needs Supreme Court approval.</li>
+    <li>Annexure-6 still refers to NEET 2025 for OCI eligibility.</li>
+    <li>Round 2 text says documents are uploaded "at the allotted college", which clashes with the online-only Float process.</li>
+    <li>The PwBD table for pre-clinical speech disability is unclear.</li>
+    <li>The appellate reasons clause points to "Clause 12.4", which seems to mean Clause 11.4.</li>
+    <li>Schedule: the academic session starts on 20 Nov 2026, before Round 2 reporting ends (23 Nov) and well before Rounds 3 and Stray.</li>
+  </ol>
+</section>
+
+
+<!-- SOURCES -->
+<section id="sources">
+  <h2>📄 Official source documents</h2>
+  <p>The original MCC documents this guide is based on. Use them to double-check anything above.</p>
+
+  <h3>1. Tentative Counselling Schedule 2026 (4 pages)</h3>
+  <p class="muted">MCC file 5151203/2026/ADG(ME), generated 07.10.2026. Pinch to zoom on a phone, or download the PDF.</p>
+  <div class="pages"><figure class="pg"><img src="/counselling/assets/mcc-schedule-p1.jpg" width="1540" height="935" loading="lazy" decoding="async" alt="Official schedule page 1: Round 1"><figcaption>Page 1: Round 1</figcaption></figure><figure class="pg"><img src="/counselling/assets/mcc-schedule-p2.jpg" width="1540" height="935" loading="lazy" decoding="async" alt="Official schedule page 2: Round 2"><figcaption>Page 2: Round 2</figcaption></figure><figure class="pg"><img src="/counselling/assets/mcc-schedule-p3.jpg" width="1540" height="935" loading="lazy" decoding="async" alt="Official schedule page 3: Round 3"><figcaption>Page 3: Round 3</figcaption></figure><figure class="pg"><img src="/counselling/assets/mcc-schedule-p4.jpg" width="1540" height="935" loading="lazy" decoding="async" alt="Official schedule page 4: Stray Vacancy Round"><figcaption>Page 4: Stray Vacancy Round</figcaption></figure></div>
+  <p><a class="btn" href="/counselling/assets/mcc-schedule-2026.pdf" download="MCC-NEET-PG-2026-Tentative-Schedule.pdf">⬇ Download schedule (PDF)</a></p>
+
+  <h3>2. Information Bulletin &amp; Counselling Scheme, Draft V10 (123 pages)</h3>
+  <p class="muted">MCC file 5154288/2026/DDG(LME), dated 05.10.2026, generated 07.10.2026. Includes the NMC PwBD Guidelines 2026, certificate formats and the AFMS bond.</p>
+  <p><a class="btn" href="/counselling/assets/mcc-bulletin-draft-v10.txt" download="MCC-NEET-PG-2026-Bulletin-Draft-V10-text.txt">⬇ Download bulletin (full text version)</a></p>
+  <p class="muted">This is the searchable text of the bulletin. Tables and scanned pages (such as the PwBD tables and affidavit forms) may look jumbled, so check those in the official PDF on <a href="https://mcc.nic.in" target="_blank" rel="noopener">mcc.nic.in</a>.</p>
+</section>
+
+<!-- HELP -->
+<section id="help">
+  <h2>16. Helpline &amp; contacts</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Purpose</th><th>Contact</th></tr>
+    <tr><td>MCC call centre (24×7)</td><td>0120-4073500</td></tr>
+    <tr><td>Toll-free</td><td>1800 102 7637</td></tr>
+    <tr><td>Counselling matters</td><td>mcc2026@gov.in</td></tr>
+    <tr><td>Administrative / legal only</td><td>adgme@nic.in</td></tr>
+    <tr><td>Counselling queries (call centre)</td><td>callcentremcc@lifecarehll.com</td></tr>
+    <tr><td>Refunds / finance</td><td>financemcc@lifecarehll.com</td></tr>
+    <tr><td>PwBD appeals</td><td>disabilityappeal-chair@gov.in, disabilityappeal-convener@gov.in</td></tr>
+  </table></div>
+  <p>Emails are answered Mon–Fri 10 AM–6 PM and Sat 10 AM–4 PM. Always include your <strong>name, application number, roll number, rank and phone number</strong>. Questions already answered in the bulletin won't get a reply.</p>
+</section>
+
+</main>
+
+<footer>
+  Summary prepared from the MCC NEET-PG (MD/MS/DNB) Counselling 2026 Information Bulletin, Draft V10 (05.10.2026), including NMC PwBD Guidelines 2026 and AFMS annexures, and the MCC Tentative Schedule for PG Counselling 2026 (generated 07.10.2026). This is an unofficial guide; the official bulletin and notices on mcc.nic.in prevail.
+</footer>
+
+
+<button id="toTop" aria-label="Back to top">↑</button>
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* Tabs */
+$$('.tabbar button').forEach(b=>b.addEventListener('click',()=>{
+  $$('.tabbar button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  $$('.tabpanel').forEach(p=>p.hidden=p.id!==b.dataset.tab);
+}));
+
+/* Deadlines */
+const T=s=>new Date(s+'+05:30');
+const EV=[
+ ['2026-10-12T00:00','Round 1 registration opens'],
+ ['2026-10-21T12:00','Round 1 registration closes (12 noon)'],
+ ['2026-10-21T15:00','Round 1 payment closes (3 PM)'],
+ ['2026-10-22T10:00','Round 1 choice locking ends (10 AM)'],
+ ['2026-10-24T00:00','Round 1 result'],
+ ['2026-11-02T23:59','Round 1 last day to join / upload'],
+ ['2026-11-11T12:00','Round 2 registration closes (12 noon)'],
+ ['2026-11-12T10:00','Round 2 choice locking ends (10 AM)'],
+ ['2026-11-14T00:00','Round 2 result'],
+ ['2026-11-20T00:00','PG academic session begins'],
+ ['2026-11-23T23:59','Round 2 last day to join'],
+ ['2026-12-01T12:00','Round 3 registration closes (12 noon)'],
+ ['2026-12-02T10:00','Round 3 choice locking ends (10 AM)'],
+ ['2026-12-04T00:00','Round 3 result'],
+ ['2026-12-12T23:59','Round 3 last day to report'],
+ ['2026-12-21T12:00','Stray round registration closes (12 noon)'],
+ ['2026-12-21T23:55','Stray round choices close (11:55 PM)'],
+ ['2026-12-24T00:00','Stray round result'],
+ ['2026-12-31T23:59','Stray round last day to join']
+].map(([d,t])=>({d:T(d),t}));
+const STAGES=[
+ ['2026-10-12','Before counselling starts'],['2026-10-22T10:00','Round 1: registration & choice filling'],
+ ['2026-10-24','Round 1: allotment processing'],['2026-11-03','Round 1: reporting / joining'],
+ ['2026-11-06','Between rounds'],['2026-11-12T10:00','Round 2: registration & choice filling'],
+ ['2026-11-14','Round 2: allotment processing'],['2026-11-24','Round 2: reporting / joining'],
+ ['2026-11-26','Between rounds'],['2026-12-02T10:00','Round 3: registration & choice filling'],
+ ['2026-12-04','Round 3: allotment processing'],['2026-12-13','Round 3: reporting'],
+ ['2026-12-16','Between rounds'],['2026-12-21T23:55','Stray round: registration & choices'],
+ ['2026-12-24','Stray round: allotment processing'],['2027-01-01','Stray round: reporting']
+].map(([d,t])=>({d:T(d.length===10?d+'T00:00':d),t}));
+const fmtDate=d=>d.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'});
+function left(ms){const m=Math.floor(ms/60000),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mi=m%60;
+  return d>0?`${d}d ${h}h`:(h>0?`${h}h ${mi}m`:`${mi}m`);}
+let showAll=false;
+function renderCD(){
+  const now=new Date();
+  const st=STAGES.find(s=>now<s.d); $('#cd-stage').textContent=st?st.t:'Counselling 2026 is over';
+  const list=showAll?EV:EV.filter(e=>e.d>now).slice(0,4);
+  $('#cd-list').innerHTML=list.length?list.map(e=>{const past=e.d<=now;
+    return `<li style="${past?'opacity:.5':''}"><span>${e.t}<span class="cd-date">${fmtDate(e.d)}</span></span><span class="cd-time">${past?'done':left(e.d-now)}</span></li>`}).join('')
+    :'<li>All 2026 deadlines have passed.</li>';
+}
+$('#cd-all').addEventListener('click',e=>{showAll=!showAll;e.target.textContent=showAll?'Show next only':'Show all dates';renderCD();});
+renderCD(); setInterval(renderCD,30000);
+
+/* Fee calculator */
+const sel={cat:'ur',seat:'aiq'};
+$$('.seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  sel[g.dataset.group]=b.dataset.v; fee();
+})));
+const inr=n=>'₹'+n.toLocaleString('en-IN');
+function fee(){
+  let reg,dep;
+  if(sel.seat==='aiq'){reg=sel.cat==='ur'?1000:500;dep=sel.cat==='ur'?25000:10000;}
+  else{reg=5000;dep=200000;}
+  $('#fee-out').innerHTML=`<div class="big">${inr(reg+dep)}</div>
+   <div>${inr(reg)} registration fee <span class="mini">(not refundable)</span> + ${inr(dep)} security deposit <span class="mini">(refundable)</span></div>
+   ${sel.seat==='both'?'<p class="mini">Applying for both? You pay only the higher Deemed amount, which also covers AIQ.</p>':''}
+   ${sel.seat!=='aiq'?'<p class="mini">The Deemed amount is the same for every category.</p>':''}
+   <p class="mini">The deposit is returned to the same account after all rounds end, unless it is forfeited (see "If I don't join…").</p>`;
+}
+fee();
+
+/* Freeze / Float wizard */
+const FF={
+ start:{q:'Which round was your seat allotted in?',a:[['Round 1','happy1'],['Round 2','happy2'],['Round 3','r3'],['Stray round','sv']]},
+ happy1:{q:'Are you fully happy with this seat?',a:[['Yes, I want to keep it','freeze'],['No, I want something better','keep1']]},
+ happy2:{q:'Are you fully happy with this seat?',a:[['Yes, I want to keep it','freeze'],['No, I want something better','keep2']]},
+ keep1:{q:'If you get nothing better in Round 2, would you still be OK with this seat?',a:[['Yes, it is a good backup','float'],['No, I would never join it','exit1']]},
+ keep2:{q:'If you get nothing better in Round 3, would you still be OK with this seat?',a:[['Yes, it is a good backup','float3'],['No, I would never join it','exit2']]},
+ freeze:{r:'good',t:'❄️ FREEZE',b:'Upload your documents on the MCC portal, then go to the college in person with all originals and join within the reporting window. You will not take part in the next round.'},
+ float:{r:'good',t:'🌊 FLOAT',b:'Give willingness for upgradation online and upload clear documents within 2–3 days. The college verifies them online, with no travel. Fill fresh Round 2 choices with only seats you prefer over this one. If upgraded, you must join the new seat (the old one is cancelled automatically).'},
+ float3:{r:'mid',t:'🌊 FLOAT (last upgrade chance)',b:'Float into Round 3, but list only seats you will definitely join: a Round 3 seat cannot be resigned, and not joining it costs your deposit and ends MCC counselling for you. If you are not upgraded, you must report to this Round 2 seat in person after the Round 3 result.'},
+ exit1:{r:'mid',t:'🚪 FREE EXIT',b:'Do not join. Round 1 has a free exit, so your deposit is safe. Fill fresh choices in Round 2 with your registration still valid. Risk: you give up this seat completely and may get nothing better.'},
+ exit2:{r:'bad',t:'⚠️ Think carefully',b:'Leaving a Round 2 seat means losing your security deposit. You could still take part in Round 3 with fresh payment. If there is any chance you would join this seat, Float instead.'},
+ r3:{r:'bad',t:'🔒 No choice: join it',b:'Round 3 seats have no upgrade and no resignation. You must report in person with originals. Not joining means losing the deposit and being out of all further MCC rounds, including the stray round.'},
+ sv:{r:'bad',t:'🔒 Join it',b:'The stray round is final. Report and join within the window, or the security deposit is forfeited.'}
+};
+function ff(k,hist=[]){
+  const n=FF[k], back=hist.length?`<p><button class="linkbtn" data-back>← Back</button> · <button class="linkbtn" data-reset>Start again</button></p>`:'';
+  $('#ff-box').innerHTML = n.q
+   ? `<p><strong>${n.q}</strong></p><div class="seg">${n.a.map(([l,to])=>`<button class="qbtn" data-to="${to}">${l}</button>`).join('')}</div>${back}`
+   : `<div class="out ${n.r}"><div class="big">${n.t}</div><p>${n.b}</p></div>${back}`;
+  $$('#ff-box [data-to]').forEach(b=>b.onclick=()=>ff(b.dataset.to,hist.concat(k)));
+  const bk=$('#ff-box [data-back]'); if(bk) bk.onclick=()=>ff(hist[hist.length-1],hist.slice(0,-1));
+  const rs=$('#ff-box [data-reset]'); if(rs) rs.onclick=()=>ff('start');
+}
+ff('start');
+
+/* Consequence checker */
+const C={
+ r1:{nojoin:['good','Free exit','No penalty. Your deposit is safe and you can fill fresh choices in Round 2 without registering again.'],
+     resign:['good','Free exit','Resigning a Round 1 seat within the schedule is allowed with no penalty (Freeze: resign at the college; Float: online). You lose any claim on the seat.'],
+     upg:['bad','Deposit forfeited','Once upgraded in Round 2, your Round 1 seat is cancelled automatically. Not joining the new seat forfeits your deposit.'],
+     state:['good','Free exit','Resign the AIQ Round 1 seat (online if Float, at the college if Freeze) and join the State seat. No penalty.']},
+ r2:{nojoin:['bad','Deposit forfeited','Not joining a Round 2 seat forfeits the security deposit. You may still enter Round 3 with fresh payment.'],
+     resign:['bad','Deposit forfeited','Resignation is allowed, but the deposit is forfeited. You may enter Round 3 with fresh payment.'],
+     upg:['bad','Deposit forfeited','Upgraded in Round 3? The Round 2 seat is gone, and not joining the Round 3 seat forfeits the deposit and removes you from further MCC rounds.'],
+     state:['mid','Allowed, with forfeiture','You can resign the AIQ seat to take the State seat, but the security deposit is forfeited.']},
+ r3:{nojoin:['bad','Forfeited + eliminated','Deposit lost, and you cannot take part in the stray round or any further MCC round.'],
+     resign:['bad','Not allowed','Round 3 seats cannot be resigned once joined.'],
+     upg:['bad','Not possible','There is no upgrade from Round 3.'],
+     state:['bad','Not allowed','A joined Round 3 seat cannot be resigned. Decide before joining.']},
+ sv:{nojoin:['bad','Deposit forfeited','You must join a stray round seat, or the security deposit is forfeited.'],
+     resign:['bad','Not allowed','The stray round is final.'],
+     upg:['bad','Not possible','There is no round after the stray round.'],
+     state:['bad','Not allowed','The stray round is final; check State rules separately.']}
+};
+function cons(){const [r,t,b]=C[$('#cons-round').value][$('#cons-act').value];
+  $('#cons-out').className='out '+r; $('#cons-out').innerHTML=`<div class="big">${t}</div><p>${b}</p>`;}
+['#cons-round','#cons-act'].forEach(s=>$(s).addEventListener('change',cons)); cons();
+
+/* PwBD */
+const Y=['good','Suitable'],M=['mid','May be suitable'],N=['bad','Generally not suitable'];
+const P={
+ ul:{A:[N[0],N[1],'Fine motor skills and bimanual dexterity are essential.'],B:[M[0],M[1],'Only if both upper limbs can be used as needed (history, examination, CPR, procedures).'],C:[Y[0],Y[1],'With ramps, adjustable tables etc.'],D:[Y[0],Y[1],'With modified labs and mobility aids.']},
+ ll:{A:[M[0],M[1],'Only with essential, demonstrable functional competence (prolonged standing, mobility); orthotic or prosthetic support allowed.'],B:[M[0],M[1],'With mobility aids and workplace adjustments, if functionally competent.'],C:[Y[0],Y[1],''],D:[Y[0],Y[1],'']},
+ vis:{A:[M[0],'Only if corrected','Suitable only if corrective lenses bring the impairment below 40%.'],B:[M[0],'Only if corrected','If adaptive devices (hands-free) bring it below 40%.'],C:[M[0],'Only if corrected','If a low-vision aid brings it below 40%.'],D:[M[0],'Only if corrected','If digital aids bring it below 40%.']},
+ hear:{A:[M[0],'Suitable with aids','If functional with hearing aids or cochlear implant and speech is intelligible.'],B:[M[0],'Suitable with aids','Hearing aids, amplified stethoscope or cochlear implant, with intelligible speech.'],C:[M[0],'Suitable with aids','With hearing aids/implant and intelligible speech.'],D:[M[0],'Suitable with aids','With hearing aids/implant and intelligible speech.']},
+ sp:{A:[N[0],'Not suitable','Theatre and team communication is essential.'],B:[Y[0],Y[1],'If speech is intelligible; assistive communication devices allowed.'],C:[N[0],'Unclear','The draft table prints "No" here. Check the final guidelines.'],D:[Y[0],Y[1],'With assistive devices.']},
+ mi:{A:[M[0],'If functionally competent','Individual assessment of judgment, communication, following instructions, behaviour and safety. Diagnosis alone is not a ground for exclusion.'],B:[M[0],'If functionally competent','Flexible schedules and mentoring may be allowed.'],C:[M[0],'If functionally competent',''],D:[M[0],'If stable','']},
+ bl:{A:[M[0],'Case by case','Long OT hours and stamina are considered.'],B:[Y[0],Y[1],'With shift moderation and medical support.'],C:[Y[0],Y[1],''],D:[Y[0],Y[1],'With medical support.']},
+ neu:{A:[M[0],'If stable','Excluded if seizures are uncontrolled, relapses are frequent or the condition is progressive.'],B:[M[0],'If stable','Same exclusions apply.'],C:[M[0],'If stable',''],D:[M[0],'If stable','']},
+ mul:{A:[N[0],N[1],'Precision and endurance demands.'],B:[M[0],'Yes, if functionally adequate','Composite accommodation considered.'],C:[Y[0],Y[1],''],D:[M[0],'Case specific','']}
+};
+function pw(){const [r,t,b]=P[$('#pw-dis').value][$('#pw-grp').value];
+  $('#pw-out').className='out '+r; $('#pw-out').innerHTML=`<div class="big">${t}</div>${b?`<p>${b}</p>`:''}`;}
+['#pw-dis','#pw-grp'].forEach(s=>$(s).addEventListener('change',pw)); pw();
+
+/* Checklists with saved progress */
+const saved=store.get('neetpg26-checks',{});
+$$('ul.check').forEach(ul=>{
+  const boxes=ul.querySelectorAll('input[type=checkbox]');
+  const bar=document.createElement('div');
+  bar.innerHTML=`<div class="progress"><i></i></div><div class="mini"><span class="cnt"></span> · <button class="linkbtn">Clear ticks</button></div>`;
+  ul.before(bar);
+  const upd=()=>{const n=[...boxes].filter(b=>b.checked).length;
+    bar.querySelector('i').style.width=(100*n/boxes.length)+'%';
+    bar.querySelector('.cnt').textContent=`${n} of ${boxes.length} done`;};
+  boxes.forEach(b=>{b.checked=!!saved[b.id];b.addEventListener('change',()=>{saved[b.id]=b.checked;store.set('neetpg26-checks',saved);upd();});});
+  bar.querySelector('button').onclick=()=>{boxes.forEach(b=>{b.checked=false;delete saved[b.id];});store.set('neetpg26-checks',saved);upd();};
+  upd();
+});
+
+/* Search */
+const secs=$$('main section'), inp=$('#q'), hint=$('#q-hint');
+const orig=new Map(secs.map(s=>[s,s.innerHTML]));
+let tmr;
+inp.addEventListener('input',()=>{clearTimeout(tmr);tmr=setTimeout(search,200);});
+function search(){
+  const q=inp.value.trim().toLowerCase();
+  secs.forEach(s=>{if(s.dataset.marked){s.innerHTML=orig.get(s);delete s.dataset.marked;}});
+  if(q.length<2){secs.forEach(s=>s.classList.remove('hidden-by-search'));hint.textContent='';rebind();return;}
+  let hits=0;
+  secs.forEach(s=>{
+    const ok=s.textContent.toLowerCase().includes(q);
+    s.classList.toggle('hidden-by-search',!ok);
+    if(ok && s.id!=='tools' && s.id!=='sources'){hits++;mark(s,q);s.querySelectorAll('details').forEach(d=>{if(d.textContent.toLowerCase().includes(q))d.open=true;});}
+    else if(ok) hits++;
+  });
+  hint.textContent=hits?`Showing ${hits} section${hits>1?'s':''} matching "${inp.value.trim()}"`:'No matches. Try another word.';
+  rebind();
+}
+function mark(root,q){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];
+  while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{const i=n.nodeValue.toLowerCase().indexOf(q);if(i<0||n.parentNode.closest('script,style'))return;
+    const m=document.createElement('mark'),r=n.splitText(i);r.splitText(q.length);m.textContent=r.nodeValue;r.replaceWith(m);});
+  root.dataset.marked='1';
+}
+function rebind(){ /* restore checkbox state after search re-render */
+  $$('ul.check input[type=checkbox]').forEach(b=>{b.checked=!!saved[b.id];
+    b.onchange=()=>{saved[b.id]=b.checked;store.set('neetpg26-checks',saved);
+      const ul=b.closest('ul'),bx=ul.querySelectorAll('input'),n=[...bx].filter(x=>x.checked).length,bar=ul.previousElementSibling;
+      if(bar){bar.querySelector('i').style.width=(100*n/bx.length)+'%';bar.querySelector('.cnt').textContent=`${n} of ${bx.length} done`;}};});
+}
+
+/* Active nav + back to top */
+const links=new Map($$('nav a').map(a=>[a.getAttribute('href').slice(1),a]));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('active'));
+  const a=links.get(e.target.id);if(a){a.classList.add('active');a.scrollIntoView({block:'nearest',inline:'center'});}}}),{rootMargin:'-45% 0px -50% 0px'});
+secs.forEach(s=>s.id&&io.observe(s));
+const tt=$('#toTop');
+addEventListener('scroll',()=>tt.classList.toggle('show',scrollY>600),{passive:true});
+tt.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+})();
+</script>
+</body>

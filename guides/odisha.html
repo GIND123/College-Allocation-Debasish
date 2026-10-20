@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odisha PG Counselling 2026-27</title>
+<style>
+:root{
+  --bg:#f7f8fa; --card:#ffffff; --text:#1c2333; --muted:#5b6475; --line:#e3e6ec;
+  --accent:#0f6b5c; --accent-soft:#e3f2ef; --warn:#a34a00; --warn-soft:#fff2e5;
+  --bad:#a1262d; --bad-soft:#fdeceb; --chip:#eef1f6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11151c; --card:#1a2029; --text:#e6e9ef; --muted:#9aa3b2; --line:#2a313d;
+    --accent:#4cc3ad; --accent-soft:#16302c; --warn:#f0a35e; --warn-soft:#33251a;
+    --bad:#f08a8f; --bad-soft:#371c1e; --chip:#232a35;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11151c; --card:#1a2029; --text:#e6e9ef; --muted:#9aa3b2; --line:#2a313d;
+  --accent:#4cc3ad; --accent-soft:#16302c; --warn:#f0a35e; --warn-soft:#33251a;
+  --bad:#f08a8f; --bad-soft:#371c1e; --chip:#232a35;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;margin:0 0 4px;line-height:1.25}
+header p{margin:0;color:var(--muted)}
+.badge{display:inline-block;background:var(--accent-soft);color:var(--accent);font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:99px;margin-bottom:10px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 8px}
+nav a{background:var(--chip);color:var(--text);text-decoration:none;font-size:.85rem;padding:6px 12px;border-radius:99px}
+nav a:hover{background:var(--accent-soft);color:var(--accent)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin-top:16px}
+h2{font-size:1.15rem;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+h2 .n{background:var(--accent);color:var(--card);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;flex:none}
+h3{font-size:1rem;margin:16px 0 6px}
+ul{padding-left:20px;margin:0 0 12px}
+li{margin:4px 0}
+.muted{color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.stat{background:var(--chip);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:1.25rem;color:var(--accent)}
+.stat span{font-size:.82rem;color:var(--muted)}
+.table-wrap{overflow-x:auto;margin-bottom:12px}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.03em}
+td.r{text-align:right;white-space:nowrap}
+.note{border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:.93rem}
+.note.warn{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.note.bad{background:var(--bad-soft);border-left:4px solid var(--bad)}
+.note.ok{background:var(--accent-soft);border-left:4px solid var(--accent)}
+.rounds{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px}
+.round{border:1px solid var(--line);border-radius:10px;padding:12px}
+.round .t{font-weight:700}
+.round .m{font-size:.78rem;color:var(--accent);font-weight:600;text-transform:uppercase}
+.round p{margin:6px 0 0;font-size:.9rem;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 12px}
+.flow .s{background:var(--chip);border-radius:8px;padding:5px 9px;font-size:.85rem;white-space:nowrap}
+.flow .s.main{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.flow .a{color:var(--muted);font-size:.85rem}
+.cat{margin-bottom:10px}
+.cat-label{font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.check li{list-style:none;margin-left:-20px;padding-left:26px;position:relative}
+.check li::before{content:"";position:absolute;left:2px;top:5px;width:14px;height:14px;border:2px solid var(--accent);border-radius:4px}
+.tl{border-left:3px solid var(--accent);margin:0 0 14px 4px;padding-left:14px}
+.tl .row{display:flex;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);position:relative}
+.tl .row:last-child{border-bottom:0}
+.tl .row::before{content:"";position:absolute;left:-21px;top:13px;width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.tl .d{flex:none;width:96px;font-weight:700;font-size:.85rem;color:var(--accent)}
+.tl .e{font-size:.92rem}
+.flow .s{white-space:normal}
+.btn{display:inline-block;background:var(--accent);color:var(--card);text-decoration:none;font-weight:700;padding:10px 16px;border-radius:10px;margin:4px 8px 12px 0}
+.btn.alt{background:var(--chip);color:var(--text)}
+a{color:var(--accent)}
+footer{margin-top:24px;color:var(--muted);font-size:.82rem}
+@media (max-width:480px){header h1{font-size:1.35rem} section{padding:16px 14px 6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="badge">Updated with Addendum of 23 Sep 2026</span>
+  <h1>Odisha PG (Medical) Counselling 2026-27</h1>
+  <p>A plain-language guide to the state guidelines for MD/MS, Diploma and DNB admission.</p>
+</header>
+
+<nav>
+  <a href="#glance">At a glance</a>
+  <a href="#dates">Key dates</a>
+  <a href="#eligibility">Eligibility</a>
+  <a href="#seats">Seats &amp; reservation</a>
+  <a href="#weightage">In-service bonus</a>
+  <a href="#service-cert">Service certificate</a>
+  <a href="#rounds">Rounds</a>
+  <a href="#mopup">Mop-up order</a>
+  <a href="#rules">Strict rules</a>
+  <a href="#fees">Fees</a>
+  <a href="#watch">Watch-outs</a>
+  <a href="#checklist">Documents</a>
+</nav>
+
+<section id="glance">
+  <h2><span class="n">1</span>At a glance</h2>
+  <div class="grid">
+    <div class="stat"><b>50 : 50</b><span>In-service : Direct seats</span></div>
+    <div class="stat"><b>4 rounds</b><span>2 online + mop-up + stray</span></div>
+    <div class="stat"><b>₹2,500</b><span>Counselling fee (non-refundable)</span></div>
+    <div class="stat"><b>₹10 lakh</b><span>Penalty for leaving after admission</span></div>
+  </div>
+  <p><b>Covered:</b> state quota seats in all Govt medical colleges, plus <b>all seats (including management quota)</b> at Hi-Tech MC Bhubaneswar, Hi-Tech MC Rourkela and DRIEMS Tangi, Cuttack.</p>
+  <div><a class="btn" href="https://dmetodisha.in/PGMedical2022/Application_V2/CandidateLogin.aspx" target="_blank" rel="noopener">Candidate Login / Register &rarr;</a><a class="btn alt" href="https://dmetodisha.in/PGMCC_Static/MEDICAL%20COUNSELLING%201/Notifications.html" target="_blank" rel="noopener">Latest notices</a></div>
+  <p class="muted">Official website: <a href="https://dmetodisha.in/" target="_blank" rel="noopener">dmetodisha.in</a>. Check it regularly for notices.</p>
+</section>
+
+<section id="dates">
+  <h2><span class="n">2</span>Key dates</h2>
+  <p class="muted">Tentative schedule, Convener's Notice No. 25/MCB-2026, dated 09.10.2026. Dates may change, so check dmetodisha.in.</p>
+  <div class="tl">
+    <div class="row"><div class="d">12 – 18 Oct</div><div class="e"><b>Online registration + fee payment</b><br>Opens 12 Oct, 10:00 AM. Closes <b>18 Oct, 11:55 PM</b> (server time).<br><a href="https://dmetodisha.in/PGMedical2022/Application_V2/CandidateLogin.aspx" target="_blank" rel="noopener">Open the candidate login page</a></div></div>
+    <div class="row"><div class="d">14 – 16 Oct<br>21 – 23 Oct</div><div class="e"><b>Verification of original documents (in person)</b><br>650 Lecture Theatre, MKCG Medical College, Berhampur.<br>Report between <b>9:30 AM and 12 noon</b>. Verification runs 10 AM – 5 PM.</div></div>
+    <div class="row"><div class="d">26 Oct</div><div class="e"><b>Provisional seat matrix</b> published at 12 noon</div></div>
+    <div class="row"><div class="d">27 Oct</div><div class="e"><b>Complaints about the seat matrix</b>, by email only, until 2 PM</div></div>
+    <div class="row"><div class="d">28 Oct</div><div class="e"><b>Provisional merit list</b> published at 12 noon</div></div>
+    <div class="row"><div class="d">29 Oct</div><div class="e"><b>Complaints about the merit list</b>, by email only, until 2 PM</div></div>
+    <div class="row"><div class="d">31 Oct</div><div class="e"><b>Revised merit list + seat matrix</b> published at 12 noon</div></div>
+    <div class="row"><div class="d">To be announced</div><div class="e"><b>Round 1 counselling</b>. Detailed programme to be notified.</div></div>
+  </div>
+  <div class="note bad"><b>Don't miss document verification.</b> It is in person at Berhampur. If you miss it, your name won't appear in the merit list. You only need to attend one day within the dates given.</div>
+  <div class="note ok"><b>Complaints email:</b> convenerpgmedicalcounselling26@gmail.com</div>
+
+  <h3>How to pay the ₹2,500 fee</h3>
+  <div class="flow">
+    <span class="s">onlinesbi.sbi</span><span class="a">→</span>
+    <span class="s">SB Collect</span><span class="a">→</span>
+    <span class="s">Tick box &amp; Proceed</span><span class="a">→</span>
+    <span class="s">State: Odisha</span><span class="a">→</span>
+    <span class="s">Institution: Convener PG Medical Counselling Committee</span><span class="a">→</span>
+    <span class="s">Category: PG MED APPLICATION FEE</span><span class="a">→</span>
+    <span class="s">Fill, submit &amp; pay</span><span class="a">→</span>
+    <span class="s main">Print receipt</span>
+  </div>
+</section>
+
+<section id="eligibility">
+  <h2><span class="n">3</span>Who can apply</h2>
+  <ul>
+    <li>MBBS from an NMC-recognised college.</li>
+    <li><b>Permanent resident of Odisha</b>, with the <b>online resident certificate that has a QR code</b>.<br><span class="muted">Exception: an out-of-state student who did MBBS in an Odisha <i>Govt</i> college through the 15% All India Quota.</span></li>
+    <li>Qualified <b>NEET-PG 2026</b> with the NMC cut-off score.</li>
+    <li>Internship completed by <b>30 Sep 2026</b>, or the date MCC/NBE notifies.</li>
+    <li>Registered with a State or Central Medical Council.</li>
+    <li>If you are already in a PG course, you must pay the bond penalty before taking a new seat.</li>
+  </ul>
+
+  <h3>Direct or in-service?</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Type</th><th>Who</th></tr>
+    <tr><td><b>Direct</b></td><td>Unemployed, or working in Odisha Govt / PSU / Defence in Odisha but <b>less than 3 years</b> of service by 31 March 2026.</td></tr>
+    <tr><td><b>In-service</b></td><td>At least <b>3 years</b> of service by 31 March 2026, counting contractual, ad-hoc and regular work. Any single leave of 30 days or more is <b>not counted</b>, except maternity leave.</td></tr>
+    <tr><td><b>Diploma (state quota)</b></td><td>Only for candidates in <b>regular</b> Govt / PSU / Defence service in Odisha.</td></tr>
+  </table></div>
+</section>
+
+<section id="seats">
+  <h2><span class="n">4</span>Seats &amp; reservation</h2>
+  <h3>Main categories (vertical)</h3>
+  <div class="grid">
+    <div class="stat"><b>22.5%</b><span>Scheduled Tribe (ST)</span></div>
+    <div class="stat"><b>16.25%</b><span>Scheduled Caste (SC)</span></div>
+    <div class="stat"><b>11.25%</b><span>SEBC</span></div>
+  </div>
+  <h3>Within each category (horizontal)</h3>
+  <ul>
+    <li><b>5%</b> Persons with Disabilities (PwD)</li>
+    <li><b>3%</b> Ex-servicemen (ExS)</li>
+    <li><b>5%</b> Green Card holders (GC)</li>
+  </ul>
+  <h3>Other points</h3>
+  <ul>
+    <li><b>EWS</b> applies to General candidates only, and only in subjects where extra EWS seats were added. Unfilled EWS seats go to General.</li>
+    <li>ST, SC and SEBC candidates <b>cannot</b> take EWS seats.</li>
+    <li>Central-list OBC (non-creamy layer) candidates may apply but are placed in <b>UR</b>.</li>
+    <li>Management quota seats in private colleges are <b>UR only</b>, with no reservation.</li>
+    <li>ST and SC seats cannot be swapped with each other.</li>
+  </ul>
+  <h3>Category certificate notes</h3>
+  <ul>
+    <li><b>Green Card:</b> the parent's original card is needed. It must not have been used for reservation before, and no affidavit is accepted for mismatches.</li>
+    <li><b>Ex-servicemen:</b> a certificate from the Rajya Sainik Board, Bhubaneswar. You are not eligible if you or your parent is still serving.</li>
+    <li><b>EWS:</b> family income under ₹8 lakh, at most 5 acres of farmland, flat under 1,000 sq ft, and plot limits as per the certificate rules.</li>
+    <li><b>PwD:</b> the certificate must come from an MCC-notified centre only. See Watch-outs.</li>
+  </ul>
+</section>
+
+<section id="weightage">
+  <h2><span class="n">5</span>In-service bonus marks</h2>
+  <p>In-service candidates get extra marks for days worked in remote or difficult areas, counted up to 31 March 2026. The bonus is capped at <b>30% of their NEET-PG score</b>.</p>
+  <div class="table-wrap"><table>
+    <tr><th>When you joined</th><th>Bonus per year of service</th></tr>
+    <tr><td>Before 21.03.2016</td><td><b>10%</b> in places listed in Annexure A</td></tr>
+    <tr><td>After 21.03.2016</td><td>By area grade (Annexure B):<br><b>V1 2.5% · V2 5% · V3 7.5% · V4 10%</b></td></tr>
+    <tr><td>ESI hospitals / dispensaries</td><td>As per Annexure C (19 ESI institutions, graded V1–V4)</td></tr>
+  </table></div>
+  <div class="note ok"><b>Example:</b> a NEET score of 500 with 3 years in a V4 area gives 3 × 10% = 30%, so the bonus is +150 and the merit score is 650. This is an illustration only.</div>
+  <ul>
+    <li>Maternity leave counts toward the bonus.</li>
+    <li><b>Diploma applicants get no bonus marks.</b></li>
+  </ul>
+
+  <h3 id="service-cert">Service Certificate (in-service candidates)</h3>
+  <p>Your in-service status and bonus marks are checked against this certificate. It must be <b>based on your Service Book</b> and carry the officer's <b>signature, name and seal</b>.</p>
+  <div class="note warn"><b>Who should sign it?</b> The form itself says "Head of Office". The Convener's document guidelines (10.10.2026) say <b>CDM &amp; PHO or the Superintendent of your institution</b>, and call it the "Service Continuity &amp; Area Posting Certificate". To be safe, get it signed by the CDM &amp; PHO or Superintendent.</div>
+  <div class="table-wrap"><table>
+    <tr><th>Part</th><th>What it must show</th></tr>
+    <tr><td><b>A. Institutions served</b></td><td>Every institution you worked in, with:<br>• name of the institution<br>• block and district<br>• type of service (ad-hoc, temporary, contractual or regular)<br>• date of joining and date of relief</td></tr>
+    <tr><td><b>B. Long leave</b></td><td>Any single leave of <b>30 days or more</b>, <b>not counting maternity leave</b>, with:<br>• institution, block and district<br>• type of service<br>• date you went on leave and date you rejoined</td></tr>
+  </table></div>
+  <ul>
+    <li>Part A decides your <b>bonus marks</b>. The name, block and district of each institution should match how they appear in the area lists (Annexure A, B and C), so they can be matched to the right grade.</li>
+    <li>Part B decides your <b>3-year service</b> count. Those leave days are taken out of your service period.</li>
+    <li>The certificate is valid for MD/MS, DNB and Post-MBBS NBEMS Diploma counselling for 2026-27.</li>
+  </ul>
+  <div class="note warn"><b>Don't mix up the names.</b> This form is titled "Annexure-A", but in the main guidelines "Annexure A" is the list of 10% bonus areas. They are two different documents.</div>
+  <div class="note ok"><b>Tip:</b> if you served in more than one place, check that every posting is listed with exact dates, with no gaps or overlaps. Get the certificate early, because offices can be slow.</div>
+</section>
+
+<section id="rounds">
+  <h2><span class="n">6</span>How counselling works</h2>
+  <h3>Before the rounds</h3>
+  <ul>
+    <li>Register on the <a href="https://dmetodisha.in/PGMedical2022/Application_V2/CandidateLogin.aspx" target="_blank" rel="noopener">candidate login page</a> by creating a username and password. Without registration you can't move forward.</li>
+    <li>Fill the online form, submit it and print it.</li>
+    <li>Pay the <b>₹2,500 fee via SBI Collect</b>. It is not refunded.</li>
+    <li>Attend <b>document verification</b>. For 2026-27 it is <b>in person at MKCG Medical College, Berhampur</b> (see Key dates). An authorised person may go for you in an emergency. <b>If you miss it, your name will not appear in the merit list.</b></li>
+  </ul>
+  <h3>The four rounds</h3>
+  <div class="rounds">
+    <div class="round"><div class="m">Online</div><div class="t">Round 1</div><p>Lock your choices of college and course, in any number. Seats are allotted on merit and choice.</p></div>
+    <div class="round"><div class="m">Online</div><div class="t">Round 2</div><p>Choose <b>Float</b> or <b>Freeze</b>. Vacated seats are re-allotted. After this round, you can't resign to join All India counselling.</p></div>
+    <div class="round"><div class="m">Physical</div><div class="t">Mop-up</div><p>Seats are allotted on the spot in a fixed category order. Bring your original CLC and the fee. Diploma seats come after MD/MS.</p></div>
+    <div class="round"><div class="m">Physical</div><div class="t">Stray vacancy</div><p>All unfilled seats become General. Only candidates who have not joined any seat can take part.</p></div>
+  </div>
+  <p class="muted">Rounds may all move online in an emergency. Dates follow the MCC and Supreme Court schedule.</p>
+</section>
+
+<section id="mopup">
+  <h2><span class="n">7</span>Mop-up round seat order <span class="muted" style="font-weight:400;font-size:.85rem">(Addendum, 23 Sep 2026)</span></h2>
+  <p><b>Step 1:</b> In-service seats are filled first, then Direct seats.<br>
+  <b>Step 2:</b> Within each, the order below is followed from top to bottom.</p>
+
+  <div class="cat"><div class="cat-label">ST</div><div class="flow">
+    <span class="s">ST (PwD)</span><span class="a">→</span><span class="s">ST (GC)</span><span class="a">→</span><span class="s">ST (ExS)</span><span class="a">→</span><span class="s main">ST</span>
+  </div></div>
+  <div class="cat"><div class="cat-label">SC</div><div class="flow">
+    <span class="s">SC (PwD)</span><span class="a">→</span><span class="s">SC (GC)</span><span class="a">→</span><span class="s">SC (ExS)</span><span class="a">→</span><span class="s main">SC</span>
+  </div></div>
+  <div class="cat"><div class="cat-label">SEBC</div><div class="flow">
+    <span class="s">SEBC (PwD)</span><span class="a">→</span><span class="s">SEBC (GC)</span><span class="a">→</span><span class="s">SEBC (ExS)</span><span class="a">→</span><span class="s main">SEBC</span>
+  </div></div>
+  <div class="cat"><div class="cat-label">UR</div><div class="flow">
+    <span class="s">UR (PwD)</span><span class="a">→</span><span class="s">UR (GC)</span><span class="a">→</span><span class="s">UR (ExS)</span><span class="a">→</span><span class="s">UR (EWS)</span><span class="a">→</span><span class="s main">UR</span>
+  </div></div>
+
+  <h3>What happens to empty seats</h3>
+  <ul>
+    <li>An empty <b>sub-category</b> seat goes back to its main category. For example, an empty SC (PwD) seat becomes a regular SC seat.</li>
+    <li>An empty <b>in-service</b> seat goes to Direct candidates and <b>keeps its reservation</b>.</li>
+    <li>An empty <b>reserved</b> seat is finally filled by UR candidates.</li>
+  </ul>
+  <h3>Mop-up rules</h3>
+  <ul>
+    <li>Once you are admitted in mop-up, you <b>can't change</b> your seat or subject in the same round.</li>
+    <li>You can take part only in the slot you are called for. If you come late, you choose only from seats still left.</li>
+    <li>You can't resign an MD/MS seat to try for a Diploma seat.</li>
+  </ul>
+  <h3>Stray vacancy order</h3>
+  <div class="flow">
+    <span class="s">In-service general</span><span class="a">→</span><span class="s">Direct general</span><span class="a">→</span><span class="s">Diploma general</span>
+  </div>
+</section>
+
+<section id="rules">
+  <h2><span class="n">8</span>Strict rules &amp; penalties</h2>
+  <div class="note bad"><b>₹10 lakh penalty</b>, plus all stipend or salary received, if you resign after mop-up or don't report to the college in time. The admission fee is also forfeited.</div>
+  <ul>
+    <li><b>Surrender</b>, when allowed under MCC rules: you get back 90% of the admission fee, and 10% is kept.</li>
+    <li>If you hold a seat at the end of Round 2, you <b>can't join later rounds</b> of state or All India counselling.</li>
+    <li>No new registration after the first round, unless the cut-off is lowered or new seats are added.</li>
+    <li>False or hidden information means cancellation, possible legal action and a <b>3-year ban</b>.</li>
+    <li>For Govt seats, a <b>service bond</b> with sureties must be submitted at admission. This does not apply to private colleges.</li>
+    <li>Leave is 15 days a year, with at most 10 days at a stretch. Extra days must be made up. Attendance must be at least 80%.</li>
+    <li>Private practice during PG is not allowed, and is grounds for cancellation.</li>
+    <li>Ragging leads to expulsion if the explanation is not satisfactory.</li>
+  </ul>
+</section>
+
+<section id="fees">
+  <h2><span class="n">9</span>Fees</h2>
+  <h3>Govt medical colleges</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Item</th><th class="r">Amount</th></tr>
+    <tr><td>Tuition (per year)</td><td class="r">₹35,000</td></tr>
+    <tr><td>Library + Journal (per year)</td><td class="r">₹3,500</td></tr>
+    <tr><td>One-time fees (admission, ID, union, societies)</td><td class="r">₹5,300</td></tr>
+    <tr><td>Security deposit (refundable)</td><td class="r">₹15,000</td></tr>
+    <tr><td><b>Total at admission</b></td><td class="r"><b>₹58,800</b></td></tr>
+    <tr><td>Hostel, if allotted (includes ₹2,500 refundable)</td><td class="r">₹20,000</td></tr>
+  </table></div>
+  <p class="muted">University fees are extra. Hostel places are limited and are not guaranteed.</p>
+
+  <h3>Private colleges (per year)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>College</th><th>Subjects</th><th class="r">Fee</th></tr>
+    <tr><td rowspan="3">Hi-Tech, Bhubaneswar</td><td>Anatomy, Physiology, Biochemistry</td><td class="r">₹6,93,500</td></tr>
+    <tr><td>Paraclinical</td><td class="r">₹8,67,000</td></tr>
+    <tr><td>Clinical</td><td class="r">₹17,33,500</td></tr>
+    <tr><td rowspan="2">Hi-Tech, Rourkela</td><td>Paraclinical</td><td class="r">₹6,41,000</td></tr>
+    <tr><td>Clinical</td><td class="r">₹12,81,000</td></tr>
+  </table></div>
+
+  <h3>DRIEMS, Tangi, Cuttack (per year)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Subjects</th><th class="r">State quota</th><th class="r">Management quota</th></tr>
+    <tr><td>Pre-clinical (Anatomy, Physiology, Biochemistry)</td><td class="r">₹5.13 lakh</td><td class="r">₹5.13 lakh</td></tr>
+    <tr><td>Para-clinical</td><td class="r">₹6.41 lakh</td><td class="r">₹6.41 lakh</td></tr>
+    <tr><td>Clinical</td><td class="r">₹12.81 lakh</td><td class="r"><b>₹38.43 lakh</b></td></tr>
+  </table></div>
+  <div class="note warn"><b>Clinical management quota at DRIEMS costs 3 times the state quota fee</b>: about ₹1.15 crore over 3 years, against about ₹38.4 lakh. Before you lock a DRIEMS clinical choice, check which quota the seat falls under.</div>
+  <p class="muted">Source: DRIEMS letter to the PG Counselling Convener, Ref. DRIEMS/Dean/Estb./10-26/813 dated 10.10.2026. It is based on Govt of Odisha Skill Development &amp; Technical Education Dept notification No. SDTE-HTE-HTE-1-0010-2017/56 dated 08.10.2026. Wait for the convener to publish it officially on the DMET site.</p>
+  <p class="muted">Optional Hi-Tech costs include hostel (₹18,000–26,000), transport (₹12,000–17,000), uniform and blazer. Direct candidates in private colleges get a stipend at the same rate as Govt colleges.</p>
+  <p class="muted">Diploma candidates pay the first-year NBEMS fee through their college. The deposit made at admission is refunded later.</p>
+</section>
+
+<section id="watch">
+  <h2><span class="n">10</span>Watch-outs</h2>
+  <div class="note warn"><b>No disability certificate centre in Odisha.</b> PwD candidates must go to an MCC-notified centre. The nearest is IPGMER, Kolkata. Plan early.</div>
+  <div class="note warn"><b>Two rules may conflict.</b> The addendum says empty in-service seats go to Direct candidates with their reservation intact. The older clause 13.4, which was not removed, says empty in-service reserved seats first go to in-service UR. Watch for the convener's notice on this.</div>
+  <div class="note warn"><b>Order only set for mop-up.</b> The addendum's category order covers the mop-up round only. No order is stated for Rounds 1 and 2.</div>
+  <div class="note warn"><b>Two fee rates at DRIEMS.</b> DRIEMS now has separate state quota and management quota fees, and clinical management seats cost ₹38.43 lakh a year. The Hi-Tech fees in the guidelines don't show a split like this. Ask the college if you are unsure which rate applies to your seat.</div>
+  <div class="note warn"><b>Check your area's grade carefully.</b> The area lists for bonus marks (Annexure A/B) contain duplicates and spelling variations. Verify your exact institution name and grade.</div>
+  <div class="note warn"><b>Transport fee gap.</b> The Hi-Tech transport fee is set for distances up to 12 km and over 20 km. Ask the college about 12–20 km.</div>
+</section>
+
+<section id="checklist">
+  <h2><span class="n">11</span>Valid documents</h2>
+  <p class="muted">As per the Convener's "Guidelines for valid documents", No. 35/MCB-2026, dated 10.10.2026.</p>
+  <div class="note bad"><b>Illegible or handwritten copies are rejected.</b> Certificates that are meant to be generated online must carry their QR code or barcode, or they are not valid.</div>
+
+  <h3>Required from everyone</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Document</th><th>What makes it valid</th></tr>
+    <tr><td><b>College Leaving / Transfer Certificate</b></td><td><b>Original paper copy.</b> Required from every candidate who is allotted a seat.</td></tr>
+    <tr><td><b>NEET-PG scorecard</b></td><td>A printout of the PDF from the official portal, for this year. It must show qualifying marks as per NMC.</td></tr>
+    <tr><td><b>MBBS degree &amp; mark sheets</b></td><td>Clear, high-resolution copies. A permanent degree or a provisional one issued by the university is accepted. The college must be NMC/MCI recognised.</td></tr>
+    <tr><td><b>Internship certificate</b></td><td>Issued by the Dean/Principal. It must show completion on or before <b>30 Sep 2026</b>, or the date NBEMS notifies.</td></tr>
+    <tr><td><b>Medical registration</b></td><td>A clear printout of the digital copy from OMC or NMC/MCI. It must be <b>valid on the day you register online</b>.</td></tr>
+  </table></div>
+
+  <h3>Required if it applies to you</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Document</th><th>What makes it valid</th></tr>
+    <tr><td><b>Permanent Resident Certificate</b></td><td>The online version <b>with QR code</b>. It must be <b>valid on the day you lock choices</b>. Not needed by out-of-state AIQ graduates of Odisha Govt colleges.</td></tr>
+    <tr><td><b>ST / SC certificate</b></td><td>The online version with QR code or barcode, under Odisha Caste Rules. Issued by a Tahsildar or higher. Valid permanently unless revoked.</td></tr>
+    <tr><td><b>SEBC-NCL certificate</b></td><td>Generated online through the e-District portal and showing local Non-Creamy Layer status. It must be <b>issued on or after 1 April 2026</b> and is valid for 1 year.</td></tr>
+    <tr><td><b>EWS certificate</b></td><td>The online version, issued by a Tahsildar or higher. It must be <b>issued on or after 1 April 2026</b> and is valid for 1 year.</td></tr>
+    <tr><td><b>PwD certificate</b></td><td>The format set under the RPwD Act 2016, valid for this year. It must come <b>only</b> from a DGHS/MCC-notified medical board.</td></tr>
+    <tr><td><b>Ex-Servicemen certificate</b></td><td>Issued by the Rajya Sainik Board, Odisha, on or after 1 April 2026. You are not eligible if you or a parent is still serving.</td></tr>
+    <tr><td><b>Green Card</b></td><td>Your parent's <b>original</b> card, not used for reservation before. It must match your other documents, and no affidavit is accepted. If your name, parents' names or date of birth don't match, get a <b>corrected card from the CDM &amp; PHO</b>. Otherwise you will be treated as UR.</td></tr>
+    <tr><td><b>Service Continuity &amp; Area Posting Certificate</b></td><td>Required from <b>all in-service candidates</b>, in the set format. It must be signed by the <b>CDM &amp; PHO or the Superintendent of your institution</b>, and must list any leave of 30 days or more.</td></tr>
+    <tr><td><b>Indemnity Bond</b></td><td>Required from <b>everyone allotted a seat</b>, except for private college seats. It goes on non-judicial stamp paper worth <b>at least ₹21</b>, signed by you and <b>two sureties</b>.</td></tr>
+  </table></div>
+
+  <div class="note ok"><b>Problem with a document?</b> Email the Convener at <b>convenerpgmedicalcounselling26@gmail.com</b>. Only complaints sent to this address are considered.</div>
+
+  <h3>Quick checklist</h3>
+  <ul class="check">
+    <li>₹2,500 counselling fee paid via SBI Collect</li>
+    <li>NEET-PG 2026 scorecard printout</li>
+    <li>MBBS degree and mark sheets</li>
+    <li>Internship certificate (completed by 30 Sep 2026)</li>
+    <li>Medical registration, valid on the day you register</li>
+    <li>Resident certificate with QR code, valid on the day you lock choices</li>
+    <li>Category certificate (SEBC and EWS issued on or after 1 Apr 2026)</li>
+    <li>PwD, Ex-Servicemen or Green Card documents, if claiming</li>
+    <li>Service Continuity &amp; Area Posting Certificate, if in-service</li>
+    <li>NOC from employer, for PSU in-service candidates</li>
+    <li>Original CLC / Transfer Certificate</li>
+    <li>Admission fee ready for allotment day</li>
+    <li>Indemnity bond (₹21+ stamp paper, two sureties) for Govt seats</li>
+  </ul>
+</section>
+
+<footer>
+  Sources: DMET Odisha "Guidelines for Counselling and Admission 2026-27" and Addendum Order No. 21357/MET-I-PG-02/2026 dated 23.09.2026, the Service Certificate format for in-service candidates, DRIEMS fee letter dated 10.10.2026, Convener's tentative schedule No. 25/MCB-2026 dated 09.10.2026, and Convener's Guidelines for valid documents, No. 35/MCB-2026 dated 10.10.2026. This is a simplified summary. The official documents and notices on dmetodisha.in are final.
+</footer>
+
+</div>
+</body>
+</html>
