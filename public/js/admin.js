@@ -3,7 +3,7 @@ import {
 } from './lib.js';
 
 const app = $('#app');
-const A = { provider: 'mock', states: [], schema: null, days: 30, dash: null };
+const A = { provider: 'mock', states: [], schema: null, days: 30, dash: null, leadTab: 'verified' };
 const SHEETJS = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs';
 const ROWS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5h18v14H3zM3 10h18M3 15h18M9 5v14"/></svg>';
 const KLABEL = { state: 'State counselling', aiq: 'All India Quota' };
@@ -63,12 +63,27 @@ function shell() {
     <div class="main">
       ${A.provider === 'mock' ? `<div class="warnbar"><b>Test sign-in mode.</b> No SMS is sent and every number signs in with code 1234.
         Switch to Firebase phone sign-in before launch — see <a href="#settings">Settings</a>.</div>` : ''}
+      <div id="health"></div>
       <div id="page"></div>
     </div></div>`;
   $('#thm').onclick = () => { toggleTheme(); if (A.dash) drawCharts(); };
   $('#out').onclick = async () => { await api('/api/admin/logout', { method: 'POST' }).catch(() => {}); login(); };
   addEventListener('hashchange', render);
   render();
+  checkHealth();
+}
+
+// Firebase only sends codes from its project's Authorized domains: warn when this address isn't one.
+async function checkHealth() {
+  let h;
+  try { h = await call('/api/admin/health'); } catch { return; }
+  const f = h.firebase, box = $('#health');
+  if (!f || !box) return;
+  if (f.authorized === false) box.innerHTML = `<div class="warnbar err"><b>Phone sign-in fails on this address.</b>
+    Firebase doesn't list <code>${esc(f.host)}</code> as an authorised domain, so every code request ends in "security check failed".
+    Add it in the Firebase console → Authentication → Settings → Authorized domains. Until then, sign-up details are kept under
+    <a href="#leads/unverified">Leads → Didn't verify</a>.</div>`;
+  else if (f.authorized === null) box.innerHTML = `<div class="warnbar"><b>Couldn't check Firebase's set-up.</b> ${esc(f.error || '')}</div>`;
 }
 
 function render() {
@@ -278,36 +293,90 @@ const reachHtml = l => l.phone
   ? `<a class="icon-btn" href="https://wa.me/${waNum(l.phone)}" target="_blank" rel="noopener" aria-label="WhatsApp ${esc(l.name)}" data-stop>${icon.chat}</a>`
   : `<a class="icon-btn" href="mailto:${esc(l.email)}" aria-label="Email ${esc(l.name)}" data-stop>${MAIL_ICON}</a>`;
 
-async function leads() {
+const PROBLEM = {
+  '': 'Code not entered',
+  'captcha-check-failed': 'Security check failed: site address not authorised in Firebase?',
+  'site-not-authorised': 'Site address not authorised in Firebase',
+  'unauthorized-domain': 'Site address not authorised in Firebase',
+  'invalid-app-credential': 'Security check failed',
+  'missing-app-credential': 'Security check failed',
+  'quota-exceeded': 'Daily SMS limit reached',
+  'billing-not-enabled': 'Firebase billing is off',
+  'operation-not-allowed': 'Phone sign-in is switched off in Firebase',
+  'internal-error': 'Firebase error'
+};
+const problemText = e => PROBLEM[e] || (e.startsWith('server-') ? 'Server error' : e);
+
+async function leads(tab) {
+  if (tab === 'unverified' || tab === 'verified') A.leadTab = tab;
   const page = $('#page');
-  page.innerHTML = head('Sign-ups', 'Leads', 'Everyone who verified a mobile number or email. Click a row for their shortlist and activity.',
-    `<a class="btn btn-line btn-sm" id="lcsv" href="/api/admin/leads?format=csv">${icon.download} Export CSV</a>`) + `
+  page.innerHTML = head('Sign-ups', 'Leads', 'Everyone who verified a mobile number or email, and everyone who started signing up but never got in.',
+    `<a class="btn btn-line btn-sm" id="lcsv" href="#">${icon.download} Export CSV</a>`) + `
     <div class="mbody">
-      <div class="toolbar"><div class="search-wrap">${icon.search}<input class="input" id="lq" type="search" placeholder="Search name, mobile, email or state"></div><span class="count" id="lc"></span></div>
+      <div class="toolbar">
+        <div class="seg compact" role="group" aria-label="Show">
+          <button data-t="verified">Signed up <span class="num" id="n-verified"></span></button>
+          <button data-t="unverified">Didn't verify <span class="num" id="n-unverified"></span></button>
+        </div>
+        <div class="search-wrap">${icon.search}<input class="input" id="lq" type="search" placeholder="Search name, mobile, email or state"></div>
+        <span class="count" id="lc"></span>
+      </div>
+      <p class="muted" id="lnote" style="font-size:12.5px;margin:0 0 12px;max-width:90ch"></p>
       <div id="lt"><div class="empty"><span class="spinner"></span></div></div>
     </div>`;
   const load = async () => {
-    const q = $('#lq').value.trim();
-    $('#lcsv').href = '/api/admin/leads?format=csv&q=' + encodeURIComponent(q);
-    let r;
-    try { r = await call('/api/admin/leads?q=' + encodeURIComponent(q)); } catch (e) { $('#lt').innerHTML = `<div class="alert alert-err">${esc(e.message)}</div>`; return; }
-    $('#lc').textContent = `${fmt(r.leads.length)} lead${r.leads.length === 1 ? '' : 's'}`;
-    $('#lt').innerHTML = r.leads.length ? `<div class="grid-wrap"><table class="grid">
+    const q = $('#lq').value.trim(), unv = A.leadTab === 'unverified';
+    $$('[data-t]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.t === A.leadTab)));
+    $('#lcsv').href = `/api/admin/${unv ? 'attempts' : 'leads'}?format=csv&q=${encodeURIComponent(q)}`;
+    $('#lnote').textContent = unv
+      ? "They entered their details and asked for a code but never finished signing in: the code didn't arrive, or they didn't enter it. Each one is shown once; it moves to Signed up when they sign in."
+      : 'Click a row for their shortlist and activity.';
+    let lr, ar;
+    try {
+      [lr, ar] = await Promise.all([call('/api/admin/leads?q=' + encodeURIComponent(q)), call('/api/admin/attempts?q=' + encodeURIComponent(q))]);
+    } catch (e) { $('#lt').innerHTML = `<div class="alert alert-err">${esc(e.message)}</div>`; return; }
+    $('#n-verified').textContent = fmt(lr.leads.length);
+    $('#n-unverified').textContent = fmt(ar.attempts.length);
+    const list = unv ? ar.attempts : lr.leads;
+    $('#lc').textContent = `${fmt(list.length)} ${unv ? 'not verified' : `lead${list.length === 1 ? '' : 's'}`}`;
+    if (!list.length) {
+      $('#lt').innerHTML = `<div class="panel"><div class="empty"><h3>${q ? 'Nothing matches' : unv ? 'Nobody is stuck at sign-up' : 'No sign-ups yet'}</h3>
+        <p>${q ? 'Try another name, number or email.' : unv ? 'People who ask for a code and never sign in appear here.' : 'Leads appear here as soon as someone verifies their mobile or email.'}</p></div></div>`;
+      return;
+    }
+    $('#lt').innerHTML = unv ? `<div class="grid-wrap"><table class="grid">
+      <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">CMR</th><th>Last tried</th><th>What happened</th><th></th></tr></thead>
+      <tbody>${list.map(a => {
+        const who = { name: a.name, phone: a.channel === 'phone' ? a.contact : null, email: a.channel === 'email' ? a.contact : null };
+        return `<tr data-aid="${a.id}">
+        <td class="strong">${esc(a.name)}</td><td class="nowrap num">${esc(a.contact)}</td>
+        <td class="nowrap">${esc(a.state || '—')}</td><td class="n">${fmt(a.cmr)}</td>
+        <td class="nowrap">${ago(a.updatedAt)}</td><td>${esc(problemText(a.error))}</td>
+        <td><div class="actions">${reachHtml(who)}<button class="icon-btn" data-del aria-label="Remove ${esc(a.name)}" title="Remove">${icon.trash}</button></div></td></tr>`;
+      }).join('')}</tbody></table></div>` : `<div class="grid-wrap"><table class="grid">
       <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">CMR</th><th>Signed up</th><th>Last active</th><th class="r">Sign-ins</th><th class="r">Predictions</th><th class="r">Shortlisted</th><th>Last search</th><th></th></tr></thead>
-      <tbody>${r.leads.map(l => `<tr class="clickable" data-id="${l.id}">
+      <tbody>${list.map(l => `<tr class="clickable" data-id="${l.id}">
         <td class="strong">${esc(l.name || '—')}</td><td class="nowrap num">${esc(contactOf(l))}</td>
         <td class="nowrap">${esc(l.state || '—')}</td><td class="n">${fmt(l.cmr)}</td>
         <td class="nowrap">${dateIN(l.createdAt)}</td><td class="nowrap">${ago(l.lastSeenAt)}</td>
         <td class="n">${fmt(l.logins)}</td><td class="n">${fmt(l.predictions)}</td><td class="n">${fmt(l.shortlisted)}</td>
         <td class="nowrap">${lastSearch(l)}</td>
         <td><div class="actions">${reachHtml(l)}</div></td></tr>`).join('')}</tbody>
-    </table></div>` : `<div class="panel"><div class="empty"><h3>${q ? 'No matching leads' : 'No sign-ups yet'}</h3><p>${q ? 'Try another name, number or email.' : 'Leads appear here as soon as someone verifies their mobile or email.'}</p></div></div>`;
-    $('#lt tbody')?.addEventListener('click', e => {
+    </table></div>`;
+    $('#lt tbody').addEventListener('click', async e => {
+      const del = e.target.closest('[data-del]');
+      if (del) {
+        const tr = del.closest('tr');
+        if (!await confirmDialog('Remove this entry?', `It is taken off the Didn't verify list. If they sign up again later, they come back.`, { ok: 'Remove', danger: true })) return;
+        await call('/api/admin/attempts/' + tr.dataset.aid, { method: 'DELETE' });
+        toast('Removed.'); return load();
+      }
       if (e.target.closest('[data-stop]')) return;
       const tr = e.target.closest('tr[data-id]');
       if (tr) leadDrawer(+tr.dataset.id, load);
     });
   };
+  $$('[data-t]').forEach(b => b.onclick = () => { if (A.leadTab !== b.dataset.t) { A.leadTab = b.dataset.t; history.replaceState(null, '', '#leads/' + A.leadTab); load(); } });
   $('#lq').oninput = debounce(load, 250);
   load();
 }

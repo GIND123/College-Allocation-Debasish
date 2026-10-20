@@ -47,7 +47,7 @@ Firebase Authentication phone sign-in sends the SMS and handles reCAPTCHA. Becau
 
 1. Create a project at console.firebase.google.com. Phone sign-in needs the **Blaze** (pay-as-you-go) plan. Check the Firebase pricing page for current per-SMS rates in India.
 2. Go to Authentication → Sign-in method and enable **Phone**. Under Settings → SMS region policy, allow India.
-3. Go to Authentication → Settings → Authorized domains and add the production domain.
+3. Go to Authentication → Settings → Authorized domains and add **every address the site is served on**: the Render address (for example `rankround-spte.onrender.com`) and any custom domain. Firebase refuses phone sign-in from any other address.
 4. Go to Project settings → Your apps, add a **Web app**, and copy its config.
 5. Set these on the server and restart:
    ```
@@ -63,6 +63,8 @@ The sign-in screen switches to 6-digit codes automatically. Only `apiKey`, `auth
 Testing on your own machine:
 - Firebase often rejects the reCAPTCHA check on `localhost` with `invalid-app-credential`. Open the site at `http://127.0.0.1:3000` instead, and add `127.0.0.1` to Authorized domains.
 - To test without paying for SMS, add a number under Authentication → Sign-in method → Phone → Phone numbers for testing. It must be an Indian number (for example `+91 9999999999` with code `123456`), because the site accepts Indian mobiles only.
+
+If sign-up shows *"We couldn't send your code just now (captcha-check-failed)"*, the site's address is almost always missing from Authorized domains. The admin console checks this itself: when Firebase doesn't list the address you're on, a red banner names it. Students are never stuck meanwhile: their sign-up details are kept under **Leads → Didn't verify**, and they're offered the counsellor's WhatsApp.
 
 To use another SMS provider later (MSG91, Twilio Verify and so on), replace the body of `requestOtp` in `server/auth.js` so it sends the code. Nothing else changes.
 
@@ -145,7 +147,7 @@ The dashboard shows:
 - speciality and college interest
 - traffic sources, devices and pages
 
-**Leads** lists everyone who verified a mobile or email, with their state, NEET-PG CMR, last search, shortlist and activity timeline, and exports to CSV. The overview also shows sign-ups by state and by contact type (mobile or email).
+**Leads** lists everyone who verified a mobile or email, with their state, NEET-PG CMR, last search, shortlist and activity timeline, and exports to CSV. The **Didn't verify** tab lists students who filled in the sign-up form and asked for a code but never got in, with what went wrong (code not entered, SMS limit reached, site address not authorised in Firebase, …), so a counsellor can still follow up. A student moves to Signed up as soon as they verify. The overview also shows sign-ups by state and by contact type (mobile or email).
 
 ## Deploying
 
@@ -154,4 +156,5 @@ The dashboard shows:
 - Set `AUTH_PROVIDER=firebase` before going live. The server logs a warning while mock mode is on in production.
 - Point `DB_PATH` at a **persistent disk**. On Render, Railway or Fly, attach a volume, otherwise data is lost on redeploy. Back up that one file.
 - Behind a reverse proxy, set `TRUST_PROXY=1` so rate limits see real client IPs.
+- Add the site's address to Firebase's Authorized domains (see above). The admin console warns when it is missing.
 - JavaScript and CSS are served with `Cache-Control: no-cache`, so every visitor gets the newly deployed version on their next page load. Unchanged files cost a quick 304.

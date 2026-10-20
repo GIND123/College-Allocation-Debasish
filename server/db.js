@@ -108,6 +108,22 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+
+-- Sign-up details kept from the moment a code is requested, so a lead isn't lost
+-- when the code never arrives. verified_at is set once that contact signs in.
+CREATE TABLE IF NOT EXISTS signup_attempts (
+  id INTEGER PRIMARY KEY,
+  contact TEXT NOT NULL,
+  channel TEXT NOT NULL,
+  name TEXT NOT NULL,
+  cmr INTEGER,
+  state TEXT NOT NULL DEFAULT '',
+  error TEXT NOT NULL DEFAULT '',
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL,
+  verified_at INTEGER
+);
+CREATE INDEX IF NOT EXISTS attempts_contact ON signup_attempts(contact, created_at);
 `);
 
 export const now = () => Date.now();

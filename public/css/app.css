@@ -194,6 +194,9 @@
 .auth-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:20px}
 .empty-actions{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:18px}
 .empty-actions svg{width:15px; height:15px}
+.auth-down{display:grid; gap:8px; justify-items:start; line-height:1.5}
+.auth-down b{font-weight:600}
+.auth-down small{font-size:11.5px; color:var(--muted)}
 
 /* ---------- counselling guides (/counselling) ---------- */
 .gd{max-width:1240px; margin:0 auto; padding:44px 24px 64px}

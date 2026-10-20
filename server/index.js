@@ -5,7 +5,8 @@ import { db, now, tx, insertRows, getSettings, putSettings } from './db.js';
 import { KINDS, parseTable, aggregate, validateRecord } from './schema.js';
 import {
   PROVIDER, FIREBASE, OTP_LENGTH, EMAIL_ENABLED, HttpError, attachUser, requireUser, requireAdmin, isAdmin, publicUser,
-  readProfile, requestOtp, verifyOtp, firebaseSignIn, adminLogin, endSession
+  readProfile, requestOtp, verifyOtp, firebaseSignIn, adminLogin, endSession,
+  saveAttempt, firebaseDomainStatus, phoneSignInReady
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, normState } from './states.js';
@@ -64,7 +65,8 @@ const dataStates = () => db.prepare('SELECT DISTINCT state FROM datasets WHERE p
 app.get('/api/config', (req, res) => {
   const s = getSettings();
   res.json({
-    auth: { provider: PROVIDER, otpLength: OTP_LENGTH, email: EMAIL_ENABLED, firebase: PROVIDER === 'firebase' ? FIREBASE : null },
+    auth: { provider: PROVIDER, otpLength: OTP_LENGTH, email: EMAIL_ENABLED, firebase: PROVIDER === 'firebase' ? FIREBASE : null,
+      phoneReady: phoneSignInReady(req.hostname) },
     settings: { brand: s.brand, announcement: s.announcement, whatsapp: s.whatsapp, contactEmail: s.contact_email },
     states: STATES,
     dataStates: dataStates(),
@@ -78,6 +80,15 @@ app.get('/api/guides', (_req, res) => {
   res.json({ guides: guideList(), compare: compareTable() });
 });
 
+// Sign-up details, sent just before a code is requested (stage "send") and again if sending
+// fails (stage "failed", with the error). Firebase sends its SMS straight from the browser,
+// so this is also where its code requests are counted.
+app.post('/api/auth/attempt', (req, res) => {
+  const b = req.body || {};
+  const { channel } = saveAttempt(req, b);
+  if (b.stage === 'send' && PROVIDER === 'firebase' && channel === 'phone') record(req, 'otp_request', { channel, via: 'firebase' });
+  res.json({ ok: true });
+});
 app.post('/api/auth/otp/request', wrap(async (req, res) => {
   const out = await requestOtp(req, req.body || {});
   record(req, 'otp_request', { channel: out.channel });
@@ -157,6 +168,10 @@ app.post('/api/admin/logout', (req, res) => { endSession(req, res, 'admin'); res
 app.get('/api/admin/me', (req, res) => res.json({ admin: isAdmin(req), provider: PROVIDER, email: EMAIL_ENABLED, states: STATES }));
 app.use('/api/admin', requireAdmin);
 
+app.get('/api/admin/health', wrap(async (req, res) => {
+  res.json({ provider: PROVIDER, email: EMAIL_ENABLED, firebase: await firebaseDomainStatus(req.hostname) });
+}));
+
 app.get('/api/admin/analytics', (req, res) => {
   const days = [7, 30, 90].includes(+req.query.days) ? +req.query.days : 30;
   res.json(dashboard(days));
@@ -207,6 +222,32 @@ app.get('/api/admin/leads/:id', (req, res) => {
 });
 app.delete('/api/admin/leads/:id', (req, res) => {
   db.prepare('DELETE FROM users WHERE id = ?').run(int(req.params.id));
+  res.json({ ok: true });
+});
+
+// Sign-ups that never verified: the latest attempt per contact that has no account.
+function attempts(q) {
+  const like = '%' + String(q || '').trim() + '%';
+  return db.prepare(`SELECT a.id, a.contact, a.channel, a.name, a.cmr, a.state, a.error, a.created_at, a.updated_at
+    FROM signup_attempts a
+    WHERE a.verified_at IS NULL
+      AND a.id = (SELECT MAX(b.id) FROM signup_attempts b WHERE b.contact = a.contact)
+      AND NOT EXISTS (SELECT 1 FROM users u WHERE u.phone = a.contact OR u.email = a.contact)
+      AND (a.contact LIKE ? OR a.name LIKE ? OR a.state LIKE ?)
+    ORDER BY a.updated_at DESC LIMIT 2000`).all(like, like, like)
+    .map(a => ({ id: a.id, name: a.name, contact: a.contact, channel: a.channel, cmr: a.cmr, state: a.state, error: a.error,
+      createdAt: a.created_at, updatedAt: a.updated_at }));
+}
+app.get('/api/admin/attempts', (req, res) => {
+  const list = attempts(req.query.q);
+  if (req.query.format !== 'csv') return res.json({ attempts: list });
+  sendCsv(res, `rankround-unverified-${new Date().toISOString().slice(0, 10)}.csv`, csv(
+    ['Name', 'Mobile or email', 'State', 'NEET-PG CMR', 'First tried (IST)', 'Last tried (IST)', 'Problem'],
+    list.map(a => [a.name, a.contact, a.state, a.cmr ?? '', istDate(a.createdAt), istDate(a.updatedAt), a.error || 'Code not entered'])));
+});
+app.delete('/api/admin/attempts/:id', (req, res) => {
+  const a = db.prepare('SELECT contact FROM signup_attempts WHERE id = ?').get(int(req.params.id));
+  if (a) db.prepare('DELETE FROM signup_attempts WHERE contact = ? AND verified_at IS NULL').run(a.contact);
   res.json({ ok: true });
 });
 

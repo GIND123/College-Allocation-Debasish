@@ -27,6 +27,9 @@ body{background:var(--page)}
 .mbody{padding:24px 32px 64px}
 .warnbar{padding:10px 32px; background:var(--warn-bg); color:var(--ink); font-size:13px; border-bottom:1px solid var(--rule)}
 .warnbar b{color:var(--warn)}
+.warnbar.err{background:var(--err-bg)}
+.warnbar.err b{color:var(--err)}
+.warnbar code{font:500 12px var(--mono)}
 
 .live{display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-2)}
 .live i{width:8px; height:8px; background:var(--ok); border-radius:50%; box-shadow:0 0 0 3px var(--ok-bg)}

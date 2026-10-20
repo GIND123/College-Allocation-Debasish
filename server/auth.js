@@ -173,8 +173,70 @@ function signIn(res, { channel, contact }, profile) {
       .run(t, profile.name ?? null, profile.cmr ?? null, profile.state ?? null, u.id);
   }
   u = find();
+  db.prepare('UPDATE signup_attempts SET verified_at = ? WHERE contact = ? AND verified_at IS NULL').run(t, contact);
   createSession(res, 'user', u.id);
   return { user: u, isNew };
+}
+
+// ---- sign-up attempts ----------------------------------------------------
+/**
+ * Keeps a sign-up's details as soon as a code is requested (and the error, if sending
+ * fails), so the lead isn't lost when the code never arrives. One open row per contact a day.
+ */
+export function saveAttempt(req, body) {
+  const { channel, contact } = readContact(body);
+  const p = readProfile(body, true);
+  const error = String(body.error || '').replace(/[^\w.-]/g, '').slice(0, 60);
+  limit('attempt-ip:' + req.ip, 30, 3600e3);
+  const t = now();
+  const open = db.prepare('SELECT id FROM signup_attempts WHERE contact = ? AND verified_at IS NULL AND created_at > ? ORDER BY id DESC LIMIT 1')
+    .get(contact, t - 86400e3);
+  if (open) db.prepare(`UPDATE signup_attempts SET name = ?, cmr = ?, state = ?, error = CASE WHEN ? <> '' THEN ? ELSE error END, updated_at = ?
+      WHERE id = ?`).run(p.name, p.cmr, p.state, error, error, t, open.id);
+  else db.prepare('INSERT INTO signup_attempts (contact, channel, name, cmr, state, error, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .run(contact, channel, p.name, p.cmr, p.state, error, t, t);
+  return { channel };
+}
+
+// ---- Firebase set-up check ----------------------------------------------
+// Firebase accepts phone sign-in only from the project's Authorized domains. When this
+// site's address is missing there, every code request fails with captcha-check-failed.
+const domainChecks = new Map(); // host -> { at, result }
+const checking = new Map();     // host -> in-flight check, so concurrent requests share one
+
+/** { host, authorized: true | false | null, domains?, error? } for this site address. Cached. */
+export function firebaseDomainStatus(host) {
+  if (PROVIDER !== 'firebase') return Promise.resolve(null);
+  const hit = domainChecks.get(host);
+  if (hit && now() - hit.at < (hit.result.authorized === false ? 60e3 : 600e3)) return Promise.resolve(hit.result);
+  if (!checking.has(host)) checking.set(host, checkDomain(host, hit).finally(() => checking.delete(host)));
+  return checking.get(host);
+}
+async function checkDomain(host, hit) {
+  let result;
+  try {
+    const r = await fetch(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key=${encodeURIComponent(FIREBASE.apiKey)}`,
+      { headers: { Referer: `https://${host}/` }, signal: AbortSignal.timeout(6000) });
+    const body = await r.json().catch(() => ({}));
+    result = r.ok
+      ? { host, authorized: (body.authorizedDomains || []).includes(host), domains: body.authorizedDomains || [] }
+      : { host, authorized: null, error: body.error?.message || `Google answered ${r.status}` };
+  } catch {
+    result = { host, authorized: null, error: 'Could not reach Google to check.' };
+  }
+  if (result.authorized === false && hit?.result.authorized !== false)
+    console.warn(`[auth] Firebase: "${host}" is not in Authorized domains, so phone sign-in fails on it.`);
+  domainChecks.set(host, { at: now(), result });
+  return result;
+}
+
+/** False only once Firebase has confirmed this address is not authorized. Never waits on Google. */
+export function phoneSignInReady(host) {
+  if (PROVIDER !== 'firebase') return true;
+  // Health checks and internal calls arrive on bare IP addresses; only check real site names.
+  if (!host || (/^[\d.]+$|:/.test(host) && host !== '127.0.0.1')) return true;
+  firebaseDomainStatus(host); // refreshes the cache in the background when stale; never rejects
+  return domainChecks.get(host)?.result.authorized !== false;
 }
 
 // ---- OTP: codes we issue ourselves (mock mode, and email) ---------------

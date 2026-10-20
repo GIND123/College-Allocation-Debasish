@@ -277,7 +277,26 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
   const shown = () => a.channel === 'email' ? a.email : '+91 ' + a.phone.replace(/(\d{5})(\d{5})/, '$1 $2');
   const profile = () => a.mode === 'signup' ? { name: a.name, cmr: a.cmr, state: a.state } : {};
   host.addEventListener('focusin', () => { if (!opened) { opened = true; track('signin_open'); } });
+  const resetVerifier = () => { try { verifier?.clear(); } catch { /* already gone */ } verifier = null; };
+  // Sign-up details are kept as the code is requested (and the error if sending fails),
+  // so a counsellor can still reach the student when the code never arrives.
+  const keep = (error = '') => a.mode !== 'signup' ? null : api('/api/auth/attempt', {
+    method: 'POST', body: { stage: error ? 'failed' : 'send', channel: a.channel, phone: a.phone, email: a.email, ...profile(), error }
+  }).catch(() => {});
+  // Shown instead of a bare error when the code can't be sent for a set-up reason.
+  const unavailable = reason => {
+    const wa = waLink(`Hi, I tried to sign up on RankRound but couldn't get the code (${reason}).`);
+    return `<div class="alert alert-warn form-err auth-down" role="alert">
+      <b>We couldn't send your code just now.</b>
+      <span>${a.mode === 'signup'
+        ? `Your details are saved, so a counsellor can still reach you on <b class="num">${esc(shown())}</b>. You can also try again in a few minutes.`
+        : 'Please try again in a few minutes.'}</span>
+      ${wa ? `<a class="btn btn-line btn-sm" href="${esc(wa)}" target="_blank" rel="noopener">${icon.chat} WhatsApp a counsellor</a>` : ''}
+      <small>Reference: ${esc(reason)}</small>
+    </div>`;
+  };
 
+  // err: a message string, or { setup: reason } when the code couldn't be sent at all.
   function form(err) {
     clearInterval(timer);
     onMode?.(a.mode);
@@ -296,9 +315,9 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
                 placeholder="98765 43210" value="${esc(a.phone)}" maxlength="14" aria-label="Mobile number" required></div>`}
         </div>
         ${up ? `<div class="auth-pair">${cmrField(a.cmr)}${stateField(a.state)}</div>` : ''}
-        ${err ? `<div class="alert alert-err form-err" role="alert">${esc(err)}</div>` : ''}
+        ${err?.setup ? unavailable(err.setup) : err ? `<div class="alert alert-err form-err" role="alert">${esc(err)}</div>` : ''}
         <button class="btn btn-primary btn-lg auth-go" id="send">${up ? 'Sign up' : 'Send code'} ${icon.arrowR}</button>
-        <div id="recaptcha-box"></div>
+        <div class="recaptcha-box"></div>
         <p class="auth-switch">${up
           ? 'Already registered? <button type="button" class="linkbtn" data-mode="signin">Sign in</button>'
           : 'New here? <button type="button" class="linkbtn" data-mode="signup">Create an account</button>'}</p>
@@ -331,16 +350,23 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
       const btn = f.querySelector('#send');
       btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Sending code';
       try {
+        await keep();
         if (viaFirebase()) {
+          // The server has confirmed Firebase would refuse this site address: don't send.
+          if (S.cfg.auth.phoneReady === false) throw Object.assign(new Error('site not authorised'), { code: 'auth/site-not-authorised' });
           const { auth, mod } = await firebase();
-          verifier?.clear?.();
-          verifier = new mod.RecaptchaVerifier(auth, 'recaptcha-box', { size: 'invisible' });
+          resetVerifier();
+          // Its own container: the home page and the sign-in dialog can both hold a form.
+          verifier = new mod.RecaptchaVerifier(auth, f.querySelector('.recaptcha-box'), { size: 'invisible' });
           confirmation = await mod.signInWithPhoneNumber(auth, '+91' + a.phone, verifier);
         } else {
           await api('/api/auth/otp/request', { method: 'POST', body: { mode: a.mode, channel: a.channel, phone: a.phone, email: a.email, ...profile() } });
         }
         code();
       } catch (err) {
+        resetVerifier();
+        const setup = setupProblem(err);
+        if (setup) { keep(setup); return form({ setup }); }
         form(firebaseMessage(err) || err.message);
       }
     };
@@ -411,7 +437,7 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
     };
   }
   form();
-  return () => { clearInterval(timer); verifier?.clear?.(); };
+  return () => { clearInterval(timer); resetVerifier(); };
 }
 
 function openSignIn(then, mode = 'signin') {
@@ -424,6 +450,15 @@ function openSignIn(then, mode = 'signin') {
     mode, autofocus: true, onDone: () => d.close(),
     onMode: m => { d.el.querySelector('#si-title').textContent = m === 'signup' ? 'Create your free account' : 'Sign in to RankRound'; }
   });
+}
+// Failures the student can't fix by retyping: the site's set-up or the SMS service.
+const SETUP_CODES = new Set(['captcha-check-failed', 'invalid-app-credential', 'missing-app-credential', 'unauthorized-domain',
+  'app-not-authorized', 'operation-not-allowed', 'billing-not-enabled', 'quota-exceeded', 'internal-error', 'invalid-api-key',
+  'site-not-authorised']);
+function setupProblem(err) {
+  const c = String(err?.code || '').replace(/^auth\//, '');
+  if (SETUP_CODES.has(c)) return c;
+  return err?.status >= 500 ? 'server-' + err.status : '';
 }
 function firebaseMessage(err) {
   const c = err?.code || '';
