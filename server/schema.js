@@ -14,7 +14,10 @@ export const KINDS = {
       { name: 'programme', type: 'text', label: 'Programme' },
       { name: 'stream', type: 'stream', label: 'Stream' },
       { name: 'category', type: 'text', label: 'Category' },
-      { name: 'seats', type: 'int', label: 'Seats', min: 1 },
+      // Seat pool where a state publishes one (Gujarat: Government, University, Management, NRI, In-service).
+      { name: 'quota', type: 'text', label: 'Quota', optional: true },
+      // 0 = not published (Gujarat publishes only the last admitted rank per seat group).
+      { name: 'seats', type: 'int', label: 'Seats', optional: true },
       { name: 'cmr_open', type: 'int', label: 'CMR opening', min: 1 },
       { name: 'cmr_close', type: 'int', label: 'CMR closing', min: 1 },
       { name: 'air_open', type: 'int', label: 'AIR opening', optional: true },
@@ -28,6 +31,7 @@ export const KINDS = {
       { name: 'programme', type: 'text', label: 'Programme' },
       { name: 'stream', type: 'stream', label: 'Stream' },
       { name: 'category', type: 'text', label: 'Category' },
+      { name: 'quota', type: 'text', label: 'Quota', optional: true },
       { name: 'cmr', type: 'int', label: 'CMR', min: 1 },
       { name: 'air', type: 'int', label: 'NEET AIR', optional: true },
       { name: 'round', type: 'text', label: 'Round', optional: true }
@@ -64,7 +68,8 @@ const ALIASES = {
   speciality: ['speciality', 'specialty', 'subject', 'discipline', 'course'],
   programme: ['programme', 'program', 'degree', 'coursetype'],
   branch: ['branch', 'course', 'subject', 'speciality', 'specialty'],
-  stream: ['stream', 'quota', 'candidatetype', 'directinservice'],
+  stream: ['stream', 'quota', 'candidatetype', 'directinservice'], // a lone "Quota" column holding Direct/In-service
+  quota: ['quota', 'seatquota', 'quotatype', 'quotacode'],
   category: ['category', 'cat', 'allottedcategory', 'seatcategory'],
   type: ['type', 'collegetype', 'management', 'ownership'],
   seats: ['seats', 'seat', 'count', 'admissions', 'intake'],
@@ -194,7 +199,7 @@ export function aggregate(kind, allotments) {
   const def = KINDS[kind];
   const groups = new Map();
   for (const a of allotments) {
-    const k = def.key.map(f => a[f]).join('\u0001') + (kind === 'aiq' ? '\u0001' + a.type : '');
+    const k = def.key.map(f => a[f]).join('\u0001') + '\u0001' + (kind === 'aiq' ? a.type : a.quota || '');
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(a);
   }
@@ -207,7 +212,7 @@ export function aggregate(kind, allotments) {
       const rounds = [...new Set(list.map(a => normRound(a.round)))].sort((x, y) => roundOrder(x) - roundOrder(y));
       out.push({
         college: f.college, speciality: f.speciality, programme: f.programme, stream: f.stream,
-        category: f.category, seats: list.length,
+        category: f.category, quota: f.quota || '', seats: list.length,
         cmr_open: Math.min(...cmr), cmr_close: Math.max(...cmr),
         air_open: air.length ? Math.min(...air) : 0, air_close: air.length ? Math.max(...air) : 0,
         air_seen: air.length, rounds: rounds.join(' ')

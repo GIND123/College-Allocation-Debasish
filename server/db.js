@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS state_rows (
   id INTEGER PRIMARY KEY,
   dataset_id INTEGER NOT NULL REFERENCES datasets(id) ON DELETE CASCADE,
   college TEXT NOT NULL, speciality TEXT NOT NULL, programme TEXT NOT NULL,
-  stream TEXT NOT NULL, category TEXT NOT NULL, seats INTEGER NOT NULL,
+  stream TEXT NOT NULL, category TEXT NOT NULL, quota TEXT NOT NULL DEFAULT '', seats INTEGER NOT NULL,
   cmr_open INTEGER NOT NULL, cmr_close INTEGER NOT NULL,
   air_open INTEGER NOT NULL DEFAULT 0, air_close INTEGER NOT NULL DEFAULT 0,
   air_seen INTEGER NOT NULL DEFAULT 0, rounds TEXT NOT NULL DEFAULT ''
@@ -124,6 +124,9 @@ CREATE TABLE IF NOT EXISTS signup_attempts (
   verified_at INTEGER
 );
 CREATE INDEX IF NOT EXISTS attempts_contact ON signup_attempts(contact, created_at);
+
+-- Built-in data files (server/seed/) already loaded, so each loads once and stays deleted if an admin removes it.
+CREATE TABLE IF NOT EXISTS seeds (file TEXT PRIMARY KEY, loaded_at INTEGER NOT NULL);
 `);
 
 export const now = () => Date.now();
@@ -140,7 +143,8 @@ export function insertRows(kind, datasetId, rows) {
   const cols = def.columns.map(c => c.name);
   const stmt = db.prepare(
     `INSERT INTO ${def.table} (dataset_id, ${cols.join(', ')}) VALUES (?, ${cols.map(() => '?').join(', ')})`);
-  for (const r of rows) stmt.run(datasetId, ...cols.map(c => r[c]));
+  const blank = Object.fromEntries(def.columns.map(c => [c.name, c.type === 'int' ? 0 : '']));
+  for (const r of rows) stmt.run(datasetId, ...cols.map(c => r[c] ?? blank[c]));
 }
 
 // ---- migrations for databases created before sign-up asked for CMR + state
@@ -155,6 +159,7 @@ if (!columns('users').includes('email')) {
     ALTER TABLE users_new RENAME TO users;`));
   db.exec('PRAGMA foreign_keys = ON');
 }
+if (!columns('state_rows').includes('quota')) db.exec(`ALTER TABLE state_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
 if (!columns('datasets').includes('state')) {
   // Every dataset before per-state data was the client's Odisha data.
   db.exec(`ALTER TABLE datasets ADD COLUMN state TEXT NOT NULL DEFAULT '';
@@ -179,20 +184,34 @@ export function putSettings(obj) {
     if (k in obj) stmt.run(k, String(obj[k] ?? '').slice(0, 500));
 }
 
-// ---- first-run seed: the client's 2025 Odisha data ---------------------
-if (!db.prepare('SELECT 1 FROM datasets LIMIT 1').get()) {
-  const seed = (kind, label, file) => {
-    const rows = JSON.parse(fs.readFileSync(path.join(here, 'seed', file), 'utf8'));
-    if (kind === 'aiq') for (const r of rows) { r.open_rank = r.open; r.close_rank = r.close; }
-    tx(() => {
+// ---- built-in data (server/seed/) -----------------------------------------
+// Each file loads once. On a fresh database (Render's free tier starts empty after every
+// restart) they all load; an existing database gets only the files it hasn't had yet.
+const SEEDS = [
+  { file: 'odisha-state-2025.json', kind: 'state', state: 'Odisha', year: 2025, label: 'Odisha state counselling 2025',
+    notes: 'Imported from the original RankRound Odisha page.' },
+  { file: 'odisha-aiq-2025.json', kind: 'aiq', state: 'Odisha', year: 2025, label: 'All India Quota — Odisha colleges 2025–26',
+    notes: 'Imported from the original RankRound Odisha page.' },
+  { file: 'gujarat-state-2025.json', kind: 'state', state: 'Gujarat', year: 2025, label: 'Gujarat state counselling 2025 · final closing ranks',
+    notes: "ACPPGMEC 'Institutewise Last Rank' PG-2025 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." },
+  { file: 'gujarat-state-2024.json', kind: 'state', state: 'Gujarat', year: 2024, label: 'Gujarat state counselling 2024 · final closing ranks',
+    notes: "ACPPGMEC 'Institutewise Last Rank' PG-2024 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." }
+];
+for (const s of SEEDS) {
+  if (db.prepare('SELECT 1 FROM seeds WHERE file = ?').get(s.file)) continue;
+  // Databases from before this list already hold the Odisha data under the same name.
+  const exists = db.prepare('SELECT 1 FROM datasets WHERE kind = ? AND state = ? AND label = ?').get(s.kind, s.state, s.label);
+  tx(() => {
+    if (!exists) {
+      const rows = JSON.parse(fs.readFileSync(path.join(here, 'seed', s.file), 'utf8'));
+      if (s.kind === 'aiq') for (const r of rows) { r.open_rank = r.open; r.close_rank = r.close; }
       const t = now();
       const { lastInsertRowid } = db.prepare(
-        "INSERT INTO datasets (kind, state, label, year, notes, published, created_at, updated_at) VALUES (?, 'Odisha', ?, 2025, ?, 1, ?, ?)")
-        .run(kind, label, 'Imported from the original RankRound Odisha page.', t, t);
-      insertRows(kind, Number(lastInsertRowid), rows);
-    });
-  };
-  seed('state', 'Odisha state counselling 2025', 'odisha-state-2025.json');
-  seed('aiq', 'All India Quota — Odisha colleges 2025–26', 'odisha-aiq-2025.json');
-  console.log('[db] seeded 2025 Odisha datasets');
+        'INSERT INTO datasets (kind, state, label, year, notes, published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 1, ?, ?)')
+        .run(s.kind, s.state, s.label, s.year, s.notes, t, t);
+      insertRows(s.kind, Number(lastInsertRowid), rows);
+      console.log(`[db] loaded ${s.label}`);
+    }
+    db.prepare('INSERT INTO seeds (file, loaded_at) VALUES (?, ?)').run(s.file, now());
+  });
 }

@@ -8,9 +8,13 @@ const BAND = { 4: 'Very high', 3: 'High', 2: 'Moderate', 1: 'Low' };
 const KIND = {
   state: {
     label: 'State counselling', rank: 'CMR', spec: 'speciality', specLabel: 'Speciality',
-    open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'category', 'programme', 'speciality', 'college'],
+    open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'category', 'quota', 'programme', 'speciality', 'college'],
     get rankLong() { return `${myState()} CMR`; },
-    get note() { return `Ranked by the ${myState()} combined merit rank (CMR). Direct and in-service candidates are on separate merit lists.`; }
+    get note() {
+      return S.data?.closingOnly
+        ? `Ranked by the ${myState()} state merit number (your CMR). Only the last rank admitted to each seat is published.`
+        : `Ranked by the ${myState()} combined merit rank (CMR). Direct and in-service candidates are on separate merit lists.`;
+    }
   },
   aiq: {
     label: 'All India Quota', rank: 'AIR', rankLong: 'NEET All India Rank', spec: 'branch', specLabel: 'Branch',
@@ -20,20 +24,35 @@ const KIND = {
 };
 const myState = () => S.user?.state || 'State';
 const profileComplete = () => !!(S.user?.name && S.user?.cmr && S.user?.state);
-const FILTER_LABEL = { stream: 'Stream', category: 'Category', programme: 'Programme', speciality: 'Speciality', branch: 'Branch', college: 'College', type: 'College type' };
-const ALL_LABEL = { category: 'All categories', programme: 'All programmes', speciality: 'All specialities', branch: 'All branches', college: 'All colleges', type: 'Government & private' };
+const FILTER_LABEL = { quota: 'Quota', stream: 'Stream', category: 'Category', programme: 'Programme', speciality: 'Speciality', branch: 'Branch', college: 'College', type: 'College type' };
+const ALL_LABEL = { quota: 'All quotas', category: 'All categories', programme: 'All programmes', speciality: 'All specialities', branch: 'All branches', college: 'All colleges', type: 'Government & private' };
 
-/** Same thresholds as the original tool: lower rank is better. */
-function band(rank, open, close) {
+/**
+ * Same thresholds as the original tool: lower rank is better. Where only the last admitted
+ * rank is published (closingOnly: Gujarat), there is no range to place the rank in, so the
+ * grade is how far inside that closing rank it is: 20%+ inside, 10-20%, within 10%, up to 15% past.
+ */
+function band(rank, open, close, closingOnly = false) {
+  if (closingOnly) {
+    if (rank <= close * 0.8) return 4;
+    if (rank <= close * 0.9) return 3;
+    if (rank <= close) return 2;
+    return rank <= close * 1.15 ? 1 : 0;
+  }
   if (rank <= open) return 4;
   if (rank <= open + (close - open) * 0.5) return 3;
   if (rank <= close) return 2;
   if (rank <= close * 1.15) return 1;
   return 0;
 }
+// A seat whose source publishes no seat count carries only its closing rank.
+const closingOnly = r => r.seats === 0;
+const grade = (rank, r, K) => band(rank, r[K.open], r[K.close], closingOnly(r));
+// Quota where the state publishes one (Gujarat), otherwise the stream (Odisha).
+const seatPool = r => r.quota || r.stream || '';
 // Must match rowKey() in server/index.js — it identifies a shortlisted seat.
 const rowKey = (kind, r) => kind === 'state'
-  ? [r.college, r.speciality, r.programme, r.stream, r.category].join(' | ')
+  ? [r.college, r.speciality, r.programme, r.stream, r.category].join(' | ') + (r.quota ? ' | ' + r.quota : '')
   : [r.college, r.branch, r.category].join(' | ') + ' | ' + r.type;
 // Display names for the long official titles in the national AIQ list, matched
 // to the names the state list uses. Anything not listed shows in full.
@@ -57,7 +76,7 @@ const mobile = matchMedia('(max-width:720px)');
 // A candidate is on exactly one merit list: direct or in-service (never both).
 const STREAMS = [['Direct', 'Direct'], ['In-service', 'In-service']];
 const freshFilters = () => ({
-  state: { rank: '', stream: 'Direct', category: '', withOpen: true, programme: '', speciality: '', college: '', q: '' },
+  state: { rank: '', stream: 'Direct', category: '', withOpen: true, quota: '', programme: '', speciality: '', college: '', q: '' },
   aiq: { rank: '', category: '', withOpen: true, type: '', branch: '', college: '', q: '' }
 });
 
@@ -543,18 +562,24 @@ async function load(kind) {
     const r = await api('/api/datasets/' + id);
     const rows = r.rows.map(a => Object.fromEntries(r.columns.map((c, i) => [c, a[i]])));
     for (const o of rows) o._k = rowKey(kind, o);
-    S.cache.set(id, { dataset: r.dataset, rows });
+    S.cache.set(id, {
+      dataset: r.dataset, rows,
+      openCat: rows.some(o => o.category === 'OPEN') ? 'OPEN' : null, // Gujarat calls its unreserved seats OPEN
+      closingOnly: rows.length > 0 && rows.every(closingOnly)
+    });
   }
   return S.cache.get(id);
 }
 
+const openCatOf = kind => S.data?.openCat || KIND[kind].openCat;
+const openCatName = c => ({ UR: 'unreserved (UR)', OPEN: 'open (OPEN)' })[c] || 'General';
 function matches(kind, r, f, except) {
   for (const k of KIND[kind].filters) {
     if (k === except) continue;
     const v = f[k];
     if (!v) continue;
     if (k === 'category') {
-      if (r.category !== v && !(f.withOpen && r.category === KIND[kind].openCat)) return false;
+      if (r.category !== v && !(f.withOpen && r.category === openCatOf(kind))) return false;
     } else if (r[k] !== v) return false;
   }
   return true;
@@ -583,7 +608,7 @@ function ctxbar(kind) {
         ? `<select class="select" id="ds">${sets.map(d => `<option value="${d.id}" ${d.id === S.dsId[kind] ? 'selected' : ''}>${esc(d.label)}</option>`).join('')}</select>`
         : `<b style="font-weight:500">${esc(sets[0]?.label || 'None published')}</b>`}
     </div>
-    <p class="ctx-note">${esc(KIND[kind].note)}${ctxGuide(kind)}</p>
+    <p class="ctx-note"><span id="ctx-note">${esc(KIND[kind].note)}</span>${ctxGuide(kind)}</p>
   </div></div>`;
 }
 // The student's own counselling guide, next to their data (MCC's for the All India Quota).
@@ -638,6 +663,7 @@ async function viewWork(mode) {
     return;
   }
   S.data = data;
+  $('#ctx-note').textContent = KIND[kind].note; // the note depends on the dataset just loaded
   renderRail();
   renderResults();
 }
@@ -682,18 +708,20 @@ function renderRail() {
               `<button data-stream="${v}" aria-pressed="${f.stream === v}">${t}</button>`).join('')}
           </div>
         </div>
-        <p class="note">Direct and in-service candidates have <b>separate merit lists</b> — the CMR restarts at 1 in each. Compare only within your stream.</p>
+        ${S.data.closingOnly
+          ? `<p class="note">Figures are the <b>last rank admitted</b> in the final round; earlier rounds closed tighter. Pick a quota under More filters.</p>`
+          : `<p class="note">Direct and in-service candidates have <b>separate merit lists</b> — the CMR restarts at 1 in each. Compare only within your stream.</p>`}
       ` : ''}
     </div>
     <button class="rail-toggle" id="rtog" aria-expanded="${!collapsed}">More filters <span id="rsum">${esc(railSummary(kind))}</span></button>
     <div class="rail-sec fold">
       <div class="rail-title"><h3>Refine</h3><button class="linkbtn" id="f-reset">Reset all</button></div>
       <label class="field"><span class="label">Category</span><select class="select" data-f="category">${selectHtml(kind, 'category')}</select></label>
-      <label class="check" id="wopen" ${f.category && f.category !== K.openCat ? '' : 'hidden'}>
+      <label class="check" id="wopen" ${f.category && f.category !== openCatOf(kind) ? '' : 'hidden'}>
         <input type="checkbox" id="f-open" ${f.withOpen ? 'checked' : ''}>
-        <span>Also show ${K.openCat === 'UR' ? 'unreserved (UR)' : 'General'} seats — reserved-category candidates compete for these on merit too.</span>
+        <span>Also show ${openCatName(openCatOf(kind))} seats — reserved-category candidates compete for these on merit too.</span>
       </label>
-      ${K.filters.filter(k => !['stream', 'category'].includes(k)).map(k => `
+      ${K.filters.filter(k => !['stream', 'category'].includes(k) && (k !== 'quota' || optionsFor(kind, 'quota').length)).map(k => `
         <label class="field"><span class="label">${FILTER_LABEL[k]}</span>
           ${k === 'type'
             ? `<select class="select" data-f="type">${['', 'Government', 'Private'].map(v => `<option value="${v}" ${f.type === v ? 'selected' : ''}>${v || ALL_LABEL.type}</option>`).join('')}</select>`
@@ -731,7 +759,7 @@ function renderRail() {
   });
   $$('select[data-f]', rail).forEach(s => s.onchange = () => {
     f[s.dataset.f] = s.value;
-    if (s.dataset.f === 'category') $('#wopen').hidden = !(s.value && s.value !== K.openCat);
+    if (s.dataset.f === 'category') $('#wopen').hidden = !(s.value && s.value !== openCatOf(kind));
     changed();
   });
   $('#f-open').onchange = e => { f.withOpen = e.target.checked; changed(); };
@@ -771,12 +799,12 @@ function columns(kind, mode, rank) {
     r: r => `<span title="${esc(r.college)}">${esc(shortCollege(r.college))}</span>` + (kind === 'aiq' ? `<span class="sub">${esc(r.type)}</span>` : '') });
   c.push({ id: 'spec', t: K.specLabel, v: r => r[K.spec], cls: 'wrapcell',
     r: r => esc(r[K.spec]) + (kind === 'state' ? `<span class="sub">${esc(r.programme)} · ${esc(r.rounds || 'R-?')}</span>` : '') });
-  c.push({ id: 'category', t: 'Category', v: r => r.category + (r.stream || ''), cls: 'nowrap',
-    r: r => esc(r.category) + (kind === 'state' ? `<span class="sub">${esc(r.stream)}</span>` : '') });
+  c.push({ id: 'category', t: 'Category', v: r => r.category + seatPool(r), cls: 'nowrap',
+    r: r => esc(r.category) + (kind === 'state' ? `<span class="sub">${esc(seatPool(r))}</span>` : '') });
   const p = mode === 'predict';
   c.push({ id: 'open', t: p ? 'Open' : `${K.rank} open`, v: r => r[K.open], num: true, cls: 'n soft', r: r => fmt(r[K.open]) });
   c.push({ id: 'close', t: p ? 'Close' : `${K.rank} close`, v: r => r[K.close], num: true, cls: 'n',
-    r: r => fmt(r[K.close]) + (p ? `<span class="sub">${r.seats} seat${r.seats === 1 ? '' : 's'}</span>` : '') });
+    r: r => fmt(r[K.close]) + (p ? `<span class="sub">${closingOnly(r) ? 'last admitted' : `${r.seats} seat${r.seats === 1 ? '' : 's'}`}</span>` : '') });
   if (mode === 'predict') {
     c.push({ id: 'margin', t: 'Margin', v: r => r._m, num: true, cls: 'n',
       r: r => `<span class="${r._m >= 0 ? 'margin-pos' : 'margin-neg'}" title="${r._m >= 0 ? 'ranks inside' : 'ranks past'} the closing rank">${r._m >= 0 ? '+' : '−'}${fmt(Math.abs(r._m))}</span>` });
@@ -785,7 +813,7 @@ function columns(kind, mode, rank) {
   }
   if (kind === 'state') c.push({ id: 'air', t: 'NEET AIR', v: r => r.air_close, num: true, cls: 'n soft',
     r: r => r.air_open ? (r.air_open === r.air_close ? fmt(r.air_open) : `${fmt(r.air_open)}–${fmt(r.air_close)}`) : '—' });
-  c.push({ id: 'seats', t: 'Seats', v: r => r.seats, num: true, cls: 'n soft', r: r => fmt(r.seats) });
+  c.push({ id: 'seats', t: 'Seats', v: r => r.seats, num: true, cls: 'n soft', r: r => r.seats ? fmt(r.seats) : '—' });
   return c;
 }
 
@@ -818,7 +846,7 @@ function renderResults() {
   const tally = { 4: 0, 3: 0, 2: 0, 1: 0 };
   if (mode === 'predict') {
     list = list.filter(r => {
-      r._b = band(rank, r[K.open], r[K.close]);
+      r._b = grade(rank, r, K);
       r._m = r[K.close] - rank;
       if (r._b) tally[r._b]++;
       return r._b > 0;
@@ -838,7 +866,7 @@ function renderResults() {
   S.list = list; S.cols = cols;
 
   const total = list.length;
-  const who = [kind === 'state' ? f.stream : '', f.category ? f.category + (f.withOpen && f.category !== K.openCat ? ` + ${K.openCat}` : '') : 'all categories']
+  const who = [kind === 'state' ? f.quota || f.stream : '', f.category ? f.category + (f.withOpen && f.category !== openCatOf(kind) ? ` + ${openCatOf(kind)}` : '') : 'all categories']
     .filter(Boolean).join(' · ');
   const head = mode === 'predict' ? `
       <div><div class="eyebrow">Seats in reach · ${esc(S.data.dataset.label)}</div>
@@ -897,11 +925,11 @@ function cardHtml(r, i) {
   return `<div class="card" data-i="${i}">
     <div class="card-top">${predict ? bandHtml(r._b) : `<span class="eyebrow">${esc(kind === 'state' ? r.programme : r.type)}</span>`}${starHtml(kind, r)}</div>
     <div class="card-spec">${esc(r[K.spec])}</div>
-    <div class="card-coll">${esc(shortCollege(r.college))} · ${esc(r.category)}${kind === 'state' ? ' · ' + esc(r.stream) : ''}</div>
+    <div class="card-coll">${esc(shortCollege(r.college))} · ${esc(r.category)}${kind === 'state' ? ' · ' + esc(seatPool(r)) : ''}</div>
     <div class="card-nums">
       <div><span>${K.rank} close</span><b>${fmt(r[K.close])}</b></div>
       <div><span>Open</span><b>${fmt(r[K.open])}</b></div>
-      ${predict ? `<div><span>Margin</span><b>${r._m >= 0 ? '+' : '−'}${fmt(Math.abs(r._m))}</b></div>` : `<div><span>Seats</span><b>${fmt(r.seats)}</b></div>`}
+      ${predict ? `<div><span>Margin</span><b>${r._m >= 0 ? '+' : '−'}${fmt(Math.abs(r._m))}</b></div>` : `<div><span>Seats</span><b>${r.seats ? fmt(r.seats) : '—'}</b></div>`}
     </div>
     ${predict ? `<div class="pos card-pos">${posSvg(r[K.open], r[K.close], rank, 320)}</div>` : ''}
   </div>`;
@@ -952,7 +980,7 @@ function niceTicks(max, n = 4) {
   for (let v = 0; v <= max + 1e-9; v += step) out.push(v);
   return out;
 }
-function rangeChart(open, close, rank, unit) {
+function rangeChart(open, close, rank, unit, legend) {
   const W = 432, H = 78, L = 6, R = 6;
   const top = Math.max(close * 1.18, rank ? rank * 1.08 : 0);
   const ticks = niceTicks(top);
@@ -973,7 +1001,7 @@ function rangeChart(open, close, rank, unit) {
       <text class="lbl you-lbl" x="${x(rank)}" y="13" text-anchor="${anchor(x(rank))}">You · ${fmt(rank)}</text>` : ''}
   </svg>
   <div style="display:flex;gap:18px;margin-top:8px;font-size:11.5px;color:var(--muted)">
-    <span style="display:inline-flex;align-items:center;gap:6px"><i style="width:10px;height:10px;background:var(--ink-2);opacity:.6"></i>2025 opening–closing</span>
+    <span style="display:inline-flex;align-items:center;gap:6px"><i style="width:10px;height:10px;background:var(--ink-2);opacity:.6"></i>${esc(legend)}</span>
     <span style="display:inline-flex;align-items:center;gap:6px"><i style="width:10px;height:10px;background:var(--b1);opacity:.35"></i>Stretch zone (+15%)</span>
     ${rank ? `<span style="display:inline-flex;align-items:center;gap:6px"><i style="width:2px;height:10px;background:var(--brass)"></i>Your rank</span>` : ''}
   </div>`;
@@ -983,11 +1011,11 @@ let drawer = null;
 function openSeat(kind, r) {
   const K = KIND[kind], f = S.f[kind];
   const rank = S.mode === 'predict' ? parseInt(f.rank, 10) || null : (parseInt(f.rank, 10) || null);
-  const b = rank ? band(rank, r[K.open], r[K.close]) : null;
+  const b = rank ? grade(rank, r, K) : null;
   const spec = r[K.spec];
   track('seat_view', { scope: kind, college: r.college, spec, category: r.category });
 
-  const peers = S.data.rows.filter(o => o[K.spec] === spec && o.category === r.category && (kind === 'aiq' || o.stream === r.stream))
+  const peers = S.data.rows.filter(o => o[K.spec] === spec && o.category === r.category && (kind === 'aiq' || seatPool(o) === seatPool(r)))
     .sort((a, c) => a[K.close] - c[K.close]);
   const here = S.data.rows.filter(o => o.college === r.college && o[K.spec] === spec && o !== r)
     .sort((a, c) => (a.stream || '').localeCompare(c.stream || '') || a[K.close] - c[K.close]);
@@ -996,7 +1024,7 @@ function openSeat(kind, r) {
   const verdict = !rank ? '' : b
     ? `${margin >= 0 ? `${fmt(margin)} ranks inside` : `${fmt(-margin)} ranks past`} the ${S.data.dataset.year} closing rank of ${fmt(r[K.close])}.`
     : `Your ${K.rank} is more than 15% past the ${S.data.dataset.year} closing rank of ${fmt(r[K.close])}.`;
-  const wa = waLink(`Hi, I'd like advice on ${spec} at ${r.college} (${kind === 'state' ? r.stream + ', ' : ''}${r.category}). My ${K.rank} is ${rank || '—'}.`);
+  const wa = waLink(`Hi, I'd like advice on ${spec} at ${r.college} (${kind === 'state' ? seatPool(r) + ', ' : ''}${r.category}). My ${K.rank} is ${rank || '—'}.`);
 
   drawer?.close();
   drawer = openDrawer(`
@@ -1006,32 +1034,32 @@ function openSeat(kind, r) {
       <h2>${esc(spec)}</h2>
       <p>${esc(r.college)}</p>
       <div class="dr-tags">
-        ${kind === 'state' ? `<span class="tag">${esc(r.programme)}</span><span class="tag">${esc(r.stream)}</span>` : `<span class="tag">${esc(r.type)}</span>`}
+        ${kind === 'state' ? `<span class="tag">${esc(r.programme)}</span><span class="tag">${esc(seatPool(r))}</span>` : `<span class="tag">${esc(r.type)}</span>`}
         <span class="tag tag-solid">${esc(r.category)}</span>
       </div>
     </div>
     <div class="dr-sec">
       <h3>${rank ? 'Your position' : `${S.data.dataset.year} range`}</h3>
       ${rank ? `<div class="verdict" style="margin-bottom:18px">${b ? bandHtml(b) : '<span class="band" style="font-family:var(--serif);font-size:17px;font-weight:600">Out of range</span>'}<p>${esc(verdict)}</p></div>` : ''}
-      ${rangeChart(r[K.open], r[K.close], rank, K.rank)}
+      ${rangeChart(r[K.open], r[K.close], rank, K.rank, `${S.data.dataset.year} ${closingOnly(r) ? 'last admitted' : 'opening–closing'}`)}
     </div>
     <div class="dr-sec">
       <h3>${S.data.dataset.year} record</h3>
       <dl class="facts" style="margin:0">
-        <div><dt>Opening ${K.rank}</dt><dd>${fmt(r[K.open])}</dd></div>
-        <div><dt>Closing ${K.rank}</dt><dd>${fmt(r[K.close])}</dd></div>
-        <div><dt>Seats filled</dt><dd>${fmt(r.seats)} ${r.seats === 1 ? '<small>thin sample</small>' : ''}</dd></div>
+        <div><dt>Opening ${K.rank}</dt><dd>${closingOnly(r) ? '—<small>not published</small>' : fmt(r[K.open])}</dd></div>
+        <div><dt>${closingOnly(r) ? 'Last admitted' : 'Closing'} ${K.rank}</dt><dd>${fmt(r[K.close])}</dd></div>
+        <div><dt>Seats filled</dt><dd>${closingOnly(r) ? '—<small>not published</small>' : `${fmt(r.seats)} ${r.seats === 1 ? '<small>thin sample</small>' : ''}`}</dd></div>
         ${kind === 'state' ? `
           <div><dt>NEET AIR range</dt><dd>${r.air_open ? (r.air_open === r.air_close ? fmt(r.air_open) : `${fmt(r.air_open)}–${fmt(r.air_close)}`) : '—'}
-            ${r.air_open ? `<small>${r.air_seen}/${r.seats} listed</small>` : ''}</dd></div>
+            ${r.air_open && r.seats ? `<small>${r.air_seen}/${r.seats} listed</small>` : ''}</dd></div>
           <div style="grid-column:span 2"><dt>Rounds taken</dt><dd style="font-size:15px">${esc(r.rounds || '—')}</dd></div>` : `
           <div><dt>College type</dt><dd style="font-size:15px;font-family:var(--sans)">${esc(r.type)}</dd></div>`}
       </dl>
     </div>
     <div class="dr-sec">
-      <h3>${esc(spec)} elsewhere · ${esc(kind === 'state' ? r.stream + ' · ' : '')}${esc(r.category)}</h3>
+      <h3>${esc(spec)} elsewhere · ${esc(kind === 'state' ? seatPool(r) + ' · ' : '')}${esc(r.category)}</h3>
       <table class="mini">${peers.slice(0, 12).map(o => `
-        <tr class="${o === r ? 'here' : ''}"><td>${rank ? `<span class="band b${band(rank, o[K.open], o[K.close])}"><i style="${band(rank, o[K.open], o[K.close]) ? '' : 'background:var(--rule-2)'}"></i></span> ` : ''}
+        <tr class="${o === r ? 'here' : ''}"><td>${rank ? `<span class="band b${grade(rank, o, K)}"><i style="${grade(rank, o, K) ? '' : 'background:var(--rule-2)'}"></i></span> ` : ''}
           ${o === r ? esc(shortCollege(o.college)) : `<a href="#" data-peer="${S.data.rows.indexOf(o)}">${esc(shortCollege(o.college))}</a>`}</td>
           <td class="n">${fmt(o[K.close])}</td></tr>`).join('')}
       </table>
@@ -1039,7 +1067,7 @@ function openSeat(kind, r) {
     </div>
     ${here.length ? `<div class="dr-sec">
       <h3>Other ${kind === 'state' ? 'streams and categories' : 'categories'} at this college</h3>
-      <table class="mini">${here.map(o => `<tr><td><a href="#" data-peer="${S.data.rows.indexOf(o)}">${esc(kind === 'state' ? o.stream + ' · ' : '')}${esc(o.category)}</a></td>
+      <table class="mini">${here.map(o => `<tr><td><a href="#" data-peer="${S.data.rows.indexOf(o)}">${esc(kind === 'state' ? seatPool(o) + ' · ' : '')}${esc(o.category)}</a></td>
         <td class="n">${fmt(o[K.open])}–${fmt(o[K.close])}</td></tr>`).join('')}</table>
     </div>` : ''}
     <div class="dr-actions">
@@ -1090,10 +1118,10 @@ async function viewShortlist() {
       const K = KIND[kind], rank = parseInt(S.f[kind].rank, 10);
       items.filter(i => i.kind === kind).forEach((i, n) => {
         const r = i.row;
-        rows.push([n + 1, K.label, r.college, r[K.spec], r.stream || r.type, r.category, r[K.open], r[K.close], rank ? (BAND[band(rank, r[K.open], r[K.close])] || 'Out of range') : '', i.dataset]);
+        rows.push([n + 1, K.label, r.college, r[K.spec], seatPool(r) || r.type, r.category, r[K.open], r[K.close], rank ? (BAND[grade(rank, r, K)] || 'Out of range') : '', i.dataset]);
       });
     }
-    downloadCsv('rankround-shortlist.csv', ['Preference', 'Counselling', 'College', 'Speciality / branch', 'Stream / type', 'Category', 'Opening rank', 'Closing rank', 'Chance', 'Data'], rows);
+    downloadCsv('rankround-shortlist.csv', ['Preference', 'Counselling', 'College', 'Speciality / branch', 'Quota or stream / type', 'Category', 'Opening rank', 'Closing rank', 'Chance', 'Data'], rows);
     track('export', { mode: 'shortlist', rows: rows.length });
   };
   view.onclick = async e => {
@@ -1129,12 +1157,12 @@ function slGroup(kind, items) {
       <thead><tr><th>#</th><th>College</th><th>${K.specLabel}</th><th>${kind === 'state' ? 'Stream' : 'Type'}</th><th>Category</th>
         <th class="r">${K.rank} open</th><th class="r">${K.rank} close</th><th>Chance</th><th class="no-print"><span class="sr">Actions</span></th></tr></thead>
       <tbody>${items.map((i, n) => {
-        const r = i.row, b = rank ? band(rank, r[K.open], r[K.close]) : null;
+        const r = i.row, b = rank ? grade(rank, r, K) : null;
         return `<tr>
           <td class="ord">${String(n + 1).padStart(2, '0')}</td>
           <td class="strong wrapcell">${esc(shortCollege(r.college))}<span class="sub">${esc(i.dataset)}</span></td>
           <td class="wrapcell">${esc(r[K.spec])}${kind === 'state' ? `<span class="sub">${esc(r.programme)}</span>` : ''}</td>
-          <td class="nowrap">${esc(r.stream || r.type)}</td><td class="nowrap">${esc(r.category)}</td>
+          <td class="nowrap">${esc(seatPool(r) || r.type)}</td><td class="nowrap">${esc(r.category)}</td>
           <td class="n soft">${fmt(r[K.open])}</td><td class="n">${fmt(r[K.close])}</td>
           <td class="nowrap">${rank ? (b ? bandHtml(b) : '<span class="muted">Out of range</span>') : '<span class="muted">—</span>'}</td>
           <td class="no-print"><div class="reorder">
@@ -1392,8 +1420,12 @@ function viewMethod() {
         so you can judge where your own rank sits.</p>
 
       <h2 id="sources">Sources</h2>
-      <p><b>State counselling</b> comes from the Odisha state counselling result — every admission across all rounds, including the
+      <p><b>Odisha state counselling</b> comes from the Odisha state counselling result — every admission across all rounds, including the
         stray round. It is the only source that records the <b>direct and in-service</b> split and the round each seat went in.</p>
+      <p><b>Gujarat state counselling</b> comes from ACPPGMEC's <i>Institutewise Last Rank</i> sheets for PG-2025 and PG-2024. They list,
+        for every college, branch, quota (Government, University, Management, NRI, In-service) and category, the <b>last candidate
+        admitted in the final round</b>: their state merit number (used here as the CMR) and NEET All India Rank. Opening ranks and seat
+        counts are not published, and seats converted to another quota are left out. Earlier rounds closed tighter than these figures.</p>
       <p><b>All India Quota</b> comes from the national postgraduate admission list, filtered to Odisha colleges and to the All India Quota.
         These seats are filled by the MCC on NEET All India Rank; candidates come from every state and the Odisha merit number plays no part.</p>
       <p>The two are separate pools ranked on different numbers. <b>Their cut-offs cannot be compared with one another.</b></p>
@@ -1410,9 +1442,12 @@ function viewMethod() {
         ${[[4, 'Better than or equal to the opening rank.'], [3, 'Up to the midpoint of the range.'], [2, 'From the midpoint to the closing rank.'], [1, 'Up to 15% past the closing rank.']]
           .map(([b, t]) => `<div>${bandHtml(b)}<p>${t}</p></div>`).join('')}
       </div>
+      <p>Where only the last admitted rank is published (Gujarat), there is no range to place your rank in, so the grade is how far
+        inside that closing rank you are: <b>Very high</b> 20% or more inside, <b>High</b> 10–20% inside, <b>Moderate</b> within 10%,
+        <b>Low</b> up to 15% past it.</p>
       <p>Seats more than 15% past their closing rank are left out. The <b>margin</b> column is the closing rank minus yours: positive means
         you were inside the cut-off by that many ranks.</p>
-      <p>When you choose a reserved category, unreserved (UR) or General seats are included by default, because reserved-category
+      <p>When you choose a reserved category, unreserved (UR, or OPEN in Gujarat) or General seats are included by default, because reserved-category
         candidates also compete for open seats on merit. You can switch this off.</p>
 
       <h2 id="rounds">Rounds</h2>

@@ -138,6 +138,29 @@ test('sign-out works for a body-less POST, as browsers send it', async () => {
   assert.equal((await b('/api/me')).json.user, null);
 });
 
+test('Gujarat closing-rank data is built in, with quotas, for Gujarat students only', async () => {
+  const b = browser();
+  await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Gujarat', phone: '9000000105' } });
+  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000105', code: '1234' } });
+  const sets = (await b('/api/config')).json.datasets;
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['Gujarat state 2024', 'Gujarat state 2025']);
+  const d = (await b('/api/datasets/' + sets.find(x => x.year === 2025).id)).json;
+  const col = n => d.columns.indexOf(n);
+  assert.ok(d.rows.length > 1800);
+  assert.ok(d.rows.every(r => r[col('seats')] === 0 && r[col('cmr_open')] === r[col('cmr_close')]), 'only the last admitted rank, no seat count');
+  assert.ok(new Set(d.rows.map(r => r[col('quota')])).has('Government (GQ)'));
+  // a Gujarat seat shortlists with its quota as part of the key
+  const row = Object.fromEntries(d.columns.map((c, i) => [c, d.rows[0][i]]));
+  const sl = await b('/api/shortlist', { method: 'POST', body: { kind: 'state', row, dataset: d.dataset.label } });
+  assert.equal(sl.status, 200);
+  assert.ok(sl.json.items[0].key.endsWith(' | ' + row.quota));
+  // an Odisha student still sees only Odisha data
+  const o = browser();
+  await o('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000106' } });
+  await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000106', code: '1234' } });
+  assert.ok((await o('/api/config')).json.datasets.every(x => x.state === 'Odisha'));
+});
+
 test('cross-site form posts are still refused', async () => {
   const r = await fetch(BASE + '/api/auth/logout', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: 'a=1' });
   assert.equal(r.status, 415);

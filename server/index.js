@@ -129,7 +129,9 @@ app.get('/api/datasets/:id', requireUser, (req, res) => {
 });
 
 // ---- shortlist ---------------------------------------------------------
-const rowKey = (kind, row) => KINDS[kind].key.map(k => String(row[k] ?? '')).join(' | ') + (kind === 'aiq' ? ' | ' + row.type : '');
+// The quota is appended only when a seat has one, so keys saved before quotas existed still match.
+const rowKey = (kind, row) => KINDS[kind].key.map(k => String(row[k] ?? '')).join(' | ')
+  + (kind === 'aiq' ? ' | ' + row.type : row.quota ? ' | ' + row.quota : '');
 const shortlistOf = uid => db.prepare('SELECT id, kind, row_key, snapshot, position, created_at FROM shortlist WHERE user_id = ? ORDER BY position, id').all(uid)
   .map(r => ({ id: r.id, kind: r.kind, key: r.row_key, createdAt: r.created_at, ...JSON.parse(r.snapshot) }));
 
@@ -260,8 +262,8 @@ app.get('/api/admin/template', (req, res) => {
   const fmt = req.query.format === 'allotment' ? 'allotment' : 'columns';
   const cols = KINDS[kind][fmt];
   const sample = {
-    state: { columns: ['SCB MCH Cuttack', 'General Medicine', 'MD/MS', 'Direct', 'UR', 5, 1, 17, 106, 872, 5, 'R-1 UGR-1'],
-      allotment: ['SCB MCH Cuttack', 'General Medicine', 'MD/MS', 'Direct', 'UR', 1, 106, 'R-1'] },
+    state: { columns: ['SCB MCH Cuttack', 'General Medicine', 'MD/MS', 'Direct', 'UR', '', 5, 1, 17, 106, 872, 5, 'R-1 UGR-1'],
+      allotment: ['SCB MCH Cuttack', 'General Medicine', 'MD/MS', 'Direct', 'UR', '', 1, 106, 'R-1'] },
     aiq: { columns: ['SCB Medical College, Cuttack', 'Government', 'MD - General Medicine', 'GENERAL', 7, 193, 100683],
       allotment: ['SCB Medical College, Cuttack', 'Government', 'MD - General Medicine', 'GENERAL', 193] }
   }[kind][fmt];

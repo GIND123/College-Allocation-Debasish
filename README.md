@@ -8,7 +8,7 @@ PG medical counselling cut-off predictor. It covers state counselling (CMR) and 
 - plain-language NEET-PG 2026 counselling guides for the All India Quota and each state, with live dates
 - an admin console with traffic analytics, leads, and data uploads
 
-The 2025 Odisha data from the original `odisha_1.html` is loaded automatically on first start.
+Built-in data is loaded automatically: Odisha 2025 (state counselling and All India Quota, from the original `odisha_1.html`) and Gujarat 2025 and 2024 (state counselling final closing ranks, from ACPPGMEC).
 
 ## Run it
 
@@ -35,7 +35,7 @@ npm test                  # unit and API tests on a throw-away database
 | `server/analytics.js` | First-party event tracking and the dashboard queries |
 | `server/schema.js` | Upload columns, header aliases, validation, allotment → cut-off aggregation |
 | `server/db.js` | SQLite schema, settings, first-run seed |
-| `server/seed/` | The 2025 data extracted from the client's original page |
+| `server/seed/` | Built-in data: Odisha 2025 from the client's original page, Gujarat 2025 and 2024 from ACPPGMEC's last-rank sheets |
 | `server/guides.js` | Serves each counselling guide at `/counselling/<guide>` inside the RankRound frame |
 | `guides/` | The counselling guides as the client sent them, `guides.json` (the list, with key dates), and `assets/` (notice scans and PDFs) |
 | `public/` | Public app (`index.html`, `js/app.js`), admin console (`admin.html`, `js/admin.js`), and the guide frame (`css/guide.css`, `js/guide.js`) |
@@ -135,6 +135,10 @@ Go to Admin → Datasets → **Upload data**. CSV and Excel files are accepted, 
 Each upload is validated, and you see a preview before anything is saved. Messy headers ("Institute", "State Merit Rank", "Quota", …) and stream spellings ("in service", "IS") are recognised automatically.
 
 Every dataset is tagged with a state when it is uploaded. A published dataset is shown to candidates who chose that state, newest year first. The state can be changed later under the dataset's details. Individual rows can be corrected in the row editor.
+
+State cut-off files can carry an optional **Quota** column (for example Government, University, Management, NRI, In-service, as in Gujarat). It becomes a filter in the predictor. If a state publishes only the last admitted rank, put the same number in CMR opening and closing and leave **Seats** blank: the site then shows "last admitted" and "not published" rather than inventing a range, and grades a rank by how far inside that closing rank it is (see Method).
+
+The built-in files in `server/seed/` load once into each database, so Render's free tier, which starts with an empty database after every restart, always has them. Datasets uploaded through the admin console don't survive such a restart: use a persistent disk (see Deploying), or ask for the file to be added to `server/seed/`.
 
 ## Analytics
 
