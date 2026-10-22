@@ -148,6 +148,20 @@ html[data-guide="dnb-seats"]:root:root[data-theme="dark"]{--zero:#7d8693}
 @media (prefers-color-scheme: light){ html[data-guide="kerala-prospectus"]:not([data-theme="dark"]) .pill.warn{color:#9a4513} }
 html[data-guide="kerala-prospectus"][data-theme="light"] .pill.warn{color:#9a4513}
 
+/* AP merit list: written for light mode only (fixed colours). It stays light in both themes,
+   and the guide bar and footer around it stay light too, so the page never looks half-dark. */
+@media (prefers-color-scheme: dark){
+  html[data-guide="andhra-pradesh-merit-list"]:root:root:not([data-theme="light"]){
+    color-scheme:light; --rr-page:#f6f5f1; --rr-surface:#ffffff; --rr-sunk:#f1efe9; --rr-ink:#0e1420; --rr-ink-2:#384050;
+    --rr-muted:#6c6961; --rr-rule:#e3dfd6; --rr-rule-2:#cdc8bc; --rr-link:#1c4f9c; --rr-focus:#2457c5; --rr-guide-muted:#6c6961;
+  }
+}
+html[data-guide="andhra-pradesh-merit-list"]:root:root[data-theme="dark"]{
+  color-scheme:light; --rr-page:#f6f5f1; --rr-surface:#ffffff; --rr-sunk:#f1efe9; --rr-ink:#0e1420; --rr-ink-2:#384050;
+  --rr-muted:#6c6961; --rr-rule:#e3dfd6; --rr-rule-2:#cdc8bc; --rr-link:#1c4f9c; --rr-focus:#2457c5; --rr-guide-muted:#6c6961;
+}
+html[data-guide="andhra-pradesh-merit-list"] .sub{color:#56677a} /* was 4.2:1 on its grey background */
+
 /* Telangana: ".contacts a" outranks ".btn", so the Apply buttons were blue on blue in light mode. */
 html[data-guide="telangana"] .contacts a.btn{color:#fff}
 @media (prefers-color-scheme: dark){ html[data-guide="telangana"]:not([data-theme="light"]) .contacts a.btn{color:#0f131a} }
