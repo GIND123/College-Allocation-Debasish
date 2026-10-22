@@ -802,7 +802,7 @@ function columns(kind, mode, rank) {
   c.push({ id: 'category', t: 'Category', v: r => r.category + seatPool(r), cls: 'nowrap',
     r: r => esc(r.category) + (kind === 'state' ? `<span class="sub">${esc(seatPool(r))}</span>` : '') });
   const p = mode === 'predict';
-  c.push({ id: 'open', t: p ? 'Open' : `${K.rank} open`, v: r => r[K.open], num: true, cls: 'n soft', r: r => fmt(r[K.open]) });
+  c.push({ id: 'open', t: p ? 'Open' : `${K.rank} open`, v: r => r[K.open], num: true, cls: 'n soft', r: r => closingOnly(r) ? '—' : fmt(r[K.open]) });
   c.push({ id: 'close', t: p ? 'Close' : `${K.rank} close`, v: r => r[K.close], num: true, cls: 'n',
     r: r => fmt(r[K.close]) + (p ? `<span class="sub">${closingOnly(r) ? 'last admitted' : `${r.seats} seat${r.seats === 1 ? '' : 's'}`}</span>` : '') });
   if (mode === 'predict') {
