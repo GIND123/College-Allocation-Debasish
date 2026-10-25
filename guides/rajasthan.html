@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rajasthan NEET PG 2026 – Round 1 Guide</title>
+<style>
+:root{
+  --bg:#f7f8fb;--card:#ffffff;--ink:#1c2333;--muted:#5d6678;--line:#e3e7ef;
+  --accent:#1f5fbf;--accent-soft:#e8f0fc;--warn:#b54708;--warn-soft:#fff4e5;
+  --danger:#b42318;--danger-soft:#fdecea;--ok:#067647;--ok-soft:#e7f6ee;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11151d;--card:#1a202b;--ink:#e8ecf3;--muted:#9aa4b6;--line:#2c3443;
+    --accent:#7aa7f0;--accent-soft:#1e2a40;--warn:#f5a454;--warn-soft:#33261a;
+    --danger:#f0857a;--danger-soft:#3a1f1d;--ok:#5cc596;--ok-soft:#18302a;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+header{padding:20px 16px;background:var(--accent);color:#fff;border-radius:14px;margin-bottom:16px}
+header h1{margin:0 0 4px;font-size:1.35rem;line-height:1.25}
+header p{margin:0;opacity:.9;font-size:.9rem}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+nav a{flex:0 0 auto;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.85rem}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+h2{margin:0 0 10px;font-size:1.1rem}
+h3{margin:16px 0 6px;font-size:.98rem}
+p,li{margin:4px 0}
+ul{padding-left:20px;margin:6px 0}
+.alert{border-radius:12px;padding:12px 14px;margin-bottom:12px;border:1px solid}
+.alert.danger{background:var(--danger-soft);border-color:var(--danger);}
+.alert.warn{background:var(--warn-soft);border-color:var(--warn);}
+.alert.ok{background:var(--ok-soft);border-color:var(--ok);}
+.alert strong{display:block;margin-bottom:2px}
+.tl{list-style:none;padding:0;margin:0}
+.tl li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tl li:last-child{border-bottom:0}
+.tl .d{flex:0 0 112px;font-weight:600;font-size:.88rem;color:var(--accent)}
+.tl .past .d,.tl .past .t{opacity:.5}
+.tl .today .d{color:var(--danger)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:1px}
+.tag.today{background:var(--danger);color:#fff}
+.tag.past{background:var(--line);color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--accent-soft);border-radius:12px;padding:12px}
+.stat b{display:block;font-size:1.35rem;color:var(--accent)}
+.stat span{font-size:.82rem;color:var(--muted)}
+.tbl{overflow-x:auto;margin:8px 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:420px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+thead th{background:var(--accent-soft);font-weight:600;position:sticky;top:0}
+tfoot td{font-weight:700;background:var(--accent-soft)}
+tr.zero td{color:var(--muted)}
+.muted{color:var(--muted);font-size:.85rem}
+.flag{color:var(--danger);font-weight:700}
+input[type=search]{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:.95rem}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:8px 0 24px}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Rajasthan NEET PG Counselling 2026 – Round 1</h1>
+  <p>MD/MS · Post-MBBS Diploma · DNB — schedule, application steps, seat matrix and things to watch. Summary of official notices dated 12.10.2026 &amp; 16.10.2026.</p>
+</header>
+
+<nav>
+  <a href="#urgent">Deadlines</a><a href="#fees">Fees</a><a href="#apply">How to apply</a><a href="#docs">Documents</a><a href="#mdms">MD/MS seats</a><a href="#diploma">Diploma/DNB</a><a href="#issues">Issues found</a><a href="#help">Helpline</a>
+</nav>
+
+<div id="todayBox"></div>
+
+<section id="urgent">
+  <h2>📅 Round 1 schedule</h2>
+  <ul class="tl" id="timeline">
+    <li data-end="2026-10-18T23:59"><span class="d">18 Oct</span><span class="t">Application opens · Provisional seat matrix published</span></li>
+    <li data-end="2026-10-23T17:00"><span class="d">23 Oct, 5:00 PM</span><span class="t"><b>Last time to pay application fee</b></span></li>
+    <li data-end="2026-10-23T23:55"><span class="d">23 Oct, 11:55 PM</span><span class="t"><b>Last time to submit online form (Part 1 + Part 2)</b></span></li>
+    <li data-end="2026-10-27T23:59"><span class="d">27 Oct</span><span class="t">Provisional merit list</span></li>
+    <li data-end="2026-10-29T17:00"><span class="d">19–29 Oct, 5 PM</span><span class="t">Security deposit (single transaction)</span></li>
+    <li data-end="2026-10-29T23:45"><span class="d">19–29 Oct, 11:45 PM</span><span class="t">Choice filling — auto-locks at 11:45 PM on 29 Oct</span></li>
+    <li data-end="2026-10-30T23:59"><span class="d">30 Oct</span><span class="t">Print application form (after auto-lock)</span></li>
+    <li data-end="2026-11-02T23:59"><span class="d">2 Nov</span><span class="t">Round-1 provisional allotment result</span></li>
+    <li data-end="2026-11-06T13:00"><span class="d">3–6 Nov, 1 PM</span><span class="t">Print allotment letter</span></li>
+    <li data-end="2026-11-06T15:00"><span class="d">3–6 Nov, 3 PM</span><span class="t">Pay 1-year tuition fee — NEFT/RTGS only</span></li>
+    <li data-end="2026-11-06T16:00"><span class="d">3–6 Nov, 9–4</span><span class="t">Reporting &amp; document verification at <b>Academic Block, SMS Medical College, Jaipur</b> (central desk, not the allotted college)</span></li>
+    <li data-end="2026-11-20T23:59"><span class="d">20 Nov</span><span class="t">Academic session begins</span></li>
+  </ul>
+  <p class="muted">Later rounds will be announced on the counselling website.</p>
+</section>
+
+<section id="fees">
+  <h2>💰 Fees &amp; deposits</h2>
+  <h3>Application fee (non-refundable)</h3>
+  <ul>
+    <li>₹4,000 + transaction charges</li>
+    <li>₹3,000 for SC / ST / ST-STA candidates with Rajasthan domicile</li>
+  </ul>
+  <h3>Security deposit — decides which seats you can choose</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Seats you want</th><th>Deposit</th></tr></thead>
+    <tbody>
+      <tr><td>Government seats — Govt MCs, Society MCs, RUHS-CMS, District Hospitals (MD/MS, Diploma, DNB)</td><td>₹1,00,000</td></tr>
+      <tr><td>Management seats in Society MCs &amp; RUHS-CMS (MD/MS)</td><td>₹2,00,000</td></tr>
+      <tr><td>Private medical colleges (MD/MS)</td><td>₹5,00,000</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Pay in <b>one single transaction</b>. Enter your bank details for refunds at this step.</li>
+    <li>Refunds are processed only <b>after all rounds are over</b>.</li>
+    <li>Tuition fee after allotment: <b>NEFT/RTGS only</b> — UPI or DD not accepted.</li>
+  </ul>
+</section>
+
+<section id="apply">
+  <h2>📝 How to apply</h2>
+  <h3>Part 1 — basic details + fee</h3>
+  <ul>
+    <li>Roll no., name, parents' names, DOB — <b>exactly as in NEET PG 2026</b>. No "Dr." before the name.</li>
+    <li>Domicile, category (General/SC/ST/OBC-NCL/MBC-NCL), STA, EWS, PwBD, internship completion date.</li>
+    <li>Mobile &amp; email are fetched from NEET PG result.</li>
+    <li>Pay fee → get <b>Application ID &amp; password</b>. Save them.</li>
+  </ul>
+  <div class="alert danger"><strong>Part 1 cannot be edited after payment.</strong>Category and EWS cannot be changed later. Check everything before clicking "Proceed to pay fee".</div>
+  <h3>Part 2 — login at pg.neetrajasthan.com</h3>
+  <ul>
+    <li>Address, nationality, MBBS details &amp; marks, number of attempts.</li>
+    <li>Service status — in-service candidates upload employer NOC.</li>
+    <li>Ten compulsory declarations.</li>
+    <li><b>PCPNDT choice:</b> Yes/No for the 6-month ultrasound course.</li>
+    <li>Upload documents, preview each one, then <b>Final Submit</b> — form locks after this.</li>
+  </ul>
+  <h3>After that</h3>
+  <ul>
+    <li>Pay security deposit → choice filling opens.</li>
+    <li>Print <b>4 copies</b> of the application form after the last date; paste photo, sign, write place &amp; date.</li>
+  </ul>
+</section>
+
+<section id="docs">
+  <h2>📂 Documents to keep ready</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Document</th><th>Format</th><th>Size</th></tr></thead>
+    <tbody>
+      <tr><td>Recent colour passport photo</td><td>JPG</td><td>~40 KB</td></tr>
+      <tr><td>Signature — 2"×1" box, cropped (no A4 scan)</td><td>JPG</td><td>~40 KB</td></tr>
+      <tr><td>MBBS final mark sheet / provisional / degree</td><td>PDF</td><td>~300 KB</td></tr>
+      <tr><td>Category certificate — <b>Rajasthan state</b> certificate</td><td>PDF</td><td>~300 KB</td></tr>
+      <tr><td>PwBD certificate (NMC/MCC norms, 2026-27)</td><td>PDF</td><td>~300 KB</td></tr>
+      <tr><td>Employer NOC (in-service only)</td><td>PDF</td><td>~300 KB</td></tr>
+    </tbody>
+  </table></div>
+  <h3>At reporting (SMS MC, Jaipur)</h3>
+  <ul>
+    <li>All original documents and required bonds</li>
+    <li>Allotment letter — 6 copies</li>
+    <li>Application form — 4 copies (to be safe; see issues)</li>
+    <li>Self-attested photocopies of all documents — 2 sets</li>
+  </ul>
+</section>
+
+<section id="mdms">
+  <h2>🏥 MD/MS seat matrix</h2>
+  <div class="grid">
+    <div class="stat"><b>990</b><span>Govt + Society + RUHS-CMS</span></div>
+    <div class="stat"><b>939</b><span>at ₹1 lakh deposit</span></div>
+    <div class="stat"><b>51</b><span>Society/RUHS mgmt (₹2 lakh)</span></div>
+    <div class="stat"><b>908</b><span>Private via state counselling (724 state + 184 mgmt)</span></div>
+  </div>
+
+  <h3>Government side — college-wise</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>College</th><th>Type</th><th>Govt</th><th>Mgmt</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>SMS MC, Jaipur</td><td>Govt</td><td>322</td><td>–</td><td>322</td></tr>
+      <tr><td>JLN MC, Ajmer</td><td>Govt</td><td>123</td><td>–</td><td>123</td></tr>
+      <tr><td>RNT MC, Udaipur</td><td>Govt</td><td>113</td><td>–</td><td>113</td></tr>
+      <tr><td>Dr SNMC, Jodhpur</td><td>Govt</td><td>110</td><td>–</td><td>110</td></tr>
+      <tr><td>SPMC, Bikaner</td><td>Govt</td><td>100</td><td>–</td><td>100</td></tr>
+      <tr><td>GMC, Kota</td><td>Govt</td><td>97</td><td>–</td><td>97</td></tr>
+      <tr><td>ESIC, Alwar</td><td>Govt</td><td>10</td><td>–</td><td>10</td></tr>
+      <tr><td>RUHS CMS, Jaipur</td><td>RUHS</td><td>16</td><td>14</td><td>30</td></tr>
+      <tr><td>JMC, Jhalawar</td><td>Society</td><td>23</td><td>16</td><td>39</td></tr>
+      <tr><td>GMC, Pali</td><td>Society</td><td>10</td><td>10</td><td>20</td></tr>
+      <tr><td>GMC, Bharatpur</td><td>Society</td><td>7</td><td>4</td><td>11</td></tr>
+      <tr><td>GMC, Bhilwara</td><td>Society</td><td>5</td><td>5</td><td>10</td></tr>
+      <tr><td>GMC, Churu</td><td>Society</td><td>2</td><td>1</td><td>3</td></tr>
+      <tr><td>GMC, Dungarpur</td><td>Society</td><td>1</td><td>1</td><td>2</td></tr>
+    </tbody>
+    <tfoot><tr><td>Total</td><td></td><td>939</td><td>51</td><td>990</td></tr></tfoot>
+  </table></div>
+
+  <h3>Branch-wise — government vs private</h3>
+  <input type="search" id="q" placeholder="Search a branch, e.g. radio, derm, surgery" aria-label="Search branch">
+  <div class="tbl"><table id="branches">
+    <thead><tr><th>Branch</th><th>Govt+Soc+RUHS</th><th>Pvt State</th><th>Pvt Mgmt</th><th>Pvt AI*</th></tr></thead>
+    <tbody></tbody>
+    <tfoot><tr><td>Total</td><td>990</td><td>724</td><td>184</td><td>536</td></tr></tfoot>
+  </table></div>
+  <p class="muted">*AI seats in private colleges are most likely filled through all-India counselling, not state counselling. Private columns come from a page labelled 2025 — see issues below.</p>
+</section>
+
+<section id="diploma">
+  <h2>🩺 Post-MBBS Diploma &amp; DNB</h2>
+  <div class="alert warn"><strong>Only for regular in-service doctors of the Government of Rajasthan.</strong>Verification is done online by DMHS — upload service documents and NOC in Part 2.</div>
+  <div class="grid">
+    <div class="stat"><b>137</b><span>Diploma seats, 28 hospitals</span></div>
+    <div class="stat"><b>2</b><span>DNB Emergency Medicine — Jaipuria Hospital, Jaipur</span></div>
+  </div>
+  <h3>Diploma seats by branch</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Branch</th><th>Seats</th></tr></thead>
+    <tbody>
+      <tr><td>Paediatrics</td><td>35</td></tr><tr><td>Obstetrics &amp; Gynaecology</td><td>27</td></tr>
+      <tr><td>Anaesthesia</td><td>22</td></tr><tr><td>Ophthalmology</td><td>17</td></tr>
+      <tr><td>ENT</td><td>14</td></tr><tr><td>Family Medicine</td><td>13</td></tr>
+      <tr><td>TB &amp; Chest</td><td>9</td></tr><tr class="zero"><td>Radiology</td><td>0</td></tr>
+    </tbody>
+    <tfoot><tr><td>Total</td><td>137</td></tr></tfoot>
+  </table></div>
+  <h3>Diploma seats by hospital</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Hospital</th><th>OBG</th><th>Paed</th><th>Anaes</th><th>Oph</th><th>ENT</th><th>TB</th><th>FM</th><th>Total</th></tr></thead>
+    <tbody id="dip"></tbody>
+  </table></div>
+</section>
+
+<section id="issues">
+  <h2>⚠️ Issues found in the official documents</h2>
+  <ul>
+    <li><span class="flag">Private-college page is dated 2025.</span> Its footer says "NEET PG 2025", "Board-2025" and "20.11.25". Confirm a 2026 private matrix on the official site before paying ₹5 lakh.</li>
+    <li><span class="flag">Two total errors.</span> Anaesthesia shows 234 (should be 101 + 149 = 250). Anatomy shows 45 (should be 32 + 24 = 56). The grand total of 2,434 is correct.</li>
+    <li><b>Copies of application form:</b> the schedule says 2, the guidelines say 4. Carry 4.</li>
+    <li><b>Deposit closes before choice lock</b> on 29 Oct (5 PM vs 11:45 PM). Pay early.</li>
+    <li><b>6 Nov is tight:</b> letter print by 1 PM, fee by 3 PM, reporting by 4 PM. Pay tuition during banking hours.</li>
+    <li><b>Declaration 5</b> says the Board "shall be responsible" for password misuse — likely a missing "not". Never share your ID, password or OTP.</li>
+    <li><b>Seat matrix is provisional</b> — recheck before choices lock.</li>
+  </ul>
+  <div class="alert warn"><strong>Beware of "paid counselling" WhatsApp numbers.</strong>The circulated PDFs carry an advertisement for paid guidance. It is not from the Board. Download notices only from the official websites below.</div>
+</section>
+
+<section id="help">
+  <h2>☎️ Official contacts</h2>
+  <ul>
+    <li>Helpline: <a href="tel:08035185333">080-35185333</a> (8 AM – 8 PM)</li>
+    <li>Email: <a href="mailto:pg.support@neetrajasthan.com">pg.support@neetrajasthan.com</a> — write from your registered email</li>
+    <li>Chairman: <a href="mailto:chairmanneetpg2026@gmail.com">chairmanneetpg2026@gmail.com</a></li>
+    <li>Counselling portal: <a href="https://pg.neetrajasthan.com" target="_blank" rel="noopener">pg.neetrajasthan.com</a></li>
+    <li>Dept. of Medical Education: <a href="https://medicaleducation.rajasthan.gov.in/me/#/home/dptHome" target="_blank" rel="noopener">medicaleducation.rajasthan.gov.in</a></li>
+  </ul>
+  <h3>Grievance email format</h3>
+  <p>Name · NEET PG 2026 Roll No · Application ID · Wrong entry · Correct entry.</p>
+  <p>Attach: NEET PG scorecard, application print, Aadhaar, Class X marksheet (for DOB issues), Rajasthan caste certificate 2026-27 (for category issues), signed handwritten application, other proof.</p>
+</section>
+
+<footer>Unofficial summary for guidance. Always verify with the official notices on the counselling website.</footer>
+</div>
+
+<script>
+const branches=[
+["MD Anaesthesiology",101,75,5,69],["MD/MS Anatomy",32,14,0,10],["MD Biochemistry",36,11,0,7],
+["MD Emergency Medicine",4,13,1,12],["MD Forensic Medicine",23,11,0,9],["MD General Medicine",100,78,34,51],
+["MD Geriatrics",2,0,0,0],["MD Immunohaematology & Transfusion",16,2,0,2],["MD Microbiology",35,13,0,11],
+["MD Palliative Medicine",5,2,0,1],["MD Paediatrics",72,52,23,31],["MD Pathology",68,32,0,31],
+["MD Pharmacology",23,12,0,11],["MD Physical Med & Rehab",5,1,0,1],["MD Physiology",25,13,0,10],
+["MD PSM / Community Medicine",33,17,0,14],["MD Psychiatry",21,25,4,20],["MD Radio-diagnosis",30,57,30,34],
+["MD Radiation Oncology",17,9,1,6],["MD Respiratory Medicine",31,26,6,22],["MD Dermatology",20,31,20,15],
+["MD Tropical Medicine",1,0,0,0],["MS ENT",25,28,4,21],["MS General Surgery",75,74,15,59],
+["MS Obstetrics & Gynaecology",102,41,23,24],["MS Ophthalmology",33,29,4,23],["MS Orthopaedics",55,51,13,37],
+["MD Hospital Administration",0,1,0,1],["MD Family Medicine",0,1,0,0],["MD Laboratory Medicine",0,2,0,1],
+["MD Nuclear Medicine",0,3,1,2],["MS Traumatology & Surgery",0,0,0,1]];
+const tb=document.querySelector("#branches tbody");
+tb.innerHTML=branches.map(b=>`<tr${b[1]+b[2]+b[3]===0?' class="zero"':''}><td>${b[0].replace(/&/g,'&amp;')}</td><td>${b[1]}</td><td>${b[2]}</td><td>${b[3]}</td><td>${b[4]}</td></tr>`).join("");
+document.getElementById("q").addEventListener("input",e=>{
+  const v=e.target.value.toLowerCase();
+  tb.querySelectorAll("tr").forEach((r,i)=>{r.style.display=branches[i][0].toLowerCase().includes(v)?"":"none"});
+});
+
+const dip=[
+["Rajiv Gandhi Govt GH, Alwar",0,0,0,0,4,0,0],["Dist Hosp, Baran",0,0,0,0,0,0,0],["GH, Barmer",0,2,0,0,0,1,0],
+["Govt Amrit Kaur Hosp, Beawar",0,1,1,0,1,0,0],["GMC, Bharatpur",0,2,0,1,1,0,0],["Govt MG DH, Banswara",2,3,0,0,0,0,0],
+["MGH, Bhilwara",3,0,0,2,0,1,0],["Govt DH, Bundi",2,2,1,0,0,0,0],["SSG Govt DH, Chittorgarh",0,0,1,0,0,0,1],
+["Govt DB General DH, Churu",2,0,0,1,0,0,0],["SRJ Govt DH, Dausa",0,0,0,0,0,0,0],["DH, Dholpur",0,3,2,1,0,0,4],
+["GMC & Assoc Hosp, Dungarpur",0,5,6,1,1,0,0],["Govt Dist Civil Hosp, Sri Ganganagar",0,3,0,2,0,2,2],
+["MGH Govt DH, Hanumangarh",0,2,1,1,0,1,0],["General Hospital, Jalore",0,0,1,0,0,0,0],["Govt BDK Hosp, Jhunjhunu",3,3,3,2,3,0,2],
+["GH, Karauli",0,0,2,0,0,0,0],["JLN Govt DH, Nagaur",1,1,2,2,1,1,0],["SDH, Nathdwara",0,0,0,0,0,0,0],
+["GMC & Bangur Hosp, Pali",0,0,0,0,0,0,0],["DH, Pratapgarh",0,1,0,0,0,0,0],["RK Govt DH, Rajsamand",0,1,0,0,0,0,0],
+["GH, Sawai Madhopur",5,1,0,0,0,2,0],["SK Hospital, Sikar",5,0,0,4,3,0,0],["GH, Sirohi",2,2,2,0,0,1,4],
+["Govt Sadat Hosp, Tonk",2,1,0,0,0,0,0],["Govt DH, Kekri",0,2,0,0,0,0,0]];
+document.getElementById("dip").innerHTML=dip.map(r=>{const t=r.slice(1).reduce((a,b)=>a+b,0);
+  return `<tr${t===0?' class="zero"':''}><td>${r[0].replace(/&/g,'&amp;')}</td>${r.slice(1).map(n=>`<td>${n||'–'}</td>`).join("")}<td><b>${t}</b></td></tr>`}).join("")
+  +`<tr><td><b>Total</b></td><td><b>27</b></td><td><b>35</b></td><td><b>22</b></td><td><b>17</b></td><td><b>14</b></td><td><b>9</b></td><td><b>13</b></td><td><b>137</b></td></tr>`;
+
+/* Mark past / today items on the timeline (India time) */
+const now=new Date();
+const ist=new Date(now.getTime()+(now.getTimezoneOffset()+330)*60000);
+const todayStr=ist.toISOString().slice(0,10);
+let urgent=[];
+document.querySelectorAll("#timeline li").forEach(li=>{
+  const end=new Date(li.dataset.end+":00+05:30");
+  const day=li.dataset.end.slice(0,10);
+  if(end<now){li.classList.add("past");li.querySelector(".t").insertAdjacentHTML("beforeend",' <span class="tag past">Over</span>');}
+  else if(day===todayStr){li.classList.add("today");li.querySelector(".t").insertAdjacentHTML("beforeend",' <span class="tag today">Today</span>');urgent.push(li.querySelector(".t").innerText.replace(/Today$/,'').trim()+" — "+li.querySelector(".d").innerText);}
+});
+if(urgent.length){document.getElementById("todayBox").innerHTML='<div class="alert danger"><strong>⏰ Deadline today</strong>'+urgent.join("<br>")+'</div>';}
+</script>
+</body>
+</html>

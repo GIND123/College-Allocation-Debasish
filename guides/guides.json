@@ -11,10 +11,29 @@
       "asOf": "2026-10-07",
       "official": "https://mcc.nic.in",
       "dates": [
-        { "what": "Round 1 registration and payment", "when": "12–21 Oct · register by 12 noon, pay by 3 pm", "from": "2026-10-12T00:00:00+05:30", "to": "2026-10-21T12:00:00+05:30" },
-        { "what": "Round 1 choice filling and locking", "when": "13–22 Oct, 10 am · locking from 21 Oct, 4 pm", "from": "2026-10-13T00:00:00+05:30", "to": "2026-10-22T10:00:00+05:30" },
-        { "what": "Round 1 result", "when": "24 Oct (tentative)", "on": "2026-10-24T00:00:00+05:30" },
-        { "what": "Round 1 reporting and joining", "when": "26 Oct – 2 Nov", "from": "2026-10-26T00:00:00+05:30", "to": "2026-11-02T23:59:00+05:30" }
+        {
+          "what": "Round 1 reporting and joining",
+          "when": "26 Oct – 2 Nov · state round 1: 21 Oct – 2 Nov",
+          "from": "2026-10-26T00:00:00+05:30",
+          "to": "2026-11-02T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 registration and choices",
+          "when": "6–11 Nov · locking closes 12 Nov, 10 am",
+          "from": "2026-11-06T00:00:00+05:30",
+          "to": "2026-11-12T10:00:00+05:30"
+        },
+        {
+          "what": "Round 2 result",
+          "when": "14 Nov · join 16–23 Nov",
+          "on": "2026-11-14T00:00:00+05:30"
+        },
+        {
+          "what": "Round 3 registration and choices",
+          "when": "26 Nov – 1 Dec · locking closes 2 Dec, 10 am",
+          "from": "2026-11-26T00:00:00+05:30",
+          "to": "2026-12-02T10:00:00+05:30"
+        }
       ]
     },
     {
@@ -28,7 +47,11 @@
       "asOf": "2026-10-14",
       "official": "https://mcc.nic.in",
       "dates": [
-        { "what": "Round 1 final seat matrix", "when": "Dated 14 Oct 2026", "label": "Reference" }
+        {
+          "what": "Round 1 final seat matrix",
+          "when": "Dated 14 Oct 2026",
+          "label": "Reference"
+        }
       ]
     },
     {
@@ -41,7 +64,28 @@
       "summary": "Search 707 MD / MS / Diploma internal-quota seats at central-university institutes.",
       "official": "https://mcc.nic.in",
       "dates": [
-        { "what": "Internal quota seat matrix", "when": "Privately circulated copy · confirm on mcc.nic.in", "label": "Reference" }
+        {
+          "what": "Internal quota seat matrix",
+          "when": "Privately circulated copy · confirm on mcc.nic.in",
+          "label": "Reference"
+        }
+      ]
+    },
+    {
+      "slug": "deemed-seats",
+      "file": "deemed-seats.html",
+      "region": "All India",
+      "title": "Deemed university seat matrix 2026 (MD/MS)",
+      "label": "Deemed seat matrix",
+      "authority": "MCC · deemed universities (100% of their PG seats)",
+      "summary": "Search 7,537 MD/MS seats at 54 deemed universities by state, institute, branch and quota.",
+      "official": "https://mcc.nic.in",
+      "dates": [
+        {
+          "what": "Final deemed seat matrix",
+          "when": "54 institutes · 7,537 seats",
+          "label": "Reference"
+        }
       ]
     },
     {
@@ -55,9 +99,23 @@
       "asOf": "2026-10-14",
       "official": "https://drntr.uhsap.in",
       "dates": [
-        { "what": "Online application", "when": "14 Oct, 4 pm – 21 Oct, 5 pm", "from": "2026-10-14T16:00:00+05:30", "to": "2026-10-21T17:00:00+05:30" },
-        { "what": "Late application (₹20,000 late fee)", "when": "22 Oct only, 9 am – 10 pm", "from": "2026-10-22T09:00:00+05:30", "to": "2026-10-22T22:00:00+05:30" },
-        { "what": "Merit list and web options", "when": "To be announced on drntr.uhsap.in", "label": "Awaited" }
+        {
+          "what": "Online application",
+          "when": "14 Oct, 4 pm – 21 Oct, 5 pm",
+          "from": "2026-10-14T16:00:00+05:30",
+          "to": "2026-10-21T17:00:00+05:30"
+        },
+        {
+          "what": "Late application (₹20,000 late fee)",
+          "when": "22 Oct only, 9 am – 10 pm",
+          "from": "2026-10-22T09:00:00+05:30",
+          "to": "2026-10-22T22:00:00+05:30"
+        },
+        {
+          "what": "Merit list and web options",
+          "when": "To be announced on drntr.uhsap.in",
+          "label": "Awaited"
+        }
       ]
     },
     {
@@ -70,7 +128,11 @@
       "summary": "Search all 4,279 candidates by NEET rank, score, category and local area, to see where a rank placed on the state merit list.",
       "official": "https://drntr.uhsap.in",
       "dates": [
-        { "what": "CQ merit list 2025–26", "when": "4,279 candidates · searchable copy in the guide", "label": "Published" }
+        {
+          "what": "CQ merit list 2025–26",
+          "when": "4,279 candidates · searchable copy in the guide",
+          "label": "Published"
+        }
       ]
     },
     {
@@ -84,8 +146,52 @@
       "asOf": "2026-10-06",
       "official": "https://www.dme.assam.gov.in",
       "dates": [
-        { "what": "Provisional merit list", "when": "Notice of 6 Oct · searchable copy in the guide", "label": "Published" },
-        { "what": "Name missing? Apply by hand in Guwahati", "when": "On or before 16 Oct, office hours", "from": "2026-10-06T00:00:00+05:30", "to": "2026-10-16T17:00:00+05:30" }
+        {
+          "what": "Provisional merit list",
+          "when": "Notice of 6 Oct · searchable copy in the guide",
+          "label": "Published"
+        },
+        {
+          "what": "Name missing? Apply by hand in Guwahati",
+          "when": "On or before 16 Oct, office hours",
+          "from": "2026-10-06T00:00:00+05:30",
+          "to": "2026-10-16T17:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "bihar",
+      "file": "bihar.html",
+      "region": "Bihar",
+      "title": "Bihar PGMAC 2026: counselling guide",
+      "label": "PGMAC counselling guide",
+      "authority": "BCECEB · State quota",
+      "summary": "Rounds 1 and 2 schedule, fees and deposits, freeze vs float, a seat finder by branch and category, and documents.",
+      "asOf": "2026-10-18",
+      "official": "https://bceceboard.bihar.gov.in",
+      "dates": [
+        {
+          "what": "Registration, payment and form",
+          "when": "22 Oct – 28 Oct, 10 pm",
+          "from": "2026-10-22T00:00:00+05:30",
+          "to": "2026-10-28T22:00:00+05:30"
+        },
+        {
+          "what": "Choice filling and locking (Rounds 1 and 2)",
+          "when": "Until 31 Oct, 11:59 pm",
+          "from": "2026-10-22T00:00:00+05:30",
+          "to": "2026-10-31T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 result",
+          "when": "4 Nov · admission 6–9 Nov",
+          "on": "2026-11-04T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 result",
+          "when": "25 Nov · admission 27–30 Nov",
+          "on": "2026-11-25T00:00:00+05:30"
+        }
       ]
     },
     {
@@ -98,9 +204,24 @@
       "summary": "The six ACPPGMEC steps, documents, help centres and the points that trip people up.",
       "official": "https://www.medadmgujarat.org",
       "dates": [
-        { "what": "PIN purchase", "when": "Closes 8 Oct, 3 pm", "from": "2026-10-01T00:00:00+05:30", "to": "2026-10-08T15:00:00+05:30" },
-        { "what": "Online registration", "when": "Closes 8 Oct, 5 pm", "from": "2026-10-01T00:00:00+05:30", "to": "2026-10-08T17:00:00+05:30" },
-        { "what": "Document verification at a help centre", "when": "3–9 Oct, until 4 pm", "from": "2026-10-03T10:00:00+05:30", "to": "2026-10-09T16:00:00+05:30" }
+        {
+          "what": "PIN purchase",
+          "when": "Closes 8 Oct, 3 pm",
+          "from": "2026-10-01T00:00:00+05:30",
+          "to": "2026-10-08T15:00:00+05:30"
+        },
+        {
+          "what": "Online registration",
+          "when": "Closes 8 Oct, 5 pm",
+          "from": "2026-10-01T00:00:00+05:30",
+          "to": "2026-10-08T17:00:00+05:30"
+        },
+        {
+          "what": "Document verification at a help centre",
+          "when": "3–9 Oct, until 4 pm",
+          "from": "2026-10-03T10:00:00+05:30",
+          "to": "2026-10-09T16:00:00+05:30"
+        }
       ]
     },
     {
@@ -114,10 +235,28 @@
       "asOf": "2026-10-16",
       "official": "https://jceceb.jharkhand.gov.in",
       "dates": [
-        { "what": "Application form and documents", "when": "21–25 Oct", "from": "2026-10-21T00:00:00+05:30", "to": "2026-10-25T23:59:00+05:30" },
-        { "what": "Provisional state merit list", "when": "26 Oct · objections by email on 27 Oct", "on": "2026-10-26T00:00:00+05:30" },
-        { "what": "Registration and choice filling", "when": "29–30 Oct · fees paid online here", "from": "2026-10-29T00:00:00+05:30", "to": "2026-10-30T23:59:00+05:30" },
-        { "what": "Provisional seat allotment", "when": "2 Nov · joining 3–10 Nov", "on": "2026-11-02T00:00:00+05:30" }
+        {
+          "what": "Application form and documents",
+          "when": "21–25 Oct",
+          "from": "2026-10-21T00:00:00+05:30",
+          "to": "2026-10-25T23:59:00+05:30"
+        },
+        {
+          "what": "Provisional state merit list",
+          "when": "26 Oct · objections by email on 27 Oct",
+          "on": "2026-10-26T00:00:00+05:30"
+        },
+        {
+          "what": "Registration and choice filling",
+          "when": "29–30 Oct · fees paid online here",
+          "from": "2026-10-29T00:00:00+05:30",
+          "to": "2026-10-30T23:59:00+05:30"
+        },
+        {
+          "what": "Provisional seat allotment",
+          "when": "2 Nov · joining 3–10 Nov",
+          "on": "2026-11-02T00:00:00+05:30"
+        }
       ]
     },
     {
@@ -130,7 +269,12 @@
       "summary": "KEA's steps, fees, seat types, eligibility clauses, documents, rounds and bonds.",
       "official": "https://cetonline.karnataka.gov.in/KEA/pgetmed2026",
       "dates": [
-        { "what": "Online registration", "when": "5 Oct, 11 am – 15 Oct, 11 am", "from": "2026-10-05T11:00:00+05:30", "to": "2026-10-15T11:00:00+05:30" }
+        {
+          "what": "Online registration",
+          "when": "5 Oct, 11 am – 15 Oct, 11 am",
+          "from": "2026-10-05T11:00:00+05:30",
+          "to": "2026-10-15T11:00:00+05:30"
+        }
       ]
     },
     {
@@ -144,8 +288,16 @@
       "asOf": "2026-10-13",
       "official": "https://cee.kerala.gov.in",
       "dates": [
-        { "what": "Online application", "when": "Until 16 Oct, 4 pm", "to": "2026-10-16T16:00:00+05:30" },
-        { "what": "In-service: printout to Head of Department", "when": "By 16 Oct, 5 pm", "to": "2026-10-16T17:00:00+05:30" }
+        {
+          "what": "Online application",
+          "when": "Until 16 Oct, 4 pm",
+          "to": "2026-10-16T16:00:00+05:30"
+        },
+        {
+          "what": "In-service: printout to Head of Department",
+          "when": "By 16 Oct, 5 pm",
+          "to": "2026-10-16T17:00:00+05:30"
+        }
       ]
     },
     {
@@ -161,6 +313,81 @@
       "dates": []
     },
     {
+      "slug": "madhya-pradesh",
+      "file": "madhya-pradesh.html",
+      "region": "Madhya Pradesh",
+      "title": "Madhya Pradesh NEET-PG 2026: MD/MS counselling guide",
+      "label": "MD/MS counselling guide",
+      "authority": "DME Madhya Pradesh · State quota",
+      "summary": "The 27 participating colleges, who can choose which seats, fees and deposits, and the round-by-round rules.",
+      "asOf": "2026-10-14",
+      "official": "https://dme.mponline.gov.in",
+      "dates": [
+        {
+          "what": "Round 1 schedule",
+          "when": "See the DME notice on dme.mponline.gov.in",
+          "label": "Awaited"
+        }
+      ]
+    },
+    {
+      "slug": "maharashtra",
+      "file": "maharashtra.html",
+      "region": "Maharashtra",
+      "title": "Maharashtra NEET-PG 2026 counselling, explained",
+      "label": "State counselling guide",
+      "authority": "State CET Cell, Maharashtra · State quota",
+      "summary": "Round 1 dates, eligibility, the deposit decision, documents, reservation, seat codes, fees and common traps.",
+      "asOf": "2026-10-20",
+      "official": "https://www.mahacet.org",
+      "dates": [
+        {
+          "what": "Registration, fee and documents",
+          "when": "17–24 Oct, 5 pm",
+          "from": "2026-10-17T00:00:00+05:30",
+          "to": "2026-10-24T17:00:00+05:30"
+        },
+        {
+          "what": "Provisional merit list",
+          "when": "28 Oct · grievances 29–30 Oct",
+          "on": "2026-10-28T00:00:00+05:30"
+        },
+        {
+          "what": "Final merit list and Round 1 seat matrix",
+          "when": "1 Nov",
+          "on": "2026-11-01T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 choice filling",
+          "when": "2–4 Nov, 11:59 pm",
+          "from": "2026-11-02T00:00:00+05:30",
+          "to": "2026-11-04T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 allotment",
+          "when": "5 Nov · join 6–10 Nov, 5:30 pm",
+          "on": "2026-11-05T00:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "rims-imphal",
+      "file": "rims-imphal.html",
+      "region": "Manipur",
+      "title": "RIMS Imphal: MD/MS admissions guide 2026–27",
+      "label": "RIMS Imphal college profile",
+      "authority": "Regional Institute of Medical Sciences · central institute (AIQ via MCC)",
+      "summary": "How the 166 MD/MS seats are split, seats by subject, fees, the ₹20 lakh bond and life on campus.",
+      "official": "https://www.rims.edu.in",
+      "dates": [
+        {
+          "what": "All India Quota seats",
+          "when": "Allotted through MCC counselling",
+          "label": "Reference"
+        }
+      ]
+    },
+    {
       "slug": "odisha",
       "file": "odisha.html",
       "region": "Odisha",
@@ -171,11 +398,68 @@
       "asOf": "2026-10-09",
       "official": "https://dmetodisha.in",
       "dates": [
-        { "what": "Online registration and fee", "when": "12 Oct, 10 am – 18 Oct, 11:55 pm", "from": "2026-10-12T10:00:00+05:30", "to": "2026-10-18T23:55:00+05:30" },
-        { "what": "Document verification at MKCG Berhampur", "when": "14–16 or 21–23 Oct · report 9:30 am – 12 noon", "from": "2026-10-21T09:30:00+05:30", "to": "2026-10-23T17:00:00+05:30" },
-        { "what": "Provisional merit list", "when": "28 Oct, 12 noon · complaints by 29 Oct, 2 pm", "on": "2026-10-28T12:00:00+05:30" },
-        { "what": "Revised merit list and seat matrix", "when": "31 Oct, 12 noon", "on": "2026-10-31T12:00:00+05:30" },
-        { "what": "Round 1 counselling", "when": "Programme to be notified", "label": "Awaited" }
+        {
+          "what": "Online registration and fee",
+          "when": "12 Oct, 10 am – 18 Oct, 11:55 pm",
+          "from": "2026-10-12T10:00:00+05:30",
+          "to": "2026-10-18T23:55:00+05:30"
+        },
+        {
+          "what": "Document verification at MKCG Berhampur",
+          "when": "14–16 or 21–23 Oct · report 9:30 am – 12 noon",
+          "from": "2026-10-21T09:30:00+05:30",
+          "to": "2026-10-23T17:00:00+05:30"
+        },
+        {
+          "what": "Provisional merit list",
+          "when": "28 Oct, 12 noon · complaints by 29 Oct, 2 pm",
+          "on": "2026-10-28T12:00:00+05:30"
+        },
+        {
+          "what": "Revised merit list and seat matrix",
+          "when": "31 Oct, 12 noon",
+          "on": "2026-10-31T12:00:00+05:30"
+        },
+        {
+          "what": "Round 1 counselling",
+          "when": "Programme to be notified",
+          "label": "Awaited"
+        }
+      ]
+    },
+    {
+      "slug": "rajasthan",
+      "file": "rajasthan.html",
+      "region": "Rajasthan",
+      "title": "Rajasthan NEET-PG counselling 2026: Round 1",
+      "label": "Round 1 guide",
+      "authority": "Rajasthan PG Medical Counselling Board · State quota",
+      "summary": "Round 1 schedule, fees and deposits, how to apply, documents, the MD/MS seat matrix, Diploma and DNB seats.",
+      "asOf": "2026-10-16",
+      "official": "https://pg.neetrajasthan.com",
+      "dates": [
+        {
+          "what": "Online form (Part 1 and 2)",
+          "when": "18 Oct – 23 Oct, 11:55 pm",
+          "from": "2026-10-18T00:00:00+05:30",
+          "to": "2026-10-23T23:55:00+05:30"
+        },
+        {
+          "what": "Provisional merit list",
+          "when": "27 Oct",
+          "on": "2026-10-27T00:00:00+05:30"
+        },
+        {
+          "what": "Security deposit and choice filling",
+          "when": "Until 29 Oct, 11:45 pm (auto-lock)",
+          "from": "2026-10-19T00:00:00+05:30",
+          "to": "2026-10-29T23:45:00+05:30"
+        },
+        {
+          "what": "Round 1 allotment",
+          "when": "2 Nov · report 3–6 Nov at SMS MC, Jaipur",
+          "on": "2026-11-02T00:00:00+05:30"
+        }
       ]
     },
     {
@@ -189,7 +473,36 @@
       "asOf": "2026-10-07",
       "official": "https://www.tnmedicalselection.net",
       "dates": [
-        { "what": "Online application (GQ and MQ)", "when": "9 Oct, 12 noon – 15 Oct, 5 pm", "from": "2026-10-09T12:00:00+05:30", "to": "2026-10-15T17:00:00+05:30" }
+        {
+          "what": "Online application (GQ and MQ)",
+          "when": "9 Oct, 12 noon – 15 Oct, 5 pm",
+          "from": "2026-10-09T12:00:00+05:30",
+          "to": "2026-10-15T17:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "tamil-nadu-dnb",
+      "file": "tamil-nadu-dnb.html",
+      "region": "Tamil Nadu",
+      "title": "Tamil Nadu DNB prospectus 2026–27 (service candidates)",
+      "label": "DNB prospectus (service)",
+      "authority": "Selection Committee, DME Chennai · DNB broad speciality and diploma",
+      "summary": "Clause by clause: eligibility, service rules, rank list, counselling rounds, seats, fees, stipend and bond.",
+      "asOf": "2026-10-07",
+      "official": "https://www.tnmedicalselection.net",
+      "dates": [
+        {
+          "what": "Online application",
+          "when": "9 Oct, 12 noon – 15 Oct, 5 pm",
+          "from": "2026-10-09T12:00:00+05:30",
+          "to": "2026-10-15T17:00:00+05:30"
+        },
+        {
+          "what": "Rank list and counselling",
+          "when": "To be notified on tnmedicalselection.net",
+          "label": "Awaited"
+        }
       ]
     },
     {
@@ -203,25 +516,271 @@
       "asOf": "2026-10-14",
       "official": "https://tspgmed.tsche.in",
       "dates": [
-        { "what": "Online application and certificate upload", "when": "15 Oct, 4 pm – 23 Oct, 4 pm", "from": "2026-10-15T16:00:00+05:30", "to": "2026-10-23T16:00:00+05:30" },
-        { "what": "Merit lists and web options", "when": "To be notified on knruhs.telangana.gov.in", "label": "Awaited" }
+        {
+          "what": "Online application and certificate upload",
+          "when": "15 Oct, 4 pm – 23 Oct, 4 pm",
+          "from": "2026-10-15T16:00:00+05:30",
+          "to": "2026-10-23T16:00:00+05:30"
+        },
+        {
+          "what": "Merit lists and web options",
+          "when": "To be notified on knruhs.telangana.gov.in",
+          "label": "Awaited"
+        }
       ]
     }
   ],
   "compare": {
     "title": "Gujarat, Karnataka and Kerala side by side",
     "note": "Grey italic means the source notice did not cover it. Check the official site before acting.",
-    "columns": ["Gujarat", "Karnataka", "Kerala"],
+    "columns": [
+      "Gujarat",
+      "Karnataka",
+      "Kerala"
+    ],
     "rows": [
-      { "label": "Run by", "cells": [{ "text": "ACPPGMEC, Gandhinagar" }, { "text": "Karnataka Examinations Authority (KEA), Bengaluru" }, { "text": "Commissioner for Entrance Examinations (CEE), Thiruvananthapuram" }] },
-      { "label": "Official site", "cells": [{ "text": "medadmgujarat.org", "href": "https://www.medadmgujarat.org" }, { "text": "cetonline.karnataka.gov.in/KEA", "href": "https://cetonline.karnataka.gov.in/KEA/pgetmed2026" }, { "text": "cee.kerala.gov.in", "href": "https://cee.kerala.gov.in" }] },
-      { "label": "How you register", "cells": [{ "text": "Buy a PIN online, then register and upload documents" }, { "text": "Profile from NEET-PG roll number (OTP to NBE mobile), fill form, declare, pay fee" }, { "text": "Register with NEET application number and DOB, fill and finalise, pay, upload certificates, print acknowledgement" }] },
-      { "label": "Registration fee", "cells": [{ "text": "PIN price not captured in the guide", "gap": true }, { "text": "₹750 to ₹7,000 by category (non-Karnataka ₹4,000)" }, { "text": "₹1,000 General / Service; ₹500 SC/ST. Phase 1 deposit ₹10,000 (refundable)" }] },
-      { "label": "Document check", "cells": [{ "text": "Any one of 17 help centres across Gujarat" }, { "text": "In person at KEA, Malleswaram, Bengaluru, by booked slot" }, { "text": "Online upload only; nothing posted. Originals at admission" }] },
-      { "label": "Who can apply", "cells": [{ "text": "MBBS from Gujarat; or MBBS elsewhere with Gujarat 12th and Gujarat birth or domicile" }, { "text": "Depends on clause code (a–g, y, z). Non-Karnataka candidates need the General (UR) cut-off" }, { "text": "Kerala origin; OCI (General and NRI seats only); non-Keralites with Kerala MBBS (no reservation). Internship by 30 Sep 2026" }] },
-      { "label": "Category certificates", "cells": [{ "text": "Only from Gujarat State authorities; check the certificate date" }, { "text": "Tahsildar certificates in Forms D/E/F; SC must show SCA, SCB or SCC" }, { "text": "Non-Creamy Layer for Kerala education purpose (Village Officer); SC/ST from Tahsildar. Must be fresh and uploaded with the application" }] },
-      { "label": "Rounds", "cells": [{ "text": "Not covered in the notice used", "gap": true }, { "text": "Round 1 (four choices), Round 2, Mop-up, Stray vacancy" }, { "text": "Phase 1, Phase 2 (no new options), Phase 3 (lock-in, ends AIQ too), Stray vacancy" }] },
-      { "label": "Bonds and penalties", "cells": [{ "text": "Not covered in the notice used", "gap": true }, { "text": "1-year compulsory service; 3-year govt service bond; penalties up to ₹18 lakh" }, { "text": "1 year Senior Residency in Kerala (service quota: 10 years); ₹50 lakh for leaving after stray round" }] }
+      {
+        "label": "Run by",
+        "cells": [
+          {
+            "text": "ACPPGMEC, Gandhinagar"
+          },
+          {
+            "text": "Karnataka Examinations Authority (KEA), Bengaluru"
+          },
+          {
+            "text": "Commissioner for Entrance Examinations (CEE), Thiruvananthapuram"
+          }
+        ]
+      },
+      {
+        "label": "Official site",
+        "cells": [
+          {
+            "text": "medadmgujarat.org",
+            "href": "https://www.medadmgujarat.org"
+          },
+          {
+            "text": "cetonline.karnataka.gov.in/KEA",
+            "href": "https://cetonline.karnataka.gov.in/KEA/pgetmed2026"
+          },
+          {
+            "text": "cee.kerala.gov.in",
+            "href": "https://cee.kerala.gov.in"
+          }
+        ]
+      },
+      {
+        "label": "How you register",
+        "cells": [
+          {
+            "text": "Buy a PIN online, then register and upload documents"
+          },
+          {
+            "text": "Profile from NEET-PG roll number (OTP to NBE mobile), fill form, declare, pay fee"
+          },
+          {
+            "text": "Register with NEET application number and DOB, fill and finalise, pay, upload certificates, print acknowledgement"
+          }
+        ]
+      },
+      {
+        "label": "Registration fee",
+        "cells": [
+          {
+            "text": "PIN price not captured in the guide",
+            "gap": true
+          },
+          {
+            "text": "₹750 to ₹7,000 by category (non-Karnataka ₹4,000)"
+          },
+          {
+            "text": "₹1,000 General / Service; ₹500 SC/ST. Phase 1 deposit ₹10,000 (refundable)"
+          }
+        ]
+      },
+      {
+        "label": "Document check",
+        "cells": [
+          {
+            "text": "Any one of 17 help centres across Gujarat"
+          },
+          {
+            "text": "In person at KEA, Malleswaram, Bengaluru, by booked slot"
+          },
+          {
+            "text": "Online upload only; nothing posted. Originals at admission"
+          }
+        ]
+      },
+      {
+        "label": "Who can apply",
+        "cells": [
+          {
+            "text": "MBBS from Gujarat; or MBBS elsewhere with Gujarat 12th and Gujarat birth or domicile"
+          },
+          {
+            "text": "Depends on clause code (a–g, y, z). Non-Karnataka candidates need the General (UR) cut-off"
+          },
+          {
+            "text": "Kerala origin; OCI (General and NRI seats only); non-Keralites with Kerala MBBS (no reservation). Internship by 30 Sep 2026"
+          }
+        ]
+      },
+      {
+        "label": "Category certificates",
+        "cells": [
+          {
+            "text": "Only from Gujarat State authorities; check the certificate date"
+          },
+          {
+            "text": "Tahsildar certificates in Forms D/E/F; SC must show SCA, SCB or SCC"
+          },
+          {
+            "text": "Non-Creamy Layer for Kerala education purpose (Village Officer); SC/ST from Tahsildar. Must be fresh and uploaded with the application"
+          }
+        ]
+      },
+      {
+        "label": "Rounds",
+        "cells": [
+          {
+            "text": "Not covered in the notice used",
+            "gap": true
+          },
+          {
+            "text": "Round 1 (four choices), Round 2, Mop-up, Stray vacancy"
+          },
+          {
+            "text": "Phase 1, Phase 2 (no new options), Phase 3 (lock-in, ends AIQ too), Stray vacancy"
+          }
+        ]
+      },
+      {
+        "label": "Bonds and penalties",
+        "cells": [
+          {
+            "text": "Not covered in the notice used",
+            "gap": true
+          },
+          {
+            "text": "1-year compulsory service; 3-year govt service bond; penalties up to ₹18 lakh"
+          },
+          {
+            "text": "1 year Senior Residency in Kerala (service quota: 10 years); ₹50 lakh for leaving after stray round"
+          }
+        ]
+      }
+    ]
+  },
+  "roadmap": {
+    "title": "NEET-PG 2026 counselling roadmap",
+    "source": "MCC tentative schedule, notice of 7 Oct 2026. State rounds follow each MCC round; confirm with your state authority.",
+    "stages": [
+      {
+        "name": "Registration",
+        "from": "2026-10-12T00:00:00+05:30",
+        "to": "2026-10-22T10:00:00+05:30",
+        "detail": "Round 1 registration and payment (12–21 Oct, till 12 noon) and choice locking (until 22 Oct, 10 am).",
+        "events": [
+          {
+            "what": "Seat matrix",
+            "when": "10–12 Oct"
+          },
+          {
+            "what": "Registration and payment",
+            "when": "12–21 Oct, 12 noon"
+          },
+          {
+            "what": "Choice locking closes",
+            "when": "22 Oct, 10 am"
+          }
+        ]
+      },
+      {
+        "name": "Round 1 result",
+        "from": "2026-10-22T10:00:01+05:30",
+        "to": "2026-11-02T23:59:00+05:30",
+        "detail": "Result on 24 Oct. Join or upload documents 26 Oct – 2 Nov: freeze (join in person) or float (upload online). Free exit in this round.",
+        "events": [
+          {
+            "what": "Round 1 result",
+            "when": "24 Oct"
+          },
+          {
+            "what": "Joining / upload",
+            "when": "26 Oct – 2 Nov"
+          },
+          {
+            "what": "State round 1",
+            "when": "21 Oct – 2 Nov · join by 10 Nov"
+          }
+        ]
+      },
+      {
+        "name": "Round 2",
+        "from": "2026-11-03T00:00:00+05:30",
+        "to": "2026-11-23T23:59:00+05:30",
+        "detail": "Registration 6–11 Nov, choice locking until 12 Nov, 10 am, result 14 Nov, joining 16–23 Nov. Not joining or resigning forfeits the security deposit.",
+        "events": [
+          {
+            "what": "Registration",
+            "when": "6–11 Nov"
+          },
+          {
+            "what": "Result",
+            "when": "14 Nov"
+          },
+          {
+            "what": "Joining / upload",
+            "when": "16–23 Nov"
+          },
+          {
+            "what": "Academic session begins",
+            "when": "20 Nov"
+          }
+        ]
+      },
+      {
+        "name": "Round 3",
+        "from": "2026-11-24T00:00:00+05:30",
+        "to": "2026-12-12T23:59:00+05:30",
+        "detail": "Registration 26 Nov – 1 Dec, choice locking until 2 Dec, 10 am, result 4 Dec, reporting 5–12 Dec. No resignation; not joining loses the deposit and ends MCC counselling.",
+        "events": [
+          {
+            "what": "Registration",
+            "when": "26 Nov – 1 Dec"
+          },
+          {
+            "what": "Result",
+            "when": "4 Dec"
+          },
+          {
+            "what": "Reporting",
+            "when": "5–12 Dec"
+          }
+        ]
+      },
+      {
+        "name": "Stray vacancy",
+        "from": "2026-12-13T00:00:00+05:30",
+        "to": "2026-12-31T23:59:00+05:30",
+        "detail": "Registration 16–21 Dec, choices close 21 Dec, 11:55 pm, result 24 Dec, reporting 24–31 Dec. Final round: a seat here must be joined.",
+        "events": [
+          {
+            "what": "Registration",
+            "when": "16–21 Dec"
+          },
+          {
+            "what": "Result",
+            "when": "24 Dec"
+          },
+          {
+            "what": "Reporting",
+            "when": "24–31 Dec"
+          }
+        ]
+      }
     ]
   }
 }

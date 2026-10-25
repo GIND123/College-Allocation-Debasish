@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIMS Imphal PG Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --ink:#1d2433; --muted:#5d6577; --line:#e4e0d6;
+  --accent:#1f4e8c; --accent-soft:#e6eef9; --warn:#a4451c; --warn-soft:#fbede5;
+  --good:#2e6b45; --good-soft:#e5f2ea;
+  --c1:#1f4e8c; --c2:#d08a1e; --c3:#7a4fa3; --c4:#2e8b75;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12151c; --card:#1a1f29; --ink:#e7e9ee; --muted:#9aa2b3; --line:#2a3140;
+    --accent:#7fa8e6; --accent-soft:#1d2a40; --warn:#f0a07a; --warn-soft:#3a2219;
+    --good:#7cc59a; --good-soft:#18301f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12151c; --card:#1a1f29; --ink:#e7e9ee; --muted:#9aa2b3; --line:#2a3140;
+  --accent:#7fa8e6; --accent-soft:#1d2a40; --warn:#f0a07a; --warn-soft:#3a2219;
+  --good:#7cc59a; --good-soft:#18301f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 60px}
+header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:24px}
+.kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:Fraunces,Georgia,serif;font-size:clamp(28px,6vw,42px);line-height:1.15;margin:6px 0 10px}
+h2{font-family:Fraunces,Georgia,serif;font-size:23px;margin:0 0 12px}
+.lede{font-size:18px;color:var(--muted);margin:0}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat b{display:block;font-family:Fraunces,Georgia,serif;font-size:28px;color:var(--accent)}
+.stat span{font-size:14px;color:var(--muted)}
+.bar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:6px 0 14px}
+.bar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600}
+.legend{display:grid;gap:10px}
+.leg{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:start}
+.dot{width:14px;height:14px;border-radius:4px;margin-top:5px}
+.leg small{display:block;color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.tablewrap{overflow-x:auto}
+.cols{display:grid;grid-template-columns:1fr;gap:0 24px}
+@media(min-width:640px){.cols{grid-template-columns:1fr 1fr}}
+ul{padding-left:20px;margin:0}
+li{margin-bottom:6px}
+.note{border-radius:10px;padding:14px 16px;margin-top:12px;font-size:15px}
+.warn{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.good{background:var(--good-soft);border-left:4px solid var(--good)}
+.info{background:var(--accent-soft);border-left:4px solid var(--accent)}
+.money td:first-child{width:62%}
+footer{font-size:13px;color:var(--muted);margin-top:24px}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">NEET-PG College Profile · Session 2026–27</div>
+  <h1>RIMS Imphal — MD/MS Admissions Guide</h1>
+  <p class="lede">Regional Institute of Medical Sciences, Imphal, Manipur. It is a central government institute under the Union Health Ministry. Fees are very low, but leaving the course costs a lot.</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><b>166</b><span>MD/MS seats across 24 subjects</span></div>
+  <div class="stat"><b>83</b><span>All India Quota seats (50%), allotted by MCC</span></div>
+  <div class="stat"><b>₹39,500</b><span>fees at admission, then ₹20,800 a year</span></div>
+  <div class="stat"><b>₹20 lakh</b><span>bond for the compulsory 1-year senior residency</span></div>
+</div>
+
+<section>
+  <h2>How the 166 seats are split</h2>
+  <p>This is the 2025 session split, taken from RIMS's admission circular. The split may change each year.</p>
+  <div class="bar" role="img" aria-label="AIQ 83, In-service 62, RIMS graduate open 16, Non-RIMS open 5">
+    <div style="width:50%;background:var(--c1)">83</div>
+    <div style="width:37.3%;background:var(--c2)">62</div>
+    <div style="width:9.7%;background:var(--c3)">16</div>
+    <div style="width:3%;background:var(--c4)"></div>
+  </div>
+  <div class="legend">
+    <div class="leg"><span class="dot" style="background:var(--c1)"></span><div><b>All India Quota</b><small>Allotted through MCC counselling. Open to any NEET-PG qualified candidate in India.</small></div><b>83</b></div>
+    <div class="leg"><span class="dot" style="background:var(--c2)"></span><div><b>In-Service Sponsored</b><small>For medical officers already working for one of the 7 beneficiary NE states, forwarded by their state. Subjects rotate between states each year.</small></div><b>62</b></div>
+    <div class="leg"><span class="dot" style="background:var(--c3)"></span><div><b>RIMS Graduate – Open</b><small>For candidates who did their MBBS at RIMS Imphal.</small></div><b>16</b></div>
+    <div class="leg"><span class="dot" style="background:var(--c4)"></span><div><b>Non-RIMS – Open</b><small>For MBBS graduates from any other college who belong to a beneficiary state.</small></div><b>5</b></div>
+  </div>
+  <div class="note info"><b>Beneficiary states:</b> Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim and Tripura. RIMS holds its own counselling for the 83 non-AIQ seats and publishes circulars on rims.edu.in. Selection is strictly by NEET-PG score.</div>
+  <div class="note warn"><b>For students outside the Northeast:</b> MCC All India Quota is the <em>only</em> way into RIMS. For Northeast students who did MBBS outside RIMS, only about 5 open seats are available.</div>
+</section>
+
+<section>
+  <h2>Seats by subject</h2>
+  <div class="cols">
+    <div class="tablewrap"><table>
+      <tr><th>Subject</th><th style="text-align:right">Seats</th></tr>
+      <tr><td>Anaesthesiology</td><td class="n">20</td></tr>
+      <tr><td>General Medicine</td><td class="n">16</td></tr>
+      <tr><td>General Surgery</td><td class="n">16</td></tr>
+      <tr><td>Obstetrics &amp; Gynaecology</td><td class="n">13</td></tr>
+      <tr><td>Pathology</td><td class="n">8</td></tr>
+      <tr><td>Physiology</td><td class="n">8</td></tr>
+      <tr><td>Community Medicine</td><td class="n">8</td></tr>
+      <tr><td>Biochemistry</td><td class="n">7</td></tr>
+      <tr><td>Orthopaedics</td><td class="n">7</td></tr>
+      <tr><td>Anatomy</td><td class="n">6</td></tr>
+      <tr><td>Radiodiagnosis</td><td class="n">6</td></tr>
+      <tr><td>ENT</td><td class="n">6</td></tr>
+    </table></div>
+    <div class="tablewrap"><table>
+      <tr><th>Subject</th><th style="text-align:right">Seats</th></tr>
+      <tr><td>Respiratory Medicine</td><td class="n">6</td></tr>
+      <tr><td>Paediatrics</td><td class="n">5</td></tr>
+      <tr><td>Ophthalmology</td><td class="n">5</td></tr>
+      <tr><td>Dermatology</td><td class="n">4</td></tr>
+      <tr><td>Microbiology</td><td class="n">4</td></tr>
+      <tr><td>Pharmacology</td><td class="n">4</td></tr>
+      <tr><td>PMR</td><td class="n">4</td></tr>
+      <tr><td>Radiation Oncology</td><td class="n">4</td></tr>
+      <tr><td>Forensic Medicine</td><td class="n">3</td></tr>
+      <tr><td>Psychiatry</td><td class="n">3</td></tr>
+      <tr><td>Transfusion Medicine</td><td class="n">2</td></tr>
+      <tr><td>Sports Medicine</td><td class="n">1</td></tr>
+    </table></div>
+  </div>
+  <p style="margin:12px 0 0;font-size:15px;color:var(--muted)">Also offered: <b>MDS</b> 18 seats (9 AIQ). <b>Super-specialty</b> (allotted by MCC via NEET-SS): MCh Urology 2, MCh Plastic Surgery 1, DM Nephrology 2. Super-specialty applicants must be 35 or under (SC/ST get 5 extra years).</p>
+</section>
+
+<section>
+  <h2>Money &amp; bond</h2>
+  <table class="money">
+    <tr><td>Fees at admission</td><td class="n">₹39,500</td></tr>
+    <tr><td>Fees each following year</td><td class="n">₹20,800</td></tr>
+    <tr><td>Leaving the seat in year 1</td><td class="n">₹10 lakh</td></tr>
+    <tr><td>Leaving after completing year 1</td><td class="n">₹15 lakh</td></tr>
+    <tr><td>Leaving in year 3</td><td class="n">₹20 lakh</td></tr>
+    <tr><td>Bond for the 1-year senior residency (non-sponsored)</td><td class="n">₹20 lakh</td></tr>
+  </table>
+  <div class="note warn">If you leave, you must also pay back any salary already received. Your <b>original MBBS certificates are kept by RIMS</b> until you finish the course, and are only returned after any penalty is paid. Transferring to another college is <b>not allowed</b>.</div>
+</section>
+
+<section>
+  <h2>Daily life rules</h2>
+  <ul>
+    <li><b>Biometric attendance twice a day</b>, between 8–9 AM and 4–6 PM. Missing either punch counts as absent.</li>
+    <li><b>Leave:</b> 20 days paid plus 5 academic days per year. You need 80% attendance to sit the exam.</li>
+    <li><b>Unauthorised absence</b> costs ₹500 a day.</li>
+    <li><b>Hostels:</b> about 325 PG beds for men and 304 for women. Outstation students get priority.</li>
+    <li><b>Hostel curfews</b> are between 6:30 and 8 PM depending on gender and season. Late hospital duty is exempt.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Points to check before choosing</h2>
+  <ul>
+    <li><b>Thin departments:</b> Psychiatry has 2 faculty for 3 seats. Dermatology and Transfusion Medicine are each headed by an Assistant Professor "in-charge".</li>
+    <li><b>Reporting rule:</b> the prospectus says students need the Director's permission before taking institute matters to the police, press or public. This does not override national anti-ragging helplines.</li>
+    <li><b>Dates:</b> all admission and joining dates say "to be notified". Last year RIMS issued its PG circular in late November and ran rounds until January.</li>
+  </ul>
+  <div class="note good"><b>Bottom line:</b> RIMS suits a candidate who is sure of the branch and willing to stay in Imphal for about 4 years (3 years of PG plus the bonded year). It is risky for anyone who might drop the seat for a better option in a later round.</div>
+</section>
+
+<footer>
+  Sources: RIMS Imphal Prospectus 2026–27;
+  <a href="https://manipurhealthdirectorate.mn.gov.in/uploads/news/2025/11/26/Memo_inviting_applications_for_PG_course_at_RIMS_001.pdf">RIMS PG circular, Nov 2025</a>;
+  <a href="https://www.rims.edu.in/secure/category/admission/page/2/">RIMS admission notices</a>;
+  <a href="https://ipr.nagaland.gov.in/sites/default/files/2024-11/PG%20RIMS%202024.pdf">Nagaland DHFW notice, 2024</a>.
+  Figures may change. Always confirm on rims.edu.in and mcc.nic.in.
+</footer>
+
+</div>
+</body>
+</html>

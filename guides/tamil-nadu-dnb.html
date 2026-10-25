@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Tamil Nadu DNB Prospectus</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-width masthead band, then a sticky section rail beside a single measured text column; rail folds into a disclosure at phone width. */
+:root{
+  --paper:#f6f5f2;
+  --surface:#ffffff;
+  --ink:#1b1f26;
+  --ink-soft:#4e5663;
+  --rule:#d8d6cf;
+  --accent:#1f3a6e;
+  --accent-soft:#e7ecf6;
+  --flag:#9a5b07;
+  --flag-soft:#fbf1e2;
+  --stop:#8a2225;
+  --font-display:"Bitter",Georgia,"Times New Roman",serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#15181d;--surface:#1c2027;--ink:#e8e9ec;--ink-soft:#a3abb8;--rule:#333a45;
+    --accent:#9db7e8;--accent-soft:#1e2838;--flag:#e0a955;--flag-soft:#2b2317;--stop:#e08a8c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15181d;--surface:#1c2027;--ink:#e8e9ec;--ink-soft:#a3abb8;--rule:#333a45;
+  --accent:#9db7e8;--accent-soft:#1e2838;--flag:#e0a955;--flag-soft:#2b2317;--stop:#e08a8c;
+  color-scheme:dark;
+}
+
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--font-body);font-size:16px;line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{
+  max-width:1060px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+h1,h2,h3,h4{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.25}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.15rem}
+li{margin:.3rem 0}
+a{color:var(--accent)}
+
+/* Masthead */
+.masthead{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .masthead,
+:root:not([data-theme="light"]) .masthead{background:var(--accent-soft);color:var(--ink)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .masthead{background:#1f3a6e;color:#fff}}
+.masthead .wrap{padding-block:2.4rem 2rem;display:flex;flex-direction:column;gap:.9rem}
+.eyebrow{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  opacity:.85;margin:0;
+}
+.masthead h1{font-size:clamp(1.65rem,4.4vw,2.6rem);font-weight:700;max-width:22ch}
+.masthead .sub{font-size:1rem;max-width:58ch;opacity:.92}
+.mast-meta{
+  display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;font-family:var(--font-mono);font-size:.8rem;
+  padding-top:.6rem;border-top:1px solid rgba(255,255,255,.25);
+}
+:root[data-theme="dark"] .mast-meta{border-top-color:var(--rule)}
+.mast-meta span{display:block}
+
+/* Status strip */
+.status{background:var(--flag-soft);border-bottom:1px solid var(--rule)}
+.status .wrap{padding-block:.75rem;display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+.status strong{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--flag)}
+.status p{font-size:.92rem;color:var(--ink-soft);min-width:0}
+
+/* Body grid */
+.shell{display:grid;grid-template-columns:200px minmax(0,1fr);gap:2.6rem;padding-block:2.2rem 4rem;align-items:start}
+@media (max-width:860px){.shell{grid-template-columns:minmax(0,1fr);gap:1.4rem}}
+
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 1rem);font-size:.88rem}
+nav.rail h2{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.6rem}
+nav.rail ol{list-style:none;padding:0;display:flex;flex-direction:column;gap:.1rem;counter-reset:nav}
+nav.rail a{display:block;padding:.3rem .5rem;border-radius:3px;text-decoration:none;color:var(--ink-soft);border-left:2px solid transparent}
+nav.rail a:hover{color:var(--ink);background:var(--accent-soft);border-left-color:var(--accent)}
+nav.rail .cl{font-family:var(--font-mono);font-size:.74rem;opacity:.7;margin-right:.4rem}
+@media (max-width:860px){
+  nav.rail{position:static;background:var(--surface);border:1px solid var(--rule);border-radius:4px}
+  nav.rail summary{padding:.7rem .9rem;cursor:pointer;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+  nav.rail .rail-body{padding:0 .9rem .8rem}
+}
+.rail-desktop-only{display:block}
+.rail summary{display:none}
+@media (max-width:860px){.rail summary{display:list-item}.rail-desktop-only{display:none}}
+
+main{min-width:0;display:flex;flex-direction:column;gap:2.6rem}
+section{scroll-margin-top:1.5rem}
+section > h2{
+  font-size:1.45rem;padding-bottom:.5rem;border-bottom:2px solid var(--accent);margin-bottom:1rem;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;
+}
+section > h2 .clause{
+  font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:400;
+}
+h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+h4{font-size:.95rem;margin:1.1rem 0 .35rem;font-family:var(--font-body);font-weight:600}
+.prose p + p{margin-top:.7rem}
+.prose{max-width:68ch}
+.prose p,.prose li{max-width:68ch}
+
+/* Tables */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
+caption{text-align:left;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);padding:.7rem .8rem 0}
+th,td{padding:.55rem .8rem;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{font-family:var(--font-body);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);background:var(--accent-soft)}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{font-family:var(--font-mono)}
+
+/* Date list */
+.dates{display:grid;gap:0;border:1px solid var(--rule);border-radius:4px;background:var(--surface);overflow:hidden}
+.dates div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.4rem 1rem;padding:.65rem .9rem;border-bottom:1px solid var(--rule)}
+.dates div:last-child{border-bottom:none}
+.dates dt{font-size:.94rem}
+.dates dd{margin:0;font-family:var(--font-mono);font-size:.88rem;color:var(--ink-soft)}
+.dates .key{font-family:var(--font-mono);font-size:.88rem;color:var(--accent);font-weight:500}
+
+/* Figure tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem}
+.tile{border:1px solid var(--rule);border-radius:4px;background:var(--surface);padding:.9rem}
+.tile .label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.tile .fig{font-family:var(--font-display);font-size:1.5rem;font-weight:600;margin-top:.25rem;font-variant-numeric:tabular-nums}
+.tile .note{font-size:.8rem;color:var(--ink-soft);margin-top:.2rem}
+
+/* Callouts */
+.note-box{border-left:3px solid var(--accent);background:var(--accent-soft);padding:.8rem 1rem;border-radius:0 4px 4px 0;font-size:.93rem}
+.warn-box{border-left:3px solid var(--stop);background:var(--surface);padding:.8rem 1rem;border-radius:0 4px 4px 0;font-size:.93rem}
+.warn-box .label,.note-box .label{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.3rem}
+.warn-box .label{color:var(--stop)}
+.note-box .label{color:var(--accent)}
+.stack{display:flex;flex-direction:column;gap:1rem}
+
+/* Checklist */
+.checklist{list-style:none;padding:0;display:grid;gap:.1rem}
+.checklist li{display:grid;grid-template-columns:1.5rem 1fr;gap:.4rem;padding:.5rem 0;border-bottom:1px solid var(--rule);margin:0}
+.checklist li:last-child{border-bottom:none}
+.checklist .mark{font-family:var(--font-mono);font-size:.78rem;color:var(--accent);padding-top:.1rem}
+
+/* Communities */
+.search-row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:1rem}
+.search-row input{
+  flex:1 1 220px;min-width:0;padding:.55rem .7rem;font:inherit;font-size:.92rem;
+  border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink);
+}
+.search-row input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.count{font-family:var(--font-mono);font-size:.78rem;color:var(--ink-soft)}
+details.group{border:1px solid var(--rule);border-radius:4px;background:var(--surface);margin-bottom:.6rem}
+details.group > summary{padding:.7rem .9rem;cursor:pointer;font-weight:600;font-size:.95rem}
+details.group > summary::marker{color:var(--accent)}
+details.group .group-body{padding:0 .9rem .9rem}
+.comm{list-style:none;padding:0;margin:0;columns:2;column-gap:1.6rem;font-size:.88rem}
+@media (max-width:620px){.comm{columns:1}}
+.comm li{break-inside:avoid;padding:.18rem 0;margin:0;border-bottom:1px solid var(--rule)}
+.comm li .n{font-family:var(--font-mono);font-size:.76rem;color:var(--ink-soft);margin-right:.35rem}
+.comm li[hidden]{display:none}
+.empty{font-size:.9rem;color:var(--ink-soft);padding:.6rem 0}
+
+footer{border-top:1px solid var(--rule);background:var(--surface)}
+footer .wrap{padding-block:1.6rem 2.4rem;font-size:.86rem;color:var(--ink-soft);display:flex;flex-direction:column;gap:.5rem}
+footer a{word-break:break-word}
+.mono{font-family:var(--font-mono)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Government of Tamil Nadu · Selection Committee</p>
+    <h1>DNB Broad Speciality Prospectus 2026–2027</h1>
+    <p class="sub">Admission to DNB Broad Speciality (Post MBBS) and Post MBBS Diploma seats, two-year diploma course, for service candidates. Issued under G.O. (D) No.1141, Health and Family Welfare (MCA-1) Department, dated 07.10.2026.</p>
+    <div class="mast-meta">
+      <span>Directorate of Medical Education &amp; Research, Kilpauk, Chennai 600 010</span>
+      <span>Phone 044-28364884</span>
+      <span>tnmedicalselection.net</span>
+    </div>
+  </div>
+</header>
+
+<div class="status">
+  <div class="wrap">
+    <strong>Application window</strong>
+    <p>Opened 09.10.2026 at 12:00 noon and closed 15.10.2026 at 5:00 p.m. server time. Rank list, counselling dates and course commencement are to be notified on the official website.</p>
+  </div>
+</div>
+
+<div class="wrap shell">
+  <nav class="rail">
+    <details class="rail-nav" open>
+      <summary>Jump to section</summary>
+      <div class="rail-body">
+        <h2 class="rail-desktop-only">Contents</h2>
+        <ol>
+          <li><a href="#dates"><span class="cl">—</span>Key dates</a></li>
+          <li><a href="#money"><span class="cl">2–3</span>Fees &amp; deposit</a></li>
+          <li><a href="#general"><span class="cl">1, 4</span>General instructions</a></li>
+          <li><a href="#eligibility"><span class="cl">5–7</span>Eligibility</a></li>
+          <li><a href="#non-eligibility"><span class="cl">8–11</span>Non-eligibility</a></li>
+          <li><a href="#service"><span class="cl">12</span>Service candidates</a></li>
+          <li><a href="#apply"><span class="cl">13–15</span>Applying</a></li>
+          <li><a href="#rank"><span class="cl">16–17</span>Rank list</a></li>
+          <li><a href="#counselling"><span class="cl">18–28</span>Counselling rounds</a></li>
+          <li><a href="#selection"><span class="cl">29–30</span>Seats &amp; reservation</a></li>
+          <li><a href="#pwd"><span class="cl">31</span>PwD category</a></li>
+          <li><a href="#stipend"><span class="cl">32–33</span>Fee, stipend, bond</a></li>
+          <li><a href="#conduct"><span class="cl">34–36</span>Communication</a></li>
+          <li><a href="#annex-1">Annexure I · documents</a></li>
+          <li><a href="#annex-disability">Annexure · disability ranges</a></li>
+          <li><a href="#communities">Annexure · communities</a></li>
+        </ol>
+      </div>
+    </details>
+  </nav>
+
+  <main>
+    <section id="dates">
+      <h2>Key dates <span class="clause">Important dates</span></h2>
+      <dl class="dates">
+        <div><dt>Notification</dt><dd class="key">09.10.2026</dd></div>
+        <div><dt>Online application opens</dt><dd class="key">09.10.2026, 12:00 noon</dd></div>
+        <div><dt>Last date for online submission</dt><dd class="key">15.10.2026, up to 5:00 p.m.</dd></div>
+        <div><dt>Service particulars to be uploaded by</dt><dd class="key">15.10.2026, 5:00 p.m.</dd></div>
+        <div><dt>Declaration of rank</dt><dd>to be notified</dd></div>
+        <div><dt>Counselling</dt><dd>to be notified</dd></div>
+        <div><dt>Commencement of courses</dt><dd>to be notified</dd></div>
+        <div><dt>Closure of admission</dt><dd>to be notified</dd></div>
+      </dl>
+      <div class="note-box" style="margin-top:1rem">
+        <span class="label">Cut-off dates used for eligibility</span>
+        MBBS and CRMI/CRRI completion, and completion of a diploma already being pursued: on or before 30.09.2026. Two years of continuous service for service candidates: as on 31.03.2026.
+      </div>
+    </section>
+
+    <section id="money">
+      <h2>Fees and deposit <span class="clause">Clauses 2–3</span></h2>
+      <div class="tiles">
+        <div class="tile"><div class="label">Application fee</div><div class="fig">₹3,000</div><div class="note">Non-refundable. SC / SC(A) / ST candidates of Tamil Nadu nativity are exempt.</div></div>
+        <div class="tile"><div class="label">Registration fee</div><div class="fig">₹1,000</div><div class="note">Non-refundable, payable at each counselling registration, including Round 3 and the stray round.</div></div>
+        <div class="tile"><div class="label">Security deposit</div><div class="fig">₹30,000</div><div class="note">Government institutions and hospitals. Refunded within three months of the end of counselling, without interest.</div></div>
+      </div>
+      <div class="prose stack" style="margin-top:1.2rem">
+        <p>All payments are made through the online payment portal only — debit card, credit card, net banking, RTGS or UPI. Deduction from a bank account is not by itself proof of payment, so check the card or account transaction limit before starting and apply well before the closing time. No extension of time is given.</p>
+        <p>The prospectus itself is free online.</p>
+      </div>
+    </section>
+
+    <section id="general">
+      <h2>General instructions <span class="clause">Clauses 1, 4</span></h2>
+      <div class="prose stack">
+        <p>Seats covered are those in Tamil Nadu Government Medical Colleges affiliated to the Tamil Nadu Dr. M.G.R. Medical University and in DNB-accredited institutions of Government headquarters hospitals and sub-district hospitals. Everything about the process is published at <strong class="mono">www.tnmedicalselection.net</strong>; the Selection Committee does not contact candidates individually, and is not responsible for consequences of not following notices on that site.</p>
+        <div class="warn-box">
+          <span class="label">Documents are mandatory with the application</span>
+          Following W.P. No.27151 of 2022 and W.M.P. Nos.26366, 26368 and 26370 of 2022 of the High Court of Madras, all relevant documents listed in Annexure I must be uploaded along with the online application. No offline submission of documents is accepted, and incomplete applications or applications with documents that are not clearly visible are summarily rejected.
+        </div>
+        <p>Submitting the online application means the candidate has read, agreed to and accepted the scheme of counselling and its terms and conditions. Once final submission is complete, particulars cannot be changed under any circumstances, and no request for reconsideration of a rejected application is entertained.</p>
+        <p>Only in-service candidates may apply for the State quota seats, per NBEMS letter Reference No. NBEMS/EDO/2022/2705 dated 01.06.2022. Medical officers working in any government institution must get the service proforma certified by the designated authority with date and seal and upload it; otherwise the application is summarily rejected (W.P. No.27151/2022 dated 14.11.2022).</p>
+        <p>Candidates seeking the Persons with Disabilities special category must upload the filled and certified special category form, certified within three months. If the PwD medical certificate is not uploaded, the application is considered under the general category only.</p>
+        <p>The entire study period is treated as study leave, following approval and permission from the head of the department as per State rules.</p>
+        <p>Admissions and resignations are made through online mode only. Anything done offline is not accepted, and hospitals taking offline admissions or resignations do so at their own legal risk. Resignation applies to candidates allotted in Rounds 1 and 2.</p>
+        <p>Candidates taking All India quota DNB seats through MCC / NBE, including in-service candidates of other States, also execute a two-year bond on completing the course. Candidates should also read the NBEMS information bulletin at <strong class="mono">natboard.edu.in</strong> for qualifying criteria.</p>
+      </div>
+    </section>
+
+    <section id="eligibility">
+      <h2>Eligibility <span class="clause">Clauses 5–7</span></h2>
+      <div class="prose stack">
+        <p>Candidates must qualify in NEET PG 2026 conducted by the National Board of Examinations. Eligibility follows the criteria prescribed by the Director General of Health Services and the Post Graduate Medical Education Regulations as amended.</p>
+        <p>Candidates must be citizens of India and must have undergone the MBBS course, including the whole CRMI / CRRI internship, in the State of Tamil Nadu. Those claiming Tamil Nadu nativity who completed MBBS in another State must upload a nativity certificate issued by the competent authority of the Revenue and Disaster Management Department, Government of Tamil Nadu, with official seal. Dual nativity leads to cancellation of allotment and legal action at any stage.</p>
+        <p>Candidates claiming community reservation must upload both their own community certificate and the community certificate of one parent, each issued by the competent authority of the Revenue and Disaster Management Department with official seal.</p>
+      </div>
+
+      <h3>Qualifying percentile in NEET PG 2026</h3>
+      <div class="tablewrap">
+        <table>
+          <caption>Minimum marks by category</caption>
+          <thead><tr><th>Category</th><th class="num">Percentile</th></tr></thead>
+          <tbody>
+            <tr><td>General</td><td class="num">50th</td></tr>
+            <tr><td>Tamil Nadu natives in SC, SC (Arunthathiyar), ST, BC, BC (Muslim), MBC and Denotified Communities</td><td class="num">40th</td></tr>
+            <tr><td>Persons with Disability — SC-PH / ST-PH / OBC-PH</td><td class="num">40th</td></tr>
+            <tr><td>Persons with Disability — general category</td><td class="num">45th</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Qualification and registration</h3>
+      <div class="prose stack">
+        <p>Candidates must hold an MBBS degree from the Tamil Nadu Dr. M.G.R. Medical University or another university recognised by the Medical Council of India. Those qualified from other universities must produce an eligibility certificate from the Tamil Nadu Dr. M.G.R. Medical University, Guindy, Chennai 600 032 at the time of counselling or admission.</p>
+        <p>Candidates who cleared MBBS and completed CRMI / CRRI on or before 30.09.2026 are eligible, and must hold a permanent medical registration certificate of a State council or of India, or a provisional registration certificate, at the time of counselling or admission. Candidates currently pursuing a diploma, including under the All India quota, may apply for this same academic year if the diploma is completed before the counselling process begins on 30.09.2026.</p>
+        <p>Course duration is three years for DNB Broad Speciality (Post MBBS) and two years for the Post MBBS Diploma, which was introduced in 2020–2021.</p>
+      </div>
+
+      <h4>Additional documents required of every candidate</h4>
+      <ul class="prose">
+        <li>Copy of Aadhaar card</li>
+        <li>Copy of driving licence, voter's ID or passport as a supporting document</li>
+      </ul>
+      <p class="prose" style="margin-top:.6rem">An application without these supporting documents is summarily rejected.</p>
+    </section>
+
+    <section id="non-eligibility">
+      <h2>Non-eligibility <span class="clause">Clauses 8–11</span></h2>
+      <div class="prose stack">
+        <p>A candidate who joins a 2026–2027 DNB Broad Speciality or Post MBBS Diploma seat in any branch and discontinues in any round on or after Round 2 is not eligible to apply in a subsequent academic year, and is treated as having discontinued, with the discontinuation fee under clause 23(b) payable.</p>
+        <p>A candidate allotted a seat in Round 3 must join. Not joining carries the same consequence: ineligibility for subsequent academic years under NBE norms, and the discontinuation fee under clause 23(c).</p>
+        <p>A candidate who already holds a diploma cannot apply for the Post MBBS Diploma seats, but can apply for DNB Broad Speciality (Post MBBS). A candidate who already holds a postgraduate degree, DNB or equivalent cannot apply for either. Candidates belonging to States other than Tamil Nadu are not eligible.</p>
+        <p>Suppressing or hiding any eligibility or non-eligibility fact results in cancellation of the allotment order and appropriate legal or disciplinary action.</p>
+      </div>
+    </section>
+
+    <section id="service">
+      <h2>Service candidates <span class="clause">Clause 12</span></h2>
+      <div class="prose stack">
+        <p>Candidates fill the online proforma, download it, and have it verified and signed with official seal by the competent forwarding authority. The authority must issue a complete service proforma including leave and deputation in detail, and the candidate must upload it within the stipulated time.</p>
+        <p>A service candidate applying under the service quota must have at least five years of service remaining on completing the course.</p>
+      </div>
+
+      <h3>Who counts as a service candidate</h3>
+      <ul class="prose">
+        <li>Medical officers selected by the TNPSC or the Medical Services Recruitment Board through competitive written examination or special qualifying examination, appointed in the Tamil Nadu Medical Services, with at least two years of continuous service as on 31.03.2026.</li>
+        <li>Medical officers serving in local bodies in Tamil Nadu with at least two years of continuous service as on 31.03.2026.</li>
+      </ul>
+
+      <h3>Who does not</h3>
+      <ul class="prose">
+        <li>Temporarily appointed candidates without two years of continuous service as on 31.03.2026 — such applications are summarily rejected even if certified inadvertently by the competent authority.</li>
+        <li>Candidates working in institutions under the Registered Societies Act and in self-financing institutions, who are treated as non-service candidates.</li>
+        <li>Private candidates, who are not eligible for the in-service doctors quota at all.</li>
+      </ul>
+      <div class="warn-box" style="margin-top:1rem">
+        <span class="label">Suppression of employment</span>
+        A medical officer in a government institution or local body who applies as a private candidate while concealing that employment has the application summarily rejected, and any allotment cancelled.
+      </div>
+    </section>
+
+    <section id="apply">
+      <h2>Applying <span class="clause">Clauses 13–15</span></h2>
+      <div class="prose stack">
+        <p>Apply at <strong class="mono">www.tnmedicalselection.net</strong>, paying ₹3,000 through the online payment portal. The portal was open from 12:00 noon on 09.10.2026 to 5:00 p.m. on 15.10.2026 as per server time; the application process closes on server time and no submission is allowed after it.</p>
+        <p>Fill every mandatory column, upload every required document, and complete the submission. A printed copy can be downloaded for reference. Submit only one application, and make sure every entry is true and correct — particulars cannot be changed after final submission.</p>
+      </div>
+
+      <h3>Documents to upload</h3>
+      <p class="prose" style="margin-bottom:.7rem">Upload visibly clear self-attested photocopies only.</p>
+      <ul class="checklist">
+        <li><span class="mark">a</span><span>NEET PG 2026 admit card and score card</span></li>
+        <li><span class="mark">b</span><span>MBBS degree certificate and diploma certificate, or provisional pass certificate</span></li>
+        <li><span class="mark">c</span><span>CRMI / CRRI completion certificate</span></li>
+        <li><span class="mark">d</span><span>Permanent or provisional medical registration certificate from the MCI or a State medical council</span></li>
+        <li><span class="mark">e</span><span>Community certificate from the competent authority of the Government of Tamil Nadu for BC, BC (Muslim), MBC, Denotified Communities, SC or SC (Arunthathiyar). Scheduled Tribe candidates need a certificate issued by a Revenue Divisional Officer of competent jurisdiction.</span></li>
+        <li><span class="mark">f</span><span>TNPSC / MRB selection and posting order, for service candidates</span></li>
+        <li><span class="mark">g</span><span>Nativity certificate from the competent authority; with community reservation, both the candidate's and one parent's community certificate from the Revenue and Disaster Management Department with official seal</span></li>
+        <li><span class="mark">h</span><span>Recent PwD certificate from the regional medical board, for the Persons with Disability category</span></li>
+        <li><span class="mark">i</span><span>Eligibility certificate from the Tamil Nadu Dr. M.G.R. Medical University, Guindy, Chennai 600 032, for candidates qualified from other universities</span></li>
+        <li><span class="mark">k</span><span>The same photograph uploaded for the NEET PG 2026 admit card</span></li>
+        <li><span class="mark">l</span><span>Post-card size colour photograph, 4″ × 6″, between 50 KB and 300 KB</span></li>
+        <li><span class="mark">m</span><span>Clearly visible copy of the Aadhaar card, plus passport, voter's ID or driving licence as a supporting document</span></li>
+      </ul>
+      <p class="prose" style="margin-top:.8rem">All original certificates are produced for verification at the allotted institution.</p>
+    </section>
+
+    <section id="rank">
+      <h2>Rank list <span class="clause">Clauses 16–17</span></h2>
+      <div class="prose stack">
+        <p>The State rank list is drawn on the marks obtained in NEET PG 2026. The Selection Committee publishes provisional rank lists on the official website after scrutiny of all applications received for 2026–2027.</p>
+      </div>
+    </section>
+
+    <section id="counselling">
+      <h2>Counselling rounds <span class="clause">Clauses 18–28</span></h2>
+      <div class="prose stack">
+        <p>There are four rounds: Round 1, Round 2, Round 3 and a stray vacancy round. All allotment is online, by rank, applying the rule of reservation. Re-allotment is permitted in Rounds 2 and 3 only. Mutual transfer and individual requests for transfer of college are not permitted under any circumstances.</p>
+        <p>A candidate who did not register or choice-lock in an earlier round may still attend the later rounds. A candidate allotted a seat who did not join, or who resigned within the stipulated time, remains eligible for the next round.</p>
+        <p>Allotted candidates download the provisional allotment order and join at the allotted DNB institution — a district headquarters hospital or sub-district hospital — on or before the stipulated date and time, carrying the originals listed under Annexure I. Failure to report physically within the stipulated date is treated as not joined and the seat is declared vacant.</p>
+        <p>At reporting, candidates sign a self-declaration that selection or admission is liable to forfeiture if suppression of facts or misrepresentation is found at any time. If suppression is found later, the admission is liable to cancellation and the candidate cannot apply for these courses for the next two academic years.</p>
+      </div>
+
+      <h3>What each round allows</h3>
+      <div class="tablewrap">
+        <table>
+          <caption>Exit, resignation and penalty by round</caption>
+          <thead>
+            <tr><th>Round</th><th>Free exit</th><th>Resignation</th><th>Exit with forfeiture</th><th>Effect on later rounds</th><th>Discontinuation fee after joining</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Round 1</strong></td><td>Allowed</td><td>Allowed within stipulated time</td><td>Exit within the stipulated time without forfeiture</td><td>Eligible for further counselling</td><td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Round 2</strong></td><td>Allowed</td><td>Allowed within stipulated time</td><td>If not joined, registration fee forfeited</td><td>Resigning after Round 2 beyond the stipulated date makes the candidate ineligible for further rounds</td><td>₹10 lakh for diploma, ₹15 lakh for PG degree after the stipulated time, plus forfeiture of registration fee, security deposit and tuition fee</td>
+            </tr>
+            <tr>
+              <td><strong>Round 3</strong></td><td>Not allowed</td><td>Not allowed</td><td>If not joined, registration fee, security deposit and tuition fee forfeited</td><td>If allotted, no participation in further rounds</td><td>₹10 lakh for diploma, ₹15 lakh for PG degree, plus forfeiture of registration fee, security deposit and tuition fee</td>
+            </tr>
+            <tr>
+              <td><strong>Stray round</strong></td><td>Not allowed</td><td>Not allowed</td><td>If not joined, registration fee, security deposit and tuition fee forfeited</td><td>—</td><td>Discontinuation penalty applies, plus forfeiture of registration fee, security deposit and tuition fee</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose" style="margin-top:.6rem;font-size:.88rem;color:var(--ink-soft)">The prospectus notes that this table is for understanding only; the clauses themselves govern. All of it is subject to change as per DGHS / MCC / NBEMS norms and court orders.</p>
+
+      <h3>Round 2 in detail</h3>
+      <div class="prose stack">
+        <p>Round 2 fills vacancies arising from seats not joined or not allotted, and any newly sanctioned seats, by rank and communal reservation. Candidates who retained a Round 1 seat beyond the stipulated date, who took a re-allotment in Round 2, or who were newly allotted in Round 2 may vacate within the date given by the Selection Committee. Those who joined a Round 2 seat may resign within that date.</p>
+        <div class="note-box">
+          <span class="label">Virtual vacancies</span>
+          A seat held from Round 1 by a candidate who opted for upgradation in Round 2 appears as a virtual vacancy in Round 2, and anyone may fill it during choice filling. It is allotted only if the Round 1 candidate actually vacates, at which point the virtual vacancy becomes a real one, open to all in order of merit. The same rule applies to upgradation within Round 2.
+        </div>
+      </div>
+
+      <h3>Round 3</h3>
+      <div class="prose stack">
+        <p>Remaining vacancies after Round 2 are filled from the rank list. A candidate allotted and joined in Round 1 or 2 from locked choices may go for upgradation in Round 3. A candidate allotted in Round 3 is ineligible for any further counselling, so options should be filled with care and unwanted options left out.</p>
+        <p>If the candidate is allotted but does not join — whether or not the allotment order was downloaded — the registration fee, security deposit and tuition fee are forfeited. If DGHS / MCC releases the joined list of All India quota candidates in Round 3, those candidates are blocked and the State Round 3 result is released.</p>
+      </div>
+      <h4>Who may take part in Round 3</h4>
+      <ul class="prose">
+        <li>Candidates not allotted in Rounds 1 and 2.</li>
+        <li>Candidates allotted, joined or not joined in Rounds 1 and 2 of the State quota and the All India quota.</li>
+        <li>Candidates who did not register or choice-lock in Round 1 or 2.</li>
+        <li>Candidates who joined in Round 1 or 2 of State counselling but resigned in Round 2 within the stipulated date.</li>
+      </ul>
+      <h4>Who may not</h4>
+      <ul class="prose"><li>Candidates who resigned after Round 2 beyond the stipulated time.</li></ul>
+      <h4>Registration fee for Round 3 — ₹1,000</h4>
+      <ul class="prose">
+        <li>Payable by candidates who were allotted and did not join, and by candidates registering freshly for Round 3.</li>
+        <li>Not payable by candidates who were not allotted in Rounds 1 and 2.</li>
+      </ul>
+
+      <h3>Stray vacancy round</h3>
+      <div class="prose stack">
+        <p>Conducted by the Selection Committee, with a ₹1,000 registration fee on the same basis: payable by those allotted and not joined or resigned in Rounds 1 and 2 and by fresh registrants, not payable by candidates not allotted in Rounds 1, 2 and 3. Candidates who discontinued with penalty after the stipulated time cannot take part in any further round.</p>
+        <p>Eligible are candidates not allotted in Rounds 1, 2 and 3; candidates allotted but not joined in Rounds 1 and 2 of the State and All India quotas; and candidates who did not register or choice-lock in the earlier rounds.</p>
+      </div>
+      <h4>Not eligible for the stray round</h4>
+      <ul class="prose">
+        <li>Candidates holding a PG seat from Round 1, 2 or 3 of State counselling.</li>
+        <li>Candidates holding a seat allotted in Rounds 1, 2 or 3 of the All India quota, a deemed university, or DNB counselling conducted by NBE.</li>
+        <li>Candidates allotted in the stray round of the All India quota, a deemed university or NBE DNB counselling.</li>
+        <li>Candidates allotted in Round 3 of State counselling who did not join.</li>
+      </ul>
+      <div class="warn-box" style="margin-top:1rem">
+        <span class="label">Stray round allotment</span>
+        A seat allotted in the stray round according to the candidate's own choice filling must be joined without fail. Further rounds may be conducted if directed by DGHS.
+      </div>
+
+      <h3>Discontinuation fees</h3>
+      <div class="tiles" style="margin-top:.6rem">
+        <div class="tile"><div class="label">DNB Broad Speciality (Post MBBS)</div><div class="fig">₹15 lakh</div><div class="note">Besides forgoing tuition fees already paid.</div></div>
+        <div class="tile"><div class="label">Post MBBS Diploma, 2 years</div><div class="fig">₹10 lakh</div><div class="note">Besides forgoing tuition fees already paid.</div></div>
+      </div>
+      <p class="prose" style="margin-top:.9rem">Payable by demand draft in favour of <strong>“The Director of Medical &amp; Rural Health Services, Chennai 600 006”</strong>, payable at Chennai, to the head of the institution or the dean of the college. Until the discontinuation fee is paid in full, the candidate is not relieved and the original certificates submitted at admission are retained by the institution.</p>
+    </section>
+
+    <section id="selection">
+      <h2>Seats and reservation <span class="clause">Clauses 29–30</span></h2>
+      <div class="prose stack">
+        <p>Of the total recognised or permitted seats in Government Medical Colleges and Government hospitals, 50% go to the All India quota for allotment by the Director General of Health Services, New Delhi, and the remaining 50% are allotted under the State quota during State counselling.</p>
+        <p>Selection follows the merit list and the rule of reservation of the Government of Tamil Nadu. Where a speciality has more than one and fewer than eight seats, the 200-point roster method applies, under G.O. (Ms.) No.241, Personnel and Administrative Reforms (K) Department, dated 29.10.2007 — subject to the final verdict of the Supreme Court in Civil Appeal 6049–6050/2010. Where only one seat is available in a speciality, it is allotted on rank alone.</p>
+      </div>
+
+      <h3>Where a speciality has eight or more seats</h3>
+      <div class="tablewrap">
+        <table>
+          <caption>Rule of reservation</caption>
+          <thead><tr><th>Category</th><th class="num">Share</th></tr></thead>
+          <tbody>
+            <tr><td>Open competition</td><td class="num">31%</td></tr>
+            <tr><td>Backward Class</td><td class="num">30%</td></tr>
+            <tr><td>Most Backward Class / Denotified Community</td><td class="num">20%</td></tr>
+            <tr><td>Scheduled Caste</td><td class="num">18%</td></tr>
+            <tr><td>Scheduled Tribe</td><td class="num">1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose" style="margin-top:.7rem">Within the 30% for Backward Classes, 3.5% is for Backward Class Muslims. Within the 18% for Scheduled Castes, 16% is allocated to the Scheduled Caste (Arunthathiyar) community.</p>
+
+      <h3>How unfilled reserved seats move</h3>
+      <ul class="prose">
+        <li>SCA seats may be filled by SC candidates on merit and the reverse, per G.O. (Ms.) No.55, P&amp;AR Department, dated 08.04.2010, so SC candidates may choice-lock unfilled SCA seats.</li>
+        <li>ST seats left unfilled for want of eligible ST candidates may be filled by SC candidates on merit, per G.O. (Ms.) No.77, Health and Family Welfare Department, dated 24.02.2011.</li>
+        <li>BCM seats left unfilled after the merit list is exhausted go to BC candidates on merit, without exceeding the overall BC quota, per G.O. (Ms.) No.30, Health and Family Welfare Department, dated 18.01.2012.</li>
+        <li>Where more qualified Arunthathiyars remain after the seats reserved for them are filled, they compete with other Scheduled Castes on inter-se merit, per G.O. (Ms.) No.65, P&amp;AR (K) Department, dated 27.05.2009.</li>
+      </ul>
+      <p class="prose" style="margin-top:.7rem">Persons with Disabilities allotment is done ahead of the general category, with no re-allotment or change of college. If enough eligible special category candidates are not available, those seats revert to the general category; where a seat is available in a speciality under the special category the candidate cannot choose to remain on a waiting list, and any not-joined or discontinued special category seat is added to the general category.</p>
+    </section>
+
+    <section id="pwd">
+      <h2>Persons with benchmark disabilities <span class="clause">Clause 31</span></h2>
+      <div class="prose stack">
+        <p>5% of the total seats in Government medical institutions are reserved for persons with disabilities.</p>
+      </div>
+      <div class="tablewrap" style="margin-top:.9rem">
+        <table>
+          <caption>Disability percentage and effect</caption>
+          <thead><tr><th class="num">Disability</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td class="num">40–80%</td><td>Eligible for admission and for the PwD quota</td></tr>
+            <tr><td class="num">Above 80%</td><td>Not eligible for admission to the course</td></tr>
+            <tr><td class="num">Below 40%</td><td>Eligible for the course, but under the general category only — not for reservation</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose stack" style="margin-top:1rem">
+        <p>Per Annexure IV published by the Medical Council of India, significant locomotor disability with or without other significant disability — visual, hearing, speech or learning — that would make it very difficult to pursue and complete the course satisfactorily, or that significantly increases risk to the candidate or to patients, may be declared not eligible for admission.</p>
+        <div class="warn-box">
+          <span class="label">Where the certificate must come from</span>
+          A primary medical assessment board in Tamil Nadu at Stanley Medical College Hospital, Chennai; Madurai Medical College &amp; Hospital; Coimbatore Medical College &amp; Hospital; or Thanjavur Medical College &amp; Hospital — or the appellate disability assessment board at Rajiv Gandhi Government General Hospital, Chennai 600 003. The certificate must have been obtained within three months before the application. An earlier certificate, or no certificate, means the application is not considered under the PwD quota.
+        </div>
+      </div>
+    </section>
+
+    <section id="stipend">
+      <h2>Tuition fee, stipend and bond <span class="clause">Clauses 32–33</span></h2>
+      <div class="prose stack">
+        <p>Selected candidates pay tuition fee and other special fees at the time of admission in their respective institutions. Eligible differently abled candidates are exempt from tuition fee and special fee, per G.O. (Ms.) No.135, Social Welfare and Nutritious Meal Programme Department, dated 20.09.2008 and G.O. (Ms.) No.30, Welfare of Differently Abled Persons Department, dated 28.06.2010.</p>
+        <p>Stipend is paid as per Government orders issued from time to time and the norms of the institution concerned.</p>
+      </div>
+
+      <h3>Bond amounts</h3>
+      <div class="tablewrap">
+        <table>
+          <caption>Security bond on admission</caption>
+          <thead><tr><th>Course</th><th class="num">Service candidates, State quota</th><th class="num">All India 50% quota (MCC &amp; NBE)</th></tr></thead>
+          <tbody>
+            <tr><td>DNB Broad Speciality (Post MBBS)</td><td class="num">₹40,00,000</td><td class="num">₹40,00,000</td></tr>
+            <tr><td>Post MBBS Diploma, 2 years</td><td class="num">₹20,00,000</td><td class="num">₹20,00,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose" style="margin-top:.8rem">Every bond needs three sureties: two permanent government employees of the same or higher rank than the candidate, and one from the candidate's spouse or parent. PAN numbers of all sureties must be furnished. The prescribed bond form is in Annexure II. Security bonds are exempt from stamp duty under Clause I of the exemption under Article 57 of Schedule I of the Indian Stamp Act.</p>
+
+      <h3>Service candidates, State quota</h3>
+      <div class="prose stack">
+        <p>Service candidates are paid a stipend during the study period and are obliged to serve the Government of Tamil Nadu until superannuation after completing the course. All Tamil Nadu service candidates must have more than five years of service left after completing the course.</p>
+        <p>A candidate who discontinues service by resignation or voluntary retirement after completing the course, or who does not join service immediately after it, pays compensation of ₹40,00,000, or a sum proportionate to the period left unserved. Interest is payable on the compensation at the Government of Tamil Nadu housing loan rate, calculated from the date the demand is issued. Absconding from service makes the individual liable to prosecution for compensation under the Revenue Recovery Act. The bond becomes infructuous once the candidate serves until superannuation.</p>
+      </div>
+
+      <h3>All India 50% quota, through MCC and NBE</h3>
+      <div class="prose stack">
+        <p>These candidates also receive a stipend and are obliged to serve the Government of Tamil Nadu for two years, within three years from the date of completing the PG course, if the Government requires their services. During that period they are paid on par with fresh recruits of the Tamil Nadu Medical Services, and the bond becomes infructuous once the two years are served.</p>
+        <p>A candidate posted to the Tamil Nadu Medical Service who does not comply pays compensation of ₹40,00,000 for the Broad Speciality course or ₹20,00,000 for the Post MBBS Diploma, or a proportionate sum for the period left unserved, with the same interest rate and the same liability under the Revenue Recovery Act. A candidate who discontinues the course pays the full discontinuation fee under clause 23(b) and returns the stipend received.</p>
+        <p>Where the Government requires the services of such a candidate who is unable to serve for any reason, the original certificates are retained by the Government and released only after the expiry of that period.</p>
+      </div>
+      <div class="note-box" style="margin-top:1rem">
+        <span class="label">Why the bond exists</span>
+        The prospectus records the reasoning: the Government spends a large amount on postgraduate medical education, levies nominal fees and pays a stipend, and expects these seats not to be wasted and trained specialists to serve the sick, the poor and the needy. The undertaking is taken at admission to make sure those services are available.
+      </div>
+    </section>
+
+    <section id="conduct">
+      <h2>Communication and conduct <span class="clause">Clauses 34–36</span></h2>
+      <div class="prose stack">
+        <p>All notices, notifications and publications about this admission are published at <strong class="mono">www.tnmedicalselection.net</strong>. The Selection Committee is not responsible for consequences arising from not following up information published there.</p>
+        <p>Candidates who join must not take part in any agitation, strike or ragging inside or outside the college campus during the course. Those who do are expelled from the course or college at any stage of study, and criminal action is taken. The MCI direction in Letter No. MCI-34(1)/2014-Med (Ragg.)/130894 dated 11.09.2014 is reproduced in Annexure V.</p>
+        <p>Any candidate applying is deemed to have read this prospectus, to agree to all its conditions and clauses, and to have no right to challenge any of them. The Government reserves the right to amend the prospectus at any phase of the counselling process and to adhere to modifications instructed by the High Court, DGHS, MCC or NBEMS. Legal issues fall under the jurisdiction of the High Court of Madras.</p>
+      </div>
+    </section>
+
+    <section id="annex-1">
+      <h2>Annexure I <span class="clause">Documents and originals</span></h2>
+      <p class="prose">Annexure I repeats the upload list in <a href="#apply">Applying</a>. The same originals are produced at the time of joining at the allotted institution, together with scanned copies: the NEET PG 2026 admit card and score card; Aadhaar card and passport, voter's ID or driving licence; MBBS degree and diploma certificate or provisional pass certificate; CRMI / CRRI completion certificate; permanent or provisional medical registration certificate; community certificate; TNPSC / MRB selection and posting orders for service candidates; nativity certificate; the recent regional medical board certificate submitted for NEET PG 2026 in the case of benchmark disability; the university eligibility certificate where applicable; and the post-card size colour photograph.</p>
+    </section>
+
+    <section id="annex-disability">
+      <h2>Annexure · disability ranges <span class="clause">Eligibility by disability type</span></h2>
+      <div class="tablewrap">
+        <table>
+          <caption>Specified disabilities and eligibility bands</caption>
+          <thead>
+            <tr><th>Disability</th><th>Course but no PwD quota</th><th>Course and PwD quota</th><th>Not eligible for the course</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Locomotor disability</strong><br><span style="color:var(--ink-soft);font-size:.86rem">Leprosy cured, cerebral palsy, dwarfism, muscular dystrophy, acid attack victims, amputation, poliomyelitis and others</span></td>
+              <td class="num">Below 40%</td>
+              <td class="num">40–80%. Above 80% may be allowed case by case, where functional competency with assistive devices brings it below 80% and motor ability suffices to complete the course</td>
+              <td class="num">Above 80%</td>
+            </tr>
+            <tr><td><strong>Visual impairment</strong> — blindness, low vision</td><td class="num">Below 40%</td><td class="num">40% or more, if advanced low-vision aids bring it below the 40% benchmark</td><td>—</td></tr>
+            <tr><td><strong>Hearing impairment</strong> — deaf, hard of hearing</td><td class="num">Below 40%</td><td class="num">40% or more, if assistive devices bring it below the benchmark and speech discrimination exceeds 60%</td><td>—</td></tr>
+            <tr><td><strong>Speech and language disability</strong> — organic or neurological</td><td class="num">Below 40%</td><td>Eligible to pursue PG where the speech intelligibility score does not exceed 3, that is 40% or below, or the aphasia quotient is 40% or below</td><td class="num">40% or more otherwise</td></tr>
+            <tr><td><strong>Specific learning disabilities</strong> — dyslexia, dyscalculia, dyspraxia, developmental aphasia</td><td class="num">Below 40%</td><td class="num">40–80%, with selection based on learning competency evaluated by the expert panel with remediation, assistive technology and infrastructural changes</td><td>Above 80%, severe in nature, or significant cognitive or intellectual disability</td></tr>
+            <tr><td><strong>Autism spectrum disorders</strong></td><td>Absent or mild, Asperger syndrome up to 60% per ISAA, where an expert panel finds the individual fit for the PG course</td><td>Not currently recommended for quota, for want of an objective method of assessment</td><td>Above 60%, or cognitive or intellectual disability, or unfit per the expert panel</td></tr>
+            <tr><td><strong>Mental illness</strong></td><td>Absent or mild, below 40% under IDEAS</td><td>Not currently recommended for quota, for want of an objective method of assessment</td><td>No mental disorder bars PG medical education, subject to qualifying in NEET PG</td></tr>
+            <tr><td><strong>Chronic neurological conditions</strong> — multiple sclerosis, parkinsonism</td><td class="num">Below 40%</td><td class="num">40–80%</td><td class="num">Above 80%</td></tr>
+            <tr><td><strong>Blood disorders</strong> — haemophilia, thalassaemia, sickle cell disease</td><td class="num">Below 40%</td><td class="num">40–80%</td><td class="num">Above 80%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box" style="margin-top:1rem">
+        <span class="label">Multiple disabilities</span>
+        Where more than one disabling condition is present, the combining formula notified by the Government of India is used: <span class="mono">a + ( b × (90 − a) ÷ 90 )</span>, where <em>a</em> is the higher disability percentage and <em>b</em> the lower. Recommendations on admission and reservation are then made for the specific disabilities present. For locomotor disability, both hands intact with intact sensation, sufficient strength and range of motion are essential to be considered eligible for a medical course.
+      </div>
+    </section>
+
+    <section id="communities">
+      <h2>Annexure · list of communities <span class="clause">2026–2027 session</span></h2>
+      <p class="prose" style="margin-bottom:1rem">Communities throughout the State of Tamil Nadu unless otherwise specified in the entry. The Backward Classes list follows G.O. Ms. No.85 (29.07.2008), No.96 (08.09.2008), No.97 (11.09.2008), No.37 (21.05.2009) and No.98 (05.01.2009) of the Backward Classes, Most Backward Classes and Minorities Welfare Department.</p>
+      <div class="search-row">
+        <input id="comm-search" type="search" placeholder="Search a community name" aria-label="Search community names" autocomplete="off">
+        <span class="count" id="comm-count"></span>
+      </div>
+      <div id="comm-groups"></div>
+      <p class="empty" id="comm-empty" hidden>No community matches that search in these lists.</p>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Prepared from the Government of Tamil Nadu prospectus for admission to DNB Broad Speciality — Post MBBS and Post MBBS Diploma seats, 2026–2027 session, issued by the Selection Committee, Directorate of Medical Education &amp; Research, 162 Periyar E.V.R. High Road, Kilpauk, Chennai 600 010.</p>
+    <p class="mono">Phone 044-28364884 · www.tnmedicalselection.net · natboard.edu.in</p>
+    <p>This page is a reading aid. The official prospectus and the notices published on the Selection Committee's website govern, and every clause here is subject to amendment per DGHS, MCC and NBEMS norms and court orders.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var data = [
+    { key: "bc", title: "Backward Classes", items: ["Agamudayar including Thozhu or Thuluva Vellala","Agaram Vellan Chettiar","Alwar, Azhavar and Alavar (Kanniyakumari District and Shencottah Taluk of Tirunelveli District)","Servai (except Tiruchirapalli, Karur, Perambalur and Pudukottai Districts)","Nulayar (Kanniyakumari District and Shencottah Taluk of Tirunelveli District)","Archakarai Vellala","Aryavathi (Kanniyakumari District and Shencottah Taluk of Tirunelveli District)","Ayira Vaisyar","Badagar","Billava","Bondil","Boyas, Pedda Boyar, Oddars, Kaloddars, Nellorepet Oddars, Sooramari Oddars (with district exceptions)","Chakkala (with district exceptions)","Chavalakarar (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Chettu or Chetty, including Kottar Chetty, Elur Chetty, Pathira Chetty, Valayal Chetty, Pudukadai Chetty (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Chowdry","Converts to Christianity from Scheduled Castes, irrespective of the generation of conversion (except Paravar converts of Kanniyakumari District and Shencottah Taluk of Tenkasi District)","C.S.I., formerly S.I.U.C. (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Donga Dasaris (with district exceptions)","Devangar, Sedar","Dombs and Dommars (with district exceptions)","Enadi","Ezhavathy (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Ezhuthachar (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Ezhuva (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Gangavar","Gavara, Gavarai and Vadugar or Vaduvar (other than Kamma, Kapu, Balija and Reddi)","Gounder","Gowda, including Gammala, Kalali and Anuppa Gounder","Hegde","Idiga","Illathu Pillaimar, Illuvar, Ezhuvar and Illathar","Jhetty","Jogis (with district exceptions)","Kabbera","Kaikolar, Sengunthar","Kaladi (with district exceptions)","Kalari Kurup including Kalari Panicker (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Kalingi","Kallar, Easanattu Kallar, Gandharva Kottai Kallars, Kootappal Kallars, Piramalai Kallars, Periyasooriyur Kallars (with district exceptions)","Kallar Kula Thondaman","Kalveli Gounder","Kambar","Kammalar or Viswakarma, Viswakarmala, including Thattar, Porkollar, Kannar, Karumar, Kollar, Thacher, Kal Thacher, Kamsala and Viswa Brahmin","Kani, Kanisu, Kaniyar Panicker","Kaniyala Vellalar","Kannada Saineegar, Kannadiyar, and Dasapalanjika (Coimbatore, Erode, Tiruppur and the Nilgiris Districts)","Kannadiya Naidu","Karpoora Chettiar","Karuneegar — Seer, Sri, Sarattu, Kaikatti, Mathuvazhi Kanakkar, Sozhi Kanakkar and Sunnambu Karuneegar","Kasukkara Chettiar","Katesar, Pattamkatti","Kavuthiyar","Kerala Mudali","Kharvi","Khatri","Kongu Vaishnava","Kongu Vellalars, including Vellala Gounder, Nattu Gounder, Narambukkatti Gounder, Tirumudi Vellalar, Thondu Vellalar, Pala Gounder, Poosari Gounder, Anuppa Vellala Gounder, Padaithalai Gounder, Chendalai Gounder, Pavalankatti Vellala Gounder, Palavellala Gounder, Sanku Vellala Gounder and Rathinagiri Gounder","Koppala Velama","Koteyar","Krishnavaka (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Kudikara Vellalar","Kudumbi (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Kuga Vellalar","Kunchidigar","Latin Catholics, except Latin Catholic Vannar in Kanniyakumari District","Latin Catholics in Shencottah Taluk of Tenkasi District","Lambadi","Lingayat (Jangama)","Mahratta, non-Brahmin, including Namdev Mahratta","Malayar","Male","Maniagar","Maravars, Karumaravars, Appanad Kondayamkottai Maravar, Sembanad Maravars (with district exceptions)","Moondrumandai Enbathunalu (84) Ur. Sozhia Vellalar","Mooppan","Muthuraja, Muthiriyar, Muttiriyar, Mutharaiyar","Nadar, Shanar and Gramani, including Christian Nadar, Christian Shanar and Christian Gramani","Nagaram","Naikkar (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Nangudi Vellalar","Nanjil Mudali (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Odar (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Odiya","Oottruvalanattu Vellalar","O.P.S. Vellalar","Ovachar","Paiyur Kotta Vellalar","Pamulu","Panar (except Kanniyakumari District and Shencottah Taluk of Tenkasi District, where the community is a Scheduled Caste)","Pandiya Vellalar","Kathikarar in Kanniyakumari District","Pannirandam Chettiar or Uthama Chettiar","Parkavakulam, including Surithimar, Nathamar, Malayamar, Moopanar and Nainar","Perike, including Perike Balija","Perumkollar (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Podikara Vellalar","Pooluva Gounder","Poraya","Pulavar (Coimbatore and Tiruppur Districts)","Pulluvar or Pooluvar","Pusala","Reddy (Ganjam)","Sadhu Chetty, including Telugu Chetty and Twenty-four Manai Telungu Chetty","Sakkaravar or Kavathi (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Salivagana","Saliyar, Padmasaliyar, Pattusaliyar, Pattariyar and Adhaviyar","Savalakkarar","Senaithalaivar, Senaikudiyar and Illaivaniar","Serakula Vellalar","Sourashtra (Patnulkarar)","Sozhiavellalar, including Sozha Vellalar, Vetrilaikarar, Kodikalkarar and Keeraikarar","Srisayar","Sundaram Chetty","Thiyya","Thogatta Veerakshatriya","Tholkollar (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Tholuva Naicker and Vetalakara Naicker","Thoriyar","Ukkirakula Kshatriya Naicker","Uppara, Uppillia and Sagara","Urali Gounder and Orudaya or Oorudaya Gounder (with district exceptions)","Urikkara Nayakkar","Virakodi Vellala","Vallambar","Vallanattu Chettiar","Valmiki","Vaniyar, Vania Chettiar, including Gandla, Ganika, Telikula and Chekkalar","Veduvar and Vedar (except Kanniyakumari District and Shencottah Taluk of Tenkasi District, where the community is a Scheduled Caste)","Veerasaiva (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Velar","Vellan Chettiar","Veluthodathu Nair (Kanniyakumari District and Shencottah Taluk of Tenkasi District)","Vokkaligar, including Vakkaligar, Okkaligar, Kappiliyar, Kappiliya, Okkaliga Gowda, Okkaliya Gowder and Okkaliya Gowda","Wynad Chetty (the Nilgiris District)","Yadhava, including Idaiyar, Telugu-speaking Idaiyar known as Vaduga Ayar or Vaduga Idaiyar, and Golla and Asthanthra Golla","Yavana","Yerukula","Converts to Christianity from any Hindu Backward Classes, Most Backward Classes or Denotified Community, except converts from Meenavar, Parvatharajakulam, Pattanavar, Sembadavar, Mukkuvar or Mukayar and Paravar","Orphans and destitute children who lost their parents before the age of ten, have nobody to care for them by law or custom, and are admitted to schools or orphanages run or recognised by the Government"] },
+    { key: "bcm", title: "Backward Class Muslims", items: ["Ansar","Dekkani Muslims","Dudekula","Labbais, including Rowthar and Marakayar, whether their spoken language is Tamil or Urdu","Mapilla","Sheik","Syed"] },
+    { key: "mbc", title: "Most Backward Classes", items: ["Ambalakarar","Andipandaram","Arayar (Kanniyakumari District)","Bestha, Siviar","Bhatraju, other than Kshatriya Raju","Boyar, Oddar","Dasari","Dommara","Eravallar (except Kanniyakumari District and Shencottah Taluk of Tenkasi District, where the community is a Scheduled Tribe)","Isaivellalar","Jambuvanodai","Jangam","Jogi","Kongu Chettiar (Coimbatore and Erode Districts only)","Koracha","Kulala, including Kuyavar and Kumbarar","Kunnuvar Mannadi","Kurumba, Kurumba Gounder","Kuruhini Chetty","Latin Catholic Christian Vannar (Kanniyakumari District)","Maruthuvar, Navithar, Mangala, Velakattalavar, Velakatalanair and Pronopakari","Mond Golla","Moundadan Chetty","Mahendra, Medara","Mutlakampatti","Narikoravar (Kurivikars)","Nokkar","Panisaivan / Panisivan","Vanniakula Kshatriya, including Vanniyar, Vanniya, Vannia Gounder, Gounder or Kander, Padayachi, Palli and Agnikula Kshatriya","Paravar (except Kanniyakumari District and Shencottah Taluk of Tenkasi District, where the community is a Scheduled Caste)","Paravar converts to Christianity, including those of Kanniyakumari District and Shencottah Taluk of Tenkasi District","Meenavar — Parvatharajakulam, Pattanavar, Sembadavar — including converts to Christianity","Mukkuvar or Mukayar, including converts to Christianity","Punnan Vettuva Gounder","Pannayar, other than Kathikarar in Kanniyakumari District","Sathatha Srivaishnava, including Sathani, Chattadi and Chattada Srivaishnava","Sozhia Chetty","Telugupatty Chetty","Thottia Naicker, including Rajakambalam, Gollavar, Sillavar, Thockalavar, Thozhuva Naicker and Erragollar","Thondaman","Thoraiyar (Nilgiris)","Thoraiyar (Plains)","Transgender or eunuch (Thirunangai or Aravani)","Valaiyar, including Chettinad Valayars","Vannar, including Agasa, Madivala, Ekali, Rajakula, Veluthadar and Rajaka (except Kanniyakumari District and Shencottah Taluk of Tenkasi District, where the community is a Scheduled Caste)","Vettaikarar","Vettuva Gounder","Yogeeswarar"] },
+    { key: "dnc", title: "Denotified Communities", items: ["Attur Kilnad Koravars (Salem, Namakkal, Cuddalore, Villupuram, Kallakurichi, Ramanathapuram, Sivaganga and Virudhunagar Districts)","Attur Melnad Koravars (Salem and Namakkal Districts)","Appanad Kondayamkottai Maravar (Sivaganga, Virudhunagar, Ramanathapuram, Madurai, Theni and Dindigul Districts)","Ambalakarar (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Ambalakkarar (Suriyanur, Tiruchirapalli District)","Boyas (Tiruchirapalli, Karur, Perambalur, Ariyalur, Pudukottai, the Nilgiris, Salem, Namakkal, Dharmapuri and Krishnagiri Districts)","Battu Turkas","C.K. Koravars (Cuddalore, Villupuram and Kallakurichi Districts)","Chakkala (Sivaganga, Virudhunagar, Ramanathapuram, Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Pudukottai, Tiruchirapalli, Karur, Perambalur, Ariyalur, Madurai, Theni, Dindigul and the Nilgiris Districts)","Changyampudi Koravars (Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Chettinad Valayars (Sivaganga, Virudhunagar and Ramanathapuram Districts)","Dombs (Pudukottai, Tiruchirapalli, Karur, Perambalur and Ariyalur Districts)","Dobba Koravars (Salem and Namakkal Districts)","Dommars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Pudukottai, Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Donga Boya","Donga Ur. Korachas","Devagudi Talayaris","Dobbai Korachas (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Dabi Koravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Tiruchirapalli, Karur, Perambalur, Ariyalur, Pudukottai, Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Donga Dasaris (Kancheepuram, Chengalpattu, Tiruvallur, Tiruchirapalli, Karur, Perambalur, Ariyalur, Pudukottai, Chennai, Salem and Namakkal Districts)","Gorrela Dodda Boya","Gudu Dasaris","Gandarvakottai Koravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Tiruchirapalli, Karur, Perambalur, Ariyalur, Pudukottai, Cuddalore, Villupuram and Kallakurichi Districts)","Gandarvakottai Kallars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur and Pudukottai Districts)","Inji Koravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Jogis (Kancheepuram, Chengalpattu, Tiruvallur, Chennai, Cuddalore, Villupuram, Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Jambavanodai","Kaladis (Sivaganga, Virudhunagar, Ramanathapuram, Madurai, Theni, Dindigul, Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Pudukottai, Tiruchirapalli, Karur, Perambalur and Ariyalur Districts)","Kal Oddars (many districts, see prospectus)","Koravars (many districts, see prospectus)","Kalinji Dabikoravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur and Pudukottai Districts)","Kootappal Kallars (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Kala Koravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Kalavathila Boyas","Kepmaris (Kancheepuram, Chengalpattu, Tiruvallur, Pudukottai, Tiruchirapalli, Karur, Perambalur and Ariyalur Districts)","Maravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Pudukottai, Ramanathapuram, Sivaganga, Virudhunagar, Tirunelveli, Tenkasi and Thoothukudi Districts)","Monda Koravars","Monda Golla (Salem and Namakkal Districts)","Mutlakampatti (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Nokkars (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Nellorepet Oddars (Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Oddars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Tiruchirapalli, Karur, Perambalur, Ariyalur, Pudukottai, Madurai, Theni and Dindigul Districts)","Pedda Boyas (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Ponnai Koravars (Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Piramalai Kallars (Sivaganga, Virudhunagar, Ramanathapuram, Madurai, Theni, Dindigul, Pudukottai, Thanjavur, Nagapattinam, Mayiladuthurai and Tiruvarur Districts)","Peria Suriyur Kallars (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Padayachi (Vellayan Kuppam in Cuddalore District and Tennore in Tiruchirapalli District)","Punnan Vettuva Gounder (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Servai (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Salem Melnad Koravars (Madurai, Theni, Dindigul, Coimbatore, Erode, Tiruppur, Pudukottai, Tiruchirapalli, Karur, Perambalur, Ariyalur, Salem, Namakkal, Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Salem Uppu Koravars (Salem and Namakkal Districts)","Sakkaraithamadai Koravars (Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Saranga Palli Koravars","Sooramari Oddars (Salem and Namakkal Districts)","Sembanad Maravars (Sivaganga, Virudhunagar and Ramanathapuram Districts)","Thalli Koravars (Salem and Namakkal Districts)","Telungapatti Chetis (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Thottia Naickers (many districts, see prospectus)","Thogamalai Koravars or Kepmaris (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Uppukoravars or Settipalli Koravars (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Pudukottai, Madurai, Theni, Dindigul, Vellore, Tirupathur, Ranipet and Tiruvannamalai Districts)","Urali Gounders (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Wayalpad or Nawalpeta Korachas","Vaduvarpatti Koravars (Madurai, Theni, Dindigul, Ramanathapuram, Sivaganga, Virudhunagar, Tirunelveli, Tenkasi, Thoothukudi, Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Valayars (Madurai, Theni, Dindigul, Tiruchirapalli, Karur, Perambalur, Ariyalur, Pudukottai, Coimbatore, Erode and Tiruppur Districts)","Vettaikarar (Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur and Pudukottai Districts)","Vetta Koravars (Salem and Namakkal Districts)","Varaganeri Koravars (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)","Vettuva Gounder (Tiruchirapalli, Karur, Perambalur, Ariyalur and Pudukottai Districts)"] },
+    { key: "sc", title: "Scheduled Castes", items: ["Adi Andhra","Adi Dravida","Adi Karnataka","Ajila","Arunthathiyar","Ayyanavar (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Baira","Bakuda","Bandi","Bellara","Bharata (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Chakkiliyan","Chalavadi","Chamar, Muchi","Chandala","Cheruman","Devendrakula Velalar — Devendrakulanathan, Kadaiyan (excluding the coastal areas of Tirunelveli, Thoothukudi, Ramanathapuram, Pudukottai, Thanjavur, Tiruvarur and Nagapattinam), Kalladi, Kudumban, Pallan, Pannadi, Vathiriyan","Dom, Dombara, Paidi, Pano","Domban","Godagali","Godda","Gosangi","Holeya","Jaggali","Jambuvulu","Kadaiyan (Tirunelveli, Thoothukudi, Ramanathapuram, Pudukottai, Thanjavur, Tiruvarur and Nagapattinam Districts)","Kakkalan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Kanakkan, Padanna (the Nilgiris District)","Karimpalan","Kavara (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Koliyan","Koosa","Kootan, Koodan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Kuravan, Sidhanar","Madari","Madiga","Maila","Mala","Mannan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Mavilan","Mager","Mundala","Nalakeyava","Nayadi","Padannan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Pagadi","Palluvan","Pambada","Panan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Panchama","Panniandi","Paraiyan, Parayan, Sambavar","Paravan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Pathiyan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Pulayan, Cheramar","Puthirai Vannan","Raneyar","Samagara","Samban","Sapari","Semman","Thandan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Thoti","Tiruvalluvar","Vallon","Valluvan","Vannan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Velan","Vetan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Vettiyan","Vettuvan (Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)"] },
+    { key: "st", title: "Scheduled Tribes", items: ["Adiyan","Aranadan","Eravallan","Irular","Kadar","Kammara (excluding Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Kanikaran, Kanikkar (Kanniyakumari District and Shenkottah and Ambasamudram Taluks of Tirunelveli District)","Kaniyan, Kanyan","Kattunayakan","Kochu Velan","Konda Kapus","Kondareddis","Koraga","Kota (excluding Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Kudiya, Melakudi","Kurichchan","Kurumbas (the Nilgiris District)","Kurumans","Maha Malasar","Malai Arayan","Malai Pandaram","Malai Vedan","Malakkuravan","Malasar","Malayali (Dharmapuri, Vellore, Pudukottai, Salem, Namakkal, Cuddalore, Tiruvannamalai, Villupuram, Tiruchirapalli, Karur and Perambalur Districts)","Malayakandi","Mannan","Mudugar, Muduvan","Muthuvan","Pallayan","Palliyan","Palliyar","Paniyan","Sholaga","Toda (excluding Kanniyakumari District and Shenkottah Taluk of Tirunelveli District)","Uraly"] }
+  ];
+
+  var host = document.getElementById("comm-groups");
+  var frag = document.createDocumentFragment();
+  data.forEach(function (g, gi) {
+    var d = document.createElement("details");
+    d.className = "group";
+    d.dataset.group = g.key;
+    if (gi === 0) { d.open = false; }
+    var s = document.createElement("summary");
+    s.textContent = g.title + " · " + g.items.length;
+    d.appendChild(s);
+    var body = document.createElement("div");
+    body.className = "group-body";
+    var ul = document.createElement("ul");
+    ul.className = "comm";
+    g.items.forEach(function (name, i) {
+      var li = document.createElement("li");
+      var n = document.createElement("span");
+      n.className = "n";
+      n.textContent = (i + 1) + ".";
+      li.appendChild(n);
+      li.appendChild(document.createTextNode(name));
+      ul.appendChild(li);
+    });
+    body.appendChild(ul);
+    d.appendChild(body);
+    frag.appendChild(d);
+  });
+  host.appendChild(frag);
+
+  var total = data.reduce(function (a, g) { return a + g.items.length; }, 0);
+  var countEl = document.getElementById("comm-count");
+  var emptyEl = document.getElementById("comm-empty");
+  var groups = Array.prototype.slice.call(host.querySelectorAll("details.group"));
+
+  function reset() {
+    countEl.textContent = total + " entries across 6 lists";
+    emptyEl.hidden = true;
+    groups.forEach(function (d, gi) {
+      d.hidden = false;
+      d.open = false;
+      var items = d.querySelectorAll(".comm li");
+      for (var i = 0; i < items.length; i++) { items[i].hidden = false; }
+      d.querySelector("summary").textContent = data[gi].title + " · " + data[gi].items.length;
+    });
+  }
+
+  function filter(q) {
+    q = q.trim().toLowerCase();
+    if (!q) { reset(); return; }
+    var shown = 0;
+    groups.forEach(function (d, gi) {
+      var items = d.querySelectorAll(".comm li");
+      var hits = 0;
+      for (var i = 0; i < items.length; i++) {
+        var match = items[i].textContent.toLowerCase().indexOf(q) !== -1;
+        items[i].hidden = !match;
+        if (match) { hits++; }
+      }
+      shown += hits;
+      d.hidden = hits === 0;
+      d.open = hits > 0;
+      d.querySelector("summary").textContent = data[gi].title + " · " + hits + " of " + data[gi].items.length;
+    });
+    countEl.textContent = shown + (shown === 1 ? " match" : " matches");
+    emptyEl.hidden = shown !== 0;
+  }
+
+  reset();
+  document.getElementById("comm-search").addEventListener("input", function (e) { filter(e.target.value); });
+})();
+</script>
+</body>
+</html>

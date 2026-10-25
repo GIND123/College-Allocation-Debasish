@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MP NEET PG 2026 Guide</title>
+<style>
+:root{
+  --bg:#f7f6f2; --card:#ffffff; --text:#1d1d1b; --muted:#5f5f5a; --line:#e3e1da;
+  --accent:#0f6e5a; --accent-soft:#e3f1ec; --warn:#a4380f; --warn-soft:#fbeae2;
+  --govt:#0f6e5a; --pvt:#6a4bb0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141413; --card:#1e1e1c; --text:#ecebe6; --muted:#a3a29b; --line:#33322e;
+    --accent:#5cc4a8; --accent-soft:#183029; --warn:#f0936b; --warn-soft:#3a2016;
+    --govt:#5cc4a8; --pvt:#b9a1f0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141413; --card:#1e1e1c; --text:#ecebe6; --muted:#a3a29b; --line:#33322e;
+  --accent:#5cc4a8; --accent-soft:#183029; --warn:#f0936b; --warn-soft:#3a2016;
+  --govt:#5cc4a8; --pvt:#b9a1f0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:24px 16px 56px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 6px}
+header p{margin:0;color:var(--muted)}
+.tag{display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 8px}
+nav a{font-size:.85rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);
+  padding:6px 12px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:20px 18px;margin-top:18px}
+h2{font-size:1.2rem;margin:0 0 12px}
+h3{font-size:1rem;margin:18px 0 6px}
+ul{padding-left:20px;margin:6px 0}
+li{margin:5px 0}
+.alert{background:var(--warn-soft);border:1px solid var(--warn);color:var(--text);
+  border-radius:14px;padding:16px 18px;margin-top:18px}
+.alert strong{color:var(--warn)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--bg);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.4rem}
+.stat span{font-size:.8rem;color:var(--muted)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.controls button{border:1px solid var(--line);background:var(--bg);color:var(--text);
+  padding:7px 14px;border-radius:999px;font-size:.85rem;cursor:pointer}
+.controls button.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.controls input{flex:1 1 180px;min-width:0;border:1px solid var(--line);background:var(--bg);
+  color:var(--text);padding:8px 12px;border-radius:10px;font-size:.9rem}
+.list{list-style:none;padding:0;margin:0}
+.list li{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:10px 0;border-top:1px solid var(--line);margin:0}
+.list .name{font-weight:500}
+.list .city{font-size:.82rem;color:var(--muted)}
+.pill{flex-shrink:0;font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid}
+.pill.g{color:var(--govt);border-color:var(--govt)}
+.pill.p{color:var(--pvt);border-color:var(--pvt)}
+.note{font-size:.85rem;color:var(--muted)}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl th,.tbl td{text-align:left;padding:9px 6px;border-top:1px solid var(--line);vertical-align:top}
+.tbl th{font-size:.78rem;text-transform:uppercase;color:var(--muted);border-top:none}
+.ok{color:var(--accent);font-weight:600}
+.bad{color:var(--warn);font-weight:600}
+footer{margin-top:24px;font-size:.82rem;color:var(--muted)}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="tag">Madhya Pradesh · State Quota</div>
+  <h1>NEET PG 2026 Counselling: MD / MS Guide</h1>
+  <p>Participating colleges and the key rules from the official DME FAQ, in plain English.</p>
+</header>
+
+<nav>
+  <a href="#colleges">Colleges</a>
+  <a href="#who">Who can apply</a>
+  <a href="#fees">Fees</a>
+  <a href="#rounds">Round rules</a>
+  <a href="#steps">Practical steps</a>
+</nav>
+
+<div class="alert">
+  <strong>Biggest trap:</strong> Round 1 is free to skip, but Round 2 is binding. If you are allotted a seat in Round 2 and don't join, you are out of all later rounds and lose your deposit.
+</div>
+
+<section id="colleges">
+  <h2>Participating colleges</h2>
+  <div class="stats">
+    <div class="stat"><b>27</b><span>Total</span></div>
+    <div class="stat"><b>15</b><span>Government</span></div>
+    <div class="stat"><b>12</b><span>Private</span></div>
+  </div>
+  <div class="controls">
+    <button class="on" data-f="all">All</button>
+    <button data-f="g">Govt</button>
+    <button data-f="p">Private</button>
+    <input id="q" type="search" placeholder="Search college or city">
+  </div>
+  <ul class="list" id="list"></ul>
+  <p class="note">Based on the revised list dated 14-10-2026. Use the exact revised names when filling choices. Central institutes such as AIIMS Bhopal are filled through MCC all-India counselling, not this round.</p>
+</section>
+
+<section id="who">
+  <h2>Who can choose which seats</h2>
+  <table class="tbl">
+    <tr><th>Candidate</th><th>Round 1</th><th>Round 2 onwards</th></tr>
+    <tr><td>MBBS from an MP college</td><td>All seats</td><td>All seats</td></tr>
+    <tr><td>MBBS from outside MP</td><td>Only the 50% non-institutional seats in private colleges</td><td>Also institutional quota seats, if MP graduates don't fill them on merit</td></tr>
+  </table>
+  <h3>EWS</h3>
+  <ul><li>Chose UR in NEET PG but qualify as EWS in MP? Select EWS when registering and upload an MP EWS certificate for 2025-26.</li></ul>
+  <h3>NRI quota (private colleges)</h3>
+  <ul>
+    <li>Minimum NEET PG cutoff required.</li>
+    <li>Caste/social reservation does not apply to NRI seats.</li>
+    <li>NRI candidates can also compete for open seats, with a single registration.</li>
+  </ul>
+</section>
+
+<section id="fees">
+  <h2>Fees and deposits</h2>
+  <table class="tbl">
+    <tr><th>Item</th><th>Amount</th></tr>
+    <tr><td>Portal fee (every round)</td><td>₹100</td></tr>
+    <tr><td>Round 2 – Govt, UR</td><td>₹25,000</td></tr>
+    <tr><td>Round 2 – Govt, reserved</td><td>₹12,500</td></tr>
+    <tr><td>Round 2 – Private</td><td>₹2,00,000</td></tr>
+    <tr><td>Round 2 – NRI</td><td>₹10,00,000</td></tr>
+    <tr><td>Mop-up – All candidates</td><td>₹2,00,000</td></tr>
+    <tr><td>Mop-up – NRI</td><td>₹10,00,000</td></tr>
+  </table>
+  <h3>What happens to the deposit</h3>
+  <ul>
+    <li><span class="ok">Join the seat:</span> counted toward your college fees.</li>
+    <li><span class="ok">No seat allotted:</span> refunded to your bank account.</li>
+    <li><span class="bad">Seat allotted but not joined:</span> forfeited.</li>
+  </ul>
+</section>
+
+<section id="rounds">
+  <h2>Round-by-round rules</h2>
+  <h3>Round 1</h3>
+  <ul>
+    <li>Didn't join your seat, or got no seat? <span class="ok">You stay eligible</span> for later rounds.</li>
+  </ul>
+  <h3>Upgrade option</h3>
+  <ul>
+    <li>When joining, you must answer <b>Yes or No</b> to "upgrade in the next round". The admission slip is generated only after you answer.</li>
+    <li>Said Yes and got upgraded: your old seat is cancelled automatically, and you <b>must</b> join the new one.</li>
+    <li>Said Yes but no upgrade: you keep your current seat.</li>
+    <li>Want a different college in Round 2? Say Yes at joining, then fill and lock choices again.</li>
+  </ul>
+  <h3>Round 2</h3>
+  <ul>
+    <li>Pay the deposit, then fill and lock fresh choices.</li>
+    <li>Allotted but not joined: <span class="bad">out of later rounds, deposit lost.</span></li>
+  </ul>
+  <h3>Mop-up round</h3>
+  <ul>
+    <li>Open to: those with no seat in Rounds 1–2, new registrants, and joined candidates who opted for upgrade.</li>
+    <li>Vacant seats after mop-up are filled as per Rule 13 of the MP admission rules.</li>
+  </ul>
+  <h3>Resigning a seat</h3>
+  <table class="tbl">
+    <tr><th>Situation</th><th>Result</th></tr>
+    <tr><td>Leave a Round 1 seat up to 2 days before Round 2</td><td><span class="ok">Still eligible.</span> Refund minus 10% (max ₹10,000; NRI ₹25,000 deducted)</td></tr>
+    <tr><td>Leave a Round 2 or mop-up seat</td><td><span class="bad">Not eligible</span> for later rounds</td></tr>
+    <tr><td>Leave up to 2 days before mop-up</td><td>No seat-leaving bond</td></tr>
+    <tr><td>Leave after mop-up starts</td><td><span class="bad">Seat-leaving bond applies</span></td></tr>
+  </table>
+</section>
+
+<section id="steps">
+  <h2>Practical steps</h2>
+  <ul>
+    <li>Registration opens before Round 1, and again after Round 2 (before mop-up).</li>
+    <li>Registration and choice filling are fully online. Visit the college only after allotment.</li>
+    <li>Fill at least 1 choice; there is no maximum. <b>Always lock your choices.</b></li>
+    <li>On allotment, report in person with the allotment letter and documents (Annexure-3 / Form-1). Pay full fees online after verification.</li>
+    <li>Large payments can be split across several RTGS/NEFT transactions, with a separate challan for each amount.</li>
+  </ul>
+  <h3>Official websites</h3>
+  <ul>
+    <li><a href="https://dme.mponline.gov.in" target="_blank" rel="noopener">dme.mponline.gov.in</a> — counselling process</li>
+    <li><a href="https://www.medicaleducation.mp.gov.in" target="_blank" rel="noopener">medicaleducation.mp.gov.in</a> — official notices</li>
+  </ul>
+</section>
+
+<footer>
+  This is an unofficial plain-English summary of the DME Madhya Pradesh college list (14-10-2026) and FAQ for NEET PG 2026. Always confirm details on the official websites before making decisions.
+</footer>
+
+</div>
+
+<script>
+const colleges = [
+  ["Gandhi Medical College","Bhopal","g"],
+  ["Gajra Raja Medical College","Gwalior","g"],
+  ["Mahatma Gandhi Memorial Medical College","Indore","g"],
+  ["Netaji Subhash Chandra Bose Medical College","Jabalpur","g"],
+  ["Shyam Shah Medical College","Rewa","g"],
+  ["Bundelkhand Medical College","Sagar","g"],
+  ["Government Medical College","Datia","g"],
+  ["Government Medical College","Ratlam","g"],
+  ["Atal Bihari Vajpayee Government Medical College","Vidisha","g"],
+  ["Gwalior Mansik Arogyashala (psychiatry institute)","Gwalior","g"],
+  ["Nandkumar Singh Chouhan Government Medical College","Khandwa","g"],
+  ["Government Medical College","Shivpuri","g"],
+  ["Government Medical College","Shahdol","g"],
+  ["Chhindwara Institute of Medical Sciences","Chhindwara","g"],
+  ["Government Medical College","Satna","g"],
+  ["Peoples College of Medical Sciences","Bhopal","p"],
+  ["Sri Aurobindo Institute of Medical Sciences","Indore","p"],
+  ["RD Gardi Medical College","Ujjain","p"],
+  ["Index Medical College Hospital & Research Centre","Indore","p"],
+  ["LN Medical College","Bhopal","p"],
+  ["Amaltas Institute of Medical Sciences","Dewas","p"],
+  ["Sukh Sagar Medical College & Hospital","Jabalpur","p"],
+  ["Chirayu Medical College & Hospital","Bhopal","p"],
+  ["RKDF Medical College Hospital & Research Centre","Bhopal","p"],
+  ["Mahaveer Institute of Medical Sciences & Research","Bhopal","p"],
+  ["LNCT Medical College & Sewakunj Hospital","Indore","p"],
+  ["Ram Krishna Medical College Hospital & Research Centre","Bhopal","p"]
+];
+let filter = "all";
+const list = document.getElementById("list");
+const q = document.getElementById("q");
+function render(){
+  const s = q.value.trim().toLowerCase();
+  list.innerHTML = colleges
+    .filter(c => (filter==="all" || c[2]===filter) &&
+      (!s || (c[0]+" "+c[1]).toLowerCase().includes(s)))
+    .map(c => `<li><div><div class="name">${c[0]}</div><div class="city">${c[1]}</div></div>
+      <span class="pill ${c[2]}">${c[2]==="g"?"Govt":"Private"}</span></li>`)
+    .join("") || '<li class="note">No colleges match.</li>';
+}
+document.querySelectorAll(".controls button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".controls button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); filter=b.dataset.f; render();
+  });
+});
+q.addEventListener("input",render);
+render();
+</script>
+</body>
+</html>

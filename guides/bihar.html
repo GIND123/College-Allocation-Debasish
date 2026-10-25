@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bihar PGMAC 2026 Guide</title>
+<style>
+:root{
+  --bg:#f6f7fb;--card:#ffffff;--text:#1c2333;--muted:#5b6478;--line:#e3e6ee;
+  --accent:#1f5fbf;--accent-soft:#e8f0fc;--warn:#b54708;--warn-soft:#fef3e6;
+  --ok:#137a4b;--ok-soft:#e6f6ee;--danger:#b42318;--danger-soft:#fdecea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11141b;--card:#1a1f2a;--text:#e7eaf1;--muted:#9aa3b5;--line:#2b3242;
+    --accent:#7aa7ff;--accent-soft:#1e2a44;--warn:#f5b26b;--warn-soft:#3a2a17;
+    --ok:#5fd09a;--ok-soft:#173226;--danger:#ff8a80;--danger-soft:#3a1c1c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11141b;--card:#1a1f2a;--text:#e7eaf1;--muted:#9aa3b5;--line:#2b3242;
+  --accent:#7aa7ff;--accent-soft:#1e2a44;--warn:#f5b26b;--warn-soft:#3a2a17;
+  --ok:#5fd09a;--ok-soft:#173226;--danger:#ff8a80;--danger-soft:#3a1c1c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:20px 16px 60px}
+header h1{font-size:1.6rem;margin:0 0 4px}
+header p{margin:0;color:var(--muted)}
+.badge{display:inline-block;background:var(--accent-soft);color:var(--accent);font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:99px;margin-bottom:10px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;margin:14px 0 6px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;border-radius:99px;font:inherit;font-size:.9rem;cursor:pointer}
+nav button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+section{display:none}
+section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+.card h2{font-size:1.15rem;margin:0 0 10px}
+.card h3{font-size:1rem;margin:14px 0 6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--accent-soft);border-radius:12px;padding:12px}
+.stat b{display:block;font-size:1.5rem;color:var(--accent)}
+.stat span{font-size:.85rem;color:var(--muted)}
+.note{border-radius:12px;padding:12px 14px;margin:10px 0;font-size:.95rem}
+.note.warn{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.note.ok{background:var(--ok-soft);border-left:4px solid var(--ok)}
+.note.danger{background:var(--danger-soft);border-left:4px solid var(--danger)}
+ul{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+.tl{list-style:none;padding:0;margin:0}
+.tl li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tl li:last-child{border-bottom:0}
+.tl .d{flex:0 0 108px;font-weight:600;color:var(--accent);font-size:.92rem}
+.tl .past .d{color:var(--muted)}
+.tl .hot .d{color:var(--danger)}
+.tablebox{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+td.n,th.n{text-align:right}
+tr.zero td{color:var(--muted);opacity:.6}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px}
+label{font-size:.82rem;color:var(--muted);display:block;margin-bottom:4px}
+select{width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.small{font-size:.85rem;color:var(--muted)}
+.pill{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);margin-left:4px}
+footer{margin-top:30px;font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="badge">State Quota · Bihar · NEET-PG 2026</span>
+  <h1>Bihar PGMAC 2026: Counselling Guide</h1>
+  <p>Plain-language summary of BCECEB Advt. 01 &amp; 02 (18.10.2026) and the official seat matrix.</p>
+</header>
+
+<nav id="tabs">
+  <button data-t="overview" class="on">Overview</button>
+  <button data-t="dates">Key Dates</button>
+  <button data-t="fees">Fees</button>
+  <button data-t="rounds">How Rounds Work</button>
+  <button data-t="seats">Seat Finder</button>
+  <button data-t="docs">Documents</button>
+  <button data-t="traps">Mistakes to Avoid</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="overview" class="on">
+  <div class="card">
+    <h2>What is PGMAC 2026?</h2>
+    <p>Bihar's state-level counselling for MD / MS / PG Diploma / DNB seats in government and private medical colleges of Bihar. It's run by the <b>Bihar Combined Entrance Competitive Examination Board (BCECEB)</b>, and ranks are based on NEET-PG 2026 results.</p>
+    <div class="grid">
+      <div class="stat"><b id="sGovt">386</b><span>Govt MD/MS seats (state quota)</span></div>
+      <div class="stat"><b id="sPvt">648</b><span>Private MD/MS seats</span></div>
+      <div class="stat"><b>20</b><span>Govt PG Diploma seats</span></div>
+      <div class="stat"><b>95</b><span>DNB seats for in-service Bihar doctors</span></div>
+    </div>
+    <p class="small" style="margin-top:10px">About 1,150 seats in total. There will be <b>4 rounds</b>, all online.</p>
+  </div>
+  <div class="card">
+    <h2>The 3 things every student must know</h2>
+    <div class="note danger"><b>Picking even one private college raises your security deposit to ₹2,00,000.</b> If you only want government seats, choose the government-only option (₹25,000 or ₹12,500).</div>
+    <div class="note ok"><b>Round 1 is safe.</b> You can leave a Round-1 seat with "Free Exit" and keep your deposit.</div>
+    <div class="note warn"><b>Round 2 is binding.</b> Resigning or not joining a frozen seat means you lose your deposit. If you exit Round 1, you must fill <b>fresh choices</b> for Round 2.</div>
+  </div>
+  <div class="card">
+    <h2>Official links</h2>
+    <ul>
+      <li>Website: <b>bceceboard.bihar.gov.in</b> (prospectus, seat matrix, online portal)</li>
+      <li>Helpdesk email: helpdesk.bceceboard@bihar.gov.in</li>
+      <li>Payment helpline: 0612-2220230</li>
+    </ul>
+  </div>
+</section>
+
+<!-- DATES -->
+<section id="dates">
+  <div class="card">
+    <h2>Round 1 &amp; 2 schedule</h2>
+    <ul class="tl" id="timeline"></ul>
+    <p class="small">Dates for Round 3 and later rounds will be announced in a separate notice.</p>
+  </div>
+</section>
+
+<!-- FEES -->
+<section id="fees">
+  <div class="card">
+    <h2>Counselling fee</h2>
+    <p><b>₹2,200</b> for all categories (UR / EWS / SC / ST / BC / EBC / DQ). <b>Not refundable.</b> Online only (card, net banking, UPI), plus a small processing charge.</p>
+  </div>
+  <div class="card">
+    <h2>Refundable security deposit</h2>
+    <div class="tablebox"><table>
+      <tr><th>You choose</th><th class="n">UR / EWS</th><th class="n">SC / ST / EBC / BC</th></tr>
+      <tr><td>Government colleges only</td><td class="n">₹25,000</td><td class="n">₹12,500</td></tr>
+      <tr><td>Private colleges</td><td class="n">₹2,00,000</td><td class="n">₹2,00,000</td></tr>
+      <tr><td>Both Govt &amp; Private</td><td class="n">₹2,00,000</td><td class="n">₹2,00,000</td></tr>
+    </table></div>
+    <h3>When is the deposit returned?</h3>
+    <p>After <b>all rounds end</b>, to the account you paid from, if you got no seat or if you joined your allotted seat. The account can be yours, your father's or your mother's.</p>
+    <h3>When is it lost?</h3>
+    <ul>
+      <li>Resigning a Round-2 seat</li>
+      <li>Not reporting to a seat you froze in Round 2</li>
+    </ul>
+    <div class="note warn">Private college tuition fees are separate and high. Check each college's fee on the BCECEB or college website <b>before</b> applying. The Board does not take complaints about private fees.</div>
+  </div>
+</section>
+
+<!-- ROUNDS -->
+<section id="rounds">
+  <div class="card">
+    <h2>Freeze vs Float</h2>
+    <div class="tablebox"><table>
+      <tr><th></th><th>Freeze</th><th>Float</th></tr>
+      <tr><td>Meaning</td><td>Happy with this seat</td><td>Keep seat, try for a better one</td></tr>
+      <tr><td>Go to college?</td><td>Yes, in person, with originals</td><td>No, verified online</td></tr>
+      <tr><td>Next round</td><td>Not considered</td><td>Considered for upgrade</td></tr>
+    </table></div>
+  </div>
+  <div class="card">
+    <h2>Round by round</h2>
+    <h3>Round 1</h3>
+    <ul>
+      <li>If allotted, upload documents, then choose Freeze or Float.</li>
+      <li><b>Free Exit</b> allowed (17–18 Nov): leave without losing your deposit.</li>
+      <li>After exit or resignation, old choices are cancelled. You must fill <b>new choices</b> for Round 2.</li>
+      <li>If you got no seat, your choices carry over automatically, and you can still edit them.</li>
+    </ul>
+    <h3>Round 2</h3>
+    <ul>
+      <li>No new registrations (unless new colleges or seats are added).</li>
+      <li>You cannot remove the seat you got in Round 1 from your choice list.</li>
+      <li>Resigning or not joining a frozen seat: <b>deposit forfeited</b>.</li>
+      <li>Float from Round 2 to Round 3 is allowed.</li>
+    </ul>
+    <h3>Round 3</h3>
+    <ul>
+      <li>If you joined a seat in Round 1 or 2 and didn't resign, you <b>cannot</b> take part.</li>
+      <li>Round-3 allottees must report in person with fees.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SEATS -->
+<section id="seats">
+  <div class="card">
+    <h2>Seat Finder</h2>
+    <p class="small">Pick a branch and your category to see where state-quota seats exist for you.</p>
+    <div class="filters">
+      <div><label for="fBranch">Branch</label><select id="fBranch"></select></div>
+      <div><label for="fCat">Category (Govt colleges)</label><select id="fCat">
+        <option value="ALL">All categories</option>
+        <option value="UR">UR</option><option value="EWS">EWS</option>
+        <option value="SC">SC</option><option value="ST">ST</option>
+        <option value="EBC">EBC</option><option value="BC">BC</option>
+        <option value="RCG">RCG (backward-class women)</option>
+      </select></div>
+      <div><label for="fGender">Gender</label><select id="fGender">
+        <option value="M">Male</option><option value="F">Female</option>
+      </select></div>
+    </div>
+    <h3>Government colleges <span class="pill" id="govtCount"></span></h3>
+    <div class="tablebox"><table id="govtTable"></table></div>
+    <p class="small">Women can take both general and women-reserved (F_) seats in their category. Men can take general seats only. RCG seats are for backward-class women only.</p>
+    <h3>Private colleges <span class="pill" id="pvtCount"></span></h3>
+    <div class="tablebox"><table id="pvtTable"></table></div>
+    <p class="small">Private colleges have no caste reservation. Only UR, Minority and NRI. KMC Katihar &amp; Madhubani MC: 50% Muslim minority. MGM Kishanganj: 30% Sikh minority. Non-Bihar residents can't get private seats using reserved-category cut-offs.</p>
+  </div>
+  <div class="card">
+    <h2>Branch summary (MD/MS)</h2>
+    <div class="tablebox"><table id="branchSum"></table></div>
+  </div>
+  <div class="card">
+    <h2>Other seat pools</h2>
+    <ul>
+      <li><b>Govt PG Diplomas (20):</b> PMC Patna (TB &amp; Chest, DMRD, DPMR, Microbiology) and DMC Darbhanga (DA). Half open, half for doctors with remote-area service.</li>
+      <li><b>DNB post-MBBS (35):</b> in-service Bihar government doctors only. Sadar hospitals, medical colleges, BIMHAS Koilwar, LNJP Patna, Homi Bhabha Cancer Hospital.</li>
+      <li><b>DNB Diploma (60):</b> in-service only. Mostly DCH and DGO at district Sadar hospitals, plus DA, DMRD, DLO, DO.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Errors noticed in the seat matrix</h2>
+    <ul>
+      <li>Page numbers switch from "of 21" to "of 23". Check the official file for missing pages.</li>
+      <li>PMC Diploma (Open) total shows "30". This is likely a typo for 3.</li>
+      <li>SH Banka DGO row and NSMC Bihta table are missing a column.</li>
+      <li>JKTMC Madhepura is listed in the notice but has only in-service DNB seats. GMC Purnea has DNB seats but isn't in the notice's list.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section id="docs">
+  <div class="card">
+    <h2>Documents checklist</h2>
+    <p class="small">Upload clear PDF scans when downloading your allotment order. Bring originals for verification.</p>
+    <ul>
+      <li>Residential certificate</li>
+      <li>Caste certificate / EWS certificate (if applicable)</li>
+      <li>College leaving certificate</li>
+      <li>Internship completion certificate</li>
+      <li>MBBS passing certificate &amp; mark sheets (Parts I, II, III)</li>
+      <li>Medical registration certificate</li>
+      <li>NOC from employer (if employed)</li>
+      <li>Matric certificate</li>
+      <li>NEET-PG admit card</li>
+      <li>Aadhaar card</li>
+      <li>Remote/difficult area service certificate (if claimed)</li>
+      <li>In-service Govt of Bihar certificate (if required)</li>
+      <li>DQ certificate + UDID card + affidavit, <b>merged into one PDF</b> (if DQ)</li>
+      <li>PGMAC 2026 rank card</li>
+      <li>Printed confirmation page</li>
+      <li>Check Slip (2 copies) + Biometric Identification Report Form (1 copy)</li>
+      <li>6 photographs (same as uploaded)</li>
+    </ul>
+    <div class="note warn">Blurry, wrong or mismatched documents can cancel your seat. Re-upload quickly if you get an SMS or email about a problem.</div>
+  </div>
+</section>
+
+<!-- TRAPS -->
+<section id="traps">
+  <div class="card">
+    <h2>Mistakes to avoid</h2>
+    <ul>
+      <li><b>Mobile number and email can't be changed.</b> They come from your NEET-PG form, and all OTPs go there.</li>
+      <li><b>Missing 28 Oct means missing counselling.</b> There's no fresh registration for Round 2.</li>
+      <li><b>Payment failed but money deducted?</b> Pay again right away. The failed amount comes back later.</li>
+      <li><b>Lock your choices</b> so you can print them. Unlocked choices auto-lock at the deadline.</li>
+      <li><b>Fill many choices.</b> Many college-branch pairs have only one seat, which goes to a single category.</li>
+      <li><b>Don't add a private college casually.</b> It raises your deposit to ₹2 lakh.</li>
+      <li><b>Exiting Round 1? Refill choices.</b> Otherwise you won't be considered in Round 2.</li>
+      <li><b>Keep your password private.</b> The Board isn't responsible for misuse.</li>
+      <li><b>Don't wait for the last day.</b> The Board isn't responsible for internet or bank failures.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Summary of official BCECEB documents for guidance only. Always confirm with the PGMAC 2026 prospectus and notices on bceceboard.bihar.gov.in.</footer>
+</div>
+
+<script>
+// ---------- Tabs ----------
+document.querySelectorAll('#tabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+    document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.t));
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+// ---------- Timeline ----------
+const dates=[
+  ['2026-10-21','21 Oct','Seat matrix published'],
+  ['2026-10-22','22 Oct','Registration, payment & choice filling open'],
+  ['2026-10-28','28 Oct, 10 pm','Last date to register'],
+  ['2026-10-28','28 Oct, 11:59 pm','Last date to submit form, pay & edit form data'],
+  ['2026-10-30','30 Oct','Rank Card released'],
+  ['2026-10-31','31 Oct, 11:59 pm','Last date to fill, edit & lock choices (Rounds 1 & 2)'],
+  ['2026-11-04','4 Nov','Round 1 result'],
+  ['2026-11-09','4–9 Nov','Download Round 1 allotment order'],
+  ['2026-11-09','6–9 Nov','Round 1 document verification & admission'],
+  ['2026-11-18','17–18 Nov','Free Exit from Round 1'],
+  ['2026-11-21','19–21 Nov','Round 2 choice filling & locking'],
+  ['2026-11-25','25 Nov','Round 2 result'],
+  ['2026-11-30','25–30 Nov','Download Round 2 allotment order'],
+  ['2026-11-30','27–30 Nov','Round 2 document verification & admission']
+];
+(function(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const ul=document.getElementById('timeline');
+  let nextMarked=false;
+  dates.forEach(([iso,label,txt])=>{
+    const d=new Date(iso+'T00:00:00');
+    const li=document.createElement('li');
+    if(d<today) li.className='past';
+    else if(!nextMarked){li.className='hot';nextMarked=true;}
+    li.innerHTML='<span class="d">'+label+'</span><span>'+txt+'</span>';
+    ul.appendChild(li);
+  });
+})();
+
+// ---------- Data ----------
+const BR={AN:'Anatomy',PH:'Physiology',BC:'Biochemistry',PA:'Pathology',MI:'Microbiology',PC:'Pharmacology',FM:'Forensic Medicine (FMT)',CM:'Community Medicine',OP:'Ophthalmology',EN:'ENT',GM:'General Medicine',DE:'Dermatology',PS:'Psychiatry',PD:'Paediatrics',RD:'Radio-diagnosis',PM:'PMR',AS:'Anaesthesiology',GS:'General Surgery',OR:'Orthopaedics',OG:'Obstetrics & Gynaecology',RM:'Respiratory Medicine',RO:'Radiation Oncology',EM:'Emergency Medicine'};
+// Govt: college, branch, 13 values: UR F_UR SC F_SC ST F_ST EBC F_EBC BC F_BC RCG EWS F_EWS
+const G={
+'PMC Patna':{AN:'1110000100000',PH:'1110100000100',BC:'1110000000010',PA:'2101000110101',MI:'0000001001010',PC:'0101000010000',FM:'1000000001000',CM:'1000001000010',OP:'1110001001001',EN:'1000000110000',GM:'2211001110010',DE:'1000001000000',PS:'1000000000000',PD:'3111001110010',RD:'1000001000000',PM:'0010001000000',AS:'1110001010000',GS:'3110001010110',OR:'2110001001010',OG:'3111001110001',RM:'1000000000000'},
+'NMC Patna':{AN:'1001000100000',PH:'0100100000010',BC:'1000000010000',PA:'1000001000000',MI:'0000000010100',PC:'1000000000100',FM:'0100000000001',CM:'0000000100000',OP:'1000000000000',EN:'1000001000000',GM:'1110001001000',DE:'0110000000000',PD:'1110001010001',RD:'1001000000000',AS:'2010001000010',GS:'2110001110010',OR:'1000000110000',OG:'2111000001010',RM:'0000001000000'},
+'IGIMS Patna':{AN:'1000000000000',PH:'0000001000000',BC:'1000001000000',PA:'1001011010000',MI:'1100000101000',PC:'0000001000000',CM:'1000000100000',OP:'1110000000010',EN:'0110000000000',GM:'1001000010010',DE:'0000000001000',PS:'1000000000001',PD:'1110000010000',RD:'0000000010010',AS:'3111001110101',GS:'1110001000000',OR:'0100000000000',OG:'1000001000000',RO:'1010000000000',RM:'0100000000000'},
+'DMC Darbhanga':{AN:'1100001010001',PH:'1100001010000',BC:'1000000001000',PA:'1110001010000',MI:'1000000110000',PC:'1010000001100',CM:'1110000000010',OP:'1001000100100',EN:'1001000000000',GM:'3110101010001',PD:'1001000000010',RD:'0110000100000',AS:'1100001000010',GS:'2110001101001',OR:'1001001000010',OG:'2210001110110',FM:'1000000000000',RM:'0010000000000'},
+'SKMC Muzaffarpur':{AN:'0000000000001',PH:'0100000000000',PA:'1001001000000',PC:'0000000010000',CM:'1000000000000',GM:'0000000100000',PD:'1000001000000',GS:'1010000000000',OG:'0100000001010'},
+'ANMMC Gaya':{AN:'1100000000000',BC:'0000001000000',PH:'0100000000000',PA:'0100001000000',PC:'1000000000000',EN:'0000000000010',DE:'0000000000010',AS:'1000000010000',PD:'1000000010000',GS:'1001000000000',OG:'1010000001000',MI:'0000000100000',OP:'0000001000000',OR:'0010000000000'},
+'JLNMC Bhagalpur':{AN:'1010000000000',PH:'1000000010000',BC:'0000000100000',PA:'0100000000000',MI:'1100000000000',PC:'0110000000001',CM:'0000000000001',OP:'1000000001000',GM:'1110001010010',PS:'0010000000000',PD:'0000001000100',GS:'1101000110010',OR:'1000001000000',OG:'1000001000000',RM:'0000000001000',PM:'1000000000000',EM:'1001001000000'},
+'BMIMS Pawapuri':{AN:'0000000000100',PH:'0100001000000',BC:'0000000000010',PC:'0001000000000',GM:'1000000000000',MI:'1010000000000',GS:'1000000010000',PA:'0100000100000'},
+'GMC Bettiah':{AN:'0010000000000',PH:'0001000000000',BC:'0000000001000',MI:'0000000000010',OP:'1000000000000',PD:'0100000000000',RD:'1000001000000',OG:'0000001000000'}
+};
+// Private: [UR, Minority, NRI]
+const P={
+'KMC Katihar (50% Muslim minority)':{AN:[1,1,0],PH:[1,1,0],BC:[1,0,0],PA:[2,2,0],MI:[1,1,0],PC:[1,2,0],CM:[2,1,0],OP:[1,1,0],EN:[1,0,0],GM:[4,8,3],DE:[1,2,1],PS:[0,1,0],PD:[2,3,1],RD:[1,4,2],AS:[2,4,1],GS:[3,4,1],OR:[2,4,2],OG:[2,2,1],RM:[1,1,1]},
+'MGMMC Kishanganj (30% Sikh minority)':{AN:[1,1,0],PH:[1,1,0],BC:[2,1,0],PA:[5,3,0],MI:[4,1,0],PC:[1,1,0],CM:[2,0,0],OP:[5,3,1],EN:[6,2,0],GM:[4,3,3],DE:[3,2,3],PD:[3,3,1],RD:[3,1,2],AS:[6,3,1],GS:[5,3,2],OR:[6,2,2],OG:[5,3,2]},
+'NMCH Sasaram':{AN:[2,0,0],PH:[2,0,0],BC:[3,0,0],MI:[4,0,0],PC:[4,0,0],PA:[12,0,0],GS:[14,0,2],OG:[6,0,2],OP:[3,0,1],DE:[3,0,2],AS:[14,0,2],RD:[8,0,2],GM:[13,0,3],PD:[6,0,2],OR:[6,0,2],EN:[2,0,0]},
+'Madhubani MC (50% Muslim minority)':{AN:[2,2,0],CM:[1,3,0],PC:[2,2,0],MI:[2,2,0],BC:[2,2,0],PH:[2,2,0],RD:[1,1,2],GM:[4,5,2],GS:[4,7,2],PA:[2,4,0],OR:[2,3,1],OP:[2,1,0],OG:[3,3,2],PD:[1,2,1],AS:[3,4,0],DE:[1,2,1],EN:[3,2,1]},
+'NSMC Bihta':{AN:[3,0,0],PH:[2,0,0],PA:[4,0,0],PC:[4,0,0],MI:[4,0,0],BC:[4,0,0],GM:[6,0,1],GS:[7,0,0],PD:[3,0,0],OG:[4,0,1],AS:[6,0,0],RD:[6,0,1],DE:[3,0,1],OP:[3,0,0],PS:[3,0,0],OR:[4,0,0],EN:[4,0,0]},
+'LBKMC Saharsa':{PA:[3,0,0],GS:[6,0,1],OG:[2,0,2],AS:[7,0,0],GM:[6,0,1],PD:[5,0,1],OR:[3,0,1],EN:[3,0,0],OP:[3,0,0],RD:[2,0,1],PH:[3,0,0],PC:[3,0,0],BC:[4,0,0],RM:[1,0,1],DE:[0,0,1],MI:[2,0,0]},
+'RDJM MC Muzaffarpur':{AN:[4,0,0],PH:[4,0,0],OR:[3,0,1],AS:[3,0,1],OG:[3,0,1],OP:[3,0,1],EN:[3,0,1],PC:[4,0,0],MI:[4,0,0],BC:[4,0,0],PA:[4,0,0],DE:[1,0,1],PD:[4,0,0],GS:[2,0,0],RD:[2,0,2],GM:[3,0,1],CM:[2,0,0]},
+'Sri Narayan MI&H Saharsa':{PD:[4,0,0],GS:[4,0,0],PA:[4,0,0],OR:[4,0,0],DE:[2,0,2],RD:[1,0,1],AS:[4,0,0],OG:[2,0,2],GM:[3,0,1],OP:[4,0,0]}
+};
+const IDX={UR:[0,1],SC:[2,3],ST:[4,5],EBC:[6,7],BC:[8,9],RCG:[null,10],EWS:[11,12]};
+const v=s=>s.split('').map(Number);
+
+// Totals check
+let gT=0;for(const c in G)for(const b in G[c])gT+=v(G[c][b]).reduce((a,x)=>a+x,0);
+let pT=0;for(const c in P)for(const b in P[c])pT+=P[c][b].reduce((a,x)=>a+x,0);
+document.getElementById('sGovt').textContent=gT;
+document.getElementById('sPvt').textContent=pT;
+
+// Branch select
+const used=new Set();for(const c in G)Object.keys(G[c]).forEach(b=>used.add(b));for(const c in P)Object.keys(P[c]).forEach(b=>used.add(b));
+const fB=document.getElementById('fBranch');
+[...used].sort((a,b)=>BR[a].localeCompare(BR[b])).forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=BR[b];fB.appendChild(o);});
+fB.value='GM';
+
+function render(){
+  const b=fB.value,cat=document.getElementById('fCat').value,gen=document.getElementById('fGender').value;
+  // Govt
+  let rows=[],sum=0;
+  for(const c in G){
+    if(!G[c][b])continue;
+    const a=v(G[c][b]);const tot=a.reduce((x,y)=>x+y,0);
+    let gen_=0,fem=0;
+    if(cat==='ALL'){gen_=tot;}
+    else{const [g,f]=IDX[cat];gen_=g===null?0:a[g];fem=gen==='F'?a[f]:0;}
+    const mine=cat==='ALL'?tot:gen_+fem;
+    sum+=mine;rows.push([c,tot,mine,gen_,fem]);
+  }
+  rows.sort((x,y)=>y[2]-x[2]||y[1]-x[1]);
+  const gt=document.getElementById('govtTable');
+  if(!rows.length){gt.innerHTML='<tr><td>No government state-quota seats in this branch.</td></tr>';}
+  else{
+    let h='<tr><th>College</th><th class="n">Total</th>'+(cat==='ALL'?'':'<th class="n">For you</th>')+'</tr>';
+    rows.forEach(r=>{h+='<tr class="'+(cat!=='ALL'&&r[2]===0?'zero':'')+'"><td>'+r[0]+'</td><td class="n">'+r[1]+'</td>'+(cat==='ALL'?'':'<td class="n"><b>'+r[2]+'</b></td>')+'</tr>';});
+    gt.innerHTML=h;
+  }
+  document.getElementById('govtCount').textContent=(cat==='ALL'?sum+' seats':sum+' for you');
+  // Private
+  let pr=[],ps=0;
+  for(const c in P){if(!P[c][b])continue;const [u,m,n]=P[c][b];pr.push([c,u,m,n,u+m+n]);ps+=u+m+n;}
+  pr.sort((x,y)=>y[4]-x[4]);
+  const pt=document.getElementById('pvtTable');
+  if(!pr.length){pt.innerHTML='<tr><td>No private seats in this branch.</td></tr>';}
+  else{
+    let h='<tr><th>College</th><th class="n">UR</th><th class="n">Minority</th><th class="n">NRI</th><th class="n">Total</th></tr>';
+    pr.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td class="n"><b>'+r[1]+'</b></td><td class="n">'+r[2]+'</td><td class="n">'+r[3]+'</td><td class="n">'+r[4]+'</td></tr>';});
+    pt.innerHTML=h;
+  }
+  document.getElementById('pvtCount').textContent=ps+' seats';
+}
+['fBranch','fCat','fGender'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+render();
+
+// Branch summary
+(function(){
+  const s={};
+  for(const c in G)for(const b in G[c]){s[b]=s[b]||[0,0];s[b][0]+=v(G[c][b]).reduce((x,y)=>x+y,0);}
+  for(const c in P)for(const b in P[c]){s[b]=s[b]||[0,0];s[b][1]+=P[c][b].reduce((x,y)=>x+y,0);}
+  const arr=Object.entries(s).sort((a,b)=>BR[a[0]].localeCompare(BR[b[0]]));
+  let h='<tr><th>Branch</th><th class="n">Govt</th><th class="n">Private</th><th class="n">Total</th></tr>';
+  arr.forEach(([b,[g,p]])=>{h+='<tr><td>'+BR[b]+'</td><td class="n"><b>'+g+'</b></td><td class="n">'+p+'</td><td class="n">'+(g+p)+'</td></tr>';});
+  h+='<tr><td><b>Total</b></td><td class="n"><b>'+gT+'</b></td><td class="n"><b>'+pT+'</b></td><td class="n"><b>'+(gT+pT)+'</b></td></tr>';
+  document.getElementById('branchSum').innerHTML=h;
+})();
+</script>
+</body>
+</html>
