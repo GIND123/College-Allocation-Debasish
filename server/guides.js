@@ -40,6 +40,14 @@ function validate(data) {
       if (!d.label && !d.on && !d.to) throw new Error(`${where}: "${d.what}" needs "on", "to" or a "label".`);
     }
   }
+  let prev = -Infinity;
+  for (const st of data.roadmap?.stages || []) {
+    const where = `guides/guides.json, roadmap stage "${st.name}"`;
+    const from = Date.parse(st.from), to = Date.parse(st.to);
+    if (!st.name || Number.isNaN(from) || Number.isNaN(to) || from > to) throw new Error(`${where}: needs a name and valid "from" and "to" dates, in order.`);
+    if (from < prev) throw new Error(`${where}: stages must be in date order.`);
+    prev = to;
+  }
   return data;
 }
 
@@ -48,6 +56,7 @@ export function guideList() {
   return registry().guides.map(({ file, ...g }) => g);
 }
 export const compareTable = () => registry().compare || null;
+export const roadmap = () => registry().roadmap || null;
 
 // ---- pages ----------------------------------------------------------------
 const pages = new Map();
@@ -141,9 +150,9 @@ function topBar(g, all) {
   <div class="rr-top-in">
     <a class="rr-mark" href="/"><b>Rank<em>Round</em></b><small>PG Counselling Intelligence</small></a>
     <div class="rr-nav" role="navigation" aria-label="Main">
-      <a href="/counselling" aria-current="page"><i aria-hidden="true"></i>Counselling 2026</a>
-      <a href="/predict">Predictor</a>
-      <a href="/cutoffs">Cut-offs</a>
+      <a href="/predict">Intelligent prediction</a>
+      <a href="/counselling" aria-current="page">Counselling guide</a>
+      <a href="/method">Method</a>
     </div>
     <div class="rr-right">
       <button class="rr-icon" id="rr-theme" type="button" aria-label="Switch light / dark">${MOON}</button>

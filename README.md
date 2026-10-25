@@ -88,15 +88,36 @@ The home page opens with the sign-up form. Every candidate gives their name, a m
 
 Accounts created before sign-up asked for CMR and state are asked to complete their profile the next time they open the predictor.
 
+## Main tabs and the counselling roadmap
+
+The top bar has three tabs for everyone, signed in or not: **Intelligent prediction** (`/predict`), **Counselling guide** (`/counselling`) and **Method**. On a phone they sit at the bottom of the screen. The cut-off table and the shortlist are views inside Intelligent prediction (Predictions · Cut-off table · Shortlist, just under the top bar).
+
+The predictions page opens with the NEET-PG counselling roadmap: the five stages with the current one marked, what happens in it, a link to the student's state guide and the MCC guide, the next dates from their state guide, and a button that downloads all the stages as calendar reminders. Students can hide it; the choice is remembered on their device. The stages come from `"roadmap"` in `guides/guides.json`:
+
+```jsonc
+"roadmap": {
+  "title": "NEET-PG 2026 counselling roadmap",
+  "source": "Where the dates come from",
+  "stages": [
+    { "name": "Registration", "from": "2026-10-12T00:00:00+05:30", "to": "2026-10-22T10:00:00+05:30",
+      "detail": "One or two sentences on what happens in this stage.",
+      "events": [{ "what": "Choice locking closes", "when": "22 Oct, 10 am" }] }
+  ]
+}
+```
+
+Stages must be in date order; the stage whose dates include today is shown as the current one.
+
 ## Counselling guides
 
 `/counselling` lists every guide with its key dates (open, closing soon, closed), a "closing in the next 3 days" strip and a state search. A signed-in student sees their own state first, and the predictor and cut-off pages link to their state's guide (and to the MCC guide for the All India Quota).
 
 Each guide is a stand-alone HTML file in `guides/`, kept exactly as the client sent it, and served at `/counselling/<slug>`. As it is served, the page gets:
 
-- RankRound's top bar, a guide bar (back to all guides, the other guides for the same state, the notice date, the official site) and footer;
+- RankRound's top bar (with the three main tabs), a guide bar (back to all guides, the other guides for the same state, the notice date, the official site) and footer;
 - RankRound's fonts and background, card, text and border colours, and the site's light/dark switch. Each guide keeps its own accent and status colours, which often carry meaning;
-- page tracking, so guide visits show under Pages in the admin overview.
+- page tracking, so guide visits show under Pages in the admin overview;
+- the guide's own section links (Key dates, Eligibility…) mark the section being read.
 
 No iframes are involved, so each guide scrolls, searches and jumps between sections the way its author built it.
 

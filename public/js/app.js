@@ -137,9 +137,8 @@ async function route() {
   if (p === '/' && S.user) { history.replaceState({}, '', '/predict'); p = '/predict'; }
   const changed = p !== S.path;
   S.path = p;
-  $$('#nav a').forEach(a => a.pathname === p ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
-  $('#nav').hidden = !S.user;
-  document.body.classList.toggle('has-nav', !!S.user);
+  const tab = GATED.has(p) ? '/predict' : p; // cut-offs and shortlist live under "Intelligent prediction"
+  $$('#nav a').forEach(a => a.pathname === tab ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
   if (GATED.has(p) && !S.user) viewGate(p);
   else if (GATED.has(p) && !profileComplete()) viewProfile();
   else await ROUTES[p]();
@@ -627,15 +626,96 @@ function bindCtx() {
   if (ds) ds.onchange = () => { S.dsId[S.scope] = +ds.value; route(); };
 }
 
+// Predictions, the cut-off table and the shortlist are three views of "Intelligent prediction".
+const WORK_TABS = [['/predict', 'Predictions'], ['/cutoffs', 'Cut-off table'], ['/shortlist', 'Shortlist']];
+const workTabs = p => `
+  <div class="worktabs"><nav class="worktabs-in" aria-label="Prediction views">${WORK_TABS.map(([href, label]) =>
+    `<a href="${href}" data-link${href === p ? ' aria-current="page"' : ''}>${label}${href === '/shortlist' ? ' <span class="count num" id="slcount" hidden></span>' : ''}</a>`).join('')}
+  </nav></div>`;
+
+// ---- counselling roadmap (guides.json "roadmap"), above the predictions ----
+const shortDay = ms => new Date(ms).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' });
+const stageSpan = s => `${shortDay(s.a)} – ${shortDay(s.b)}`;
+function stagesNow(rm, now = Date.now()) {
+  const st = rm.stages.map(s => ({ ...s, a: Date.parse(s.from), b: Date.parse(s.to) }));
+  const at = st.findIndex(s => now <= s.b); // the first stage not yet over
+  st.forEach((s, i) => { s.state = at < 0 || i < at ? 'done' : i > at ? 'upcoming' : now >= s.a ? 'current' : 'next'; });
+  return { st, cur: at < 0 ? null : st[at] };
+}
+function roadmapIcs(rm) {
+  const d = ms => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const txt = s => String(s).replace(/[\\;,]/g, m => '\\' + m).replace(/\n/g, '\\n');
+  const ev = rm.stages.map((s, i) => ['BEGIN:VEVENT', `UID:rankround-2026-${i}@rankround`, `DTSTAMP:${d(Date.now())}`,
+    `DTSTART:${d(Date.parse(s.from))}`, `DTEND:${d(Date.parse(s.to))}`, `SUMMARY:${txt('NEET-PG counselling: ' + s.name)}`,
+    `DESCRIPTION:${txt(s.detail || '')}`, 'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', `DESCRIPTION:${txt(s.name)}`, 'END:VALARM', 'END:VEVENT']);
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//RankRound//Counselling roadmap//EN', ...ev.flat(), 'END:VCALENDAR'].join('\r\n');
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })), download: 'neet-pg-2026-counselling.ics' });
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+async function renderRoadmap() {
+  try { S.guideIndex ||= await api('/api/guides'); } catch { /* the predictions work without it */ }
+  const box = $('#roadmap'), rm = S.guideIndex?.roadmap;
+  if (!box) return;
+  if (!rm?.stages?.length) { box.remove(); return; }
+  const { st, cur } = stagesNow(rm);
+  const open = !store.get('rr-roadmap-closed', false);
+  const PILL = { done: 'Done', current: 'Current stage', next: 'Next', upcoming: 'Upcoming' };
+  const g = guidesFor(myState())[0], mcc = guidesFor(ALL_INDIA).find(x => x.slug === 'mcc');
+  // The student's own state dates still to come, then this stage's MCC events.
+  const steps = S.guideIndex.guides.filter(x => x.region === myState()).flatMap(x => (x.dates || []).map(d => ({ ...d, slug: x.slug })))
+    .map(d => ({ d, s: stepStatus(d) })).filter(x => x.s.tone !== 'done' && x.s.tone !== 'info').slice(0, 3);
+  const ds = S.data?.dataset?.label || '';
+  box.innerHTML = `
+    <div class="rm-head">
+      <div><div class="eyebrow">Counselling 2026 › Roadmap</div><h2>${esc(rm.title)}</h2></div>
+      <button class="btn btn-line btn-sm" id="rm-toggle" aria-expanded="${open}" aria-controls="rm-body">${open ? 'Hide roadmap' : 'Show roadmap'}</button>
+    </div>
+    <ol class="rm-steps">${st.map((s, i) => `
+      <li class="${s.state}"${s.state === 'current' || s.state === 'next' ? ' aria-current="step"' : ''}>
+        <span class="rm-dot">${s.state === 'done' ? '✓' : i + 1}</span>
+        <b>${esc(s.name)}</b><small>${stageSpan(s)}</small><em>${PILL[s.state]}</em>
+      </li>`).join('')}
+    </ol>
+    <div class="rm-body" id="rm-body"${open ? '' : ' hidden'}>
+      <div class="rm-card rm-now">
+        ${cur ? `<span class="gd-pill ${cur.state === 'current' ? 'open' : 'soon'}">${cur.state === 'current' ? 'Current stage' : 'Next stage'}</span>
+          <h3>${esc(cur.name)} <small>${stageSpan(cur)}</small></h3><p>${esc(cur.detail || '')}</p>`
+          : '<h3>NEET-PG 2026 counselling has finished</h3><p>Check your state authority for any special stray rounds.</p>'}
+        <div class="rm-links">
+          ${g ? `<a class="btn btn-primary btn-sm" href="/counselling/${esc(g.slug)}">${esc(myState())} counselling guide ${icon.arrowR}</a>` : ''}
+          ${mcc ? `<a class="btn btn-line btn-sm" href="/counselling/mcc">MCC (All India) guide ${icon.arrowR}</a>` : ''}
+        </div>
+      </div>
+      <div class="rm-card rm-dates">
+        <h3>Important dates <small>Upcoming events</small></h3>
+        <ul>${steps.map(({ d, s }) => `<li><a href="/counselling/${esc(d.slug)}">${esc(myState())}: ${esc(d.what)}</a><span>${esc(d.when)}</span><span class="gd-pill ${s.tone}">${esc(s.text)}</span></li>`).join('')}
+          ${(cur?.events || []).map(e => `<li><b>${esc(e.what)}</b><span>${esc(e.when)}</span></li>`).join('')}</ul>
+        <button class="btn btn-line btn-sm" id="rm-ics">${icon.download} Set reminders (calendar)</button>
+      </div>
+      <div class="rm-card rm-pred">
+        <h3>Predictions</h3>
+        <div class="rm-pred-row"><div><b>Pre-counselling predictor</b> <span class="gd-pill open">Available</span>
+          <p>Based on previous year closing ranks${ds ? ` · ${esc(ds)}` : ''}.</p></div>
+          <a class="btn btn-line btn-sm" href="#res" id="rm-view">View prediction ${icon.down}</a></div>
+      </div>
+      <p class="rm-src">${esc(rm.source || '')}</p>
+    </div>`;
+  $('#rm-toggle').onclick = () => { store.set('rr-roadmap-closed', open); renderRoadmap(); track('roadmap', { open: !open }); };
+  $('#rm-ics').onclick = () => { roadmapIcs(rm); track('export', { mode: 'roadmap-ics' }); };
+  $('#rm-view').onclick = e => { e.preventDefault(); $('#res')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+}
+
 async function viewWork(mode) {
   const kind = S.scope;
   S.mode = mode;
   S.shown = STEP;
-  view.innerHTML = ctxbar(kind) + `
+  view.innerHTML = workTabs(S.path) + ctxbar(kind) + `
     <div class="workspace">
       <aside class="rail" id="rail" aria-label="Filters"></aside>
-      <section class="results" id="res"><div class="empty"><span class="spinner"></span></div></section>
+      <div class="work-main">${mode === 'predict' ? '<section class="roadmap" id="roadmap" aria-label="Counselling roadmap"></section>' : ''}
+        <section class="results" id="res"><div class="empty"><span class="spinner"></span></div></section></div>
     </div>`;
+  updateCount();
   bindCtx();
   let data;
   try { data = await load(kind); }
@@ -660,12 +740,14 @@ async function viewWork(mode) {
         ${wa ? `<a class="btn btn-primary" href="${esc(wa)}" target="_blank" rel="noopener">${icon.chat} Talk to a counsellor</a>` : ''}</div>
     </div>`;
     $('#chg-state').onclick = editProfile;
+    if (mode === 'predict') renderRoadmap();
     return;
   }
   S.data = data;
   $('#ctx-note').textContent = KIND[kind].note; // the note depends on the dataset just loaded
   renderRail();
   renderResults();
+  if (mode === 'predict') renderRoadmap();
 }
 
 // ---- filter rail -------------------------------------------------------
@@ -1097,7 +1179,7 @@ function openSeat(kind, r) {
 async function viewShortlist() {
   await loadShortlist();
   const items = S.shortlist;
-  view.innerHTML = `
+  view.innerHTML = workTabs('/shortlist') + `
     <div class="page-head">
       <div><div class="eyebrow">Your preference list</div><h1>Shortlist</h1>
         <p>Arrange seats in the order you would fill your choice form. Chances are graded against the rank you last entered in the predictor.</p></div>
@@ -1111,6 +1193,7 @@ async function viewShortlist() {
         <p>Use the ${icon.star.replace('<svg', '<svg style="width:14px;height:14px;vertical-align:-2px"')} on any seat in the predictor or the cut-off table to save it here.</p>
         <a class="btn btn-primary" href="/predict" data-link style="margin-top:12px">Open the predictor</a></div></div></div>`}`;
 
+  updateCount();
   $('#sl-print').onclick = () => print();
   $('#sl-csv').onclick = () => {
     const rows = [];

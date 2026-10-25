@@ -48,7 +48,8 @@ test('guides: index data, pages, redirects and assets', async () => {
   const b = browser();
   const g = await b('/api/guides');
   assert.equal(g.status, 200);
-  assert.ok(g.json.guides.length >= 13 && g.json.compare.rows.length);
+  assert.ok(g.json.guides.length >= 20 && g.json.compare.rows.length);
+  assert.ok(g.json.roadmap.stages.length >= 5, 'the counselling roadmap is served');
   const page = await b('/counselling/kerala-checklist');
   assert.equal(page.status, 200);
   assert.match(page.headers.get('content-type'), /text\/html/);

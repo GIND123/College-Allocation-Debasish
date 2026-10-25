@@ -10,7 +10,7 @@ import {
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, normState } from './states.js';
-import { registry, guideList, compareTable, guidePage, GUIDES_DIR } from './guides.js';
+import { registry, guideList, compareTable, roadmap, guidePage, GUIDES_DIR } from './guides.js';
 
 registry(); // a malformed guides/guides.json stops the server here, with the reason
 
@@ -77,7 +77,7 @@ app.get('/api/config', (req, res) => {
 });
 app.get('/api/guides', (_req, res) => {
   res.set('Cache-Control', 'no-cache');
-  res.json({ guides: guideList(), compare: compareTable() });
+  res.json({ guides: guideList(), compare: compareTable(), roadmap: roadmap() });
 });
 
 // Sign-up details, sent just before a code is requested (stage "send") and again if sending
