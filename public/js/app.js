@@ -1411,6 +1411,107 @@ function viewGate(p) {
   mountAuth($('#gate-auth'), { mode: 'signup' });
 }
 
+// ---- coverage map (home page) ---------------------------------------------
+// States with a guide are marked, and states with predictor data more strongly. Hovering (or
+// focusing, or tapping) a state shows its name and the seats we hold figures for; a state with a
+// guide opens it on click. Boundaries: DataMeet (CC BY 4.0), built into /data/india-map.json.
+let mapShapes = null;
+const SMALL_AREA = ['Chandigarh', 'Delhi', 'Goa', 'Puducherry', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Sikkim', 'Tripura'];
+async function coverageMap(box) {
+  try {
+    [mapShapes, S.guideIndex] = await Promise.all([mapShapes || api('/data/india-map.json'), S.guideIndex || api('/api/guides')]);
+  } catch { box.remove(); return; }
+  if (!box.isConnected) return;
+  const { guides, seats } = S.guideIndex;
+  const kinds = seats?.kinds || {}, figures = seats?.states || {};
+  const withData = new Set(S.cfg.dataStates || []);
+  const info = Object.fromEntries(Object.keys(mapShapes.states).map(st => {
+    const gs = guides.filter(g => g.region === st), f = figures[st] || {};
+    const parts = Object.keys(kinds).filter(k => f[k]).map(k => [kinds[k], f[k]]);
+    return [st, { gs, parts, note: f.note || '', total: parts.reduce((n, [, v]) => n + v, 0),
+      level: withData.has(st) && gs.length ? 'data' : gs.length ? 'guide' : 'none' }];
+  }));
+  const covered = Object.keys(info).filter(st => info[st].level !== 'none').sort();
+  const tracked = Object.values(info).reduce((n, i) => n + i.total, 0);
+  const label = st => { const i = info[st]; return `${st}: ${i.total ? `${fmt(i.total)} seats in our data` : 'no seat figures yet'}${i.gs.length ? `, ${i.gs.length} guide${i.gs.length > 1 ? 's' : ''}` : ''}`; };
+  box.innerHTML = `
+    <div class="cov-in">
+      <div class="cov-copy">
+        <div class="eyebrow">Coverage · NEET-PG 2026</div>
+        <h2>${covered.length} states and union territories, on one map.</h2>
+        <p>Hover over or tap a state to see the seats we hold figures for. Marked states open their counselling guide.</p>
+        <div class="cov-figs">
+          <div><strong>${fmt(tracked)}</strong><span>PG seats in our data</span></div>
+          <div><strong>${fmt(guides.length)}</strong><span>counselling guides</span></div>
+        </div>
+        <ul class="cov-key">
+          <li><i class="k-data"></i>Guide and rank predictor</li>
+          <li><i class="k-guide"></i>Counselling guide</li>
+          <li><i class="k-none"></i>Seat figures only</li>
+        </ul>
+      </div>
+      <div class="cov-chips" aria-label="States with a guide">${covered.map(st =>
+        `<a href="/counselling/${esc(info[st].gs[0].slug)}" data-st="${esc(st)}" class="lv-${info[st].level}">${esc(st.replace('Dadra and Nagar Haveli and Daman and Diu', 'DNH & DD'))}</a>`).join('')}</div>
+      <div class="cov-map">
+        <svg viewBox="${mapShapes.viewBox}" role="group" aria-label="Map of India by state">
+          ${Object.entries(mapShapes.states).map(([st, d]) => {
+            const i = info[st], link = i.gs.length;
+            return `<path d="${d}" class="lv-${i.level}" data-st="${esc(st)}"${link ? ` tabindex="0" role="link" aria-label="${esc(label(st))}"` : ''}><title>${esc(label(st))}</title></path>`;
+          }).join('')}
+          ${SMALL_AREA.filter(st => mapShapes.centers[st]).map(st => { const [x, y] = mapShapes.centers[st];
+            return `<circle cx="${x}" cy="${y}" r="7" class="cov-hit" data-st="${esc(st)}" aria-hidden="true"/><circle cx="${x}" cy="${y}" r="2.6" class="cov-pin lv-${info[st].level}" data-st="${esc(st)}" aria-hidden="true"/>`; }).join('')}
+        </svg>
+        <div class="cov-tip" id="cov-tip" role="status" hidden></div>
+        <p class="cov-src">Boundaries: <a href="https://github.com/datameet/maps" target="_blank" rel="noopener">DataMeet</a> (CC BY 4.0).
+          Seat figures: state guides and the DNB, deemed and central seat matrices.</p>
+      </div>
+    </div>`;
+  const map = $('.cov-map', box), tip = $('#cov-tip', box);
+  let current = null, tapped = null;
+  const show = (st, x, y) => {
+    const i = info[st];
+    if (current !== st) {
+      current = st;
+      $$('[data-st]', box).forEach(el => el.classList.toggle('on', el.dataset.st === st));
+      tip.innerHTML = `
+        <b class="cov-tip-name">${esc(st)}</b>
+        <span class="cov-tip-tags">${i.level === 'data' ? '<em class="t-data">Rank predictor</em>' : ''}${i.gs.length ? `<em>${i.gs.length} guide${i.gs.length > 1 ? 's' : ''}</em>` : '<em class="t-none">Guide coming soon</em>'}</span>
+        <strong class="cov-tip-total">${i.total ? fmt(i.total) : '—'}<small>${i.total ? 'PG seats in our data' : 'no seat figures yet'}</small></strong>
+        ${i.parts.length ? `<dl>${i.parts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${fmt(v)}</dd></div>`).join('')}</dl>` : ''}
+        ${i.note ? `<p>${esc(i.note)}</p>` : ''}
+        ${i.gs.length ? `<span class="cov-tip-go">${matchMedia('(hover: none)').matches ? 'Tap again' : 'Click'} to open the guide ${icon.arrowR}</span>` : ''}`;
+      tip.hidden = false;
+    }
+    const r = map.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    let left = x - r.left + 16, top = y - r.top + 16;
+    if (left + w > r.width - 8) left = x - r.left - w - 16;
+    if (top + h > r.height - 8) top = Math.max(8, y - r.top - h - 16);
+    tip.style.transform = `translate(${Math.max(8, left)}px, ${Math.max(8, top)}px)`;
+  };
+  const hide = () => { current = tapped = null; tip.hidden = true; $$('.on', box).forEach(el => el.classList.remove('on')); };
+  const open = st => { const g = info[st]?.gs[0]; if (g) { track('map', { state: st }); location.href = `/counselling/${g.slug}`; } };
+  map.addEventListener('pointermove', e => {
+    if (e.pointerType === 'touch') return;
+    const st = e.target.closest?.('[data-st]')?.dataset.st;
+    st ? show(st, e.clientX, e.clientY) : hide();
+  });
+  map.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') hide(); });
+  map.addEventListener('click', e => {
+    const st = e.target.closest?.('[data-st]')?.dataset.st;
+    if (!st) { hide(); return; }
+    // On touch screens the first tap shows the card and the second opens the guide.
+    if (matchMedia('(hover: none)').matches && tapped !== st) { tapped = st; show(st, e.clientX, e.clientY); return; }
+    open(st);
+  });
+  const atCenter = st => { const el = $(`path[data-st="${CSS.escape(st)}"]`, map).getBoundingClientRect(); return [el.left + el.width / 2, el.top + el.height / 2]; };
+  map.addEventListener('focusin', e => { const st = e.target.dataset?.st; if (st) show(st, ...atCenter(st)); });
+  map.addEventListener('focusout', hide);
+  map.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset?.st) open(e.target.dataset.st); });
+  // The chip list mirrors the map: hovering a chip lights up its state.
+  $('.cov-chips', box).addEventListener('pointerover', e => { const st = e.target.closest('[data-st]')?.dataset.st; if (st) show(st, ...atCenter(st)); });
+  $('.cov-chips', box).addEventListener('pointerleave', hide);
+}
+
 function viewHome() {
   // Latest published dataset per state, so several years don't double count.
   const latest = kind => { const seen = new Set(); return (S.cfg.datasets || []).filter(d => d.kind === kind && !seen.has(d.state) && seen.add(d.state)); };
@@ -1443,6 +1544,8 @@ function viewHome() {
     <div class="stat"><span class="eyebrow">Seat groups</span><strong>${fmt(total(st, 'rows') + total(aq, 'rows'))}</strong><span>college × speciality × category cut-offs</span></div>
     <div class="stat"><span class="eyebrow">States with data</span><strong>${fmt(covered.length)}</strong><span>${esc(covered.join(', ') || '—')} · more being added</span></div>
   </div></section>
+
+  <section class="cov" id="coverage" aria-label="Coverage by state"><div class="cov-in"><div class="empty"><span class="spinner"></span></div></div></section>
 
   <section class="section">
     <div class="section-head">
@@ -1485,6 +1588,7 @@ function viewHome() {
     $('#home-auth').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
     $('#home-auth input')?.focus({ preventScroll: true });
   };
+  coverageMap($('#coverage'));
 }
 
 function viewMethod() {

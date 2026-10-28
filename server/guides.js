@@ -48,6 +48,16 @@ function validate(data) {
     if (from < prev) throw new Error(`${where}: stages must be in date order.`);
     prev = to;
   }
+  const kinds = Object.keys(data.seats?.kinds || {});
+  for (const [st, e] of Object.entries(data.seats?.states || {})) {
+    const where = `guides/guides.json, seats for "${st}"`;
+    if (!STATES.includes(st)) throw new Error(`${where}: not a state name from server/states.js.`);
+    for (const [k, v] of Object.entries(e)) {
+      if (k === 'note') continue;
+      if (!kinds.includes(k)) throw new Error(`${where}: "${k}" is not one of the seat kinds (${kinds.join(', ')}).`);
+      if (!Number.isInteger(v) || v < 0) throw new Error(`${where}: "${k}" must be a whole number.`);
+    }
+  }
   return data;
 }
 
@@ -57,6 +67,7 @@ export function guideList() {
 }
 export const compareTable = () => registry().compare || null;
 export const roadmap = () => registry().roadmap || null;
+export const stateSeats = () => registry().seats || null;
 
 // ---- pages ----------------------------------------------------------------
 const pages = new Map();

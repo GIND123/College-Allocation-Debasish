@@ -148,6 +148,25 @@ Big files a guide links to (scanned notices, PDFs) belong in `guides/assets/` an
 
 Guides may leave out the `<head>` and `<body>` tags (HTML allows it); the frame adds them where a browser would.
 
+## Coverage map (home page)
+
+The home page has a map of India with every state and union territory. States with a counselling guide are marked, and states that also have predictor data are marked more strongly. Hovering over a state (or tapping it on a phone, or focusing it with the keyboard) shows its name and the PG seats we hold figures for, broken down by source. Clicking a marked state opens its guide.
+
+The seat figures come from `"seats"` in `guides/guides.json`:
+
+```jsonc
+"seats": {
+  "kinds": { "mdms": "MD/MS (state guide)", "dnb": "DNB (Round 1 matrix)", "deemed": "Deemed universities", "central": "Central institutes" },
+  "states": {
+    "Bihar": { "mdms": 1034, "dnb": 177, "note": "386 government (state quota) + 648 private" }
+  }
+}
+```
+
+Each number is taken from a guide: the MD/MS total a state guide prints, and each state's seats in the DNB, deemed university and central institute seat matrices. When a guide or matrix is updated, update the matching numbers here. A state appears marked on the map as soon as it has a guide; no map change is needed.
+
+The boundaries in `public/data/india-map.json` are built from [DataMeet's India state boundaries](https://github.com/datameet/maps) (CC BY 4.0), which follow the Survey of India outline. The credit is shown under the map.
+
 ## Adding data without a developer
 
 Go to Admin → Datasets → **Upload data**. CSV and Excel files are accepted, and a template can be downloaded from the upload dialog. There are two file layouts:

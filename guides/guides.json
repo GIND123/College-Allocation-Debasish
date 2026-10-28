@@ -944,5 +944,147 @@
         ]
       }
     ]
+  },
+  "seats": {
+    "note": "Seats we hold figures for: the MD/MS total printed in a state's guide, and each state's seats in the DNB Round 1, deemed university and central institute seat matrices. Sources and years differ; see each guide.",
+    "kinds": {
+      "mdms": "MD/MS (state guide)",
+      "dnb": "DNB (Round 1 matrix)",
+      "deemed": "Deemed universities",
+      "central": "Central institutes"
+    },
+    "states": {
+      "Andhra Pradesh": {
+        "dnb": 312,
+        "deemed": 52
+      },
+      "Arunachal Pradesh": {
+        "dnb": 3
+      },
+      "Assam": {
+        "dnb": 122
+      },
+      "Bihar": {
+        "mdms": 1034,
+        "note": "386 government (state quota) + 648 private",
+        "dnb": 177
+      },
+      "Chandigarh": {
+        "dnb": 37
+      },
+      "Chhattisgarh": {
+        "mdms": 642,
+        "note": "378 government (190 of them All India Quota) + 264 private",
+        "dnb": 169
+      },
+      "Dadra and Nagar Haveli and Daman and Diu": {
+        "mdms": 46,
+        "note": "NAMO MERI, Silvassa; 23 of them All India Quota"
+      },
+      "Delhi": {
+        "dnb": 642,
+        "deemed": 49,
+        "central": 507
+      },
+      "Goa": {
+        "dnb": 13
+      },
+      "Gujarat": {
+        "dnb": 276,
+        "deemed": 207
+      },
+      "Haryana": {
+        "dnb": 421,
+        "deemed": 208
+      },
+      "Himachal Pradesh": {
+        "dnb": 14
+      },
+      "Jammu and Kashmir": {
+        "dnb": 279
+      },
+      "Jharkhand": {
+        "dnb": 150
+      },
+      "Karnataka": {
+        "dnb": 862,
+        "deemed": 1794
+      },
+      "Kerala": {
+        "mdms": 1695,
+        "note": "964 government + 731 self-financing (2025 figures)",
+        "dnb": 790,
+        "deemed": 133
+      },
+      "Ladakh": {
+        "dnb": 4
+      },
+      "Madhya Pradesh": {
+        "dnb": 158
+      },
+      "Maharashtra": {
+        "dnb": 1077,
+        "deemed": 1775
+      },
+      "Manipur": {
+        "mdms": 166,
+        "note": "RIMS Imphal; 83 of them All India Quota",
+        "dnb": 9
+      },
+      "Meghalaya": {
+        "dnb": 36
+      },
+      "Mizoram": {
+        "dnb": 7
+      },
+      "Nagaland": {
+        "dnb": 16
+      },
+      "Odisha": {
+        "dnb": 201,
+        "deemed": 459
+      },
+      "Puducherry": {
+        "mdms": 395,
+        "note": "Four colleges; 37 of them All India Quota",
+        "dnb": 59,
+        "deemed": 458
+      },
+      "Punjab": {
+        "dnb": 267
+      },
+      "Rajasthan": {
+        "mdms": 1898,
+        "note": "990 government, society and RUHS + 908 private",
+        "dnb": 380
+      },
+      "Sikkim": {
+        "dnb": 2
+      },
+      "Tamil Nadu": {
+        "dnb": 905,
+        "deemed": 1951
+      },
+      "Telangana": {
+        "dnb": 484,
+        "deemed": 296
+      },
+      "Tripura": {
+        "dnb": 14
+      },
+      "Uttar Pradesh": {
+        "dnb": 775,
+        "deemed": 155,
+        "central": 200
+      },
+      "Uttarakhand": {
+        "mdms": 483,
+        "note": "Provisional matrix: 300 state + 167 all-India open + 16 NRI",
+        "dnb": 41
+      },
+      "West Bengal": {
+        "dnb": 482
+      }
+    }
   }
 }
