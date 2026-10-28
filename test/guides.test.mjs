@@ -42,10 +42,10 @@ test("a guide's own web fonts are swapped for RankRound's, and nothing else chan
 });
 
 test('every guide page gets the RankRound frame without breaking the guide', () => {
-  for (const { slug, title } of guideList()) {
+  for (const { slug } of guideList()) {
     const html = guidePage(slug);
     assert.ok(html.includes(`data-guide="${slug}"`), `${slug}: tagged`);
-    assert.ok(html.includes(`<title>${title.replace(/&/g, '&amp;')} · RankRound</title>`), `${slug}: title`);
+    assert.equal(html.match(/<title>[^<]*<\/title>/)?.[0], '<title>RankRound</title>', `${slug}: the tab title is the brand only`);
     assert.ok(html.includes('class="rr-top"') && html.includes('class="rr-guidebar"') && html.includes('class="rr-foot"'), `${slug}: frame`);
     assert.ok(html.includes('/css/guide.css') && html.includes('/js/guide.js'), `${slug}: frame assets`);
     assert.match(html, /<div class="rr-nav"[^>]*>\s*<a href="\/predict">Intelligent prediction<\/a>\s*<a href="\/counselling" aria-current="page">Counselling guide<\/a>\s*<a href="\/method">Method<\/a>/, `${slug}: the three main tabs`);

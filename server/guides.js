@@ -229,7 +229,7 @@ function frame(src, g, all) {
     .replace(/<link\b[^>]*\bhref=["']https:\/\/fonts\.(?:googleapis|gstatic)\.com[^"']*["'][^>]*>\s*/gi, '') // RankRound's fonts replace the guide's
     .replace(/<meta\s+name=["']description["'][^>]*>\s*/gi, '')
     .replace(/(<style\b[^>]*>)([\s\S]*?)(<\/style>)/gi, (_, open, css, close) => open + siteFonts(followSiteTheme(css)) + close);
-  const title = `<title>${esc(g.title)} · RankRound</title>`;
+  const title = "<title>RankRound</title>"; // the tab shows the brand only; the guide title is in the page
   h = /<title>[\s\S]*?<\/title>/i.test(h) ? h.replace(/<title>[\s\S]*?<\/title>/i, title) : h.replace(/<\/head>/i, `${title}</head>`);
   h = h.replace(/<html\b/i, `<html data-guide="${g.slug}"`);
   h = h.replace(/<head\b[^>]*>/i, m => m + THEME_BOOT);
