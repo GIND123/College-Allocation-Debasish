@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uttarakhand PG Seats</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#1b2430; --muted:#5f6b7a; --line:#e3e7ec;
+  --accent:#0f6e6e; --accent-soft:#e3f2f1; --govt:#2557a7; --govt-soft:#e6eefb;
+  --pvt:#9a4d00; --pvt-soft:#fbefe2; --warn:#8a5a00; --warn-soft:#fff6dd;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161c; --card:#1a2129; --ink:#e7ecf1; --muted:#9aa6b3; --line:#2a333d;
+    --accent:#5cc4bd; --accent-soft:#16302f; --govt:#8db4ff; --govt-soft:#1a2740;
+    --pvt:#f0b070; --pvt-soft:#33240f; --warn:#f0c766; --warn-soft:#2f2710;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161c; --card:#1a2129; --ink:#e7ecf1; --muted:#9aa6b3; --line:#2a333d;
+  --accent:#5cc4bd; --accent-soft:#16302f; --govt:#8db4ff; --govt-soft:#1a2740;
+  --pvt:#f0b070; --pvt-soft:#33240f; --warn:#f0c766; --warn-soft:#2f2710;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px;line-height:1.25}
+.sub{color:var(--muted);margin:0 0 18px;font-size:.92rem}
+h2{font-size:1.1rem;margin:28px 0 10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.card .n{font-size:1.6rem;font-weight:700;line-height:1.1}
+.card .l{color:var(--muted);font-size:.82rem}
+.filters{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;margin-top:16px;border-bottom:1px solid var(--line)}
+.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+label{display:block;font-size:.75rem;color:var(--muted);margin-bottom:2px}
+select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:.9rem}
+.reset{margin-top:8px;background:none;border:none;color:var(--accent);font:inherit;font-size:.85rem;cursor:pointer;padding:0}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;background:var(--card)}
+tr:last-child td{border-bottom:none}
+tfoot td{font-weight:700;border-top:2px solid var(--line)}
+td.tot{font-weight:700}
+.zero{color:var(--line)}
+.tag{display:inline-block;font-size:.7rem;font-weight:600;padding:1px 6px;border-radius:5px;margin-left:6px;vertical-align:1px}
+.tag.Govt{background:var(--govt-soft);color:var(--govt)}
+.tag.Private{background:var(--pvt-soft);color:var(--pvt)}
+.hint{color:var(--muted);font-size:.85rem;margin:0 0 10px}
+.seats{display:grid;gap:8px}
+.seat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.seat .b{font-weight:600}
+.seat .c{color:var(--muted);font-size:.82rem}
+.seat .cat{text-align:right;font-size:.82rem;white-space:nowrap}
+.pill{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:600;border-radius:6px;padding:1px 7px}
+.count{font-weight:600;margin:0 0 8px}
+.notes{background:var(--warn-soft);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.notes li{margin:6px 0;font-size:.9rem}
+.notes ul{margin:0;padding-left:18px}
+footer{color:var(--muted);font-size:.8rem;margin-top:24px}
+@media (max-width:480px){th,td{padding:7px 6px}.card .n{font-size:1.35rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Uttarakhand NEET-PG 2026 Seat Matrix</h1>
+  <p class="sub">State centralised counselling · Academic session 2026–27 · Provisional</p>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="filters">
+    <div class="frow">
+      <div><label for="fType">College type</label><select id="fType"></select></div>
+      <div><label for="fCollege">College</label><select id="fCollege"></select></div>
+      <div><label for="fBranch">Branch</label><select id="fBranch"></select></div>
+      <div><label for="fQuota">Quota</label><select id="fQuota"></select></div>
+    </div>
+    <button class="reset" id="reset">Clear filters</button>
+  </div>
+
+  <h2>Seats by branch</h2>
+  <div class="box"><table id="tBranch"></table></div>
+
+  <h2>Seats by college</h2>
+  <div class="box"><table id="tCollege"></table></div>
+
+  <h2>State quota seat finder</h2>
+  <p class="hint">Every state quota seat has one roster category. Pick a category to see exactly which seats a candidate can compete for. The filters above apply here too.</p>
+  <div class="frow" style="margin-bottom:12px">
+    <div><label for="fCat">Category</label><select id="fCat"></select></div>
+    <div><label for="fSub">Sub-category</label><select id="fSub"></select></div>
+  </div>
+  <p class="count" id="seatCount"></p>
+  <div class="seats" id="seatList"></div>
+
+  <h2>Notes</h2>
+  <div class="notes"><ul>
+    <li>All figures are <b>provisional</b> and may change after final NMC approval.</li>
+    <li><b>SGRR All-India Open:</b> the PDF prints a total of 68, but its rows add up to 88. This page uses 88.</li>
+    <li><b>SGRR NRI:</b> OBG and Paediatrics each list 2 seats but only 1 "Recognized". This page counts 2 each (16 total, as printed).</li>
+    <li><b>All-India Open</b> here means the private colleges' open seats in state counselling. Government colleges' All-India seats are filled through MCC and are not included.</li>
+    <li><b>VCSG Srinagar in-service seats</b> (UK PMHS doctors only, not counted above): Diploma ENT (DLO) – UR Open; Diploma TB &amp; Chest – UR UK Women; DNB General Surgery ×2 – UR UK Women, SC UK Women; DNB Orthopaedics – UR Open.</li>
+    <li>Spelling slips in the PDF (e.g. "OPRN", "OEPN", "UK OPEN") are treated as <b>Open</b>. Repeated seat numbers in the PDF (HIMS Anatomy, GBCM Ophthalmology, Almora Paediatrics) are kept as separate seats.</li>
+    <li>DPW, FF and other sub-category rules are set by the Uttarakhand roster order (G.O. 124, 22 May 2020). Check the official brochure for eligibility.</li>
+  </ul></div>
+
+  <footer>Source: Uttarakhand State NEET-PG Centralised Counselling 2026 provisional seat matrices (All-India Open, State Quota, NRI Quota).</footer>
+</div>
+
+<script>
+const BR = {
+  AN:"Anatomy", BC:"Biochemistry", PH:"Physiology", CM:"Community Medicine", FM:"Forensic Medicine",
+  MI:"Microbiology", PA:"Pathology", PC:"Pharmacology", AS:"Anaesthesiology", DV:"Dermatology (DVL)",
+  EM:"Emergency Medicine", EN:"ENT", IH:"Immuno-Haematology & Blood Transfusion", GM:"General Medicine",
+  GS:"General Surgery", OG:"Obstetrics & Gynaecology", OP:"Ophthalmology", OR:"Orthopaedics",
+  PD:"Paediatrics", PS:"Psychiatry", RD:"Radiodiagnosis", RO:"Radiation Oncology", RM:"Respiratory Medicine"
+};
+const SUB = {O:"Open", W:"UK Women", P:"PwD", D:"DPW", R:"Orphan", F:"FF"};
+const COLLEGES = [
+  {id:"SGRR", name:"Shri Guru Ram Rai Institute of Medical & Health Sciences, Dehradun", short:"SGRR, Dehradun", type:"Private"},
+  {id:"HIMS", name:"Himalayan Institute of Medical Sciences, Jolly Grant, Dehradun", short:"HIMS, Jolly Grant", type:"Private"},
+  {id:"GMCH", name:"Government Medical College, Haldwani", short:"GMC Haldwani", type:"Govt"},
+  {id:"DOON", name:"Government Doon Medical College, Dehradun", short:"Doon MC, Dehradun", type:"Govt"},
+  {id:"GBCM", name:"Gautam Buddha Chikitsa Mahavidyalaya, Dehradun", short:"GBCM, Dehradun", type:"Private"},
+  {id:"SSJA", name:"Soban Singh Jeena Govt. Institute of Medical Science & Research, Almora", short:"SSJ Almora", type:"Govt"},
+  {id:"VCSG", name:"Veer Chandra Singh Garhwali Govt. Institute of Medical Science & Research, Srinagar", short:"VCSG Srinagar", type:"Govt"}
+];
+const CMAP = Object.fromEntries(COLLEGES.map(c=>[c.id,c]));
+
+/* State quota: roster,branch,category,sub-category */
+const STATE = {
+GMCH:"69,AN,OBC,O;70,AN,EWS,O;71,BC,SC,W;72,BC,ST,O;73,PH,UR,W;74,CM,UR,R;75,MI,UR,F;76,PA,SC,O;77,PA,OBC,O;78,PA,UR,W;79,PA,UR,P;80,PC,EWS,W;81,PC,SC,D;82,PC,UR,D;83,AS,UR,W;84,AS,OBC,W;85,AS,UR,O;86,AS,SC,W;87,DV,UR,O;88,EN,UR,O;89,EN,UR,W;90,GM,EWS,O;91,GM,OBC,O;92,GM,UR,O;93,GM,SC,R;94,GM,UR,O;95,GM,UR,W;96,GS,ST,O;97,GS,UR,O;98,GS,OBC,O;99,GS,UR,O;100,OG,EWS,O;01,OG,SC,O;02,OG,UR,W;03,OG,UR,O;04,OP,UR,O;05,OR,UR,O;06,PD,SC,O;07,PD,OBC,O;08,PD,UR,W;09,RO,UR,O;10,RM,EWS,W",
+VCSG:"61,AN,SC,W;62,AN,UR,O;63,PH,OBC,W;64,CM,UR,O;65,CM,UR,W;66,FM,SC,O;67,FM,UR,O;68,MI,UR,D;69,PA,OBC,O;70,PA,EWS,O;71,PC,SC,O;72,AS,ST,O;73,AS,UR,W;74,OG,UR,R;75,OP,UR,O;76,PD,SC,O;77,PD,OBC,O",
+DOON:"28,AN,OBC,D;29,BC,UR,O;30,PH,EWS,O;31,PH,SC,P;32,CM,UR,O;33,FM,UR,W;34,FM,UR,O;35,MI,OBC,R;36,MI,SC,O;37,PA,UR,O;38,PA,UR,O;39,PA,UR,W;40,PC,EWS,W;41,PC,SC,W;42,AS,OBC,O;43,AS,UR,P;44,AS,UR,O;45,AS,UR,W;46,AS,SC,O;47,EN,UR,O;48,GM,ST,O;49,GM,OBC,W;50,GS,EWS,O;51,GS,SC,O;52,GS,UR,D;53,OG,UR,W;54,OG,OBC,P;55,OG,UR,R;56,OG,SC,W;57,OG,UR,O;58,OP,UR,O;59,OP,UR,W;60,OR,EWS,O;61,PD,SC,O;62,PD,UR,O;63,PD,OBC,O;64,PD,UR,O;65,RM,UR,W",
+SSJA:"18,AN,UR,O;19,AN,OBC,O;20,PH,EWS,O;21,FM,SC,O;22,FM,UR,O;23,MI,UR,O;24,MI,ST,O;25,PA,UR,W;26,PC,SC,O;27,PC,UR,O;28,AS,OBC,W;29,GM,UR,O;30,OG,EWS,O;31,OP,SC,W;32,OR,UR,W;33,PD,UR,O;34,PD,UR,O;35,RM,OBC,W",
+HIMS:"10,AN,UR,O;11,AN,SC,O;12,BC,UR,O;13,PH,UR,W;14,PH,OBC,W;15,CM,UR,O;16,CM,SC,O;17,MI,UR,D;18,PA,UR,W;19,PA,OBC,O;20,PA,UR,R;21,PA,SC,W;22,PC,UR,O;23,PC,UR,O;24,AS,ST,O;25,AS,UR,W;26,AS,SC,D;27,AS,UR,O;28,AS,OBC,O;29,AS,UR,O;30,DV,UR,W;31,EM,SC,R;32,EN,UR,O;33,EN,UR,P;34,IH,UR,W;35,GM,OBC,W;36,GM,SC,O;37,GM,UR,F;38,GM,UR,O;39,GM,UR,O;40,GM,UR,W;41,GM,SC,W;42,GM,OBC,O;43,GS,UR,O;44,GS,UR,O;45,GS,UR,W;46,GS,SC,O;47,GS,UR,O;48,GS,ST,W;49,GS,OBC,P;50,OG,UR,O;51,OG,SC,O;52,OG,UR,W;53,OP,UR,D;54,OP,OBC,W;55,OR,UR,R;56,OR,SC,W;57,OR,UR,O;58,PD,UR,W;59,PD,UR,O;60,PD,UR,O;61,PD,SC,O;62,PD,UR,W;63,PD,OBC,F;64,PD,UR,O;65,PS,UR,O;66,PS,SC,O;67,RD,UR,W;68,RD,UR,O;69,RD,OBC,O;70,RD,UR,O;71,RD,SC,W;72,RO,ST,O;73,RM,UR,O;74,RM,UR,W",
+SGRR:"50,AN,UR,O;51,AN,SC,O;52,AN,UR,O;53,BC,UR,O;54,BC,OBC,F;55,BC,UR,W;56,PH,SC,W;57,PH,UR,O;58,PH,UR,O;59,CM,UR,W;60,CM,UR,O;61,CM,SC,O;62,CM,UR,D;63,CM,OBC,O;64,MI,UR,W;65,MI,UR,R;66,MI,SC,O;67,MI,UR,O;68,PA,UR,O;69,PA,OBC,O;70,PA,UR,W;71,PA,SC,O;72,PA,ST,O;73,PA,UR,O;74,PC,UR,O;75,PC,UR,W;76,PC,SC,W;77,AS,OBC,W;78,AS,UR,O;79,AS,UR,P;80,AS,UR,W;81,AS,SC,P;82,AS,UR,F;83,AS,UR,O;84,AS,OBC,O;85,AS,UR,O;86,AS,SC,O;87,AS,UR,W;88,AS,UR,O;89,DV,UR,O;90,DV,UR,W;91,EM,OBC,O;92,EM,UR,O;93,EN,SC,W;94,EN,UR,O;95,EN,UR,W;96,EN,ST,W;97,EN,UR,D;98,GM,OBC,W;99,GM,UR,R;100,GM,UR,O;01,GM,SC,O;02,GM,UR,W;03,GM,UR,O;04,GM,UR,O;05,GM,UR,W;06,GM,SC,D;07,GM,OBC,O;08,GS,UR,O;09,GS,UR,O;10,GS,UR,W;11,GS,SC,W;12,GS,UR,O;13,GS,UR,O;14,GS,OBC,O;15,GS,UR,O;16,GS,SC,R;17,GS,UR,W;18,OG,UR,P;19,OG,OBC,W;20,OG,UR,O;21,OG,SC,O;22,OG,UR,W;23,OP,UR,O;24,OP,ST,O;25,OP,UR,D;26,OP,SC,O;27,OP,UR,W;28,OR,OBC,D;29,OR,UR,R;30,OR,UR,O;31,OR,SC,W;32,OR,UR,W;33,PD,UR,O;34,PD,UR,O;35,PD,OBC,R;36,PD,SC,O;37,PD,UR,W;38,PS,UR,O;39,PS,UR,O;40,PS,UR,W;41,PS,SC,O;42,PS,OBC,O;43,RD,UR,O;44,RD,UR,O;45,RD,UR,O;46,RD,SC,W;47,RD,UR,W;48,RD,ST,O;49,RD,OBC,W;50,RD,UR,R;51,RO,SC,O;52,RM,UR,F;53,RM,UR,W",
+GBCM:"16,AS,SC,W;17,AS,UR,O;18,DV,UR,O;19,GM,OBC,O;20,GM,UR,W;21,GS,SC,O;22,OG,UR,O;23,OG,UR,O;24,OP,ST,O;25,OP,UR,W;26,OR,SC,O;27,OR,UR,O;28,PD,OBC,W;29,PD,UR,O;30,PD,UR,W;31,RD,SC,O"
+};
+/* All-India Open and NRI: branch code + seat count */
+const AIQ = {
+HIMS:"AN1 BC2 PH2 CM1 MI2 PA4 PC1 AS6 DV2 EM1 EN2 IH2 GM7 GS8 OG3 OP3 OR3 PD6 PS1 RD5 RO2 RM2",
+SGRR:"AN3 BC2 PH3 CM5 MI5 PA7 PC3 AS11 DV2 EM2 EN4 GM8 GS8 OG3 OP3 OR4 PD3 PS3 RD6 RO1 RM2",
+GBCM:"AS2 DV1 GM1 GS1 OG2 OP2 OR2 PD1 RD1"
+};
+const NRI = { SGRR:"AS1 DV1 GM2 GS2 OG2 OP1 OR1 PD2 PS1 RD2 RM1" };
+
+const QUOTAS = ["AIQ","State","NRI"];
+const QLABEL = {AIQ:"All-India Open", State:"State", NRI:"NRI"};
+
+/* Build one flat list of seats */
+const seats = [];
+for (const [c,str] of Object.entries(STATE)) {
+  for (const s of str.split(";")) {
+    const [r,b,cat,sub] = s.split(",");
+    seats.push({q:"State", c, b, r, cat, sub});
+  }
+}
+for (const [q,src] of [["AIQ",AIQ],["NRI",NRI]]) {
+  for (const [c,str] of Object.entries(src)) {
+    for (const tok of str.split(" ")) {
+      const b = tok.slice(0,2), n = +tok.slice(2);
+      for (let i=0;i<n;i++) seats.push({q, c, b});
+    }
+  }
+}
+
+const $ = id => document.getElementById(id);
+function fill(sel, opts){ sel.innerHTML = opts.map(([v,t])=>`<option value="${v}">${t}</option>`).join(""); }
+fill($("fType"), [["","All"],["Govt","Government"],["Private","Private"]]);
+fill($("fCollege"), [["","All colleges"], ...COLLEGES.map(c=>[c.id,c.short])]);
+fill($("fBranch"), [["","All branches"], ...Object.entries(BR).sort((a,b)=>a[1].localeCompare(b[1]))]);
+fill($("fQuota"), [["","All quotas"], ...QUOTAS.map(q=>[q,QLABEL[q]])]);
+fill($("fCat"), [["","All categories"], ...["UR","OBC","SC","ST","EWS"].map(x=>[x,x])]);
+fill($("fSub"), [["","All sub-categories"], ...Object.entries(SUB)]);
+
+const F = () => ({type:$("fType").value, col:$("fCollege").value, br:$("fBranch").value, q:$("fQuota").value, cat:$("fCat").value, sub:$("fSub").value});
+const pass = (s,f,skip={}) =>
+  (!f.type || CMAP[s.c].type===f.type) &&
+  (skip.col || !f.col || s.c===f.col) &&
+  (skip.br || !f.br || s.b===f.br) &&
+  (!f.q || s.q===f.q);
+
+function cell(n){ return n ? n : `<span class="zero">–</span>`; }
+
+function render(){
+  const f = F();
+  // cards
+  const all = seats.filter(s=>pass(s,f));
+  const govt = all.filter(s=>CMAP[s.c].type==="Govt").length;
+  const cnt = q => all.filter(s=>s.q===q).length;
+  $("cards").innerHTML = [
+    [all.length,"Total MD/MS seats"],[govt,"Government"],[all.length-govt,"Private"],
+    [cnt("AIQ"),"All-India Open"],[cnt("State"),"State quota"],[cnt("NRI"),"NRI quota"]
+  ].map(([n,l])=>`<div class="card"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+
+  // branch table (ignores branch filter)
+  const bs = seats.filter(s=>pass(s,f,{br:true}));
+  const byB = {};
+  for (const s of bs){ (byB[s.b] ??= {AIQ:0,State:0,NRI:0,T:0}); byB[s.b][s.q]++; byB[s.b].T++; }
+  const bRows = Object.entries(byB).sort((a,b)=>b[1].T-a[1].T || BR[a[0]].localeCompare(BR[b[0]]));
+  const sum = q => bRows.reduce((a,[,v])=>a+v[q],0);
+  $("tBranch").innerHTML =
+    `<thead><tr><th>Branch</th><th>AIQ</th><th>State</th><th>NRI</th><th>Total</th></tr></thead><tbody>` +
+    (bRows.length ? bRows.map(([b,v])=>`<tr${f.br===b?' style="background:var(--accent-soft)"':''}><td>${BR[b]}</td><td>${cell(v.AIQ)}</td><td>${cell(v.State)}</td><td>${cell(v.NRI)}</td><td class="tot">${v.T}</td></tr>`).join("")
+      : `<tr><td colspan="5">No seats match these filters.</td></tr>`) +
+    `</tbody><tfoot><tr><td>Total</td><td>${sum("AIQ")}</td><td>${sum("State")}</td><td>${sum("NRI")}</td><td>${sum("T")}</td></tr></tfoot>`;
+
+  // college table (ignores college filter)
+  const cs = seats.filter(s=>pass(s,f,{col:true}));
+  const byC = {};
+  for (const s of cs){ (byC[s.c] ??= {AIQ:0,State:0,NRI:0,T:0}); byC[s.c][s.q]++; byC[s.c].T++; }
+  const cRows = Object.entries(byC).sort((a,b)=>b[1].T-a[1].T);
+  const csum = q => cRows.reduce((a,[,v])=>a+v[q],0);
+  $("tCollege").innerHTML =
+    `<thead><tr><th>College</th><th>AIQ</th><th>State</th><th>NRI</th><th>Total</th></tr></thead><tbody>` +
+    (cRows.length ? cRows.map(([c,v])=>`<tr${f.col===c?' style="background:var(--accent-soft)"':''}><td title="${CMAP[c].name}">${CMAP[c].short}<span class="tag ${CMAP[c].type}">${CMAP[c].type}</span></td><td>${cell(v.AIQ)}</td><td>${cell(v.State)}</td><td>${cell(v.NRI)}</td><td class="tot">${v.T}</td></tr>`).join("")
+      : `<tr><td colspan="5">No seats match these filters.</td></tr>`) +
+    `</tbody><tfoot><tr><td>Total</td><td>${csum("AIQ")}</td><td>${csum("State")}</td><td>${csum("NRI")}</td><td>${csum("T")}</td></tr></tfoot>`;
+
+  // seat finder (state quota only)
+  if (f.q && f.q!=="State"){
+    $("seatCount").textContent = "Roster categories exist only for State quota seats. Set Quota to “All quotas” or “State”.";
+    $("seatList").innerHTML = ""; return;
+  }
+  const list = seats.filter(s=>s.q==="State" && pass(s,f) && (!f.cat||s.cat===f.cat) && (!f.sub||s.sub===f.sub))
+    .sort((a,b)=>BR[a.b].localeCompare(BR[b.b]) || CMAP[a.c].short.localeCompare(CMAP[b.c].short));
+  $("seatCount").textContent = `${list.length} state quota seat${list.length===1?"":"s"}`;
+  $("seatList").innerHTML = list.map(s=>`<div class="seat"><div><div class="b">${BR[s.b]}</div><div class="c">${CMAP[s.c].short} · Roster ${s.r}</div></div><div class="cat"><span class="pill">${s.cat}</span><div class="c">${SUB[s.sub]}</div></div></div>`).join("");
+}
+
+["fType","fCollege","fBranch","fQuota","fCat","fSub"].forEach(id=>$(id).addEventListener("change",render));
+$("reset").addEventListener("click",()=>{["fType","fCollege","fBranch","fQuota","fCat","fSub"].forEach(id=>$(id).value="");render();});
+render();
+</script>
+</body>
+</html>

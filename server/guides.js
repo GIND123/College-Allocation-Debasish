@@ -126,14 +126,17 @@ export function followSiteTheme(css) {
 }
 
 // The guides' own web fonts aren't loaded (RankRound's are), so a font named directly in a
-// guide's CSS is swapped for RankRound's equivalent. Only font declarations are touched.
+// guide's CSS is swapped for RankRound's equivalent. Only font declarations are touched, and
+// custom properties holding a font list (--display: "Archivo", sans-serif).
 const FONT_SWAPS = [
   [/(["']?)\b(?:JetBrains Mono|IBM Plex Mono)\b\1/g, '"Geist Mono"'],
   [/(["']?)\b(?:Fraunces|Literata|Bricolage Grotesque)\b\1/g, '"Source Serif 4"'],
-  [/(["']?)\b(?:Inter|Figtree|IBM Plex Sans|Source Sans 3|Public Sans)\b\1/g, 'Geist']
+  [/(["']?)\b(?:Inter|Figtree|IBM Plex Sans|Source Sans 3|Public Sans|Archivo)\b\1/g, 'Geist']
 ];
-export const siteFonts = css => css.replace(/(\bfont(?:-family)?\s*:\s*)([^;}]+)/gi,
-  (_, prop, value) => prop + FONT_SWAPS.reduce((v, [re, to]) => v.replace(re, to), value));
+const GENERIC_FAMILY = /\b(?:serif|sans-serif|monospace|system-ui|ui-monospace|ui-sans-serif|ui-serif)\b/;
+export const siteFonts = css => css.replace(/(\bfont(?:-family)?\s*:\s*|--[\w-]+\s*:\s*)([^;}]+)/gi,
+  (all, prop, value) => prop.startsWith('--') && !GENERIC_FAMILY.test(value) ? all
+    : prop + FONT_SWAPS.reduce((v, [re, to]) => v.replace(re, to), value));
 
 const noticeDate = iso => new Date(`${iso}T00:00:00+05:30`)
   .toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
@@ -187,8 +190,31 @@ const FOOT = `
 <script type="module" src="/js/guide.js"></script>
 `;
 
+// <head> and <body> tags are optional in HTML, and some guides leave them out (CENTAC). They are
+// added where a browser would put them, so the frame always has the same places to go: the body
+// starts at the first tag that can't be in the head.
+const HEAD_TAGS = new Set(['html', 'head', 'meta', 'title', 'link', 'style', 'script', 'base', 'noscript', 'template']);
+function withHeadAndBody(h) {
+  if (/<\/head>/i.test(h) && /<body\b/i.test(h)) return h;
+  const tag = /<!--[\s\S]*?-->|<!doctype[^>]*>|<(\/?)([a-z][\w-]*)[^>]*>/gi;
+  let at = h.length, m;
+  while ((m = tag.exec(h))) {
+    if (!m[2]) continue;
+    const name = m[2].toLowerCase();
+    if (!m[1] && (name === 'style' || name === 'script')) { // skip their contents, which may contain "<"
+      const end = h.toLowerCase().indexOf(`</${name}`, tag.lastIndex);
+      tag.lastIndex = end < 0 ? h.length : end;
+      continue;
+    }
+    if (!m[1] && !HEAD_TAGS.has(name)) { at = m.index; break; }
+  }
+  const head = /<head\b/i.test(h) ? '' : '<head>';
+  h = `${h.slice(0, at)}${/<\/head>/i.test(h) ? '' : '</head>'}${/<body\b/i.test(h) ? '' : '<body>'}${h.slice(at)}`;
+  return head ? h.replace(/<html\b[^>]*>/i, x => x + head) : h;
+}
+
 function frame(src, g, all) {
-  let h = src
+  let h = withHeadAndBody(src)
     .replace(/<link\b[^>]*\bhref=["']https:\/\/fonts\.(?:googleapis|gstatic)\.com[^"']*["'][^>]*>\s*/gi, '') // RankRound's fonts replace the guide's
     .replace(/<meta\s+name=["']description["'][^>]*>\s*/gi, '')
     .replace(/(<style\b[^>]*>)([\s\S]*?)(<\/style>)/gi, (_, open, css, close) => open + siteFonts(followSiteTheme(css)) + close);

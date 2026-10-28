@@ -146,6 +146,8 @@ No iframes are involved, so each guide scrolls, searches and jumps between secti
 
 Big files a guide links to (scanned notices, PDFs) belong in `guides/assets/` and are linked as `/counselling/assets/<file>`, rather than embedded in the page.
 
+Guides may leave out the `<head>` and `<body>` tags (HTML allows it); the frame adds them where a browser would.
+
 ## Adding data without a developer
 
 Go to Admin → Datasets → **Upload data**. CSV and Excel files are accepted, and a template can be downloaded from the upload dialog. There are two file layouts:

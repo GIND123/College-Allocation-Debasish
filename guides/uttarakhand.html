@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uttarakhand NEET PG 2026</title>
+<style>
+:root{
+  --bg:#f7f6f2;--card:#ffffff;--ink:#1d2421;--muted:#5f6b66;--line:#e2e0d8;
+  --accent:#0f6b5c;--accent-soft:#e3f1ed;--warn:#9a4a0b;--warn-soft:#fbefe2;
+  --good:#1f7a3a;--good-soft:#e5f4e8;--chip:#efede6;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141917;--card:#1c2320;--ink:#e8ece9;--muted:#9aa7a1;--line:#2c3531;
+  --accent:#5cc4ae;--accent-soft:#1d3530;--warn:#f0a35e;--warn-soft:#382718;
+  --good:#7fd394;--good-soft:#1c3324;--chip:#252d29;}}
+:root[data-theme="dark"]{
+  --bg:#141917;--card:#1c2320;--ink:#e8ece9;--muted:#9aa7a1;--line:#2c3531;
+  --accent:#5cc4ae;--accent-soft:#1d3530;--warn:#f0a35e;--warn-soft:#382718;
+  --good:#7fd394;--good-soft:#1c3324;--chip:#252d29;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 64px}
+header{padding:28px 0 12px}
+.kicker{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:28px;line-height:1.2;margin:6px 0 8px}
+h2{font-size:21px;margin:0 0 12px}
+h3{font-size:16px;margin:16px 0 6px}
+p{margin:0 0 10px}
+.muted{color:var(--muted);font-size:14px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px;padding:10px 16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;padding:6px 12px;border-radius:999px;background:var(--chip);color:var(--ink);text-decoration:none;font-size:14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px;scroll-margin-top:60px}
+.alert{background:var(--warn-soft);border:1px solid var(--warn);color:var(--ink);border-radius:12px;padding:12px 14px;margin-top:12px;font-size:15px}
+.alert b{color:var(--warn)}
+ul{padding-left:20px;margin:6px 0 10px}
+li{margin:4px 0}
+.tl{list-style:none;padding:0;margin:0}
+.tl li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tl li:last-child{border-bottom:0}
+.dot{flex:0 0 12px;height:12px;border-radius:50%;margin-top:6px;background:var(--line)}
+.tl .done .dot{background:var(--muted)}
+.tl .done{opacity:.6}
+.tl .now .dot{background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.tl .when{font-size:14px;color:var(--muted)}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:middle}
+.tag.now{background:var(--accent-soft);color:var(--accent)}
+.tag.done{background:var(--chip);color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+td.n,th.n{text-align:right;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+label.sel{display:block;font-weight:600;margin-bottom:6px}
+select{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start;margin:12px 0 4px;font-size:15px}
+.check input{margin-top:4px;width:18px;height:18px}
+.cards{display:grid;gap:10px;margin-top:14px}
+.c{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.c.best{border-color:var(--good);background:var(--good-soft)}
+.c .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.c .name{font-weight:700}
+.c .type{font-size:12px;color:var(--muted)}
+.c .big{font-size:20px;font-weight:700}
+.c .row{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin-top:4px}
+.c .row b{color:var(--ink)}
+.c .note{font-size:13px;color:var(--muted);margin-top:6px}
+.c.na{opacity:.6}
+.best-tag{font-size:12px;font-weight:700;color:var(--good)}
+.grid2{display:grid;gap:10px}
+@media(min-width:600px){.grid2{grid-template-columns:1fr 1fr}}
+.box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.box h3{margin-top:0}
+.contact{border-bottom:1px solid var(--line);padding:12px 0}
+.contact:last-child{border-bottom:0}
+.contact .cn{font-weight:700}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.btns a{font-size:14px;text-decoration:none;padding:6px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.flags li{margin:8px 0}
+footer{margin-top:24px;font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Student guide · Session 2026–27</div>
+  <h1>Uttarakhand NEET PG 2026 State Counselling</h1>
+  <p class="muted">Plain-language summary of the official bulletin and college fee sheets from HNB Uttarakhand Medical Education University (HNBUMU). Always confirm on <a href="https://www.hnbumu.ac.in" target="_blank" rel="noopener">hnbumu.ac.in</a> — the board can change rules and dates at any time.</p>
+  <div class="alert" id="liveAlert"><b>Heads up:</b> checking dates…</div>
+</header>
+
+<nav>
+  <a href="#dates">Dates</a><a href="#eligible">Who can apply</a><a href="#colleges">Colleges</a>
+  <a href="#costs">Cost calculator</a><a href="#bond">Bond</a><a href="#rules">Rules</a>
+  <a href="#reservation">Reservation</a><a href="#docs">Documents</a><a href="#contacts">Contacts</a><a href="#check">Double-check</a>
+</nav>
+
+<section id="dates">
+  <h2>Round 1 dates</h2>
+  <ul class="tl" id="timeline"></ul>
+  <p class="muted" style="margin-top:10px">Registration fee: ₹8,000 for every category. Round 2 and 3 dates will be announced later; fresh registration may be allowed in Round 2.</p>
+</section>
+
+<section id="eligible">
+  <h2>Who can apply</h2>
+  <div class="grid2">
+    <div class="box">
+      <h3>State quota seats</h3>
+      <ul>
+        <li>Indian citizen</li>
+        <li>MBBS from a medical college <b>in Uttarakhand</b></li>
+        <li>Qualified NEET PG 2026</li>
+        <li>Internship finished by <b>30 Sep 2026</b> — no exceptions</li>
+        <li>NMC / State Medical Council registration</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>All-India open quota (private colleges only)</h3>
+      <ul>
+        <li>MBBS from any NMC-recognised college</li>
+        <li>Same NEET, internship and registration rules</li>
+        <li>No caste reservation on these seats</li>
+        <li>State-quota candidates can apply here too</li>
+      </ul>
+    </div>
+  </div>
+  <ul>
+    <li><b>Not eligible:</b> anyone currently doing a PG course in Uttarakhand, until they finish it.</li>
+    <li><b>In-service PMHS doctors:</b> separate Diploma / DNB seats at Srinagar, with NOC from DG Health.</li>
+    <li><b>NRI quota:</b> 15% of SGRR's all-India seats, per the bulletin.</li>
+    <li>Domicile certificate is needed to claim reservation benefits.</li>
+  </ul>
+</section>
+
+<section id="colleges">
+  <h2>The 7 colleges</h2>
+  <div class="tablewrap"><table>
+    <tr><th>College</th><th>Type</th><th>Tuition range / yr</th></tr>
+    <tr><td>Govt Medical College, Haldwani</td><td>Govt</td><td>₹60k – ₹5 L</td></tr>
+    <tr><td>Govt Doon Medical College, Dehradun</td><td>Govt</td><td>₹60k – ₹5 L</td></tr>
+    <tr><td>VCSG Govt Institute, Srinagar (Garhwal)</td><td>Govt</td><td>₹60k – ₹5 L*</td></tr>
+    <tr><td>SSJ Govt Institute, Almora</td><td>Govt</td><td>₹60k – ₹5 L*</td></tr>
+    <tr><td>Himalayan Institute (HIMS), Jolly Grant</td><td>Private</td><td>Free† – ₹30 L</td></tr>
+    <tr><td>SGRR Institute, Dehradun</td><td>Private</td><td>Free – ₹32 L</td></tr>
+    <tr><td>Gautam Buddha CM (GBCM), Dehradun</td><td>Private</td><td>₹17 – ₹31 L</td></tr>
+  </table></div>
+  <p class="muted">*Government tuition is fixed by state order and is the same at all four. Srinagar and Almora fee sheets with hostel charges were not published with these documents. †HIMS non-clinical branches show ₹5 L with "full scholarship".</p>
+  <p class="muted">The seat matrix (which branches each college has, and how many seats) is published separately — check it before choice filling.</p>
+</section>
+
+<section id="costs">
+  <h2>Cost calculator by branch</h2>
+  <p class="muted">Estimates from each college's 2026–27 fee sheet. Includes tuition, hostel, admission and other listed fees. Refundable security deposits are included in the totals. Electricity, books and HIMS mess are not.</p>
+  <label class="sel" for="branch">Choose a branch</label>
+  <select id="branch"></select>
+  <label class="check"><input type="checkbox" id="dom"> <span>I'm an Uttarakhand permanent resident admitted on the residents' quota (applies the 25% private-college tuition rebate at GBCM and HIMS — see notes)</span></label>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section id="bond">
+  <h2>The government service bond</h2>
+  <p>At government colleges, clinical MD/MS students choose <b>with bond</b> or <b>without bond</b>.</p>
+  <div class="grid2">
+    <div class="box"><h3>With bond</h3><p class="big" style="font-size:22px;font-weight:700;margin:0">₹60,000 / yr</p><p class="muted">≈ ₹2.5 L total for 3 years</p></div>
+    <div class="box"><h3>Without bond</h3><p style="font-size:22px;font-weight:700;margin:0">₹5,00,000 / yr</p><p class="muted">≈ ₹15.7 L total for 3 years</p></div>
+  </div>
+  <div class="alert"><b>What you promise with the bond:</b> after the course, serve <b>2 years</b> in a government hospital or health centre in a hilly area anywhere in Uttarakhand — or pay <b>₹2.5 crore</b>. Only take the bonded rate if you're genuinely willing to serve. (Source: GO 374 of 2017, restated in a 2021 government letter.)</div>
+  <ul style="margin-top:12px">
+    <li><b>Non-clinical branches</b> (Anatomy, Physiology, Biochemistry, Pharmacology, Forensic Medicine, Microbiology, Community Medicine): no bond, ₹1 L / yr since 2020.</li>
+    <li><b>Pathology</b> is the odd one out: no bond option and not part of the 2020 fee cut, so it costs ₹5 L / yr.</li>
+    <li><b>Private colleges have their own bonds:</b> GBCM — ₹20 L for one year of senior residency at GBCM or in a hilly area. HIMS mentions a bond but doesn't explain it.</li>
+  </ul>
+</section>
+
+<section id="rules">
+  <h2>How allotment works</h2>
+  <ul>
+    <li><b>Round 1 is a free exit.</b> Don't like your seat? Skip it — no penalty, and you stay in for later rounds.</li>
+    <li>Fill as many choices as you like, <b>in your real order of preference</b>. Once a seat is allotted it won't be changed.</li>
+    <li>After allotment you must pick one option before the joining deadline:
+      <ul>
+        <li><b>Freeze</b> — happy with the seat. Go to the college in person with original documents and pay fees.</li>
+        <li><b>Float</b> — keep the seat but try for a better one next round. Documents are checked online; no need to go.</li>
+      </ul></li>
+    <li>Pick neither and the seat is cancelled (you can still join Round 2).</li>
+    <li><b>Leaving after joining:</b> refund minus ₹6,000 plus any hostel/mess used — only if the board permits.</li>
+    <li>False information = permanent disqualification, even if found years later.</li>
+  </ul>
+</section>
+
+<section id="reservation">
+  <h2>Reservation (state quota only)</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Category</th><th class="n">Seats</th></tr>
+    <tr><td>Scheduled Castes (Uttarakhand)</td><td class="n">19%</td></tr>
+    <tr><td>OBC – non-creamy layer (Uttarakhand)</td><td class="n">14%</td></tr>
+    <tr><td>EWS (govt colleges only)</td><td class="n">10%</td></tr>
+    <tr><td>Scheduled Tribes (Uttarakhand)</td><td class="n">4%</td></tr>
+  </table></div>
+  <p style="margin-top:10px"><b>Within each category:</b> women 30%, defence wards 5%, orphans 5%, PwBD 4%, freedom fighters' dependants 2%.</p>
+  <ul>
+    <li>OBC certificate must be <b>less than 3 years old</b>.</li>
+    <li>PwBD certificate only from an NMC-designated medical board.</li>
+    <li>Missing original caste or domicile certificate at admission = treated as general category.</li>
+    <li>Private colleges also keep 25–30% seats for Uttarakhand permanent residents (GBCM 25%, HIMS 30%).</li>
+  </ul>
+</section>
+
+<section id="docs">
+  <h2>Documents to keep ready</h2>
+  <ul>
+    <li>Class 10 certificate (age proof) and Class 12 marksheet</li>
+    <li>NEET PG 2026 admit card and scorecard</li>
+    <li>MBBS degree and internship completion certificate</li>
+    <li>NMC / State Medical Council registration</li>
+    <li>Category / sub-category / PwBD certificate (if claiming)</li>
+    <li>Uttarakhand domicile certificate (Uttarakhand candidates)</li>
+    <li>ID proof — Aadhaar preferred</li>
+    <li>NOC — for in-service or bonded candidates</li>
+    <li>Allotment letter printout</li>
+    <li>Fee payment (online advance + demand draft for the rest)</li>
+  </ul>
+  <p class="muted">Upload clear scans within 2–3 days of registering. Blurred or mismatched documents are the most common reason for queries or cancellation.</p>
+</section>
+
+<section id="contacts">
+  <h2>Contacts</h2>
+  <div class="box" style="margin-bottom:12px">
+    <h3>Counselling board (10 AM – 5 PM, working days)</h3>
+    <div class="btns">
+      <a href="tel:8006516772">Helpline 8006516772</a>
+      <a href="tel:9520652292">Bank help 9520652292</a>
+      <a href="tel:7676953483">Technical 7676953483</a>
+      <a href="mailto:ukneetcounselling@gmail.com">Email board</a>
+    </div>
+    <p class="muted" style="margin-top:8px">The bulletin spells this email two ways (counselling / counseling). Confirm the correct one by phone.</p>
+  </div>
+  <div id="contactList"></div>
+</section>
+
+<section id="check">
+  <h2>Things to double-check</h2>
+  <p class="muted">Gaps and contradictions in the official documents. Ask the board or college before you rely on them.</p>
+  <ol class="flags">
+    <li><b>Registration fee validity:</b> bulletin says "two rounds (I, II &amp; III)" — unclear if Round 3 needs a new fee, and whether the ₹8,000 is refundable.</li>
+    <li><b>Refund deduction:</b> bulletin says ₹6,000; Doon's fee sheet says ₹10,000 for non-bonded seats.</li>
+    <li><b>Payment method:</b> bulletin says online advance tuition; Doon asks for a demand draft plus ₹1,000 cash.</li>
+    <li><b>Residents' quota at private colleges:</b> GBCM says 25% of seats, HIMS says 30% — both quote the same law. The rebate is given "after admission", so expect to pay the full amount first.</li>
+    <li><b>What "state quota" means:</b> the bulletin bases it on MBBS from Uttarakhand; private colleges tie their rebate to permanent residence.</li>
+    <li><b>NRI seats:</b> the bulletin names only SGRR, yet GBCM has published NRI fees. SGRR's NRI table is labelled 2025-26 and uses an old dollar rate.</li>
+    <li><b>HIMS:</b> no mess fee listed (expect ~₹2 L / yr extra); security deposit tied to an unexplained bond.</li>
+    <li><b>Seat lists missing:</b> Haldwani mentions seats "under compliance" (conditional NMC permission) but the list wasn't attached.</li>
+    <li><b>Bond penalty:</b> the ₹2.5 crore figure dates from 2017 — confirm it's current.</li>
+    <li><b>Srinagar and Almora:</b> full fee sheets (hostel etc.) not published with these documents.</li>
+    <li><b>Bank transfers:</b> verify any account number directly with the college before sending money. Fake fee notices circulate every year.</li>
+  </ol>
+</section>
+
+<footer>
+  Compiled from: HNBUMU Information Bulletin NEET PG 2026; college contact sheet; fee sheets of Doon, Haldwani, GBCM, SGRR and HIMS (Oct 2026); Uttarakhand government orders 1075/2013, 372/2020 and letter of 13 Oct 2021. Cost figures are estimates for guidance only — not official.
+</footer>
+
+</div>
+
+<script>
+// ---------- Timeline ----------
+const events=[
+  ["Registration & fee payment","22 Oct, 1 PM – 26 Oct, 5 PM","2026-10-22T13:00","2026-10-26T17:00"],
+  ["Provisional merit list","27 Oct, after 3 PM","2026-10-27T15:00","2026-10-27T23:59"],
+  ["Choice filling & locking","28 Oct, 9 AM – 30 Oct, 11:59 PM","2026-10-28T09:00","2026-10-30T23:59"],
+  ["Data processing","31 Oct – 1 Nov","2026-10-31T00:00","2026-11-01T23:59"],
+  ["Result declared","2 Nov, after 8 PM","2026-11-02T20:00","2026-11-03T23:59"],
+  ["Last date to join / choose Freeze or Float","10 Nov","2026-11-04T00:00","2026-11-10T23:59"],
+  ["Session starts","20 Nov","2026-11-20T00:00","2026-11-20T23:59"]
+];
+const now=new Date();
+const tl=document.getElementById('timeline');
+let nextEv=null;
+events.forEach(([t,w,s,e])=>{
+  const st=new Date(s+"+05:30"),en=new Date(e+"+05:30");
+  let cls="",tag="";
+  if(now>en){cls="done";tag='<span class="tag done">Done</span>';}
+  else if(now>=st){cls="now";tag='<span class="tag now">Now</span>';}
+  else if(!nextEv){nextEv=[t,w];}
+  const li=document.createElement('li');li.className=cls;
+  li.innerHTML=`<span class="dot"></span><div><div><b>${t}</b>${tag}</div><div class="when">${w}</div></div>`;
+  tl.appendChild(li);
+});
+const cur=events.find(([t,w,s,e])=>now>=new Date(s+"+05:30")&&now<=new Date(e+"+05:30"));
+const al=document.getElementById('liveAlert');
+if(cur) al.innerHTML=`<b>Happening now:</b> ${cur[0]} (${cur[1]}).`;
+else if(nextEv) al.innerHTML=`<b>Next step:</b> ${nextEv[0]} — ${nextEv[1]}. Registration for Round 1 closed on 26 Oct.`;
+else al.innerHTML=`<b>Round 1 is over.</b> Watch hnbumu.ac.in for Round 2.`;
+if(now<new Date("2026-10-26T17:00+05:30")) al.innerHTML=`<b>Registration closes 26 Oct, 5 PM.</b> Register and pay the ₹8,000 fee before then.`;
+
+// ---------- Cost data (₹ lakh / year tuition) ----------
+// govt: clin | nonclin | path | unk
+const B=[
+ ["Anatomy / Physiology / Biochemistry / Pharmacology / Microbiology","nonclin",{sgrr:0,hims:0},"HIMS lists ₹5 L/yr with full scholarship — shown as free."],
+ ["Community Medicine (PSM)","nonclin",{sgrr:0,hims:5},""],
+ ["Forensic Medicine","nonclin",{},""],
+ ["Pathology","path",{sgrr:12.5,hims:12.5},""],
+ ["Immuno-haematology & Blood Transfusion","unk",{hims:15},""],
+ ["Anaesthesia","clin",{gbcm:17,sgrr:17,hims:18},""],
+ ["Emergency Medicine","clin",{sgrr:20,hims:18},""],
+ ["Radiation Oncology","clin",{sgrr:20,hims:18},""],
+ ["ENT","clin",{sgrr:22.5,hims:18},""],
+ ["Respiratory Medicine","clin",{sgrr:25.75,hims:25},""],
+ ["General Surgery","clin",{gbcm:24.75,sgrr:25.75,hims:25},""],
+ ["Ophthalmology","clin",{gbcm:25.75,sgrr:26.75,hims:25},""],
+ ["Psychiatry","clin",{sgrr:26.75,hims:28},""],
+ ["General Medicine","clin",{gbcm:27,sgrr:28,hims:25},""],
+ ["Paediatrics","clin",{gbcm:27,sgrr:28,hims:28},""],
+ ["Dermatology","clin",{gbcm:27.5,sgrr:28.5,hims:28},""],
+ ["Orthopaedics","clin",{gbcm:30,sgrr:31,hims:30},""],
+ ["Obstetrics & Gynaecology","clin",{gbcm:30.5,sgrr:31.5,hims:28},""],
+ ["Radiodiagnosis","clin",{gbcm:31,sgrr:32,hims:30},""]
+];
+// non-tuition extras (₹ lakh): y1 = first year extras, total = 3-year extras
+const P={
+ gbcm:{name:"Gautam Buddha CM (GBCM)",y1:6.905,total:14.505,rebate:true,note:"Hostel + mess ₹3.6 L/yr. Convocation fee extra. ₹20 L one-year service bond."},
+ sgrr:{name:"SGRR Institute",y1:9.054,total:20.542,rebate:false,note:"Hostel + mess ₹5.54 L/yr. No residents' rebate mentioned on fee sheet."},
+ hims:{name:"Himalayan Institute (HIMS)",y1:5.26,total:10.02,rebate:true,note:"Mess NOT included — add roughly ₹2 L/yr. Security refundable only after bond."}
+};
+// govt extras (Doon sheet): first year ₹38,000, later years ₹17,000
+const G={y1:0.38,total:0.72};
+
+function fmt(L){
+  if(L===0) return "Free";
+  if(L>=100) return "₹"+(L/100).toFixed(2)+" Cr";
+  if(L<1) return "₹"+Math.round(L*100)+"k";
+  return "₹"+(Math.round(L*10)/10)+" L";
+}
+const sel=document.getElementById('branch');
+B.forEach((b,i)=>{const o=document.createElement('option');o.value=i;o.textContent=b[0];sel.appendChild(o);});
+sel.value=13; // General Medicine default
+
+function render(){
+  const [name,gcat,priv,bnote]=B[sel.value];
+  const dom=document.getElementById('dom').checked;
+  const list=[];
+  // Government options
+  const govName="Government colleges (Haldwani, Doon, Srinagar, Almora)";
+  if(gcat==="clin"){
+    list.push({n:govName,t:"Govt · with bond",T:0.6,y1:0.6+G.y1,tot:1.8+G.total,note:"Requires 2 years' hill service after PG, or ₹2.5 crore."});
+    list.push({n:govName,t:"Govt · without bond",T:5,y1:5+G.y1,tot:15+G.total,note:"No service obligation."});
+  } else if(gcat==="nonclin"){
+    list.push({n:govName,t:"Govt · non-clinical (no bond)",T:1,y1:1+G.y1,tot:3+G.total,note:"Fixed at ₹1 L/yr since 2020."});
+  } else if(gcat==="path"){
+    list.push({n:govName,t:"Govt · Pathology (no bond option)",T:5,y1:5+G.y1,tot:15+G.total,note:"Pathology was left out of the 2020 non-clinical fee cut."});
+  } else {
+    list.push({n:govName,t:"Govt",na:true,note:"Not clear from the documents whether government colleges offer this branch. Check the seat matrix."});
+  }
+  // Private
+  Object.keys(P).forEach(k=>{
+    const p=P[k];
+    if(priv[k]===undefined){list.push({n:p.name,t:"Private",na:true,note:"Branch not listed on this college's fee sheet."});return;}
+    let T=priv[k],rb=false;
+    if(dom&&p.rebate&&T>0){T=T*0.75;rb=true;}
+    let note=p.note+(rb?" Tuition shown after 25% residents' rebate (given after admission — expect to pay full first).":"");
+    if(dom&&!p.rebate) note+=" Rebate not stated for this college.";
+    if(k==="hims"&&bnote) note=bnote+" "+note;
+    list.push({n:p.name,t:"Private",T:T,y1:T+p.y1,tot:3*T+p.total,note:note});
+  });
+  const valid=list.filter(x=>!x.na);
+  const min=Math.min(...valid.map(x=>x.tot));
+  const ordered=[...valid.sort((a,b)=>a.tot-b.tot),...list.filter(x=>x.na)];
+  document.getElementById('cards').innerHTML=ordered.map(x=>{
+    if(x.na) return `<div class="c na"><div class="top"><span class="name">${x.n}</span><span class="type">${x.t}</span></div><div class="note">${x.note}</div></div>`;
+    const best=x.tot===min;
+    return `<div class="c ${best?'best':''}">
+      <div class="top"><span class="name">${x.n}</span>${best?'<span class="best-tag">Lowest cost</span>':''}</div>
+      <div class="type">${x.t}</div>
+      <div class="row"><span>3-year total <b class="big">${fmt(x.tot)}</b></span></div>
+      <div class="row"><span>Tuition/yr <b>${fmt(x.T)}</b></span><span>Year 1 <b>${fmt(x.y1)}</b></span></div>
+      <div class="note">${x.note}</div></div>`;
+  }).join("");
+}
+sel.addEventListener('change',render);
+document.getElementById('dom').addEventListener('change',render);
+render();
+
+// ---------- Contacts ----------
+const C=[
+ ["Govt Medical College, Haldwani",[["Nodal: Dr Hari Sankar Pandey","9305686692"],["Principal: Dr Ajay Kumar Arya","9837251413"]],["principal-gmchld-uk@gov.in"],"gmchld.org"],
+ ["Govt Doon Medical College, Dehradun",[["Nodal: Dr Neelema Bahal","9411401101"],["Nodal: Dr Neha Batra","7500298205"]],["doonmedicalcollege@gmail.com"],"gdmcuk.com"],
+ ["VCSG Govt Institute, Srinagar",[["Nodal: Dr Rajendra Sharma","9810175566"],["Mr Deendayal Singh Rawat","9690152038"]],["principalvcsg@gmail.com"],"vcsgsrinagar.org"],
+ ["SSJ Govt Institute, Almora",[["Nodal: Dr Sanjay Gaur","8126389759"],["Principal: Dr Govind Singh Titiyal","9837407957"]],["principal.gmcalmora@gmail.com"],"ssjgimsralmora.org"],
+ ["Himalayan Institute (HIMS), Jolly Grant",[["Nodal: Dr Vineet Mehrotra","9412006274"],["Principal: Dr A. Shariff","9286654033"]],["dean.fm@srhu.edu.in","principal.hims@srhu.edu.in"],"srhu.edu.in"],
+ ["SGRR Institute, Dehradun",[["Nodal: Dr Arshlan","9759161302"],["Principal: Dr Utkarsh Sharma","9389922421"]],["principal.sgrrimhs@sgrru.ac.in"],"sgrrmc.com"],
+ ["Gautam Buddha CM (GBCM), Dehradun",[["Nodal: Dr Lokesh Tyagi","8194007024"],["Principal: Dr Anil Kumar Mehta","9536393983"]],["pasubharti@gbcm.in","gbcmddn@gmail.com"],"gbcm.in"]
+];
+document.getElementById('contactList').innerHTML=C.map(([n,ph,em,web])=>`
+ <div class="contact"><div class="cn">${n}</div>
+ <div class="muted">${ph.map(p=>p[0]).join(" · ")}</div>
+ <div class="btns">${ph.map(p=>`<a href="tel:${p[1]}">Call ${p[0].split(":")[0]}</a>`).join("")}
+ ${em.map(e=>`<a href="mailto:${e}">Email</a>`).join("")}
+ <a href="https://${web}" target="_blank" rel="noopener">Website</a></div></div>`).join("");
+</script>
+</body>
+</html>

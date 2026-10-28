@@ -195,6 +195,70 @@
       ]
     },
     {
+      "slug": "chhattisgarh",
+      "file": "chhattisgarh.html",
+      "region": "Chhattisgarh",
+      "title": "Chhattisgarh NEET-PG 2026: Round 1 state counselling",
+      "label": "Round 1 guide",
+      "authority": "DME Chhattisgarh · State quota",
+      "summary": "Round 1 dates, fees and deposits, the 2026 rule change on who gets which seat, reservation, round rules, bond and NRI quota.",
+      "asOf": "2026-10-21",
+      "official": "https://cgdme.admissions.nic.in",
+      "dates": [
+        {
+          "what": "Online registration",
+          "when": "22 Oct, 11 am – 27 Oct, 11:59 pm",
+          "from": "2026-10-22T11:00:00+05:30",
+          "to": "2026-10-27T23:59:00+05:30"
+        },
+        {
+          "what": "NRI documents by email",
+          "when": "Until 27 Oct, 5 pm",
+          "to": "2026-10-27T17:00:00+05:30"
+        },
+        {
+          "what": "Choice filling and locking",
+          "when": "Until 28 Oct, 11:59 pm",
+          "from": "2026-10-22T11:00:00+05:30",
+          "to": "2026-10-28T23:59:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "dadra-nagar-haveli",
+      "file": "dadra-nagar-haveli.html",
+      "region": "Dadra and Nagar Haveli and Daman and Diu",
+      "title": "NAMO MERI, Silvassa: NEET-PG 2026 college guide",
+      "label": "NAMO MERI college guide",
+      "authority": "NAMO Medical Education & Research Institute · UT quota",
+      "summary": "The 46 MD/MS seats and who can take them, UT counselling dates, priority order, fees and documents.",
+      "official": "https://namomeri.in",
+      "dates": [
+        {
+          "what": "Online registration",
+          "when": "23–26 Oct",
+          "from": "2026-10-23T00:00:00+05:30",
+          "to": "2026-10-26T23:59:00+05:30"
+        },
+        {
+          "what": "Online document verification",
+          "when": "Until 27 Oct",
+          "from": "2026-10-23T00:00:00+05:30",
+          "to": "2026-10-27T23:59:00+05:30"
+        },
+        {
+          "what": "First provisional merit list",
+          "when": "28 Oct · objections 29–30 Oct",
+          "on": "2026-10-28T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 selected list",
+          "when": "31 Oct · report 2 Nov, join by 10 Nov",
+          "on": "2026-10-31T00:00:00+05:30"
+        }
+      ]
+    },
+    {
       "slug": "gujarat",
       "file": "gujarat.html",
       "region": "Gujarat",
@@ -428,6 +492,30 @@
       ]
     },
     {
+      "slug": "puducherry",
+      "file": "puducherry.html",
+      "region": "Puducherry",
+      "title": "CENTAC PG medical (MD/MS) 2026–27",
+      "label": "CENTAC PG guide",
+      "authority": "CENTAC Puducherry · Government and management quota",
+      "summary": "Who can apply for which seats, the 395 seats in four colleges, round fees and exit costs, IGMCRI fees, stipend and documents.",
+      "asOf": "2026-10-21",
+      "official": "https://www.centacpuducherry.in",
+      "dates": [
+        {
+          "what": "Online application",
+          "when": "20 Oct – 27 Oct, 5 pm",
+          "from": "2026-10-20T00:00:00+05:30",
+          "to": "2026-10-27T17:00:00+05:30"
+        },
+        {
+          "what": "Round 1",
+          "when": "Schedule on centacpuducherry.in",
+          "label": "Awaited"
+        }
+      ]
+    },
+    {
       "slug": "rajasthan",
       "file": "rajasthan.html",
       "region": "Rajasthan",
@@ -526,6 +614,80 @@
           "what": "Merit lists and web options",
           "when": "To be notified on knruhs.telangana.gov.in",
           "label": "Awaited"
+        }
+      ]
+    },
+    {
+      "slug": "uttar-pradesh",
+      "file": "uttar-pradesh.html",
+      "region": "Uttar Pradesh",
+      "title": "UP NEET-PG 2026 counselling: rules for candidates",
+      "label": "Counselling rules",
+      "authority": "DGME Uttar Pradesh · State quota",
+      "summary": "The DGME notice in plain English: who can take part, choice locking, where to report, the certificate rules that cost seats, and a checklist.",
+      "asOf": "2026-10-21",
+      "official": "https://upneet.gov.in",
+      "dates": [
+        {
+          "what": "Counselling schedule",
+          "when": "See upneet.gov.in and dgme.up.gov.in",
+          "label": "Awaited"
+        },
+        {
+          "what": "OBC and EWS certificates",
+          "when": "Must be issued on or after 1 Apr 2026, UP format",
+          "label": "Reference"
+        }
+      ]
+    },
+    {
+      "slug": "uttarakhand",
+      "file": "uttarakhand.html",
+      "region": "Uttarakhand",
+      "title": "Uttarakhand NEET-PG 2026 state counselling",
+      "label": "State counselling guide",
+      "authority": "HNB Uttarakhand Medical Education University · State quota",
+      "summary": "Round 1 dates, who can apply, the 7 colleges, a cost calculator by branch, the hill-service bond, allotment rules and reservation.",
+      "official": "https://www.hnbumu.ac.in",
+      "dates": [
+        {
+          "what": "Registration and fee",
+          "when": "22 Oct, 1 pm – 26 Oct, 5 pm",
+          "from": "2026-10-22T13:00:00+05:30",
+          "to": "2026-10-26T17:00:00+05:30"
+        },
+        {
+          "what": "Provisional merit list",
+          "when": "27 Oct, after 3 pm",
+          "on": "2026-10-27T00:00:00+05:30"
+        },
+        {
+          "what": "Choice filling and locking",
+          "when": "28 Oct, 9 am – 30 Oct, 11:59 pm",
+          "from": "2026-10-28T09:00:00+05:30",
+          "to": "2026-10-30T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 result",
+          "when": "2 Nov, after 8 pm · join by 10 Nov",
+          "on": "2026-11-02T00:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "uttarakhand-seats",
+      "file": "uttarakhand-seats.html",
+      "region": "Uttarakhand",
+      "title": "Uttarakhand NEET-PG 2026 seat matrix",
+      "label": "Seat matrix",
+      "authority": "HNBUMU · provisional seat matrices (state, all-India open and NRI)",
+      "summary": "Every state quota, all-India open and NRI seat by college and branch, with a seat finder by roster category.",
+      "official": "https://www.hnbumu.ac.in",
+      "dates": [
+        {
+          "what": "Provisional seat matrix",
+          "when": "State, all-India open and NRI quotas",
+          "label": "Published"
         }
       ]
     }

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UP NEET PG 2026 Rules</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: single reading column; notice header like a file docket, rule groups, then a tickable action checklist */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --fg:#17202e; --muted:#5a6578; --line:#dde3ec;
+  --ink:#1f4f8f; --ink-soft:#e6eef8; --stamp:#b3261e; --stamp-soft:#fbeceb; --ok:#1f7a4d;
+  --display:"Literata",Georgia,"Times New Roman",serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --surface:#171d27; --fg:#e7ecf3; --muted:#9aa6b8; --line:#2a3342;
+  --ink:#8fb6ec; --ink-soft:#1c2a3e; --stamp:#f08a82; --stamp-soft:#3a1f1e; --ok:#6cc79a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --surface:#171d27; --fg:#e7ecf3; --muted:#9aa6b8; --line:#2a3342;
+  --ink:#8fb6ec; --ink-soft:#1c2a3e; --stamp:#f08a82; --stamp-soft:#3a1f1e; --ok:#6cc79a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+main{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+h1,h2{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(1.7rem,5vw,2.3rem);font-weight:700}
+h2{font-size:1.3rem;font-weight:700;display:flex;align-items:baseline;gap:10px}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--ink);font-weight:500}
+p{margin:0}
+.docket{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:.78rem;color:var(--muted);
+  border-top:2px solid var(--fg);border-bottom:1px solid var(--line);padding-block:10px}
+.docket b{color:var(--fg);font-weight:500}
+.lede{color:var(--muted);max-width:62ch}
+header{display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-weight:600}
+.alert{background:var(--stamp-soft);border-left:4px solid var(--stamp);padding:14px 16px;border-radius:2px;display:flex;flex-direction:column;gap:6px}
+.alert strong{color:var(--stamp)}
+section{display:flex;flex-direction:column;gap:14px}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.rules li{padding-block:12px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.rules li > div{min-width:0}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-top:3px;white-space:nowrap;
+  background:var(--ink-soft);color:var(--ink)}
+.tag.crit{background:var(--stamp-soft);color:var(--stamp)}
+.rules .sub{color:var(--muted);font-size:.9rem;margin-top:2px}
+.where{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.where div{background:var(--surface);border:1px solid var(--line);padding:12px 14px;border-radius:4px}
+.where b{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink);margin-bottom:4px}
+.check{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 16px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding-block:12px;border-bottom:1px solid var(--line);cursor:pointer}
+.check label:last-child{border-bottom:0}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+.check input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.progress b{color:var(--ok)}
+.links{display:flex;flex-wrap:wrap;gap:10px}
+.links a{font-family:var(--mono);font-size:.9rem;color:var(--ink);border:1px solid var(--line);background:var(--surface);padding:8px 12px;border-radius:4px;text-decoration:none}
+.links a:hover,.links a:focus-visible{border-color:var(--ink)}
+footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+
+<main>
+  <header>
+    <span class="eyebrow">DGME Uttar Pradesh · Important notice</span>
+    <h1>UP NEET PG 2026 Counselling: Rules for Candidates</h1>
+    <div class="docket">
+      <span>No. <b>MEd-3/PG-2026/1842</b></span>
+      <span>Dated <b>21 Oct 2026</b></span>
+      <span>Issued <b>Lucknow</b></span>
+    </div>
+    <p class="lede">A plain-English summary of the official Hindi notice for MD, MS, Diploma and DNB counselling. Read the original before acting on anything.</p>
+  </header>
+
+  <div class="alert">
+    <strong>Most common way to lose a seat</strong>
+    <p>An OBC or EWS certificate dated before <b>1 April 2026</b>, or one in the central-government format. Only the UP state format from a UP authority is accepted.</p>
+  </div>
+
+  <section>
+    <h2><span class="n">A</span>Who can take part</h2>
+    <ul class="rules">
+      <li><span class="tag">All</span><div>Only candidates who qualified NEET PG 2026.</div></li>
+      <li><span class="tag">DNB</span><div>State-quota DNB seats are only for UP in-service candidates.<div class="sub">Eligibility list released by DG Medical &amp; Health Services on 16 Oct 2026.</div></div></li>
+      <li><span class="tag">MD/MS</span><div>In-service weightage applies only to doctors working in the PMHS cadre.<div class="sub">Same 16 Oct 2026 list.</div></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">B</span>Choice filling and allotment</h2>
+    <ul class="rules">
+      <li><span class="tag">Rule</span><div>Seats are allotted by merit. There is no limit on the number of choices.</div></li>
+      <li><span class="tag">Advice</span><div>Fill only colleges you would actually join.</div></li>
+      <li><span class="tag crit">Must</span><div>Lock your choices. Without locking you are left out of allotment, and the responsibility is yours.</div></li>
+      <li><span class="tag">Rule</span><div>If you get both an MD/MS/Diploma seat and a DNB seat, you can join only one.</div></li>
+      <li><span class="tag crit">Money</span><div>Security money is never adjusted against tuition fees.</div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">C</span>Where you report for admission</h2>
+    <div class="where">
+      <div><b>Private college</b>Government-designated nodal centre, named on your allotment letter</div>
+      <div><b>Govt MD/MS/Diploma</b>The allotted medical college, institute or university</div>
+      <div><b>Govt DNB</b>The allotted medical college or district hospital</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">D</span>Certificates</h2>
+    <ul class="rules">
+      <li><span class="tag crit">Date</span><div>OBC and EWS certificates must be issued on or after 1 April 2026.</div></li>
+      <li><span class="tag crit">Format</span><div>OBC, SC, ST and EWS certificates must be in the UP government format, issued by a UP competent authority.</div></li>
+      <li><span class="tag crit">Format</span><div>Certificates in the format used for central government jobs are not valid.</div></li>
+      <li><span class="tag">PwD</span><div>Disability certificates must come from centres designated by MCC / DGHS, New Delhi, in the prescribed format.</div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">E</span>At admission</h2>
+    <ul class="rules">
+      <li><span class="tag">Step</span><div>A medical board examines allotted candidates before admission is completed.</div></li>
+      <li><span class="tag crit">Must</span><div>Submit all original academic documents. If any are missing or found incorrect, the seat is cancelled and the security money is forfeited.</div></li>
+      <li><span class="tag crit">Warning</span><div>Any forged document, found during or after admission, leads to cancellation and legal action.</div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">F</span>Your checklist</h2>
+    <p class="progress" id="progress" aria-live="polite"><b>0</b> of 7 done</p>
+    <div class="check" id="checklist">
+      <label><input type="checkbox" id="c1"><span>OBC/EWS certificate is dated 1 April 2026 or later</span></label>
+      <label><input type="checkbox" id="c2"><span>Category certificate is in UP state format, not central format</span></label>
+      <label><input type="checkbox" id="c3"><span>PwD certificate is from an MCC/DGHS-designated centre (if applicable)</span></label>
+      <label><input type="checkbox" id="c4"><span>In-service: my name is on the 16 Oct 2026 list (if applicable)</span></label>
+      <label><input type="checkbox" id="c5"><span>Choices filled with only colleges I would join</span></label>
+      <label><input type="checkbox" id="c6"><span>Choices locked before the deadline</span></label>
+      <label><input type="checkbox" id="c7"><span>All original documents and funds for security money plus fees ready</span></label>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">G</span>Official websites</h2>
+    <p class="lede">Check these regularly for schedule changes and new notices.</p>
+    <div class="links">
+      <a href="https://dgme.up.gov.in" target="_blank" rel="noopener">dgme.up.gov.in</a>
+      <a href="https://upneet.gov.in" target="_blank" rel="noopener">upneet.gov.in</a>
+    </div>
+  </section>
+
+  <footer>Summary of the DGME UP notice dated 21 Oct 2026, signed on behalf of the Director General. The paid-counselling WhatsApp line printed on circulating copies is a third-party watermark and not part of the official notice.</footer>
+</main>
+
+<script>
+(function(){
+  var boxes=[].slice.call(document.querySelectorAll('#checklist input'));
+  var key='upneetpg26-checks', saved={};
+  try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(e){}
+  function update(){
+    var done=boxes.filter(function(b){return b.checked}).length;
+    document.getElementById('progress').innerHTML='<b>'+done+'</b> of '+boxes.length+' done';
+    var s={};boxes.forEach(function(b){s[b.id]=b.checked});
+    try{localStorage.setItem(key,JSON.stringify(s))}catch(e){}
+  }
+  boxes.forEach(function(b){b.checked=!!saved[b.id];b.addEventListener('change',update)});
+  update();
+})();
+</script>
+</body>
+</html>

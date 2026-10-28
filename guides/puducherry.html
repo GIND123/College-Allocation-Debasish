@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CENTAC PG 2026–27 Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: single reading column, deadline band on top, sections as ruled blocks like a counselling circular */
+:root{
+  --bg:#F3F6F7; --surface:#FFFFFF; --fg:#13222C; --muted:#56686F; --line:#D5DEE2;
+  --accent:#0B6B6B; --accent-soft:#E0EFEE; --alert:#B3361E; --alert-soft:#FBE9E4; --ok:#2B7A3D; --ok-soft:#E3F2E6; --warn:#9A6A00; --warn-soft:#FBF1D9;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F181D; --surface:#16232A; --fg:#E6EEF0; --muted:#94A6AD; --line:#2A3A42;
+  --accent:#4FC1BC; --accent-soft:#163634; --alert:#F08A70; --alert-soft:#3A1F18; --ok:#6CCB80; --ok-soft:#18301D; --warn:#E8B64A; --warn-soft:#33290F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F181D; --surface:#16232A; --fg:#E6EEF0; --muted:#94A6AD; --line:#2A3A42;
+  --accent:#4FC1BC; --accent-soft:#163634; --alert:#F08A70; --alert-soft:#3A1F18; --ok:#6CCB80; --ok-soft:#18301D; --warn:#E8B64A; --warn-soft:#33290F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(1.7rem,5vw,2.3rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.25rem;font-weight:800}
+h3{font-size:1rem;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);max-width:62ch}
+header{display:grid;gap:10px;margin-bottom:22px}
+.deadline{background:var(--alert-soft);border:1.5px solid var(--alert);border-radius:10px;padding:16px 18px;display:grid;gap:6px;margin-bottom:28px}
+.deadline .big{font-family:var(--display);font-weight:800;font-size:clamp(1.4rem,4.5vw,1.9rem);color:var(--alert)}
+.deadline .cd{font-family:var(--mono);font-size:.9rem}
+.deadline ul{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
+section{border-top:2px solid var(--fg);padding-top:14px;margin-top:30px;display:grid;gap:12px}
+.sec-head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ref{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.n{text-align:right;white-space:nowrap}
+tfoot td{font-weight:700}
+.pill{display:inline-block;font-family:var(--mono);font-size:.7rem;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.p-ok{background:var(--ok-soft);color:var(--ok)}
+.p-warn{background:var(--warn-soft);color:var(--warn)}
+.p-bad{background:var(--alert-soft);color:var(--alert)}
+.note{font-size:.88rem;color:var(--muted)}
+ul.plain{margin:0;padding-left:20px;display:grid;gap:7px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:8px;min-width:0}
+.box.key{border-color:var(--accent);background:var(--accent-soft)}
+.kv{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.kv span:last-child{font-weight:700;white-space:nowrap}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.check input{margin-top:5px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+.check input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.contact{font-family:var(--mono);font-size:.9rem;user-select:all}
+a{color:var(--accent)}
+footer{margin-top:36px;font-size:.82rem;color:var(--muted);display:grid;gap:4px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Puducherry · State PG counselling</div>
+  <h1>CENTAC PG Medical (MD/MS) 2026–27</h1>
+  <p class="lede">A plain-language guide to applying through CENTAC for MD/MS seats in Puducherry's four medical colleges, built from the official brochure, the admission notice and the IGMCRI fee notice.</p>
+</header>
+
+<div class="deadline" role="note">
+  <div class="eyebrow" style="color:var(--alert)">Application deadline</div>
+  <div class="big">Tuesday 27 Oct 2026, 5:00 PM</div>
+  <div class="cd" id="countdown">Applications opened 20 Oct 2026.</div>
+  <ul>
+    <li>Fill details, upload documents <b>and pay</b> before the deadline. An unpaid application is rejected.</li>
+    <li><b>Tick every quota you might want</b> (GQ and/or MQ). No quota can be added later. ₹5,000 covers both.</li>
+    <li>Only one application per candidate. Duplicates cancel your candidature.</li>
+  </ul>
+</div>
+
+<section>
+  <div class="sec-head"><h2>Who can apply for which seats</h2><span class="ref">Brochure cl. 7</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Quota</th><th>Who is eligible</th><th>Colleges</th></tr></thead>
+    <tbody>
+      <tr><td><b>Government Quota (GQ)</b></td><td>Puducherry residents only</td><td>IGMCRI, PIMS, SMVMCH, SVMCH&amp;RC</td></tr>
+      <tr><td><b>Management Quota (MQ)</b></td><td>Any Indian citizen (or OCI card issued before 04.03.2021), on All-India rank</td><td>PIMS, SMVMCH</td></tr>
+      <tr><td><b>Telugu Minority MQ</b></td><td>Puducherry residents whose mother tongue is Telugu. Unfilled seats open to all from Round 3.</td><td>SVMCH&amp;RC</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">There is no "other state" Government Quota. Non-residents can apply only for MQ seats here, or reach IGMCRI's All-India seats through MCC.</p>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Seats (approximate)</h2><span class="ref">Brochure cl. 6 · final seat matrix not yet published</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>College</th><th>Type</th><th class="n">GQ</th><th class="n">MQ</th><th class="n">AIQ (MCC)</th><th class="n">Total</th></tr></thead>
+    <tbody>
+      <tr><td>IGMCRI</td><td>Government</td><td class="n">36</td><td class="n">—</td><td class="n">37</td><td class="n">73</td></tr>
+      <tr><td>PIMS</td><td>Private</td><td class="n">31</td><td class="n">31</td><td class="n">—</td><td class="n">62</td></tr>
+      <tr><td>SMVMCH</td><td>Private</td><td class="n">64</td><td class="n">64</td><td class="n">—</td><td class="n">128</td></tr>
+      <tr><td>SVMCH&amp;RC</td><td>Private (Telugu minority)</td><td class="n">66</td><td class="n">66</td><td class="n">—</td><td class="n">132</td></tr>
+    </tbody>
+    <tfoot><tr><td>All</td><td></td><td class="n">197</td><td class="n">161</td><td class="n">37</td><td class="n">395</td></tr></tfoot>
+  </table></div>
+  <p class="note">Clinical and non-clinical seats are combined here. CENTAC fills the GQ and MQ seats (358); MCC fills the 37 All-India seats.</p>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Rounds, fees and the cost of backing out</h2><span class="ref">Brochure cl. 13, 14, 19</span></div>
+  <p>Round 1 is free to try. After that, each round asks for a larger registration fee and leaves less room to change your mind.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Round</th><th>Registration fee: GQ</th><th>MQ</th><th>If you don't join / resign</th></tr></thead>
+    <tbody>
+      <tr><td><b>Round 1</b></td><td>Nil</td><td>Nil</td><td><span class="pill p-ok">Free exit</span> Can resign before Round 2 without loss</td></tr>
+      <tr><td><b>Round 2</b></td><td>₹25,000<br><span class="note">₹10,000 SC/ST/EBC</span></td><td>₹2,00,000</td><td><span class="pill p-warn">Fee forfeited</span> if you don't join, or resign before Round 3</td></tr>
+      <tr><td><b>Round 3</b></td><td>₹1,00,000<br><span class="note">₹50,000 SC/ST/EBC</span></td><td>₹2,00,000</td><td><span class="pill p-bad">No resignation</span> Fee forfeited if you don't join; not eligible for Stray Round</td></tr>
+      <tr><td><b>Stray</b></td><td>Full tuition<br><span class="note">₹1,00,000 SC/ST/EBC</span></td><td>Full tuition</td><td><span class="pill p-bad">Severe</span> Payment forfeited and barred from next year's counselling</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="box">
+      <h3>Application fee (one-time, non-refundable)</h3>
+      <div class="kv"><span>GQ: SC / ST / PwD</span><span>₹1,500</span></div>
+      <div class="kv"><span>GQ: others</span><span>₹3,000</span></div>
+      <div class="kv"><span>MQ, or GQ + MQ</span><span>₹5,000</span></div>
+    </div>
+    <div class="box">
+      <h3>Rules that catch people out</h3>
+      <ul class="plain">
+        <li>Fill <b>fresh preferences every round</b>. Old lists don't carry over.</li>
+        <li><b>Upgrading cancels your old seat.</b> List only seats you'd truly prefer.</li>
+        <li>Joined an All-India (MCC) seat? You're removed before Round 3.</li>
+        <li>Refunds come only after the whole process, about 3 months later.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>IGMCRI fees</h2><span class="ref">College notice No. 208, 21.10.2026 · subject to change</span></div>
+  <div class="grid2">
+    <div class="box key">
+      <h3>College fees</h3>
+      <div class="kv"><span>Caution deposit (refundable)</span><span>₹25,000</span></div>
+      <div class="kv"><span>College fee</span><span>₹1,60,000</span></div>
+      <div class="kv" style="border-top:1px solid var(--line);padding-top:6px"><span>Total</span><span>₹1,85,000</span></div>
+    </div>
+    <div class="box">
+      <h3>Hostel</h3>
+      <div class="kv"><span>Caution deposit (refundable)</span><span>₹10,000</span></div>
+      <div class="kv"><span>Single room</span><span>₹4,000/month</span></div>
+      <p class="note">Rent is deducted from the stipend.</p>
+    </div>
+  </div>
+  <p>About <b>₹1.95 lakh</b> at joining with hostel, of which ₹35,000 is refundable. Year-1 stipend after rent is about <b>₹39,000 a month</b>.</p>
+  <p class="note">The notice doesn't say whether ₹1.6 lakh is per year or for the full course, or how much is paid to CENTAC versus the college. Confirm before joining. Fees for PIMS, SMVMCH and SVMCH&amp;RC are in the Fee Committee order of 28.08.2026 on the CENTAC website; hostel, books, transport and food are extra there.</p>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Stipend</h2><span class="ref">Brochure cl. 23</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Year</th><th class="n">Per month</th></tr></thead>
+    <tbody><tr><td>Year 1</td><td class="n">₹43,000</td></tr><tr><td>Year 2</td><td class="n">₹45,000</td></tr><tr><td>Year 3</td><td class="n">₹47,000</td></tr></tbody>
+  </table></div>
+  <p class="note">Private colleges pay the same as IGMCRI.</p>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Document checklist</h2><span class="ref">Brochure cl. 12 · ticks are saved on this device only</span></div>
+  <h3>Everyone</h3>
+  <ul class="check" id="docs-all">
+    <li><label><input type="checkbox" id="d1"><span>Passport photo and signature (20–50 KB each)</span></label></li>
+    <li><label><input type="checkbox" id="d2"><span>Proof of date of birth (birth certificate or 10th/12th marksheet)</span></label></li>
+    <li><label><input type="checkbox" id="d3"><span>MBBS degree, provisional or course-completion certificate</span></label></li>
+    <li><label><input type="checkbox" id="d4"><span>Internship completion certificate (internship done by 30 Sept 2026)</span></label></li>
+    <li><label><input type="checkbox" id="d5"><span>NEET PG 2026 score card</span></label></li>
+    <li><label><input type="checkbox" id="d6"><span>Transfer certificate from last institution</span></label></li>
+  </ul>
+  <h3>Puducherry residents (certificates dated 1 Jan 2026 or later)</h3>
+  <ul class="check" id="docs-utp">
+    <li><label><input type="checkbox" id="d7"><span>Residence certificate from the Revenue Department</span></label></li>
+    <li><label><input type="checkbox" id="d8"><span>Residence affidavit on ₹20 e-stamp paper, attested by a notary or magistrate (signed by parent/guardian)</span></label></li>
+    <li><label><input type="checkbox" id="d9"><span>Community certificate, if claiming reservation</span></label></li>
+    <li><label><input type="checkbox" id="d10"><span>Freedom fighter / ex-servicemen / disability (UDID) / sports / Telugu minority certificate, if applicable</span></label></li>
+  </ul>
+  <p class="note">Files 100–500 KB each. Other-state candidates below the general cut-off need an All-India community certificate. Documents can be corrected until the Final Merit List.</p>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Points to clarify with CENTAC</h2></div>
+  <ul class="plain">
+    <li>The brochure says resigning a Round 1 seat before Round 2 is free, but the Round 3 eligibility table lists it as "with forfeiture".</li>
+    <li>Seat matrix and private-college fee details are still awaited.</li>
+    <li>The brochure and notice refer to "NEET UG" in places; this is the PG process.</li>
+  </ul>
+  <p class="note">Registered candidates should raise queries through the Grievances option in their dashboard. Replies come within 24 hours on working days.</p>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Contacts</h2></div>
+  <div class="grid2">
+    <div class="box">
+      <h3>CENTAC</h3>
+      <a href="https://www.centacpuducherry.in" target="_blank" rel="noopener">centacpuducherry.in</a>
+      <span class="contact">centacpgneet@dhtepdy.edu.in</span>
+      <span class="contact">0413-2655570 · 0413-2655571</span>
+    </div>
+    <div class="box">
+      <h3>Colleges</h3>
+      <div class="kv"><span>IGMCRI</span><span class="contact">0413-2274552</span></div>
+      <div class="kv"><span>PIMS</span><span class="contact">0413-2651111</span></div>
+      <div class="kv"><span>SMVMCH</span><span class="contact">0413-2643014</span></div>
+      <div class="kv"><span>SVMCH&amp;RC</span><span class="contact">98843 05050</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Sources: CENTAC Information Brochure 2026–27 (21.10.2026); CENTAC press release Ref. CENTAC/PGM/2026/01 (20.10.2026); IGMCRI fee notice No. 208 (21.10.2026).</span>
+  <span>This is an unofficial summary. CENTAC notices on the official website always take precedence.</span>
+</footer>
+</div>
+
+<script>
+(function(){
+  var el=document.getElementById('countdown');
+  var end=new Date('2026-10-27T17:00:00+05:30').getTime();
+  function tick(){
+    var ms=end-Date.now();
+    if(ms<=0){el.textContent='The application window has closed. Watch the CENTAC website for any reopening.';return;}
+    var d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);
+    el.textContent=d+' days, '+h+' hours, '+m+' minutes left';
+  }
+  tick();setInterval(tick,30000);
+  var KEY='centac-pg-docs';var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  document.querySelectorAll('.check input').forEach(function(cb){
+    cb.checked=!!saved[cb.id];
+    cb.addEventListener('change',function(){saved[cb.id]=cb.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}});
+  });
+})();
+</script>
+</html>

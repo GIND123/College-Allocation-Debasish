@@ -185,3 +185,17 @@ html[data-guide="rajasthan"] header{background-color:#1f5fbf} /* same, for the w
 html[data-guide="rajasthan"] .tag.past{color:var(--ink)}
 html[data-guide="maharashtra"] .timeline li.past .when{color:var(--muted)} /* struck-through past dates were 2.5:1 */
 html[data-guide="rims-imphal"]:root{--c2:#94600c} /* white seat count on amber was 2.9:1 */
+
+/* Puducherry: the amber "Fee forfeited" pill was 4.2:1 in light mode. */
+html[data-guide="puducherry"] .p-warn{color:#7a5300}
+@media (prefers-color-scheme: dark){ html[data-guide="puducherry"]:not([data-theme="light"]) .p-warn{color:var(--warn)} }
+html[data-guide="puducherry"][data-theme="dark"] .p-warn{color:var(--warn)}
+/* Uttarakhand seat matrix: the dash for "no seats" was drawn in the border colour (1.3:1). */
+html[data-guide="uttarakhand-seats"] .zero{color:var(--muted)}
+/* These guides keep the browser's 8px page margin, which left a gap around the RankRound bars. */
+html[data-guide="dadra-nagar-haveli"] body,
+html[data-guide="puducherry"] body,
+html[data-guide="uttar-pradesh"] body{margin:0}
+/* Uttar Pradesh pads <body> itself; that spacing moves to its content so the bars run edge to edge. */
+html[data-guide="uttar-pradesh"] body{padding:0}
+html[data-guide="uttar-pradesh"] main{max-width:752px; margin:28px auto 48px; padding:0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px))}

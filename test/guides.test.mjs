@@ -8,7 +8,8 @@ test('the registry lists every guide with a valid region and file', () => {
   assert.ok(guides.length >= 13);
   assert.equal(new Set(guides.map(g => g.slug)).size, guides.length, 'slugs are unique');
   for (const g of guideList()) assert.equal('file' in g, false, `${g.slug}: file names stay private`);
-  for (const s of ['bihar', 'madhya-pradesh', 'maharashtra', 'rajasthan', 'rims-imphal', 'tamil-nadu-dnb', 'deemed-seats'])
+  for (const s of ['bihar', 'madhya-pradesh', 'maharashtra', 'rajasthan', 'rims-imphal', 'tamil-nadu-dnb', 'deemed-seats',
+    'chhattisgarh', 'dadra-nagar-haveli', 'puducherry', 'uttar-pradesh', 'uttarakhand', 'uttarakhand-seats'])
     assert.ok(guides.some(g => g.slug === s), `${s} is listed`);
 });
 
@@ -37,6 +38,7 @@ test("a guide's own web fonts are swapped for RankRound's, and nothing else chan
   assert.equal(siteFonts('body{font:16px/1.55 Inter,system-ui}'), 'body{font:16px/1.55 Geist,system-ui}');
   assert.equal(siteFonts('b{font-family:Fraunces,Georgia,serif}'), 'b{font-family:"Source Serif 4",Georgia,serif}');
   assert.equal(siteFonts('p{content:"Interactive";font-family:"IBM Plex Mono"}'), 'p{content:"Interactive";font-family:"Geist Mono"}');
+  assert.equal(siteFonts(':root{--display:"Archivo",Arial,sans-serif;--note:"Inter-state"}'), ':root{--display:Geist,Arial,sans-serif;--note:"Inter-state"}');
 });
 
 test('every guide page gets the RankRound frame without breaking the guide', () => {
