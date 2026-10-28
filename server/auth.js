@@ -208,7 +208,8 @@ const checking = new Map();     // host -> in-flight check, so concurrent reques
 export function firebaseDomainStatus(host) {
   if (PROVIDER !== 'firebase') return Promise.resolve(null);
   const hit = domainChecks.get(host);
-  if (hit && now() - hit.at < (hit.result.authorized === false ? 60e3 : 600e3)) return Promise.resolve(hit.result);
+  // A refusal is re-checked after 10 s, so a newly authorised address works almost at once.
+  if (hit && now() - hit.at < (hit.result.authorized === false ? 10e3 : 600e3)) return Promise.resolve(hit.result);
   if (!checking.has(host)) checking.set(host, checkDomain(host, hit).finally(() => checking.delete(host)));
   return checking.get(host);
 }

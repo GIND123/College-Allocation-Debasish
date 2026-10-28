@@ -370,8 +370,6 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
       try {
         await keep();
         if (viaFirebase()) {
-          // The server has confirmed Firebase would refuse this site address: don't send.
-          if (S.cfg.auth.phoneReady === false) throw Object.assign(new Error('site not authorised'), { code: 'auth/site-not-authorised' });
           const { auth, mod } = await firebase();
           resetVerifier();
           // Its own container: the home page and the sign-in dialog can both hold a form.
