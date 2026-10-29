@@ -5,7 +5,7 @@ import { db, now, tx, insertRows, getSettings, putSettings } from './db.js';
 import { KINDS, parseTable, aggregate, validateRecord } from './schema.js';
 import {
   PROVIDER, FIREBASE, OTP_LENGTH, EMAIL_ENABLED, HttpError, attachUser, requireUser, requireAdmin, isAdmin, publicUser,
-  readProfile, requestOtp, verifyOtp, firebaseSignIn, adminLogin, endSession,
+  readProfile, requestOtp, verifyOtp, passwordSignIn, firebaseSignIn, adminLogin, endSession,
   saveAttempt, firebaseDomainStatus, phoneSignInReady
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
@@ -97,6 +97,11 @@ app.post('/api/auth/otp/request', wrap(async (req, res) => {
 app.post('/api/auth/otp/verify', wrap((req, res) => {
   const { user, isNew } = verifyOtp(req, res, req.body || {});
   record(req, 'login', { isNew }, { userId: user.id });
+  res.json({ user: publicUser(user), isNew });
+}));
+app.post('/api/auth/password', wrap((req, res) => {
+  const { user, isNew } = passwordSignIn(req, res, req.body || {});
+  record(req, 'login', { isNew, via: 'password' }, { userId: user.id });
   res.json({ user: publicUser(user), isNew });
 }));
 app.post('/api/auth/firebase', wrap(async (req, res) => {

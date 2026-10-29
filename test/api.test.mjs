@@ -43,6 +43,7 @@ function browser() {
   };
 }
 const signUp = { mode: 'signup', channel: 'phone', name: 'Test Student', cmr: '1592', state: 'Odisha' };
+const PW = 'good-password-1';
 
 test('guides: index data, pages, redirects and assets', async () => {
   const b = browser();
@@ -90,7 +91,7 @@ test('sign-up keeps the details first, then signs in and clears them from the un
   let list = (await admin('/api/admin/attempts')).json.attempts;
   assert.ok(list.some(a => a.contact === '+919000000101' && a.name === 'Test Student' && a.cmr === 1592 && a.state === 'Odisha'));
   assert.equal((await student('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000101' } })).status, 200);
-  const v = await student('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000101', code: '1234' } });
+  const v = await student('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000101', code: '1234', password: PW } });
   assert.equal(v.status, 200);
   assert.equal(v.json.user.state, 'Odisha');
   list = (await admin('/api/admin/attempts')).json.attempts;
@@ -132,7 +133,7 @@ test('admin health reports the sign-in provider', async () => {
 test('sign-out works for a body-less POST, as browsers send it', async () => {
   const b = browser();
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000104' } });
-  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000104', code: '1234' } });
+  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000104', code: '1234', password: PW } });
   assert.ok((await b('/api/me')).json.user);
   const out = await b('/api/auth/logout', { method: 'POST', headers: { 'content-length': '0' } });
   assert.equal(out.status, 200);
@@ -142,7 +143,7 @@ test('sign-out works for a body-less POST, as browsers send it', async () => {
 test('Gujarat closing-rank data is built in, with quotas, for Gujarat students only', async () => {
   const b = browser();
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Gujarat', phone: '9000000105' } });
-  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000105', code: '1234' } });
+  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000105', code: '1234', password: PW } });
   const sets = (await b('/api/config')).json.datasets;
   assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['Gujarat state 2024', 'Gujarat state 2025']);
   const d = (await b('/api/datasets/' + sets.find(x => x.year === 2025).id)).json;
@@ -158,11 +159,67 @@ test('Gujarat closing-rank data is built in, with quotas, for Gujarat students o
   // an Odisha student still sees only Odisha data
   const o = browser();
   await o('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000106' } });
-  await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000106', code: '1234' } });
+  await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000106', code: '1234', password: PW } });
   assert.ok((await o('/api/config')).json.datasets.every(x => x.state === 'Odisha'));
 });
 
 test('cross-site form posts are still refused', async () => {
   const r = await fetch(BASE + '/api/auth/logout', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: 'a=1' });
   assert.equal(r.status, 415);
+});
+
+test('sign-up sets a password; sign-in then needs only the password', async () => {
+  const a = browser();
+  await a('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000110' } });
+  const short = await a('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000110', code: '1234', password: 'short' } });
+  assert.equal(short.status, 400, 'passwords under 8 characters are refused');
+  assert.equal((await a('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000110', code: '1234', password: PW } })).status, 200);
+  const b = browser();
+  const wrong = await b('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000110', password: 'not-the-one' } });
+  assert.equal(wrong.status, 401);
+  assert.match(wrong.json.error, /Wrong mobile number or password/);
+  const nobody = await b('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000119', password: PW } });
+  assert.equal(nobody.status, 401, 'an unknown number gets the same answer');
+  assert.equal(nobody.json.error, wrong.json.error);
+  const ok = await b('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '90000 00110', password: PW } });
+  assert.equal(ok.status, 200);
+  assert.equal(ok.json.user.name, 'Test Student');
+  assert.equal(ok.json.isNew, false);
+});
+
+test('forgot password: a code to the phone, then a new password', async () => {
+  const a = browser();
+  await a('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000111' } });
+  await a('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000111', code: '1234', password: PW } });
+  const b = browser();
+  assert.equal((await b('/api/auth/otp/request', { method: 'POST', body: { mode: 'reset', channel: 'phone', phone: '9000000111' } })).status, 200, 'no profile needed to reset');
+  const none = await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000111', code: '1234' } });
+  assert.equal(none.status, 400, 'a reset needs the new password');
+  assert.equal((await b('/api/auth/otp/request', { method: 'POST', body: { mode: 'reset', channel: 'phone', phone: '9000000111' } })).status, 429, 'the resend limit still applies');
+});
+
+test('forgot password sets the new password and keeps the profile', async () => {
+  const a = browser();
+  await a('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000112' } });
+  await a('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000112', code: '1234', password: PW } });
+  const b = browser();
+  await b('/api/auth/otp/request', { method: 'POST', body: { mode: 'reset', channel: 'phone', phone: '9000000112' } });
+  const r = await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000112', code: '1234', password: 'brand-new-pass' } });
+  assert.equal(r.status, 200);
+  assert.equal(r.json.user.cmr, 1592);
+  const c = browser();
+  assert.equal((await c('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000112', password: PW } })).status, 401, 'the old password stops working');
+  assert.equal((await c('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000112', password: 'brand-new-pass' } })).status, 200);
+});
+
+test('"Keep me logged in" decides how long the sign-in lasts', async () => {
+  const a = browser();
+  await a('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000113' } });
+  await a('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000113', code: '1234', password: PW } });
+  const keep = await fetch(BASE + '/api/auth/password', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ channel: 'phone', phone: '9000000113', password: PW, remember: true }) });
+  assert.match(keep.headers.getSetCookie().find(c => c.startsWith('rr_sid=')), /Max-Age=2592000/, '30 days');
+  const brief = await fetch(BASE + '/api/auth/password', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ channel: 'phone', phone: '9000000113', password: PW, remember: false }) });
+  assert.doesNotMatch(brief.headers.getSetCookie().find(c => c.startsWith('rr_sid=')), /Max-Age/, 'ends when the browser closes');
 });

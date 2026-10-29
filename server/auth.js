@@ -6,7 +6,8 @@ const PROD = process.env.NODE_ENV === 'production';
 export const PROVIDER = (process.env.AUTH_PROVIDER || 'mock').toLowerCase();
 const MOCK_OTP = process.env.MOCK_OTP || '1234';
 export const OTP_LENGTH = PROVIDER === 'firebase' ? 6 : MOCK_OTP.length;
-const USER_TTL = 30 * 24 * 3600e3;
+const USER_TTL = 30 * 24 * 3600e3;   // "Keep me logged in"
+const BRIEF_TTL = 12 * 3600e3;        // otherwise: until the browser closes, at most 12 hours
 const ADMIN_TTL = 12 * 3600e3;
 const OTP_TTL = 10 * 60e3;
 
@@ -60,18 +61,20 @@ export function cookies(req) {
   }
   return out;
 }
+/** maxAgeMs null: a browser-session cookie, gone when the browser closes. */
 export function setCookie(res, name, value, maxAgeMs) {
-  const bits = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Lax', `Max-Age=${Math.floor(maxAgeMs / 1000)}`];
+  const bits = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Lax'];
+  if (maxAgeMs !== null) bits.push(`Max-Age=${Math.floor(maxAgeMs / 1000)}`);
   if (PROD) bits.push('Secure');
   res.append('Set-Cookie', bits.join('; '));
 }
 
-function createSession(res, role, userId) {
+function createSession(res, role, userId, remember = true) {
   const token = crypto.randomBytes(32).toString('base64url');
-  const ttl = role === 'admin' ? ADMIN_TTL : USER_TTL;
+  const ttl = role === 'admin' ? ADMIN_TTL : remember ? USER_TTL : BRIEF_TTL;
   db.prepare('INSERT INTO sessions (token_hash, user_id, role, created_at, expires_at) VALUES (?, ?, ?, ?, ?)')
     .run(sha(token), userId ?? null, role, now(), now() + ttl);
-  setCookie(res, role === 'admin' ? 'rr_admin' : 'rr_sid', token, ttl);
+  setCookie(res, role === 'admin' ? 'rr_admin' : 'rr_sid', token, role === 'user' && !remember ? null : ttl);
 }
 function readSession(req, cookie, role) {
   const token = cookies(req)[cookie];
@@ -131,6 +134,36 @@ function readContact(b) {
 }
 const cleanName = n => String(n || '').replace(/\s+/g, ' ').trim().slice(0, 80);
 
+// ---- passwords -----------------------------------------------------------
+// Kept here for local test mode and email accounts. Phone accounts on Firebase keep their
+// password in Firebase, which survives the free server's restarts.
+export function readPassword(raw) {
+  const pw = String(raw ?? '');
+  if (pw.length < 8) throw new HttpError(400, 'Use a password of at least 8 characters.');
+  if (pw.length > 128) throw new HttpError(400, 'Use a password of at most 128 characters.');
+  return pw;
+}
+function hashPassword(pw) {
+  const salt = crypto.randomBytes(16);
+  return `scrypt$${salt.toString('base64')}$${crypto.scryptSync(pw, salt, 32).toString('base64')}`;
+}
+function passwordMatches(pw, stored) {
+  const [kind, salt, hash] = String(stored || '').split('$');
+  if (kind !== 'scrypt' || !salt || !hash) return false;
+  return crypto.timingSafeEqual(crypto.scryptSync(String(pw), Buffer.from(salt, 'base64'), 32), Buffer.from(hash, 'base64'));
+}
+
+/** Name, CMR and state kept on the Firebase account (display name, and a profile link holding cmr and state). */
+function profileFromClaims(claims) {
+  const out = {};
+  try { Object.assign(out, readProfile({ name: claims.name })); } catch { /* no usable name */ }
+  try {
+    const q = new URL(claims.picture).searchParams;
+    Object.assign(out, readProfile({ cmr: q.get('cmr') || '', state: q.get('state') || '' }));
+  } catch { /* no profile link */ }
+  return out;
+}
+
 /**
  * Name, NEET-PG CMR and state from a request body. Fields left out stay out
  * of the result; with `required` all three must be given (sign-up).
@@ -158,23 +191,29 @@ export function readProfile(b = {}, required = false) {
   return out;
 }
 
-function signIn(res, { channel, contact }, profile) {
+/**
+ * Signs in, creating the account if needed. `known` fills in a new account's details that
+ * weren't given (an account restored from Firebase); `password` sets a new password.
+ */
+function signIn(res, { channel, contact }, profile, { remember = true, password, known = {} } = {}) {
   const t = now();
   const find = () => db.prepare(`SELECT * FROM users WHERE ${channel} = ?`).get(contact);
   let u = find();
   const isNew = !u;
   if (isNew) {
+    const p = { ...known, ...profile };
     db.prepare(`INSERT INTO users (${channel}, name, cmr, state, created_at, last_seen_at, logins) VALUES (?, ?, ?, ?, ?, ?, 1)`)
-      .run(contact, profile.name || '', profile.cmr ?? null, profile.state || '', t, t);
+      .run(contact, p.name || '', p.cmr ?? null, p.state || '', t, t);
   } else {
     // Signing up again with the same contact refreshes the details given.
     db.prepare(`UPDATE users SET logins = logins + 1, last_seen_at = ?,
         name = COALESCE(?, name), cmr = COALESCE(?, cmr), state = COALESCE(?, state) WHERE id = ?`)
       .run(t, profile.name ?? null, profile.cmr ?? null, profile.state ?? null, u.id);
   }
+  if (password) db.prepare(`UPDATE users SET password_hash = ? WHERE ${channel} = ?`).run(hashPassword(password), contact);
   u = find();
   db.prepare('UPDATE signup_attempts SET verified_at = ? WHERE contact = ? AND verified_at IS NULL').run(t, contact);
-  createSession(res, 'user', u.id);
+  createSession(res, 'user', u.id, remember);
   return { user: u, isNew };
 }
 
@@ -260,10 +299,11 @@ export async function requestOtp(req, body) {
   const { channel, contact } = readContact(body);
   if (channel === 'phone' && PROVIDER !== 'mock') throw new HttpError(400, 'SMS codes are sent by the sign-in provider on this server.');
   if (channel === 'email' && !EMAIL_ENABLED) throw new HttpError(400, 'Email sign-in is not available yet. Use your mobile number.');
-  const profile = readProfile(body, body.mode === 'signup');
+  const mode = ['signup', 'reset'].includes(body.mode) ? body.mode : 'signin';
+  const profile = { ...readProfile(body, mode === 'signup'), mode };
   limit('otp-ip:' + req.ip, 20, 3600e3);
   limit('otp-contact:' + contact, 5, 3600e3);
-  limit('otp-contact-burst:' + contact, 1, 25e3);
+  limit(`otp-contact-burst:${mode}:${contact}`, 1, 25e3);
   const code = PROVIDER === 'mock' ? MOCK_OTP : String(crypto.randomInt(0, 10 ** OTP_LENGTH)).padStart(OTP_LENGTH, '0');
   if (PROVIDER !== 'mock') await sendEmailCode(contact, code);
   db.prepare('INSERT INTO otp_requests (contact, code_hash, profile, created_at, expires_at) VALUES (?, ?, ?, ?, ?)')
@@ -283,8 +323,23 @@ export function verifyOtp(req, res, body) {
     db.prepare('UPDATE otp_requests SET attempts = attempts + 1 WHERE id = ?').run(r.id);
     throw new HttpError(400, `Incorrect code. ${4 - r.attempts} attempt${4 - r.attempts === 1 ? '' : 's'} left.`);
   }
+  const { mode, ...profile } = JSON.parse(r.profile);
+  // Sign-up and "forgot password" set a password once the code proves the number is theirs.
+  const password = mode === 'signup' || mode === 'reset' ? readPassword(body.password) : undefined;
   db.prepare('UPDATE otp_requests SET used = 1 WHERE id = ?').run(r.id);
-  return signIn(res, { channel, contact }, JSON.parse(r.profile));
+  return signIn(res, { channel, contact }, profile, { remember: body.remember !== false, password });
+}
+
+/** Mobile or email + password. Phone accounts on Firebase sign in through Firebase instead. */
+export function passwordSignIn(req, res, body) {
+  const { channel, contact } = readContact(body);
+  if (channel === 'phone' && PROVIDER === 'firebase') throw new HttpError(400, 'Use the sign-in provider configured on this server.');
+  limit('pw-ip:' + req.ip, 30, 3600e3);
+  limit('pw-contact:' + contact, 10, 15 * 60e3);
+  const u = db.prepare(`SELECT * FROM users WHERE ${channel} = ?`).get(contact);
+  if (!u || !passwordMatches(String(body.password ?? ''), u.password_hash))
+    throw new HttpError(401, `Wrong ${channel === 'email' ? 'email' : 'mobile number'} or password.`);
+  return signIn(res, { channel, contact }, {}, { remember: body.remember !== false });
 }
 
 // ---- OTP: Firebase phone auth ------------------------------------------
@@ -325,7 +380,10 @@ export async function firebaseSignIn(req, res, body) {
   limit('fb-ip:' + req.ip, 30, 3600e3);
   const profile = readProfile(body, body.mode === 'signup');
   const claims = await verifyFirebaseToken(body.idToken);
-  return signIn(res, { channel: 'phone', contact: normPhone(claims.phone_number) }, profile);
+  // The server's database can be wiped (free hosting); the details kept on the Firebase
+  // account restore a returning student's profile.
+  return signIn(res, { channel: 'phone', contact: normPhone(claims.phone_number) }, profile,
+    { remember: body.remember !== false, known: profileFromClaims(claims) });
 }
 
 // ---- admin -------------------------------------------------------------

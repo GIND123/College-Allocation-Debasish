@@ -46,7 +46,7 @@ npm test                  # unit and API tests on a throw-away database
 Firebase Authentication phone sign-in sends the SMS and handles reCAPTCHA. Because Google sends from its own sender IDs, there is no Indian DLT registration to do. The server checks each Firebase ID token against Google's public keys, so no service-account file is required.
 
 1. Create a project at console.firebase.google.com. Phone sign-in needs the **Blaze** (pay-as-you-go) plan. Check the Firebase pricing page for current per-SMS rates in India.
-2. Go to Authentication → Sign-in method and enable **Phone**. Under Settings → SMS region policy, allow India.
+2. Go to Authentication → Sign-in method and enable **Phone**, and also **Email/Password** (the first switch only; "Email link" stays off). Passwords are kept there (see *Passwords* below). Under Settings → SMS region policy, allow India.
 3. Go to Authentication → Settings → Authorized domains and add **every address the site is served on**: the Render address (for example `rankround-spte.onrender.com`) and any custom domain. Firebase refuses phone sign-in from any other address.
 4. Go to Project settings → Your apps, add a **Web app**, and copy its config.
 5. Set these on the server and restart:
@@ -84,9 +84,20 @@ Without these, and with `AUTH_PROVIDER=firebase`, the sign-up form offers mobile
 
 ## Sign-up and states
 
-The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which datasets they see: a candidate who chose Karnataka sees only datasets tagged Karnataka, and gets a "coming soon" page until one is published. Candidates can change their state, CMR or name from the account menu (Edit profile).
+The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, a password, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which datasets they see: a candidate who chose Karnataka sees only datasets tagged Karnataka, and gets a "coming soon" page until one is published. Candidates can change their state, CMR or name from the account menu (Edit profile).
 
 Accounts created before sign-up asked for CMR and state are asked to complete their profile the next time they open the predictor.
+
+## Passwords
+
+- **Sign up:** details and a password, then a one-time code to the mobile proves the number. The password is saved once the code is right.
+- **Sign in:** mobile number and password. No code.
+- **Forgot password:** mobile number and a new password, then a one-time code. Accounts made before passwords existed use this to set one.
+- **Keep me logged in** (ticked by default, and remembered on the device): signed in for 30 days. Unticked, the sign-in ends when the browser closes (and after 12 hours at most).
+
+Where passwords live: the free Render plan wipes the server's database on every restart, so passwords for mobile accounts are kept on the student's **Firebase** account, which never resets. Firebase holds passwords against an email address, so each account uses one made from its verified number (`919876543210@phone.rankround.com`); students never see it, and no mail is sent to it. The student's name, CMR and state are kept on the Firebase account too (display name and profile link), so a returning student's profile comes back after a restart. Email accounts, and every account in local test mode, keep a scrypt hash in the server's database instead.
+
+If Email/Password isn't switched on in Firebase, sign-up and "Forgot password" still sign the student in with their code and say the password couldn't be saved; sign-in with a password says to use "Forgot password".
 
 ## Main tabs and the counselling roadmap
 

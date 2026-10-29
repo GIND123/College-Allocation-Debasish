@@ -159,6 +159,8 @@ if (!columns('users').includes('email')) {
     ALTER TABLE users_new RENAME TO users;`));
   db.exec('PRAGMA foreign_keys = ON');
 }
+// Passwords (local test mode and email accounts; phone accounts on Firebase keep theirs there).
+if (!columns('users').includes('password_hash')) db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''`);
 if (!columns('state_rows').includes('quota')) db.exec(`ALTER TABLE state_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
 if (!columns('datasets').includes('state')) {
   // Every dataset before per-state data was the client's Odisha data.

@@ -242,6 +242,15 @@
 .auth-go svg{width:16px; height:16px}
 .auth-switch{margin:14px 0 0; font-size:13px; color:var(--ink-2); text-align:center}
 .auth-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:20px}
+.auth-intro{margin:0 0 16px; font-size:13.5px; line-height:1.55; color:var(--ink-2)}
+.pw-label{display:flex; justify-content:space-between; align-items:baseline; gap:12px}
+.pw-label .linkbtn{font-size:12.5px; font-weight:500}
+.pw{position:relative; display:flex}
+.pw .input{flex:1; padding-right:64px}
+.pw-show{position:absolute; top:50%; right:6px; transform:translateY(-50%); height:28px; padding:0 9px; border:0; border-radius:var(--r);
+  background:transparent; color:var(--link); font:500 12px var(--sans); cursor:pointer}
+.pw-show:hover{background:var(--sunk)}
+.auth .auth-keep{margin-top:14px; font-size:13px; color:var(--ink)}
 .empty-actions{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:18px}
 .empty-actions svg{width:15px; height:15px}
 .auth-down{display:grid; gap:8px; justify-items:start; line-height:1.5}
