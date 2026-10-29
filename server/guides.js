@@ -201,11 +201,14 @@ const FOOT = `
 <script type="module" src="/js/guide.js"></script>
 `;
 
-// <head> and <body> tags are optional in HTML, and some guides leave them out (CENTAC). They are
-// added where a browser would put them, so the frame always has the same places to go: the body
-// starts at the first tag that can't be in the head.
+// <html>, <head> and <body> tags are optional in HTML, and some guides leave them out (CENTAC;
+// Himachal Pradesh is a bare fragment). They are added where a browser would put them, so the
+// frame always has the same places to go: the body starts at the first tag that can't be in the
+// head. A missing doctype would put the page in quirks mode, so one is added too.
 const HEAD_TAGS = new Set(['html', 'head', 'meta', 'title', 'link', 'style', 'script', 'base', 'noscript', 'template']);
 function withHeadAndBody(h) {
+  if (!/<html\b/i.test(h)) h = `<html lang="en">${h}</html>`;
+  if (!/^\s*(<!--[\s\S]*?-->\s*)*<!doctype/i.test(h)) h = `<!doctype html>\n${h}`;
   if (/<\/head>/i.test(h) && /<body\b/i.test(h)) return h;
   const tag = /<!--[\s\S]*?-->|<!doctype[^>]*>|<(\/?)([a-z][\w-]*)[^>]*>/gi;
   let at = h.length, m;
@@ -233,7 +236,9 @@ function frame(src, g, all) {
   h = /<title>[\s\S]*?<\/title>/i.test(h) ? h.replace(/<title>[\s\S]*?<\/title>/i, title) : h.replace(/<\/head>/i, `${title}</head>`);
   h = h.replace(/<html\b/i, `<html data-guide="${g.slug}"`);
   h = h.replace(/<head\b[^>]*>/i, m => m + THEME_BOOT);
-  h = h.replace(/<\/head>/i, `<meta name="description" content="${esc(g.summary || g.title)}">
+  // A guide without these would render at desktop width on phones, or guess its encoding.
+  const needs = `${/<meta\s+charset/i.test(h) ? '' : '<meta charset="utf-8">\n'}${/name=["']viewport["']/i.test(h) ? '' : '<meta name="viewport" content="width=device-width, initial-scale=1">\n'}`;
+  h = h.replace(/<\/head>/i, `${needs}<meta name="description" content="${esc(g.summary || g.title)}">
 <meta name="theme-color" content="#0b1422">
 <link rel="icon" href="${FAVICON}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,6 +247,6 @@ function frame(src, g, all) {
 <link rel="stylesheet" href="/css/guide.css">
 </head>`);
   h = h.replace(/<body\b[^>]*>/i, m => m + topBar(g, all));
-  const end = h.lastIndexOf('</body>');
+  const end = [h.lastIndexOf('</body>'), h.lastIndexOf('</html>')].find(i => i >= 0) ?? -1;
   return end < 0 ? h + FOOT : h.slice(0, end) + FOOT + h.slice(end);
 }

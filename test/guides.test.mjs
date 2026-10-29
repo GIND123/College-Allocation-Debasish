@@ -9,7 +9,8 @@ test('the registry lists every guide with a valid region and file', () => {
   assert.equal(new Set(guides.map(g => g.slug)).size, guides.length, 'slugs are unique');
   for (const g of guideList()) assert.equal('file' in g, false, `${g.slug}: file names stay private`);
   for (const s of ['bihar', 'madhya-pradesh', 'maharashtra', 'rajasthan', 'rims-imphal', 'tamil-nadu-dnb', 'deemed-seats',
-    'chhattisgarh', 'dadra-nagar-haveli', 'puducherry', 'uttar-pradesh', 'uttarakhand', 'uttarakhand-seats'])
+    'chhattisgarh', 'dadra-nagar-haveli', 'puducherry', 'uttar-pradesh', 'uttarakhand', 'uttarakhand-seats',
+    'himachal-pradesh', 'kerala-seats', 'madhya-pradesh-fees', 'odisha-seats', 'rajasthan-bond', 'uttarakhand-nri'])
     assert.ok(guides.some(g => g.slug === s), `${s} is listed`);
 });
 
@@ -45,6 +46,9 @@ test('every guide page gets the RankRound frame without breaking the guide', () 
   for (const { slug } of guideList()) {
     const html = guidePage(slug);
     assert.ok(html.includes(`data-guide="${slug}"`), `${slug}: tagged`);
+    assert.match(html, /^\s*(<!--[\s\S]*?-->\s*)*<!doctype html>/i, `${slug}: standards mode`);
+    assert.match(html, /<meta name="viewport"/i, `${slug}: phone-width layout`);
+    assert.equal((html.match(/<body\b/gi) || []).length, 1, `${slug}: one body`);
     assert.equal(html.match(/<title>[^<]*<\/title>/)?.[0], '<title>RankRound</title>', `${slug}: the tab title is the brand only`);
     assert.ok(html.includes('class="rr-top"') && html.includes('class="rr-guidebar"') && html.includes('class="rr-foot"'), `${slug}: frame`);
     assert.ok(html.includes('/css/guide.css') && html.includes('/js/guide.js'), `${slug}: frame assets`);

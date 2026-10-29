@@ -157,7 +157,7 @@ No iframes are involved, so each guide scrolls, searches and jumps between secti
 
 Big files a guide links to (scanned notices, PDFs) belong in `guides/assets/` and are linked as `/counselling/assets/<file>`, rather than embedded in the page.
 
-Guides may leave out the `<head>` and `<body>` tags (HTML allows it); the frame adds them where a browser would.
+Guides may leave out the doctype and the `<html>`, `<head>` and `<body>` tags, or be a bare fragment; the frame adds what is missing where a browser would, plus a phone viewport and character set if the guide has none.
 
 ## Coverage map (home page)
 

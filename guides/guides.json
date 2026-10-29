@@ -289,6 +289,30 @@
       ]
     },
     {
+      "slug": "himachal-pradesh",
+      "file": "himachal-pradesh.html",
+      "region": "Himachal Pradesh",
+      "title": "Himachal Pradesh PG counselling 2026: the prospectus in plain language",
+      "label": "Counselling guide",
+      "authority": "Atal Medical & Research University (AMRU), Mandi · State quota",
+      "summary": "Who can apply, how seats are shared, fees and token money, the service bond, rounds, documents and the errors in the prospectus.",
+      "asOf": "2026-10-22",
+      "official": "https://amruhp.ac.in",
+      "dates": [
+        {
+          "what": "Online application and fee",
+          "when": "22 Oct – 26 Oct",
+          "from": "2026-10-22T00:00:00+05:30",
+          "to": "2026-10-26T23:59:00+05:30"
+        },
+        {
+          "what": "Merit list and seat matrix",
+          "when": "To be notified on amruhp.ac.in",
+          "label": "Awaited"
+        }
+      ]
+    },
+    {
       "slug": "jharkhand",
       "file": "jharkhand.html",
       "region": "Jharkhand",
@@ -371,10 +395,35 @@
       "title": "Kerala PG medical prospectus 2026-27, explained",
       "label": "Prospectus explained",
       "authority": "CEE Kerala · G.O.(Ms) No.313/2026",
-      "summary": "Eligibility, reservation, the service quota, rounds, money at stake and the bond, from the prospectus.",
-      "asOf": "2026-10-04",
+      "summary": "Eligibility, reservation, the service quota, how to apply and pay, rounds, money at stake and the bond, from the prospectus.",
+      "asOf": "2026-10-12",
+      "official": "https://www.cee.kerala.gov.in/pgmonline2026/",
+      "dates": [
+        {
+          "what": "Online application",
+          "when": "Closed 16 Oct, 4 pm (in-service printout by 5 pm)",
+          "from": "2026-10-12T00:00:00+05:30",
+          "to": "2026-10-16T16:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "kerala-seats",
+      "file": "kerala-seats.html",
+      "region": "Kerala",
+      "title": "Kerala PG medical 2026 seat matrix",
+      "label": "Seat matrix",
+      "authority": "CEE Kerala · state counselling seat matrices",
+      "summary": "The 1,170 state counselling seats by specialty, college, reservation and service quota.",
+      "asOf": "2026-10-28",
       "official": "https://cee.kerala.gov.in",
-      "dates": []
+      "dates": [
+        {
+          "what": "Seat matrix",
+          "when": "28 Oct · pending Government approval",
+          "label": "Published"
+        }
+      ]
     },
     {
       "slug": "madhya-pradesh",
@@ -391,6 +440,24 @@
           "what": "Round 1 schedule",
           "when": "See the DME notice on dme.mponline.gov.in",
           "label": "Awaited"
+        }
+      ]
+    },
+    {
+      "slug": "madhya-pradesh-fees",
+      "file": "madhya-pradesh-fees.html",
+      "region": "Madhya Pradesh",
+      "title": "Madhya Pradesh PG (MD/MS) fee structure 2026",
+      "label": "Fee structure",
+      "authority": "DME Madhya Pradesh · fee notice of 25 Oct 2026",
+      "summary": "Tuition, other fees, caution money and NRI totals for 410 seat entries in 27 government and private colleges.",
+      "asOf": "2026-10-25",
+      "official": "https://dme.mponline.gov.in",
+      "dates": [
+        {
+          "what": "Fee notice",
+          "when": "25 Oct · 27 colleges",
+          "label": "Published"
         }
       ]
     },
@@ -492,6 +559,24 @@
       ]
     },
     {
+      "slug": "odisha-seats",
+      "file": "odisha-seats.html",
+      "region": "Odisha",
+      "title": "Odisha PG seat explorer 2026",
+      "label": "Seat explorer",
+      "authority": "AHPGIC Odisha · provisional seat matrix",
+      "summary": "MD/MS, diploma and DNB seats by college, specialty and reservation, with a 2025 vs 2026 comparison.",
+      "asOf": "2026-10-26",
+      "official": "https://www.ahpgic.in",
+      "dates": [
+        {
+          "what": "Provisional seat matrix",
+          "when": "26 Oct",
+          "label": "Published"
+        }
+      ]
+    },
+    {
       "slug": "puducherry",
       "file": "puducherry.html",
       "region": "Puducherry",
@@ -547,6 +632,23 @@
           "what": "Round 1 allotment",
           "when": "2 Nov · report 3–6 Nov at SMS MC, Jaipur",
           "on": "2026-11-02T00:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "rajasthan-bond",
+      "file": "rajasthan-bond.html",
+      "region": "Rajasthan",
+      "title": "Rajasthan PG service bond, explained",
+      "label": "Service bond",
+      "authority": "DME Rajasthan · bond order of 4 Sept 2025",
+      "summary": "What you sign for an MD/MS seat in a government or RajMES college: bond amounts by branch, years of service and the seat-leaving bond.",
+      "official": "https://pg.neetrajasthan.com",
+      "dates": [
+        {
+          "what": "Bond rules",
+          "when": "From session 2025–26",
+          "label": "Reference"
         }
       ]
     },
@@ -687,6 +789,23 @@
         {
           "what": "Provisional seat matrix",
           "when": "State, all-India open and NRI quotas",
+          "label": "Published"
+        }
+      ]
+    },
+    {
+      "slug": "uttarakhand-nri",
+      "file": "uttarakhand-nri.html",
+      "region": "Uttarakhand",
+      "title": "Uttarakhand NEET-PG NRI quota: Round 1 registered candidates",
+      "label": "NRI quota Round 1 list",
+      "authority": "HNBUMU · NRI quota registration list",
+      "summary": "The candidates registered for NRI quota seats in Round 1, with rank, MBBS state and domicile. Not a merit list.",
+      "official": "https://www.hnbumu.ac.in",
+      "dates": [
+        {
+          "what": "NRI quota registration list",
+          "when": "Round 1 · report to SGRRIM&HS, Dehradun for verification",
           "label": "Published"
         }
       ]
@@ -1011,8 +1130,8 @@
         "deemed": 1794
       },
       "Kerala": {
-        "mdms": 1695,
-        "note": "964 government + 731 self-financing (2025 figures)",
+        "mdms": 1170,
+        "note": "2026 state counselling matrix: 442 government + 48 in-service + 680 self-financing (All India Quota not included)",
         "dnb": 790,
         "deemed": 133
       },
@@ -1041,6 +1160,8 @@
         "dnb": 16
       },
       "Odisha": {
+        "mdms": 463,
+        "note": "2026 provisional state counselling matrix: 463 MD/MS (plus 43 diploma and 18 DNB)",
         "dnb": 201,
         "deemed": 459
       },

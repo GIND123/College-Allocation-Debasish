@@ -1,0 +1,473 @@
+<title>HP PG Counselling 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Plain-language guide to the Himachal Pradesh State PG (MD/MS/DNB) counselling prospectus 2026-27 issued by AMRU.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column with a sticky section bar; summary first, detail after; tables scroll in their own boxes */
+:root {
+  --bg: #f6f8f7;
+  --surface: #ffffff;
+  --fg: #16201d;
+  --muted: #55625e;
+  --line: #d9e1de;
+  --accent: #1f5f4a;        /* pine, Himachal hills */
+  --accent-soft: #e2efe9;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --crit: #a3332b;
+  --crit-soft: #fbe6e3;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101614; --surface: #17201d; --fg: #e4ece9; --muted: #9aaba5; --line: #2a3733;
+    --accent: #7cc7a8; --accent-soft: #1d3029; --warn: #e8b54f; --warn-soft: #2e2716;
+    --crit: #f08b80; --crit-soft: #351d1a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101614; --surface: #17201d; --fg: #e4ece9; --muted: #9aaba5; --line: #2a3733;
+  --accent: #7cc7a8; --accent-soft: #1d3029; --warn: #e8b54f; --warn-soft: #2e2716;
+  --crit: #f08b80; --crit-soft: #351d1a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+}
+.wrap {
+  max-width: 820px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; font-weight: 800; }
+h3 { font-size: 1.08rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Header */
+header.top { padding-block: 40px 28px; border-bottom: 1px solid var(--line); }
+header.top .wrap { display: grid; gap: 14px; }
+.eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chip { font-size: 0.85rem; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+
+/* Sticky section bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav.sections {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+nav.sections .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; }
+nav.sections a {
+  flex: none; text-decoration: none; color: var(--muted); font-size: 0.88rem; font-weight: 500;
+  padding: 6px 10px; border-radius: 8px;
+}
+nav.sections a:hover, nav.sections a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+
+main .wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+section { display: grid; gap: 16px; scroll-margin-top: 64px; }
+section > p, section li { max-width: 68ch; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+
+/* Deadline banner */
+.deadline {
+  display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: center;
+  background: var(--crit-soft); border: 1px solid color-mix(in srgb, var(--crit) 35%, transparent);
+  border-radius: 12px; padding: 16px 18px;
+}
+.deadline .big { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: var(--crit); grid-row: span 2; }
+.deadline strong { color: var(--fg); }
+.deadline p { color: var(--fg); font-size: 0.95rem; }
+
+/* Key facts grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.fact .label { font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.fact .value { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; }
+.fact .note { font-size: 0.88rem; color: var(--muted); }
+
+/* Tables */
+.table-box { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.r, th.r { text-align: right; white-space: nowrap; }
+caption { caption-side: bottom; text-align: left; padding: 8px 12px; font-size: 0.82rem; color: var(--muted); }
+
+/* Roster strip */
+.roster { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-width: 480px; }
+.roster div { border-radius: 8px; padding: 10px 4px; text-align: center; font-size: 0.8rem; font-weight: 600; display: grid; gap: 2px; }
+.roster .n { font-family: var(--font-mono); font-size: 0.95rem; }
+.roster .gdo { background: var(--accent-soft); color: var(--accent); }
+.roster .dir { background: var(--accent); color: var(--bg); }
+
+/* Callouts */
+.callout { border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; border: 1px solid var(--line); background: var(--surface); }
+.callout.warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+.callout.crit { background: var(--crit-soft); border-color: color-mix(in srgb, var(--crit) 30%, transparent); }
+.callout .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.callout.warn .tag { color: var(--warn); }
+.callout.crit .tag { color: var(--crit); }
+
+/* Watch-outs list */
+ol.issues { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: i; }
+ol.issues li { counter-increment: i; display: grid; grid-template-columns: 2rem 1fr; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+ol.issues li::before { content: counter(i); font-family: var(--font-mono); color: var(--warn); font-weight: 500; }
+ol.issues li > div { min-width: 0; display: grid; gap: 2px; }
+
+/* Checklist */
+.checklist { display: grid; gap: 6px; }
+.check { display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; }
+.check input { margin-top: 5px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+.check span { min-width: 0; }
+.check small { color: var(--muted); }
+.check:has(input:checked) span { color: var(--muted); text-decoration: line-through; }
+.progress { font-size: 0.9rem; color: var(--muted); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn { font: inherit; font-size: 0.85rem; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn:focus-visible, .check:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Rounds */
+.rounds { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.round { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.round h3 { color: var(--accent); }
+.round ul { margin: 0; padding-left: 1.1em; font-size: 0.9rem; display: grid; gap: 4px; }
+
+/* Contacts */
+.contact { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.contact code { font-family: var(--font-mono); font-size: 0.95rem; background: var(--accent-soft); color: var(--accent); padding: 4px 8px; border-radius: 6px; user-select: all; }
+
+footer { border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--muted); font-size: 0.85rem; }
+footer .wrap { display: grid; gap: 6px; }
+
+@media (max-width: 480px) {
+  .deadline { grid-template-columns: 1fr; }
+  .deadline .big { grid-row: auto; }
+  body { font-size: 15px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <span class="eyebrow">Himachal Pradesh · State Quota · Session 2026–27</span>
+    <h1>HP PG Counselling 2026: the prospectus in plain language</h1>
+    <p class="lede">A summary of the MD/MS/DNB counselling prospectus released by Atal Medical &amp; Research University (AMRU), Mandi on 22 October 2026. It covers who can apply, how seats are shared, what it costs, the service bond, and the errors in the document you should know about.</p>
+    <div class="facts">
+      <span class="chip">6 Govt. colleges</span>
+      <span class="chip">1 private college (MMMC Solan)</span>
+      <span class="chip">Merit: NEET-PG 2026</span>
+      <span class="chip">3 rounds + stray</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sections" aria-label="Sections">
+  <div class="wrap">
+    <a href="#dates">Dates &amp; fee</a>
+    <a href="#eligibility">Who can apply</a>
+    <a href="#seats">Seat sharing</a>
+    <a href="#money">Fees &amp; token</a>
+    <a href="#bond">Bond</a>
+    <a href="#rounds">Rounds</a>
+    <a href="#documents">Documents</a>
+    <a href="#issues">Watch-outs</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <section id="dates" aria-labelledby="h-dates">
+      <h2 id="h-dates">Dates and application fee</h2>
+      <div class="deadline" role="status">
+        <span class="big num" id="countdown">26 Oct</span>
+        <p><strong>Last date to apply and pay: 26 October 2026.</strong> <span id="countdown-text">Applications opened on 22 October.</span></p>
+        <p>Apply only at <a href="https://amruhp.ac.in" target="_blank" rel="noopener">amruhp.ac.in</a> → Admission → Apply for Admission and Counselling → PG MD/MS/DNB.</p>
+      </div>
+      <div class="grid">
+        <div class="fact"><span class="label">General / EWS</span><span class="value num">₹3,600</span><span class="note">Non-refundable</span></div>
+        <div class="fact"><span class="label">SC / ST</span><span class="value num">₹2,500</span><span class="note">Non-refundable</span></div>
+        <div class="fact"><span class="label">PwD</span><span class="value num">₹0</span><span class="note">No fee</span></div>
+        <div class="fact"><span class="label">Merit list &amp; seat matrix</span><span class="value">Not yet out</span><span class="note">"To be notified" on the AMRU site</span></div>
+      </div>
+      <div class="callout warn">
+        <span class="tag">Paying is not applying</span>
+        <p>Your application counts only after you press <strong>Final Submit</strong> and download the application PDF. Money leaving your account is not enough. After final submission nothing can be edited; a correction means a new application with a new email ID and a second fee.</p>
+      </div>
+    </section>
+
+    <section id="eligibility" aria-labelledby="h-elig">
+      <h2 id="h-elig">Who can apply</h2>
+      <p>Everyone needs an NMC-recognised MBBS, internship finished by <strong>30 September 2026</strong>, NMC or State Medical Council registration, and a qualifying NEET-PG 2026 percentile.</p>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Category</th><th class="r">Minimum percentile</th></tr></thead>
+          <tbody>
+            <tr><td>General (UR)</td><td class="r num">50th</td></tr>
+            <tr><td>UR – PwBD</td><td class="r num">45th</td></tr>
+            <tr><td>SC / ST / OBC (incl. PwBD)</td><td class="r num">40th</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid">
+        <div class="fact"><span class="label">State Quota – Direct</span><span class="value">HP-linked doctors</span><span class="note">MBBS from an HP college, or a Bonafide Himachali who did MBBS outside HP. Needs the affidavit in Appendix-3.</span></div>
+        <div class="fact"><span class="label">State Quota – In-service</span><span class="value">HP Govt. doctors (GDOs)</span><span class="note">Rules from HP PG/SS Policy 2025. Not allowed on Management Quota seats.</span></div>
+        <div class="fact"><span class="label">Management Quota</span><span class="value">Any Indian national</span><span class="note">MMMC Solan only. Every State Quota applicant must also tick this option in the form.</span></div>
+        <div class="fact"><span class="label">NRI Quota</span><span class="value">NRI-sponsored</span><span class="note">MMMC Solan only. Separate NRI merit list; unfilled seats turn into Management seats in Round 3.</span></div>
+      </div>
+    </section>
+
+    <section id="seats" aria-labelledby="h-seats">
+      <h2 id="h-seats">How seats are shared</h2>
+      <p>The counselling fills <strong>50% of PG seats</strong> in IGMC Shimla, RPGMC Tanda, SLBSGMC Ner Chowk, YSPGMC Nahan, PJNGMC Chamba and RKGMC Hamirpur, plus all seats at MMMC Kumarhatti, Solan.</p>
+      <h3>In-service vs Direct: 2 out of every 6 seats go to Direct candidates</h3>
+      <div class="roster" aria-label="Six-point roster">
+        <div class="gdo"><span class="n">1</span>GDO</div>
+        <div class="dir"><span class="n">2</span>Direct</div>
+        <div class="gdo"><span class="n">3</span>GDO</div>
+        <div class="gdo"><span class="n">4</span>GDO</div>
+        <div class="dir"><span class="n">5</span>Direct</div>
+        <div class="gdo"><span class="n">6</span>GDO</div>
+      </div>
+      <p>This cycle repeats within each specialty, giving 66.67% to in-service doctors and 33.33% to Direct candidates.</p>
+
+      <h3>Reservation (40-point roster)</h3>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Category</th><th class="r">Share</th><th>Roster points</th></tr></thead>
+          <tbody>
+            <tr><td>Scheduled Caste</td><td class="r num">15%</td><td class="num">1, 8, 14, 22, 28, 36</td></tr>
+            <tr><td>Scheduled Tribe</td><td class="r num">7.5%</td><td class="num">4, 17, 31</td></tr>
+            <tr><td>EWS*</td><td class="r num">10%</td><td class="num">9, 19, 29, 39</td></tr>
+            <tr><td>PwBD</td><td class="r num">5%</td><td class="num">20, 40</td></tr>
+          </tbody>
+          <caption>*EWS still awaits NMC approval and does not apply at the private college. Income limit ₹4 lakh, and families of any Govt./PSU employee are excluded.</caption>
+        </table>
+      </div>
+      <ul class="plain">
+        <li><strong>No OBC quota.</strong> OBC candidates compete as General.</li>
+        <li><strong>SC/ST from other states</strong> are treated as General for State Quota seats.</li>
+        <li><strong>Single Girl Child:</strong> one seat each at IGMC Shimla and RPGMC Tanda, Direct Quota only, given in Round 3. Not for DNB.</li>
+        <li><strong>Conversions after Round 3:</strong> unfilled seats pass from one quota (GDO/Direct) to the other, then SC ↔ ST, then to General. Unfilled PwBD seats go to General.</li>
+        <li>MMMC Solan: no Community Medicine seat for in-service doctors. DNB seats only for regular (not contract) GDOs.</li>
+      </ul>
+
+      <h3>Bonus marks for in-service doctors</h3>
+      <p>In-service doctors get bonus marks on top of their NEET-PG score for each year of field posting (calculated day by day), up to a maximum of <strong>30%</strong>. Bonus marks count only after the minimum service for that area is complete. Urban postings earn none.</p>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Area</th><th class="r">Bonus per year</th><th class="r">Minimum service first</th></tr></thead>
+          <tbody>
+            <tr><td>A – Tribal / remotest (e.g. Lahaul-Spiti, Pangi, Kinnaur PHCs)</td><td class="r num">10%</td><td class="r">1 year</td></tr>
+            <tr><td>B – Hard / difficult (e.g. Dodra-Kawar, Bara Bhangal)</td><td class="r num">8%</td><td class="r">2 years</td></tr>
+            <tr><td>Difficult rural (e.g. Chirgaon, Janjehli, Shillai)</td><td class="r num">6%</td><td class="r">3 years</td></tr>
+            <tr><td>C – All other rural areas</td><td class="r num">4%</td><td class="r">3 years</td></tr>
+          </tbody>
+          <caption>From Annexure-A of HP PG/SS Policy 2025. No bonus for in-service doctors who join All India counselling.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section id="money" aria-labelledby="h-money">
+      <h2 id="h-money">Fees and token amount</h2>
+      <p>You pay a <strong>token amount</strong> when you lock choices. It is refunded if you get no seat, moved to the college if you join, and <strong>forfeited if you get a seat and don't join</strong>. If you choose both State and Management Quota, you pay the higher amount.</p>
+      <div class="grid">
+        <div class="fact"><span class="label">Token – Govt. college</span><span class="value num">₹39,000</span></div>
+        <div class="fact"><span class="label">Token – Private (State or Mgmt.)</span><span class="value num">₹5,00,000</span></div>
+      </div>
+      <h3>Government colleges (per year)</h3>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Item</th><th class="r">Amount</th></tr></thead>
+          <tbody>
+            <tr><td>College fee (tuition ₹24,000 + other charges)</td><td class="r num">₹31,500</td></tr>
+            <tr><td>Hostel (rent, electricity, funds)</td><td class="r num">₹21,000</td></tr>
+            <tr><td>Refundable securities (one-time)</td><td class="r num">₹12,500</td></tr>
+          </tbody>
+          <caption>Students with more than 40% disability pay no fees at AMRU-affiliated colleges.</caption>
+        </table>
+      </div>
+      <h3>MMMC Kumarhatti, Solan</h3>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Course</th><th class="r">Fee (₹)</th><th class="r">NRI (USD)</th></tr></thead>
+          <tbody>
+            <tr><td>MD Radiodiagnosis</td><td class="r num">33,39,600</td><td class="r num">80,000</td></tr>
+            <tr><td>MD Dermatology</td><td class="r num">31,87,800</td><td class="r num">70,000</td></tr>
+            <tr><td>MS OBG</td><td class="r num">29,35,800</td><td class="r num">60,000</td></tr>
+            <tr><td>MD General Medicine</td><td class="r num">28,99,600</td><td class="r num">70,000</td></tr>
+            <tr><td>MD Pediatrics / MS Ophthalmology / MS Orthopaedics</td><td class="r num">27,67,800</td><td class="r num">60,000</td></tr>
+            <tr><td>MS General Surgery</td><td class="r num">26,35,600</td><td class="r num">60,000</td></tr>
+            <tr><td>MD Respiratory Medicine / MD Psychiatry</td><td class="r num">23,47,800</td><td class="r num">50,000</td></tr>
+            <tr><td>MS ENT</td><td class="r num">19,31,600</td><td class="r num">45,000</td></tr>
+            <tr><td>MD Anaesthesiology</td><td class="r num">19,31,600</td><td class="r num">40,000</td></tr>
+            <tr><td>MD Pathology</td><td class="r num">15,95,000</td><td class="r">–</td></tr>
+            <tr><td>MD Community Medicine / MD Forensic Medicine</td><td class="r num">3,50,000</td><td class="r">–</td></tr>
+            <tr><td>Anatomy / Physiology / Biochemistry / Microbiology / Pharmacology</td><td class="r num">3,00,000</td><td class="r">–</td></tr>
+          </tbody>
+          <caption>The prospectus does not say whether these amounts are per year or for the whole course. Check MMMC's own prospectus for the bond, stipend and hostel.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section id="bond" aria-labelledby="h-bond">
+      <h2 id="h-bond">The service bond (Govt. colleges)</h2>
+      <p>Under HP PG/SS Policy 2025, every State Quota PG in a government college signs a bond to serve Himachal Pradesh after the course.</p>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Who</th><th class="r">Service</th><th class="r">Bond amount</th></tr></thead>
+          <tbody>
+            <tr><td>Direct candidate</td><td class="r">2 years (incl. 1 yr field)</td><td class="r num">₹40 lakh</td></tr>
+            <tr><td>Sponsored GDO, PG in HP</td><td class="r">4 years (incl. 1 yr field)</td><td class="r num">₹40 lakh</td></tr>
+            <tr><td>Sponsored GDO, INI sponsored seat</td><td class="r">5 years (incl. 1 yr field)</td><td class="r num">₹40 lakh</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="plain">
+        <li>You also hand over an <strong>undated cheque</strong> for the bond amount, and your <strong>original MBBS degree</strong> is kept until the bond is served.</li>
+        <li><strong>Leaving the course midway:</strong> ₹10 lakh + 18% yearly interest + all stipend or salary drawn. Sponsored GDOs are also barred from PG entrance exams for 5 years.</li>
+        <li>Taking a Senior Residency or Tutor post in an HP government college during the bond <strong>extends it to 3 years</strong> of SR.</li>
+        <li>SR at AIMSS Chamiana, or SR in Radiodiagnosis at any HP government college except IGMC, counts as the field posting.</li>
+        <li>Breaking the bond can also lead to cancellation of medical registration.</li>
+      </ul>
+    </section>
+
+    <section id="rounds" aria-labelledby="h-rounds">
+      <h2 id="h-rounds">How the rounds work</h2>
+      <div class="callout crit">
+        <span class="tag">Most common mistake</span>
+        <p>Being on the merit list is not enough. You must <strong>fill and lock fresh choices in every round</strong>, or you are left out of that round.</p>
+      </div>
+      <div class="rounds">
+        <div class="round"><h3>Round 1</h3><ul><li>Register, pay, lock choices</li><li>Report with originals</li><li>Must join to be upgraded later</li></ul></div>
+        <div class="round"><h3>Round 2</h3><ul><li>New candidates can register</li><li>Upgrade or keep your seat</li><li>Old seat is lost if upgraded</li></ul></div>
+        <div class="round"><h3>Round 3</h3><ul><li>Quota and category conversions</li><li>Single Girl Child seats</li><li>Not joining ends your counselling</li></ul></div>
+        <div class="round"><h3>Stray round</h3><ul><li>No moves between colleges or courses</li><li>Only private → Govt. upgrade allowed</li><li>Closed to anyone admitted by Round 3</li></ul></div>
+      </div>
+      <ul class="plain">
+        <li>Fill choices even for seats not shown as vacant. Seats free up when others upgrade.</li>
+        <li>Anyone who joins an All India (MCC) seat by Round 3 cannot take part in the State rounds after that.</li>
+        <li>Go to the college only after the final allotment, with the allotment letter downloaded from your login.</li>
+        <li>Refund claims must be made within 6 months of the last admission date.</li>
+      </ul>
+    </section>
+
+    <section id="documents" aria-labelledby="h-docs">
+      <h2 id="h-docs">Document checklist</h2>
+      <p>Tick items off as you go. Your ticks are saved only in this browser.</p>
+      <div class="progress"><span id="doc-progress">0 of 0 ready</span><button class="btn" type="button" id="doc-reset">Clear ticks</button></div>
+      <div class="checklist" id="checklist">
+        <label class="check"><input type="checkbox" id="d1"><span>Class 10 certificate <small>(proof of date of birth)</small></span></label>
+        <label class="check"><input type="checkbox" id="d2"><span>Final MBBS marks sheet and MBBS degree / provisional certificate</span></label>
+        <label class="check"><input type="checkbox" id="d3"><span>Character certificate from the college last attended</span></label>
+        <label class="check"><input type="checkbox" id="d4"><span>Internship completion certificate <small>(by 30.09.2026)</small></span></label>
+        <label class="check"><input type="checkbox" id="d5"><span>Attempt certificate</span></label>
+        <label class="check"><input type="checkbox" id="d6"><span>NMC / State Medical Council registration</span></label>
+        <label class="check"><input type="checkbox" id="d7"><span>NEET-PG 2026 admit card and result card</span></label>
+        <label class="check"><input type="checkbox" id="d8"><span>Bonafide Himachali certificate <small>(Direct, Appendix-1, signed by SDM/Executive Magistrate)</small></span></label>
+        <label class="check"><input type="checkbox" id="d9"><span>Affidavit on non-judicial stamp paper <small>(Direct, Appendix-3)</small></span></label>
+        <label class="check"><input type="checkbox" id="d10"><span>SC/ST certificate <small>(if applicable, Appendix-2)</small></span></label>
+        <label class="check"><input type="checkbox" id="d11"><span>EWS certificate for FY 2026-27 <small>(if applicable, Appendix-6)</small></span></label>
+        <label class="check"><input type="checkbox" id="d12"><span>Disability certificate <small>(if applicable, from IGMC Shimla or RPGMC Tanda board)</small></span></label>
+        <label class="check"><input type="checkbox" id="d13"><span>Single Girl Child certificate <small>(if applicable, Appendix-5)</small></span></label>
+        <label class="check"><input type="checkbox" id="d14"><span>Incentive certificate and service certificates <small>(in-service doctors)</small></span></label>
+        <label class="check"><input type="checkbox" id="d15"><span>Photo taken on or after 1 Oct 2026 <small>(JPG, up to 40 KB, white background, ears visible)</small></span></label>
+        <label class="check"><input type="checkbox" id="d16"><span>Signature in running hand, black ink <small>(JPG, up to 20 KB)</small></span></label>
+        <label class="check"><input type="checkbox" id="d17"><span>Printed application form PDF <small>(needed at the college)</small></span></label>
+      </div>
+    </section>
+
+    <section id="issues" aria-labelledby="h-issues">
+      <h2 id="h-issues">Watch-outs in this prospectus</h2>
+      <p>These are errors and gaps found in the 22.10.2026 document. Check the AMRU site for corrections.</p>
+      <ol class="issues">
+        <li><div><h3>Copies with a paid-counselling watermark are circulating</h3><p>Some copies carry "Send COUNSELLING to WhatsApp 8756077948" on every page. That is not AMRU. Download the original from amruhp.ac.in and use only the official helpline below.</p></div></li>
+        <li><div><h3>The disability annexure is for MBBS, not PG</h3><p>Pages 36–69 and the attached MCC notice are the NMC guidelines for MBBS (UG) 2026 admissions. PwBD candidates should confirm which PG rules apply.</p></div></li>
+        <li><div><h3>Two different internship deadlines</h3><p>Clause 2.1.2 says 30.09.2026. Clause 2.4.3 says "31.09.2026", which is not a real date.</p></div></li>
+        <li><div><h3>Token amount does not match the fee</h3><p>The ₹39,000 Govt. token is called "equal to first-year tuition", but tuition is ₹24,000 and the full college fee is ₹31,500.</p></div></li>
+        <li><div><h3>MMMC fee period is unclear</h3><p>The table does not say per year or full course. MD Pathology at ₹15.95 lakh also stands out against ₹3 lakh for other pre-clinical subjects.</p></div></li>
+        <li><div><h3>Smaller gaps</h3><p>No format or deadline yet for the in-service incentive certificate, Appendix-4 is missing, "Chapter 9" appears twice, and the seat matrix is not published.</p></div></li>
+      </ol>
+    </section>
+
+    <section id="contact" aria-labelledby="h-contact">
+      <h2 id="h-contact">Official contact</h2>
+      <div class="contact"><span>WhatsApp helpline</span><code>94591 39364</code><button class="btn" type="button" data-copy="9459139364">Copy</button></div>
+      <div class="contact"><span>Email</span><code>counselling.amruhp@gmail.com</code><button class="btn" type="button" data-copy="counselling.amruhp@gmail.com">Copy</button></div>
+      <p>Websites: <a href="https://amruhp.ac.in" target="_blank" rel="noopener">amruhp.ac.in</a> and <a href="https://www.hp.gov.in/hpdmer/" target="_blank" rel="noopener">hp.gov.in/hpdmer</a>. No individual messages are sent; candidates must check these sites themselves. Disputes fall under the courts at Shimla.</p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Summary of the AMRU PG (MD/MS/DNB) prospectus 2026–27 dated 22.10.2026, with HP PG/SS Policy 2025. This is an independent guide, not an official AMRU document. The prospectus can be amended at any time; the official text always prevails.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Deadline status (last date 26 Oct 2026, India time)
+  var big = document.getElementById('countdown');
+  var txt = document.getElementById('countdown-text');
+  try {
+    var now = new Date();
+    var ist = new Date(now.getTime() + (now.getTimezoneOffset() + 330) * 60000);
+    var today = Date.UTC(ist.getFullYear(), ist.getMonth(), ist.getDate());
+    var last = Date.UTC(2026, 9, 26);
+    var days = Math.round((last - today) / 86400000);
+    if (days > 1) { big.textContent = days + ' days'; txt.textContent = 'left to apply.'; }
+    else if (days === 1) { big.textContent = '1 day'; txt.textContent = 'left to apply.'; }
+    else if (days === 0) { big.textContent = 'Today'; txt.textContent = 'is the last day to apply.'; }
+    else { big.textContent = 'Closed'; txt.textContent = 'Incomplete forms carry forward: log in with your existing details and finally submit before the next round.'; }
+  } catch (e) {}
+
+  // Checklist
+  var KEY = 'hp-pg-2026-docs';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input'));
+  var out = document.getElementById('doc-progress');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+  boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; });
+  function update() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    out.textContent = n + ' of ' + boxes.length + ' ready';
+    var s = {}; boxes.forEach(function (b) { if (b.checked) s[b.id] = 1; });
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  }
+  boxes.forEach(function (b) { b.addEventListener('change', update); });
+  document.getElementById('doc-reset').addEventListener('click', function () {
+    boxes.forEach(function (b) { b.checked = false; }); update();
+  });
+  update();
+
+  // Copy buttons
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var value = btn.getAttribute('data-copy');
+      function done(ok) { btn.textContent = ok ? 'Copied' : 'Select and copy'; setTimeout(function () { btn.textContent = 'Copy'; }, 1800); }
+      try {
+        navigator.clipboard.writeText(value).then(function () { done(true); }, function () { selectCode(btn); done(false); });
+      } catch (e) { selectCode(btn); done(false); }
+    });
+  });
+  function selectCode(btn) {
+    var code = btn.parentNode.querySelector('code');
+    try { var r = document.createRange(); r.selectNodeContents(code); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+  }
+})();
+</script>

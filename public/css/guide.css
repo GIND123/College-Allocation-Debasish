@@ -199,3 +199,31 @@ html[data-guide="uttar-pradesh"] body{margin:0}
 /* Uttar Pradesh pads <body> itself; that spacing moves to its content so the bars run edge to edge. */
 html[data-guide="uttar-pradesh"] body{padding:0}
 html[data-guide="uttar-pradesh"] main{max-width:752px; margin:28px auto 48px; padding:0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px))}
+
+/* Guides added 28 Oct 2026 (contrast audit, both themes). */
+/* Kerala seat matrix: white text on the accent, which dark mode lightens (2.1:1). */
+html[data-guide="kerala-seats"] .stat.big,
+html[data-guide="kerala-seats"] .tabs button.on{background-color:#0f6e8c; border-color:#0f6e8c}
+/* Uttarakhand NRI list: greyed "OTH" entries and the amber notice and green pills were just under 4.5:1. */
+html[data-guide="uttarakhand-nri"] .no{color:var(--muted)}
+html[data-guide="uttarakhand-nri"]:root:root{--warn:#7d5300; --yes:#166b2e}
+@media (prefers-color-scheme: dark){ html[data-guide="uttarakhand-nri"]:root:root:not([data-theme="light"]){--warn:#e3b341; --yes:#56d364} }
+html[data-guide="uttarakhand-nri"]:root:root[data-theme="dark"]{--warn:#e3b341; --yes:#56d364}
+/* Himachal Pradesh keeps the browser's 8px page margin. */
+html[data-guide="himachal-pradesh"] body{margin:0}
+
+/* Odisha seat explorer: written for light mode only (fixed colours). It stays light in both
+   themes, with the guide bar and footer around it, as the AP merit list does. */
+@media (prefers-color-scheme: dark){
+  html[data-guide="odisha-seats"]:root:root:not([data-theme="light"]){
+    color-scheme:light; --rr-page:#f6f5f1; --rr-surface:#ffffff; --rr-sunk:#f1efe9; --rr-ink:#0e1420; --rr-ink-2:#384050;
+    --rr-muted:#6c6961; --rr-rule:#e3dfd6; --rr-rule-2:#cdc8bc; --rr-link:#1c4f9c; --rr-focus:#2457c5; --rr-guide-muted:#6c6961;
+  }
+}
+html[data-guide="odisha-seats"]:root:root[data-theme="dark"]{
+  color-scheme:light; --rr-page:#f6f5f1; --rr-surface:#ffffff; --rr-sunk:#f1efe9; --rr-ink:#0e1420; --rr-ink-2:#384050;
+  --rr-muted:#6c6961; --rr-rule:#e3dfd6; --rr-rule-2:#cdc8bc; --rr-link:#1c4f9c; --rr-focus:#2457c5; --rr-guide-muted:#6c6961;
+}
+html[data-guide="odisha-seats"] .footer{color:#5f6b78}
+html[data-guide="odisha-seats"] .eyebrow,
+html[data-guide="odisha-seats"] .filter-count{color:#06625f}

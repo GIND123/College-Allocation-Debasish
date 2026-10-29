@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uttarakhand NRI Quota List</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--text:#1c2430;--muted:#5d6878;--line:#e3e7ee;--accent:#1f6feb;--yes:#1a7f37;--yesbg:#e6f4ea;--no:#8a94a3;--warn:#9a6700;--warnbg:#fff4d6;}
+@media (prefers-color-scheme: dark){:root{--bg:#0f141a;--card:#171e27;--text:#e6ebf2;--muted:#9aa6b6;--line:#2a3442;--accent:#58a6ff;--yes:#56d364;--yesbg:#16301f;--no:#6e7a8a;--warn:#e3b341;--warnbg:#2e2510;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 40px;}
+h1{font-size:1.35rem;margin:0 0 4px;}
+.sub{color:var(--muted);margin:0 0 16px;font-size:.92rem;}
+.notice{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:12px 14px;font-size:.9rem;margin-bottom:16px;}
+.notice b{color:inherit}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.stat .n{font-size:1.3rem;font-weight:700;}
+.stat .l{color:var(--muted);font-size:.8rem;}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+input,select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);}
+input{flex:1;min-width:180px;}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.9rem;}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;}
+th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;}
+tr:last-child td{border-bottom:0}
+td.name{white-space:normal;font-weight:600;min-width:150px;}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:.78rem;font-weight:600;}
+.yes{background:var(--yesbg);color:var(--yes);}
+.no{color:var(--no);}
+.uk{background:var(--yesbg);color:var(--yes);}
+.foot{color:var(--muted);font-size:.82rem;margin-top:16px;}
+.empty{padding:20px;text-align:center;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Uttarakhand NEET PG – NRI Quota, Round 1</h1>
+  <p class="sub">H.N.B. Uttarakhand Medical Education University, Dehradun · List of candidates registered for NRI quota seats</p>
+
+  <div class="notice"><b>Not a merit list.</b> This is only the list of registered candidates. The final NRI merit list will be published on hnbumu.ac.in after document verification and confirmation of relationship status. All candidates must report to <b>SGRRIM&amp;HS, Dehradun</b> for document verification as per schedule.</div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">17</div><div class="l">Registered candidates</div></div>
+    <div class="stat"><div class="n">63,694 – 1,23,723</div><div class="l">NEET PG rank range</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">MBBS from Uttarakhand</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">Uttarakhand domicile</div></div>
+  </div>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search name or roll no." aria-label="Search">
+    <select id="dom" aria-label="Domicile filter">
+      <option value="">All domicile</option>
+      <option value="YES">UK domicile: Yes</option>
+      <option value="NO">UK domicile: No</option>
+    </select>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>NEET Roll No</th><th>Cat.</th><th>NEET Rank</th><th>MBBS State</th><th>UK Domicile</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty" class="empty" hidden>No matching candidates.</div>
+  </div>
+
+  <p class="foot">Status for all candidates: Report to college as per schedule for documents verification. MBBS State: UK = Uttarakhand, OTH = other state. Source: HNBUMU notice (Round 1 NRI quota registration list).</p>
+</div>
+
+<script>
+const data=[
+[1,"Jannat Preet Dhillon","26661152492","UR",63694,"OTH","NO"],
+[2,"Vikrant Kochar","26661058596","UR",65417,"OTH","NO"],
+[3,"Ananya Tiwari","26661260233","UR",69976,"UK","YES"],
+[4,"Ayush Chaudhary","26661239296","UR",75440,"OTH","NO"],
+[5,"Vinayak Jaiswal","26661227238","UR",76597,"OTH","NO"],
+[6,"Shiv Ashish Malik","26661240344","UR",89887,"OTH","NO"],
+[7,"Singh Aditya Pratap Rajendra Kumar","26661259556","UR",93569,"OTH","YES"],
+[8,"Aman Manocha","26661247827","UR",95785,"OTH","NO"],
+[9,"Versha","26661247978","UR",99677,"OTH","NO"],
+[10,"Kajal Singh","26661052636","UR",106431,"UK","NO"],
+[11,"Ayan Mohan Verma","26661248334","UR",110998,"OTH","NO"],
+[12,"Abhay Thakur","26661151080","UR",114243,"OTH","NO"],
+[13,"Rahul Singla","26661230391","UR",117135,"OTH","NO"],
+[14,"Akshat Mayor","26661155261","UR",117963,"OTH","NO"],
+[15,"Tanvi Janghu","26661251462","UR",119276,"OTH","NO"],
+[16,"Prakhar Agarwal","26661239126","UR",122843,"OTH","NO"],
+[17,"Vasu Dua","26661259921","UR",123723,"OTH","YES"]
+];
+const fmt=n=>n.toLocaleString('en-IN');
+const rows=document.getElementById('rows'),q=document.getElementById('q'),dom=document.getElementById('dom'),empty=document.getElementById('empty');
+function render(){
+  const s=q.value.trim().toLowerCase(),d=dom.value;
+  const list=data.filter(r=>(!s||r[1].toLowerCase().includes(s)||r[2].includes(s))&&(!d||r[6]===d));
+  rows.innerHTML=list.map(r=>`<tr><td>${r[0]}</td><td class="name">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${fmt(r[4])}</td><td>${r[5]==="UK"?'<span class="pill uk">UK</span>':'<span class="no">OTH</span>'}</td><td>${r[6]==="YES"?'<span class="pill yes">Yes</span>':'<span class="no">No</span>'}</td></tr>`).join('');
+  empty.hidden=list.length>0;
+}
+q.addEventListener('input',render);dom.addEventListener('change',render);render();
+</script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kerala PG Seats 2026</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--text:#1b1f24;--muted:#5f6b7a;--line:#e3e7ec;--accent:#0f6e8c;--accent-soft:#e3f2f6;--g:#0f6e8c;--n:#7a5af5;--m:#d97706;--r:#16a34a;}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1f25;--text:#e8ecf0;--muted:#9aa6b2;--line:#2b323a;--accent:#4fb8d6;--accent-soft:#16303a;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 18px;font-size:.92rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{display:block;font-size:1.5rem}
+.stat span{color:var(--muted);font-size:.82rem}
+.stat.big{background:var(--accent);color:#fff;border-color:var(--accent)}
+.stat.big span{color:#e6f6fb}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.tabs button{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;border-radius:999px;font:inherit;cursor:pointer;white-space:nowrap}
+.tabs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.panel.on{display:block}
+input[type=search]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;margin-bottom:10px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+th{color:var(--muted);font-weight:600;cursor:pointer;user-select:none;font-size:.8rem}
+th:hover{color:var(--accent)}
+td.t{font-weight:700}
+tfoot td{font-weight:700;border-top:2px solid var(--line)}
+.tag{display:inline-block;font-size:.72rem;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:4px}
+.bar{height:6px;border-radius:3px;background:var(--accent);opacity:.75}
+.notes{margin-top:18px;color:var(--muted);font-size:.85rem}
+.notes li{margin-bottom:4px}
+.legend{font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.filters button{border:1px solid var(--line);background:var(--bg);color:var(--text);padding:5px 11px;border-radius:999px;font:inherit;font-size:.82rem;cursor:pointer}
+.filters button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Kerala PG Medical 2026 — Seat Matrix</h1>
+<p class="sub">State counselling (CEE Kerala) · compiled from the published seat matrices, 28 Oct 2026</p>
+
+<div class="stats">
+  <div class="stat big"><b>1,170</b><span>Total seats</span></div>
+  <div class="stat"><b>442</b><span>Govt state quota</span></div>
+  <div class="stat"><b>48</b><span>Govt in-service</span></div>
+  <div class="stat"><b>183</b><span>Self-financing non-minority</span></div>
+  <div class="stat"><b>286</b><span>Self-financing minority (state)</span></div>
+  <div class="stat"><b>211</b><span>Minority + NRI quota</span></div>
+</div>
+
+<div class="tabs">
+  <button class="on" data-p="spec">Specialties</button>
+  <button data-p="col">Colleges</button>
+  <button data-p="res">Reservation</button>
+  <button data-p="svc">Service quota</button>
+</div>
+
+<div class="panel on" id="spec">
+  <input type="search" id="qs" placeholder="Search specialty…">
+  <p class="legend">Govt = Govt state quota · SF-NM = Self-financing non-minority · SF-M = Self-financing minority (state seats) · Min/NRI = Minority + NRI quota. Tap a column to sort.</p>
+  <div class="tw"><table id="ts"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+</div>
+
+<div class="panel" id="col">
+  <input type="search" id="qc" placeholder="Search college…">
+  <div class="filters" id="cf">
+    <button class="on" data-f="all">All</button>
+    <button data-f="Govt">Government</button>
+    <button data-f="SF-NM">Self-financing non-minority</button>
+    <button data-f="SF-M">Self-financing minority</button>
+  </div>
+  <div class="tw"><table id="tc"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+</div>
+
+<div class="panel" id="res">
+  <p class="legend">Category split of the 911 state-quota seats (Minority/NRI and in-service seats are not category-reserved here).</p>
+  <div class="tw"><table id="tr"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+  <ul class="notes">
+    <li>PwD, Ex-serviceman and Jawan-dependent seats exist only in government colleges.</li>
+    <li>No EWS seats in minority self-financing colleges.</li>
+  </ul>
+</div>
+
+<div class="panel" id="svc">
+  <p class="legend">In-service quota seats in government medical colleges (48). MES = Medical Education Service, DHS = Health Services, IMS = Insurance Medical Services.</p>
+  <div class="tw"><table id="tv"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+  <ul class="notes">
+    <li>Clinical: 25 (MES 7 · DHS 13 · IMS 5)</li>
+    <li>Non-clinical: 23 (MES 14 · DHS 9 · IMS 0)</li>
+    <li>By service overall: MES 21 · DHS 22 · IMS 5</li>
+  </ul>
+</div>
+
+<ul class="notes">
+  <li>All India Quota seats are not included.</li>
+  <li>The seat matrix was published as pending Government approval and may change.</li>
+  <li>Service quota seats are shown by college only; the specialty breakdown is not included.</li>
+  <li>Always confirm with the official CEE Kerala notifications before choosing options.</li>
+</ul>
+</div>
+
+<script>
+const SPEC=[
+["General Medicine",48,16,21,31],["Anaesthesia",46,14,26,14],["General Surgery",39,14,23,19],["Paediatrics",39,12,20,22],
+["Obstetrics & Gynaecology",42,10,17,17],["Orthopaedics",31,16,18,13],["Radiodiagnosis",19,5,10,24],["Dermatology (DVL)",16,7,11,20],
+["Pathology",22,7,17,7],["Ophthalmology",20,7,15,9],["ENT",15,15,14,5],["Psychiatry",13,10,13,9],
+["Community Medicine",10,11,13,5],["Respiratory Medicine",13,5,8,8],["Microbiology",9,7,10,2],["Emergency Medicine",5,5,6,5],
+["Pharmacology",7,8,6,0],["Physiology",8,4,8,0],["Anatomy",5,6,7,0],["Radiotherapy",14,0,2,1],
+["Biochemistry",4,4,8,0],["PMR",5,0,3,0],["Forensic Medicine",7,0,0,0],["Transfusion Medicine",3,0,2,0],
+["Family Medicine",1,0,3,0],["Diploma Clinical Pathology",0,0,3,0],["Geriatrics",0,0,2,0],["Nuclear Medicine",1,0,0,0]];
+const COL=[
+["Govt MC Thiruvananthapuram","Govt",113,12,0],["Govt MC Kozhikode","Govt",100,10,0],["Govt MC Thrissur","Govt",63,8,0],
+["Govt MC Kottayam","Govt",55,5,0],["Govt MC Alappuzha","Govt",44,4,0],["Govt MC Kannur","Govt",28,2,0],
+["Govt MC Kollam (Parippally)","Govt",16,2,0],["Govt MC Ernakulam","Govt",10,1,0],["Regional Cancer Centre, TVM","Govt",7,0,0],
+["Govt MC Palakkad","Govt",3,3,0],["Govt MC Malappuram (Manjeri)","Govt",2,1,0],["Malabar Cancer Centre, Thalassery","Govt",1,0,0],
+["Malabar Medical College, Kozhikode","SF-NM",61,0,11],["Sree Gokulam, Venjaramoodu","SF-NM",48,0,9],["SUT Academy, TVM","SF-NM",32,0,6],
+["Dr. Moopen's, Wayanad","SF-NM",15,0,3],["P K Das, Ottapalam","SF-NM",15,0,3],["Sree Narayana (SIMS), Ernakulam","SF-NM",12,0,2],
+["KMCT, Mukkom","SF-M",85,0,15],["Pushpagiri, Thiruvalla","SF-M",37,0,28],["Amala, Thrissur","SF-M",34,0,30],
+["MES, Perinthalmanna","SF-M",30,0,24],["Jubilee Mission, Thrissur","SF-M",27,0,25],["Dr. Somervell CSI, Karakonam","SF-M",19,0,23],
+["Al Azhar, Thodupuzha","SF-M",14,0,2],["MOSC, Kolenchery","SF-M",14,0,12],["Azeezia, Kollam","SF-M",13,0,6],
+["Believers Church, Thiruvalla","SF-M",10,0,10],["Mount Zion, Pathanamthitta","SF-M",3,0,2]];
+const RES=[
+["Unreserved (UR)",222,97,180],["Scheduled Caste (SC)",33,14,23],["Ezhava (EZ)",33,14,22],["Muslim (MU)",30,13,20],
+["Backward Hindu (BH)",29,13,20],["EWS",42,18,0],["Latin Catholic & Anglo Indian (LA)",12,6,9],["PwD (all categories)",22,0,0],
+["Scheduled Tribe (ST)",9,4,6],["Backward Christian (BX)",4,2,3],["Kudumbi (KU)",4,2,3],["Ex-serviceman (XS)",1,0,0],["Jawan's dependent (DK)",1,0,0]];
+const SVC=[["Thiruvananthapuram",6,6],["Kozhikode",5,5],["Thrissur",3,5],["Kottayam",3,2],["Alappuzha",2,2],["Palakkad",0,3],
+["Kannur",2,0],["Kollam",2,0],["Ernakulam",1,0],["Manjeri",1,0]];
+
+const sum=a=>a.reduce((x,y)=>x+y,0);
+function build(id,head,rows,opts={}){
+  const t=document.getElementById(id);
+  let st={k:opts.sortKey??head.length-1,d:-1};
+  function render(){
+    const q=(opts.q?document.getElementById(opts.q).value.toLowerCase():"");
+    let r=rows.filter(x=>x[0].toLowerCase().includes(q)&&(!opts.filter||opts.filter(x)));
+    r.sort((a,b)=>{const A=a[st.k],B=b[st.k];return typeof A==="number"?(A-B)*st.d:String(A).localeCompare(B)*-st.d});
+    t.tHead.innerHTML="<tr>"+head.map((h,i)=>`<th data-i="${i}">${h}${st.k===i?(st.d<0?" ↓":" ↑"):""}</th>`).join("")+"</tr>";
+    const max=Math.max(...r.map(x=>x[x.length-1]),1);
+    t.tBodies[0].innerHTML=r.map(x=>"<tr>"+x.map((v,i)=>{
+      if(i===0)return `<td>${v}${opts.typeMap?`<span class="tag">${opts.typeMap[v]}</span>`:""}</td>`;
+      const last=i===x.length-1;
+      return `<td class="${last?"t":""}">${v}</td>`}).join("")+"</tr>").join("");
+    const foot=head.map((h,i)=>{
+      if(i===0)return "<td>Total</td>";
+      return `<td>${sum(r.map(x=>x[i]))}</td>`});
+    t.tFoot.innerHTML="<tr>"+foot.join("")+"</tr>";
+    t.tHead.querySelectorAll("th").forEach(th=>th.onclick=()=>{const i=+th.dataset.i;st.d=st.k===i?-st.d:-1;st.k=i;render()});
+  }
+  if(opts.q)document.getElementById(opts.q).oninput=render;
+  render();return render;
+}
+build("ts",["Specialty","Govt","SF-NM","SF-M","Min/NRI","Total"],SPEC.map(r=>[...r,sum(r.slice(1))]),{q:"qs"});
+let cf="all";
+const TYPE={};COL.forEach(r=>TYPE[r[0]]=r[1]);
+const rc=build("tc",["College","State","Service","Min/NRI","Total"],COL.map(r=>[r[0],r[2],r[3],r[4],r[2]+r[3]+r[4]]),{q:"qc",filter:x=>cf==="all"||TYPE[x[0]]===cf,typeMap:TYPE});
+document.querySelectorAll("#cf button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#cf button").forEach(x=>x.classList.remove("on"));b.classList.add("on");cf=b.dataset.f;rc()});
+build("tr",["Category","Govt","SF-NM","SF-M","Total"],RES.map(r=>[...r,sum(r.slice(1))]));
+build("tv",["College","Clinical","Non-clinical","Total"],SVC.map(r=>[...r,r[1]+r[2]]));
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button,.panel").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");document.getElementById(b.dataset.p).classList.add("on")});
+</script>
+</body>
+</html>
