@@ -58,8 +58,26 @@ function validate(data) {
       if (!Number.isInteger(v) || v < 0) throw new Error(`${where}: "${k}" must be a whole number.`);
     }
   }
+  const region = r => r === ALL_INDIA || STATES.includes(r);
+  const files = new Set();
+  for (const d of data.documents || []) {
+    const where = `guides/guides.json, document "${d.title}"`;
+    if (!d.title || !region(d.region)) throw new Error(`${where}: needs a title and a region ("${ALL_INDIA}" or a state name).`);
+    if (!/^[\w-]+(\/[\w.-]+)+$/.test(d.file || '') || !fs.existsSync(path.join(GUIDES_DIR, 'assets', d.file))) throw new Error(`${where}: file "${d.file}" is not in guides/assets/.`);
+    if (Number.isNaN(Date.parse(d.date))) throw new Error(`${where}: needs a valid "date".`);
+    files.add(d.file);
+  }
+  for (const u of data.updates || []) {
+    const where = `guides/guides.json, update "${String(u.text).slice(0, 40)}"`;
+    if (!u.text || !region(u.region) || Number.isNaN(Date.parse(u.date))) throw new Error(`${where}: needs text, a region and a valid "date".`);
+    if (u.doc && !files.has(u.doc)) throw new Error(`${where}: "doc" must be the file of one of the documents.`);
+    if (u.link && !u.link.startsWith('/')) throw new Error(`${where}: "link" must be a path on this site.`);
+  }
   return data;
 }
+
+/** Where a state's official documents are listed on /counselling. */
+export const docsAnchor = region => 'docs-' + region.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 /** Everything the site shows about the guides, without file names. */
 export function guideList() {
@@ -68,6 +86,8 @@ export function guideList() {
 export const compareTable = () => registry().compare || null;
 export const roadmap = () => registry().roadmap || null;
 export const stateSeats = () => registry().seats || null;
+export const documents = () => registry().documents || [];
+export const updates = () => registry().updates || [];
 
 // ---- pages ----------------------------------------------------------------
 const pages = new Map();
@@ -159,6 +179,7 @@ function topBar(g, all) {
   const docs = same.length > 1
     ? `<span class="rr-docs">${same.map(x => `<a href="/counselling/${x.slug}"${x.slug === g.slug ? ' aria-current="page"' : ''}>${esc(x.label)}</a>`).join('')}</span>`
     : `<span class="rr-doc">${esc(g.label)}</span>`;
+  const nDocs = documents().filter(d => d.region === g.region).length;
   return `
 <div class="rr-top" role="banner" data-rr>
   <div class="rr-top-in">
@@ -179,7 +200,8 @@ function topBar(g, all) {
     <a class="rr-back" href="/counselling">${BACK}<span>All guides</span></a>
     <span class="rr-where">${esc(g.region)}</span>
     ${docs}
-    <span class="rr-meta">${g.asOf ? `<span>Notice of ${noticeDate(g.asOf)}</span>` : ''}${g.official
+    <span class="rr-meta">${g.asOf ? `<span>Notice of ${noticeDate(g.asOf)}</span>` : ''}${nDocs
+      ? `<a href="/counselling#${docsAnchor(g.region)}">Official documents (${nDocs})</a>` : ''}${g.official
       ? `<a href="${esc(g.official)}" target="_blank" rel="noopener">Official site${OUT}</a>` : ''}</span>
   </div>
 </div>

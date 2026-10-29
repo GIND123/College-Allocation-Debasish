@@ -47,6 +47,8 @@ export const KINDS = {
       { name: 'type', type: 'ctype', label: 'College type' },
       { name: 'branch', type: 'text', label: 'Branch' },
       { name: 'category', type: 'text', label: 'Category' },
+      // MCC's quota where known: All India, Self-Financed Merit Seat (deemed), DNB, NRI, university quotas…
+      { name: 'quota', type: 'text', label: 'Quota', optional: true },
       { name: 'seats', type: 'int', label: 'Seats', min: 1 },
       { name: 'open_rank', type: 'int', label: 'Opening rank', min: 1 },
       { name: 'close_rank', type: 'int', label: 'Closing rank', min: 1 }
@@ -56,6 +58,7 @@ export const KINDS = {
       { name: 'type', type: 'ctype', label: 'College type' },
       { name: 'branch', type: 'text', label: 'Branch' },
       { name: 'category', type: 'text', label: 'Category' },
+      { name: 'quota', type: 'text', label: 'Quota', optional: true },
       { name: 'air', type: 'int', label: 'NEET AIR', min: 1 }
     ]
   }
@@ -199,7 +202,7 @@ export function aggregate(kind, allotments) {
   const def = KINDS[kind];
   const groups = new Map();
   for (const a of allotments) {
-    const k = def.key.map(f => a[f]).join('\u0001') + '\u0001' + (kind === 'aiq' ? a.type : a.quota || '');
+    const k = def.key.map(f => a[f]).join('\u0001') + '\u0001' + (kind === 'aiq' ? a.type + '\u0001' : '') + (a.quota || '');
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(a);
   }
@@ -220,7 +223,7 @@ export function aggregate(kind, allotments) {
     } else {
       const air = list.map(a => a.air);
       out.push({
-        college: f.college, type: f.type, branch: f.branch, category: f.category, seats: list.length,
+        college: f.college, type: f.type, branch: f.branch, category: f.category, quota: f.quota || '', seats: list.length,
         open_rank: Math.min(...air), close_rank: Math.max(...air)
       });
     }

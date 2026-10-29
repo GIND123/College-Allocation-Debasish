@@ -161,6 +161,7 @@ if (!columns('users').includes('email')) {
 }
 // Passwords (local test mode and email accounts; phone accounts on Firebase keep theirs there).
 if (!columns('users').includes('password_hash')) db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''`);
+if (!columns('aiq_rows').includes('quota')) db.exec(`ALTER TABLE aiq_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
 if (!columns('state_rows').includes('quota')) db.exec(`ALTER TABLE state_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
 if (!columns('datasets').includes('state')) {
   // Every dataset before per-state data was the client's Odisha data.
@@ -197,23 +198,29 @@ const SEEDS = [
   { file: 'gujarat-state-2025.json', kind: 'state', state: 'Gujarat', year: 2025, label: 'Gujarat state counselling 2025 · final closing ranks',
     notes: "ACPPGMEC 'Institutewise Last Rank' PG-2025 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." },
   { file: 'gujarat-state-2024.json', kind: 'state', state: 'Gujarat', year: 2024, label: 'Gujarat state counselling 2024 · final closing ranks',
-    notes: "ACPPGMEC 'Institutewise Last Rank' PG-2024 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." }
+    notes: "ACPPGMEC 'Institutewise Last Rank' PG-2024 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." },
+  // One file holding every state's rows ({ state: rows }); each state gets its own dataset.
+  { file: 'mcc-aiq-2026-r1.json', kind: 'aiq', perState: true, year: 2026, label: 'All India counselling 2026 · Round 1 allotments (MCC)',
+    notes: 'MCC NEET-PG 2026 Round 1 result (MD/MS, DNB and NBEMS diploma), 28,584 allotments rolled up by college, course, category and quota. '
+      + 'Opening and closing ranks are those allotted in Round 1 only. College type is from the quota; for DNB hospitals it is inferred from the name.' }
 ];
+function loadSeed(s, state, rows) {
+  // Databases from before this list already hold the Odisha data under the same name.
+  if (db.prepare('SELECT 1 FROM datasets WHERE kind = ? AND state = ? AND label = ?').get(s.kind, state, s.label)) return;
+  if (s.kind === 'aiq') for (const r of rows) { r.open_rank = r.open; r.close_rank = r.close; }
+  const t = now();
+  const { lastInsertRowid } = db.prepare(
+    'INSERT INTO datasets (kind, state, label, year, notes, published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 1, ?, ?)')
+    .run(s.kind, state, s.label, s.year, s.notes, t, t);
+  insertRows(s.kind, Number(lastInsertRowid), rows);
+}
 for (const s of SEEDS) {
   if (db.prepare('SELECT 1 FROM seeds WHERE file = ?').get(s.file)) continue;
-  // Databases from before this list already hold the Odisha data under the same name.
-  const exists = db.prepare('SELECT 1 FROM datasets WHERE kind = ? AND state = ? AND label = ?').get(s.kind, s.state, s.label);
+  const data = JSON.parse(fs.readFileSync(path.join(here, 'seed', s.file), 'utf8'));
   tx(() => {
-    if (!exists) {
-      const rows = JSON.parse(fs.readFileSync(path.join(here, 'seed', s.file), 'utf8'));
-      if (s.kind === 'aiq') for (const r of rows) { r.open_rank = r.open; r.close_rank = r.close; }
-      const t = now();
-      const { lastInsertRowid } = db.prepare(
-        'INSERT INTO datasets (kind, state, label, year, notes, published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 1, ?, ?)')
-        .run(s.kind, s.state, s.label, s.year, s.notes, t, t);
-      insertRows(s.kind, Number(lastInsertRowid), rows);
-      console.log(`[db] loaded ${s.label}`);
-    }
+    if (s.perState) for (const [state, rows] of Object.entries(data)) loadSeed(s, state, rows);
+    else loadSeed(s, s.state, data);
     db.prepare('INSERT INTO seeds (file, loaded_at) VALUES (?, ?)').run(s.file, now());
   });
+  console.log(`[db] loaded ${s.label}${s.perState ? ` (${Object.keys(data).length} states)` : ''}`);
 }

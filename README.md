@@ -159,6 +159,23 @@ Big files a guide links to (scanned notices, PDFs) belong in `guides/assets/` an
 
 Guides may leave out the doctype and the `<html>`, `<head>` and `<body>` tags, or be a bare fragment; the frame adds what is missing where a browser would, plus a phone viewport and character set if the guide has none.
 
+## Latest updates and official documents
+
+`/counselling` opens with **Latest updates** (newest first; the student's state is highlighted) and every state card lists its **Official documents**. A guide page links to its state's documents. Both live in `guides/guides.json`:
+
+```jsonc
+"documents": [
+  { "region": "Gujarat", "title": "Round 1 online choice filling: schedule", "file": "gujarat/round1-choice-filling-schedule.pdf",
+    "date": "2026-10-27", "kind": "Schedule", "kb": 306 }      // the file is in guides/assets/
+],
+"updates": [
+  { "region": "Gujarat", "date": "2026-10-28", "text": "Choice filling open until 31 Oct, 10 am.",
+    "doc": "gujarat/round1-choice-filling-schedule.pdf" }      // or "link": "/predict"; otherwise it links the state's guide
+]
+```
+
+A state with documents but no guide yet (Punjab) still gets a card. The server refuses to start if a document's file is missing or an update points to a document that isn't listed.
+
 ## Coverage map (home page)
 
 The home page has a map of India with every state and union territory. States with a counselling guide are marked, and states that also have predictor data are marked more strongly. Hovering over a state (or tapping it on a phone, or focusing it with the keyboard) shows its name and the PG seats we hold figures for, broken down by source. Clicking a marked state opens its guide.
@@ -190,6 +207,10 @@ Each upload is validated, and you see a preview before anything is saved. Messy 
 Every dataset is tagged with a state when it is uploaded. A published dataset is shown to candidates who chose that state, newest year first. The state can be changed later under the dataset's details. Individual rows can be corrected in the row editor.
 
 State cut-off files can carry an optional **Quota** column (for example Government, University, Management, NRI, In-service, as in Gujarat). It becomes a filter in the predictor. If a state publishes only the last admitted rank, put the same number in CMR opening and closing and leave **Seats** blank: the site then shows "last admitted" and "not published" rather than inventing a range, and grades a rank by how far inside that closing rank it is (see Method).
+
+All India files can carry the same optional **Quota** column (MCC's All India, Self-Financed Merit Seat, DNB Quota, NRI, university quotas…); it becomes a filter too.
+
+**MCC 2026 Round 1** is built in: `server/seed/mcc-aiq-2026-r1.json` holds MCC's Round 1 result (MD/MS, DNB and NBEMS diploma; 28,584 allotments) rolled up by college, course, category and quota, one All India dataset per state. Institute names are shortened from MCC's "name, address" text; the college type comes from the quota, and for DNB hospitals is inferred from the name. When the Round 2 result comes out, convert it the same way and add it as a new file.
 
 The built-in files in `server/seed/` load once into each database, so Render's free tier, which starts with an empty database after every restart, always has them. Datasets uploaded through the admin console don't survive such a restart: use a persistent disk (see Deploying), or ask for the file to be added to `server/seed/`.
 

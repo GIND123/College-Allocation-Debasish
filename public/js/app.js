@@ -18,8 +18,12 @@ const KIND = {
   },
   aiq: {
     label: 'All India Quota', rank: 'AIR', rankLong: 'NEET All India Rank', spec: 'branch', specLabel: 'Branch',
-    open: 'open_rank', close: 'close_rank', openCat: 'GENERAL', filters: ['category', 'type', 'branch', 'college'],
-    get note() { return `Seats in ${myState()} colleges filled by the MCC on NEET All India Rank — a national pool, separate from state counselling.`; }
+    open: 'open_rank', close: 'close_rank', openCat: 'GENERAL', filters: ['category', 'quota', 'type', 'branch', 'college'],
+    get note() {
+      return S.data?.rows?.some(r => r.quota)
+        ? `Seats in ${myState()} filled by the MCC on NEET All India Rank: the All India Quota, deemed universities, DNB and more. ${/Round 1/.test(S.data.dataset?.label || '') ? 'Ranks are Round 1 allotments; later rounds usually go further. ' : ''}Pick a quota under More filters.`
+        : `Seats in ${myState()} colleges filled by the MCC on NEET All India Rank — a national pool, separate from state counselling.`;
+    }
   }
 };
 const myState = () => S.user?.state || 'State';
@@ -50,10 +54,12 @@ const closingOnly = r => r.seats === 0;
 const grade = (rank, r, K) => band(rank, r[K.open], r[K.close], closingOnly(r));
 // Quota where the state publishes one (Gujarat), otherwise the stream (Odisha).
 const seatPool = r => r.quota || r.stream || '';
+// An All India seat: college type, and MCC's quota where known.
+const poolOf = (kind, r) => kind === 'state' ? seatPool(r) : [r.type, r.quota].filter(Boolean).join(' · ');
 // Must match rowKey() in server/index.js — it identifies a shortlisted seat.
 const rowKey = (kind, r) => kind === 'state'
   ? [r.college, r.speciality, r.programme, r.stream, r.category].join(' | ') + (r.quota ? ' | ' + r.quota : '')
-  : [r.college, r.branch, r.category].join(' | ') + ' | ' + r.type;
+  : [r.college, r.branch, r.category].join(' | ') + ' | ' + r.type + (r.quota ? ' | ' + r.quota : '');
 // Display names for the long official titles in the national AIQ list, matched
 // to the names the state list uses. Anything not listed shows in full.
 const SHORT = {
@@ -77,7 +83,7 @@ const mobile = matchMedia('(max-width:720px)');
 const STREAMS = [['Direct', 'Direct'], ['In-service', 'In-service']];
 const freshFilters = () => ({
   state: { rank: '', stream: 'Direct', category: '', withOpen: true, quota: '', programme: '', speciality: '', college: '', q: '' },
-  aiq: { rank: '', category: '', withOpen: true, type: '', branch: '', college: '', q: '' }
+  aiq: { rank: '', category: '', withOpen: true, quota: '', type: '', branch: '', college: '', q: '' }
 });
 
 const S = {
@@ -210,11 +216,11 @@ function editProfile() {
 // Profile: name, NEET-PG CMR and state (the state decides which data shows)
 // =====================================================================
 function stateOptions(sel) {
-  const have = S.cfg.dataStates || [];
+  const have = S.cfg.stateData || [];
   const opt = s => `<option ${s === sel ? 'selected' : ''}>${esc(s)}</option>`;
   const rest = S.cfg.states.filter(s => !have.includes(s));
   return `<option value="">Choose your state</option>` + (have.length
-    ? `<optgroup label="Cut-off data available">${have.map(opt).join('')}</optgroup><optgroup label="All states and UTs">${rest.map(opt).join('')}</optgroup>`
+    ? `<optgroup label="State counselling cut-offs available">${have.map(opt).join('')}</optgroup><optgroup label="All states and UTs">${rest.map(opt).join('')}</optgroup>`
     : rest.map(opt).join(''));
 }
 const cmrField = v => `<label class="field"><span class="label">NEET-PG CMR</span>
@@ -800,19 +806,21 @@ async function viewWork(mode) {
   if (!data) {
     $('#rail').hidden = true;
     $('.workspace').classList.add('no-rail');
-    const have = S.cfg.dataStates || [];
+    const have = (kind === 'state' ? S.cfg.stateData : S.cfg.dataStates) || [];
+    const other = kind === 'state' && setsOf('aiq').length;
     const wa = waLink(`Hi, I would like help with ${myState()} PG counselling.`);
     $('#res').innerHTML = `<div class="empty">
       <h3>${esc(myState())} ${kind === 'state' ? 'state counselling' : 'All India Quota'} data is coming soon</h3>
-      <p>We're adding states one at a time${have.length ? ` — cut-offs are live for ${esc(have.join(', '))}` : ''}.
-        Your sign-up is saved, and ${esc(myState())} data will appear here as soon as it is published.</p>
-      <div class="empty-actions">${guidesFor(myState()).length
+      <p>We're adding states one at a time${have.length ? ` — ${kind === 'state' ? 'state counselling ' : ''}cut-offs are live for ${esc(have.join(', '))}` : ''}.
+        ${other ? `<b>All India Round 1 cut-offs for ${esc(myState())} are ready now.</b>` : `Your sign-up is saved, and ${esc(myState())} data will appear here as soon as it is published.`}</p>
+      <div class="empty-actions">${other ? '<button class="btn btn-primary" id="to-aiq">See All India cut-offs</button>' : ''}${guidesFor(myState()).length
         ? `<a class="btn btn-line" href="/counselling/${esc(guidesFor(myState())[0].slug)}">${esc(myState())} counselling guide</a>`
         : '<a class="btn btn-line" href="/counselling" data-link>Counselling guides</a>'}
         <button class="btn btn-line" id="chg-state">Change state</button>
         ${wa ? `<a class="btn btn-primary" href="${esc(wa)}" target="_blank" rel="noopener">${icon.chat} Talk to a counsellor</a>` : ''}</div>
     </div>`;
     $('#chg-state').onclick = editProfile;
+    if ($('#to-aiq')) $('#to-aiq').onclick = () => { S.scope = 'aiq'; store.set('rr-scope', 'aiq'); S.shown = STEP; route(); };
     if (mode === 'predict') renderRoadmap();
     return;
   }
@@ -951,7 +959,7 @@ function columns(kind, mode, rank) {
   const c = [{ id: 'star', t: '<span class="sr">Shortlist</span>', cls: 'nowrap', r: r => starHtml(kind, r) }];
   if (mode === 'predict') c.push({ id: 'band', t: 'Chance', v: r => r._b, num: true, cls: 'nowrap', r: r => bandHtml(r._b) });
   c.push({ id: 'college', t: 'College', v: r => shortCollege(r.college), cls: 'strong wrapcell',
-    r: r => `<span title="${esc(r.college)}">${esc(shortCollege(r.college))}</span>` + (kind === 'aiq' ? `<span class="sub">${esc(r.type)}</span>` : '') });
+    r: r => `<span title="${esc(r.college)}">${esc(shortCollege(r.college))}</span>` + (kind === 'aiq' ? `<span class="sub">${esc(poolOf(kind, r))}</span>` : '') });
   c.push({ id: 'spec', t: K.specLabel, v: r => r[K.spec], cls: 'wrapcell',
     r: r => esc(r[K.spec]) + (kind === 'state' ? `<span class="sub">${esc(r.programme)} · ${esc(r.rounds || 'R-?')}</span>` : '') });
   c.push({ id: 'category', t: 'Category', v: r => r.category + seatPool(r), cls: 'nowrap',
@@ -1078,7 +1086,7 @@ function cardHtml(r, i) {
   const kind = S.scope, K = KIND[kind], rank = parseInt(S.f[kind].rank, 10);
   const predict = S.mode === 'predict';
   return `<div class="card" data-i="${i}">
-    <div class="card-top">${predict ? bandHtml(r._b) : `<span class="eyebrow">${esc(kind === 'state' ? r.programme : r.type)}</span>`}${starHtml(kind, r)}</div>
+    <div class="card-top">${predict ? bandHtml(r._b) : `<span class="eyebrow">${esc(kind === 'state' ? r.programme : poolOf(kind, r))}</span>`}${starHtml(kind, r)}</div>
     <div class="card-spec">${esc(r[K.spec])}</div>
     <div class="card-coll">${esc(shortCollege(r.college))} · ${esc(r.category)}${kind === 'state' ? ' · ' + esc(seatPool(r)) : ''}</div>
     <div class="card-nums">
@@ -1189,7 +1197,7 @@ function openSeat(kind, r) {
       <h2>${esc(spec)}</h2>
       <p>${esc(r.college)}</p>
       <div class="dr-tags">
-        ${kind === 'state' ? `<span class="tag">${esc(r.programme)}</span><span class="tag">${esc(seatPool(r))}</span>` : `<span class="tag">${esc(r.type)}</span>`}
+        ${kind === 'state' ? `<span class="tag">${esc(r.programme)}</span><span class="tag">${esc(seatPool(r))}</span>` : `<span class="tag">${esc(r.type)}</span>${r.quota ? `<span class="tag">${esc(r.quota)}</span>` : ''}`}
         <span class="tag tag-solid">${esc(r.category)}</span>
       </div>
     </div>
@@ -1208,7 +1216,8 @@ function openSeat(kind, r) {
           <div><dt>NEET AIR range</dt><dd>${r.air_open ? (r.air_open === r.air_close ? fmt(r.air_open) : `${fmt(r.air_open)}–${fmt(r.air_close)}`) : '—'}
             ${r.air_open && r.seats ? `<small>${r.air_seen}/${r.seats} listed</small>` : ''}</dd></div>
           <div style="grid-column:span 2"><dt>Rounds taken</dt><dd style="font-size:15px">${esc(r.rounds || '—')}</dd></div>` : `
-          <div><dt>College type</dt><dd style="font-size:15px;font-family:var(--sans)">${esc(r.type)}</dd></div>`}
+          <div><dt>College type</dt><dd style="font-size:15px;font-family:var(--sans)">${esc(r.type)}</dd></div>
+          ${r.quota ? `<div><dt>Quota</dt><dd style="font-size:15px;font-family:var(--sans)">${esc(r.quota)}</dd></div>` : ''}`}
       </dl>
     </div>
     <div class="dr-sec">
@@ -1274,7 +1283,7 @@ async function viewShortlist() {
       const K = KIND[kind], rank = parseInt(S.f[kind].rank, 10);
       items.filter(i => i.kind === kind).forEach((i, n) => {
         const r = i.row;
-        rows.push([n + 1, K.label, r.college, r[K.spec], seatPool(r) || r.type, r.category, r[K.open], r[K.close], rank ? (BAND[grade(rank, r, K)] || 'Out of range') : '', i.dataset]);
+        rows.push([n + 1, K.label, r.college, r[K.spec], poolOf(kind, r), r.category, r[K.open], r[K.close], rank ? (BAND[grade(rank, r, K)] || 'Out of range') : '', i.dataset]);
       });
     }
     downloadCsv('rankround-shortlist.csv', ['Preference', 'Counselling', 'College', 'Speciality / branch', 'Quota or stream / type', 'Category', 'Opening rank', 'Closing rank', 'Chance', 'Data'], rows);
@@ -1318,7 +1327,7 @@ function slGroup(kind, items) {
           <td class="ord">${String(n + 1).padStart(2, '0')}</td>
           <td class="strong wrapcell">${esc(shortCollege(r.college))}<span class="sub">${esc(i.dataset)}</span></td>
           <td class="wrapcell">${esc(r[K.spec])}${kind === 'state' ? `<span class="sub">${esc(r.programme)}</span>` : ''}</td>
-          <td class="nowrap">${esc(seatPool(r) || r.type)}</td><td class="nowrap">${esc(r.category)}</td>
+          <td class="nowrap">${esc(poolOf(kind, r))}</td><td class="nowrap">${esc(r.category)}</td>
           <td class="n soft">${fmt(r[K.open])}</td><td class="n">${fmt(r[K.close])}</td>
           <td class="nowrap">${rank ? (b ? bandHtml(b) : '<span class="muted">Out of range</span>') : '<span class="muted">—</span>'}</td>
           <td class="no-print"><div class="reorder">
@@ -1389,14 +1398,21 @@ async function viewGuides() {
   try { S.guideIndex ||= await api('/api/guides'); }
   catch (e) { view.innerHTML = `<div class="gd"><div class="empty"><h3>Couldn't load the guides</h3><p>${esc(e.message)}</p></div></div>`; return; }
   if (S.path !== '/counselling') return;
-  const { guides, compare } = S.guideIndex;
+  const { guides, compare, documents = [], updates = [] } = S.guideIndex;
   const cards = guideCards(guides);
+  // States with official documents but no guide yet still get a card for them.
+  for (const r of new Set(documents.map(d => d.region)))
+    if (r !== ALL_INDIA && !cards.some(c => c.region === r)) cards.push({ key: r, region: r, title: r, authority: 'Official documents', guides: [], steps: [] });
   S.gdSteps = cards.flatMap(c => c.steps);
   const mine = S.user?.state || '';
   const states = cards.filter(c => c.region !== ALL_INDIA)
     .sort((a, b) => (b.region === mine) - (a.region === mine) || a.title.localeCompare(b.title));
+  const docsOf = c => c.region === ALL_INDIA ? [] : documents.filter(d => d.region === c.region);
+  const docLink = d => `<a href="/counselling/assets/${esc(d.file)}" target="_blank" rel="noopener"><span class="gd-doc-kind">${esc(d.kind)}</span>
+    <b>${esc(d.title)}</b><small>${esc(shortDate(d.date))} · PDF · ${d.kb >= 1024 ? (d.kb / 1024).toFixed(1) + ' MB' : d.kb + ' KB'}</small></a>`;
   const card = c => `
-    <article class="gd-card${c.region === mine ? ' mine' : ''}" data-q="${esc([c.title, c.authority, ...c.guides.flatMap(g => [g.title, g.label])].join(' ').toLowerCase())}">
+    <article class="gd-card${c.region === mine ? ' mine' : ''}"${c.region === ALL_INDIA ? '' : ` id="${docsAnchor(c.region)}"`}
+      data-q="${esc([c.title, c.authority, ...c.guides.flatMap(g => [g.title, g.label]), ...docsOf(c).map(d => d.title)].join(' ').toLowerCase())}">
       <div class="gd-card-head">
         ${c.region === mine ? '<span class="gd-mine">Your state</span>' : ''}
         <h3>${esc(c.title)}</h3>
@@ -1404,9 +1420,17 @@ async function viewGuides() {
       </div>
       ${c.steps.length ? `<ul class="gd-steps">${c.steps.map(d => `<li>
         <span class="gd-what">${esc(d.what)}<small>${esc(d.when)}</small></span>${stepPill(S.gdSteps.indexOf(d))}</li>`).join('')}</ul>` : ''}
-      <div class="gd-links">${c.guides.map(g => `<a class="gd-link" href="/counselling/${esc(g.slug)}">
-        <span><b>${esc(c.guides.length > 1 ? g.label : 'Open the guide')}</b><small>${esc(g.summary)}</small></span>${icon.arrowR}</a>`).join('')}</div>
+      ${docsOf(c).length ? `<details class="gd-docs"${c.guides.length ? '' : ' open'}><summary>Official documents <span>${docsOf(c).length}</span></summary>
+        <ul>${docsOf(c).map(d => `<li>${docLink(d)}</li>`).join('')}</ul></details>` : ''}
+      ${c.guides.length ? `<div class="gd-links">${c.guides.map(g => `<a class="gd-link" href="/counselling/${esc(g.slug)}">
+        <span><b>${esc(c.guides.length > 1 ? g.label : 'Open the guide')}</b><small>${esc(g.summary)}</small></span>${icon.arrowR}</a>`).join('')}</div>` : ''}
     </article>`;
+  // The latest counselling news, newest first; the student's own state stands out.
+  const news = [...updates].sort((a, b) => b.date.localeCompare(a.date));
+  const newsLink = u => u.doc ? `<a href="/counselling/assets/${esc(u.doc)}" target="_blank" rel="noopener">Notice (PDF)</a>`
+    : u.link ? `<a href="${esc(u.link)}" data-link>Open</a>`
+    : guidesFor(u.region)[0] ? `<a href="/counselling/${esc(guidesFor(u.region)[0].slug)}">Guide</a>` : '';
+  const SHOW = 6;
   view.innerHTML = `<div class="gd">
     <div class="gd-head">
       <div class="eyebrow">NEET-PG 2026 · Counselling guides</div>
@@ -1418,6 +1442,12 @@ async function viewGuides() {
       ${guidesFor(mine).length ? `<p class="gd-yours"><span class="eyebrow">Your state · ${esc(mine)}</span>${guidesFor(mine)
         .map(g => `<a href="/counselling/${esc(g.slug)}">${esc(g.label)} ${icon.arrowR}</a>`).join('')}</p>` : ''}
     </div>
+    ${news.length ? `<section class="gd-updates" aria-labelledby="gd-up-h">
+      <div class="gd-updates-head"><h2 class="eyebrow" id="gd-up-h">Latest updates</h2><span>From the official notices · ${esc(shortDate(news[0].date))}</span></div>
+      <ol>${news.map((u, i) => `<li class="${u.region === mine ? 'mine' : ''}"${i >= SHOW ? ' hidden' : ''}>
+        <time datetime="${esc(u.date)}">${esc(shortDate(u.date))}</time><b>${esc(u.region)}</b><span>${esc(u.text)}</span>${newsLink(u)}</li>`).join('')}</ol>
+      ${news.length > SHOW ? `<button type="button" class="linkbtn" id="gd-more">Show all ${news.length} updates</button>` : ''}
+    </section>` : ''}
     <div id="gd-soon"></div>
     <section class="gd-sec" data-sec>
       <div class="gd-sec-head"><h2>All India</h2>
@@ -1441,6 +1471,10 @@ async function viewGuides() {
       ${compare.note ? `<p class="gd-note">${esc(compare.note)}</p>` : ''}</details>` : ''}
   </div>`;
   renderSoon();
+  if ($('#gd-more')) $('#gd-more').onclick = e => { $$('.gd-updates li[hidden]').forEach(li => { li.hidden = false; }); e.target.remove(); };
+  // From a guide's "Official documents" link: open that state's list.
+  const docs = location.hash.startsWith('#docs-') && document.getElementById(location.hash.slice(1));
+  if (docs) { const d = $('.gd-docs', docs); if (d) d.open = true; requestAnimationFrame(() => docs.scrollIntoView({ block: 'start' })); }
   $('#gd-q').oninput = e => {
     const raw = e.target.value.trim(), terms = raw.toLowerCase().split(/\s+/).filter(Boolean);
     let shown = 0;
@@ -1458,6 +1492,10 @@ async function viewGuides() {
     renderSoon();
   }, 30e3);
 }
+
+const shortDate = iso => new Date(`${iso.slice(0, 10)}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' });
+// Must match docsAnchor() in server/guides.js.
+const docsAnchor = region => 'docs-' + region.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 /** The "closing in the next 3 days" strip on /counselling. */
 function renderSoon() {
@@ -1499,7 +1537,7 @@ async function coverageMap(box) {
   if (!box.isConnected) return;
   const { guides, seats } = S.guideIndex;
   const kinds = seats?.kinds || {}, figures = seats?.states || {};
-  const withData = new Set(S.cfg.dataStates || []);
+  const withData = new Set(S.cfg.stateData || []);
   const info = Object.fromEntries(Object.keys(mapShapes.states).map(st => {
     const gs = guides.filter(g => g.region === st), f = figures[st] || {};
     const parts = Object.keys(kinds).filter(k => f[k]).map(k => [kinds[k], f[k]]);
@@ -1520,7 +1558,7 @@ async function coverageMap(box) {
           <div><strong>${fmt(guides.length)}</strong><span>counselling guides</span></div>
         </div>
         <ul class="cov-key">
-          <li><i class="k-data"></i>Guide and rank predictor</li>
+          <li><i class="k-data"></i>Guide and state rank predictor</li>
           <li><i class="k-guide"></i>Counselling guide</li>
           <li><i class="k-none"></i>Seat figures only</li>
         </ul>
@@ -1550,7 +1588,7 @@ async function coverageMap(box) {
       $$('[data-st]', box).forEach(el => el.classList.toggle('on', el.dataset.st === st));
       tip.innerHTML = `
         <b class="cov-tip-name">${esc(st)}</b>
-        <span class="cov-tip-tags">${i.level === 'data' ? '<em class="t-data">Rank predictor</em>' : ''}${i.gs.length ? `<em>${i.gs.length} guide${i.gs.length > 1 ? 's' : ''}</em>` : '<em class="t-none">Guide coming soon</em>'}</span>
+        <span class="cov-tip-tags">${i.level === 'data' ? '<em class="t-data">State rank predictor</em>' : ''}${i.gs.length ? `<em>${i.gs.length} guide${i.gs.length > 1 ? 's' : ''}</em>` : '<em class="t-none">Guide coming soon</em>'}</span>
         <strong class="cov-tip-total">${i.total ? fmt(i.total) : '—'}<small>${i.total ? 'PG seats in our data' : 'no seat figures yet'}</small></strong>
         ${i.parts.length ? `<dl>${i.parts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${fmt(v)}</dd></div>`).join('')}</dl>` : ''}
         ${i.note ? `<p>${esc(i.note)}</p>` : ''}
@@ -1591,7 +1629,7 @@ function viewHome() {
   // Latest published dataset per state, so several years don't double count.
   const latest = kind => { const seen = new Set(); return (S.cfg.datasets || []).filter(d => d.kind === kind && !seen.has(d.state) && seen.add(d.state)); };
   const total = (list, k) => list.reduce((n, d) => n + (d[k] || 0), 0);
-  const st = latest('state'), aq = latest('aiq'), covered = S.cfg.dataStates || [];
+  const st = latest('state'), aq = latest('aiq'), covered = S.cfg.dataStates || [], stateCov = S.cfg.stateData || [];
   const year = st[0]?.year || 2025;
   view.innerHTML = `
   <a class="priority" href="/counselling" data-link><div class="priority-in">
@@ -1617,7 +1655,7 @@ function viewHome() {
     <div class="stat"><span class="eyebrow">State admissions</span><strong>${fmt(total(st, 'seats'))}</strong><span>${fmt(total(st, 'colleges'))} colleges, direct and in-service</span></div>
     <div class="stat"><span class="eyebrow">All India Quota</span><strong>${fmt(total(aq, 'seats'))}</strong><span>admissions in ${fmt(total(aq, 'colleges'))} colleges</span></div>
     <div class="stat"><span class="eyebrow">Seat groups</span><strong>${fmt(total(st, 'rows') + total(aq, 'rows'))}</strong><span>college × speciality × category cut-offs</span></div>
-    <div class="stat"><span class="eyebrow">States with data</span><strong>${fmt(covered.length)}</strong><span>${esc(covered.join(', ') || '—')} · more being added</span></div>
+    <div class="stat"><span class="eyebrow">States with data</span><strong>${fmt(covered.length)}</strong><span>${stateCov.length ? `State counselling: ${esc(stateCov.join(', '))}` : 'State counselling being added'}${aq.length ? ` · All India: ${fmt(aq.length)} states` : ''}</span></div>
   </div></section>
 
   <section class="cov" id="coverage" aria-label="Coverage by state"><div class="cov-in"><div class="empty"><span class="spinner"></span></div></div></section>

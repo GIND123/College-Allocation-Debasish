@@ -10,7 +10,7 @@ import {
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, normState } from './states.js';
-import { registry, guideList, compareTable, roadmap, stateSeats, guidePage, GUIDES_DIR } from './guides.js';
+import { registry, guideList, compareTable, roadmap, stateSeats, documents, updates, guidePage, GUIDES_DIR } from './guides.js';
 
 registry(); // a malformed guides/guides.json stops the server here, with the reason
 
@@ -57,7 +57,8 @@ function datasetSummary(d) {
 const publishedSets = user => (user
   ? db.prepare('SELECT * FROM datasets WHERE published = 1 AND state = ? ORDER BY year DESC, id DESC').all(user.state)
   : db.prepare('SELECT * FROM datasets WHERE published = 1 ORDER BY year DESC, id DESC').all()).map(datasetSummary);
-const dataStates = () => db.prepare('SELECT DISTINCT state FROM datasets WHERE published = 1 ORDER BY state').all().map(r => r.state);
+const dataStates = (kind = null) => db.prepare(`SELECT DISTINCT state FROM datasets WHERE published = 1${kind ? ' AND kind = ?' : ''} ORDER BY state`)
+  .all(...(kind ? [kind] : [])).map(r => r.state);
 
 // ======================================================================
 // Public
@@ -70,6 +71,7 @@ app.get('/api/config', (req, res) => {
     settings: { brand: s.brand, announcement: s.announcement, whatsapp: s.whatsapp, contactEmail: s.contact_email },
     states: STATES,
     dataStates: dataStates(),
+    stateData: dataStates('state'),
     datasets: publishedSets(req.user),
     guides: guideList().map(({ slug, region, title, label }) => ({ slug, region, title, label })),
     user: publicUser(req.user)
@@ -77,7 +79,7 @@ app.get('/api/config', (req, res) => {
 });
 app.get('/api/guides', (_req, res) => {
   res.set('Cache-Control', 'no-cache');
-  res.json({ guides: guideList(), compare: compareTable(), roadmap: roadmap(), seats: stateSeats() });
+  res.json({ guides: guideList(), compare: compareTable(), roadmap: roadmap(), seats: stateSeats(), documents: documents(), updates: updates() });
 });
 
 // Sign-up details, sent just before a code is requested (stage "send") and again if sending
@@ -136,7 +138,7 @@ app.get('/api/datasets/:id', requireUser, (req, res) => {
 // ---- shortlist ---------------------------------------------------------
 // The quota is appended only when a seat has one, so keys saved before quotas existed still match.
 const rowKey = (kind, row) => KINDS[kind].key.map(k => String(row[k] ?? '')).join(' | ')
-  + (kind === 'aiq' ? ' | ' + row.type : row.quota ? ' | ' + row.quota : '');
+  + (kind === 'aiq' ? ' | ' + row.type : '') + (row.quota ? ' | ' + row.quota : '');
 const shortlistOf = uid => db.prepare('SELECT id, kind, row_key, snapshot, position, created_at FROM shortlist WHERE user_id = ? ORDER BY position, id').all(uid)
   .map(r => ({ id: r.id, kind: r.kind, key: r.row_key, createdAt: r.created_at, ...JSON.parse(r.snapshot) }));
 

@@ -51,6 +51,10 @@ test('guides: index data, pages, redirects and assets', async () => {
   assert.equal(g.status, 200);
   assert.ok(g.json.guides.length >= 20 && g.json.compare.rows.length);
   assert.ok(g.json.roadmap.stages.length >= 5, 'the counselling roadmap is served');
+  assert.ok(g.json.documents.length >= 28 && g.json.updates.length >= 20, 'documents and updates are served');
+  const pdf = await b('/counselling/assets/' + g.json.documents[0].file);
+  assert.equal(pdf.status, 200);
+  assert.match(pdf.headers.get('content-type'), /application\/pdf/);
   const page = await b('/counselling/kerala-checklist');
   assert.equal(page.status, 200);
   assert.match(page.headers.get('content-type'), /text\/html/);
@@ -145,8 +149,8 @@ test('Gujarat closing-rank data is built in, with quotas, for Gujarat students o
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Gujarat', phone: '9000000105' } });
   await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000105', code: '1234', password: PW } });
   const sets = (await b('/api/config')).json.datasets;
-  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['Gujarat state 2024', 'Gujarat state 2025']);
-  const d = (await b('/api/datasets/' + sets.find(x => x.year === 2025).id)).json;
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['Gujarat aiq 2026', 'Gujarat state 2024', 'Gujarat state 2025']);
+  const d = (await b('/api/datasets/' + sets.find(x => x.kind === 'state' && x.year === 2025).id)).json;
   const col = n => d.columns.indexOf(n);
   assert.ok(d.rows.length > 1800);
   assert.ok(d.rows.every(r => r[col('seats')] === 0 && r[col('cmr_open')] === r[col('cmr_close')]), 'only the last admitted rank, no seat count');
@@ -222,4 +226,26 @@ test('"Keep me logged in" decides how long the sign-in lasts', async () => {
   const brief = await fetch(BASE + '/api/auth/password', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ channel: 'phone', phone: '9000000113', password: PW, remember: false }) });
   assert.doesNotMatch(brief.headers.getSetCookie().find(c => c.startsWith('rr_sid=')), /Max-Age/, 'ends when the browser closes');
+});
+
+test('MCC 2026 Round 1 is built in as All India cut-offs for every state, with quotas', async () => {
+  const visitor = (await browser()('/api/config')).json;
+  const r1 = visitor.datasets.filter(d => d.kind === 'aiq' && d.year === 2026);
+  assert.equal(r1.length, 35, 'one dataset per state with Round 1 allotments');
+  assert.equal(r1.reduce((n, d) => n + d.seats, 0), 28584, 'every allotment is counted');
+  assert.deepEqual(visitor.stateData, ['Gujarat', 'Odisha'], 'state-counselling data is listed separately');
+  const b = browser();
+  await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Maharashtra', phone: '9000000120' } });
+  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000120', code: '1234', password: PW } });
+  const sets = (await b('/api/config')).json.datasets;
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`), ['Maharashtra aiq 2026']);
+  const d = (await b('/api/datasets/' + sets[0].id)).json;
+  const rows = d.rows.map(a => Object.fromEntries(d.columns.map((c, i) => [c, a[i]])));
+  const quotas = new Set(rows.map(r => r.quota));
+  for (const q of ['All India', 'Self-Financed Merit Seat', 'DNB Quota']) assert.ok(quotas.has(q), q);
+  assert.ok(rows.every(r => r.open_rank <= r.close_rank && r.seats >= 1 && ['Government', 'Private'].includes(r.type)));
+  // a seat with a quota shortlists with it as part of the key
+  const row = rows.find(r => r.quota === 'Self-Financed Merit Seat');
+  const sl = await b('/api/shortlist', { method: 'POST', body: { kind: 'aiq', row, dataset: d.dataset.label } });
+  assert.ok(sl.json.items[0].key.endsWith(` | ${row.type} | Self-Financed Merit Seat`));
 });

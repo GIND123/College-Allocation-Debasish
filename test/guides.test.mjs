@@ -64,3 +64,17 @@ test('every guide page gets the RankRound frame without breaking the guide', () 
 test('an unknown guide gives null', () => {
   assert.equal(guidePage('nowhere'), null);
 });
+
+test('official documents and updates are listed with real files and valid dates', async () => {
+  const fs = await import('node:fs');
+  const { documents, updates, GUIDES_DIR } = await import('../server/guides.js');
+  const docs = documents();
+  assert.ok(docs.length >= 28);
+  for (const d of docs) {
+    assert.ok(fs.statSync(`${GUIDES_DIR}/assets/${d.file}`).size > 1000, `${d.file}: present`);
+    assert.ok(!Number.isNaN(Date.parse(d.date)) && d.title && d.kind, `${d.file}: described`);
+  }
+  assert.ok(updates().length >= 20);
+  for (const u of updates()) assert.ok(!u.doc || docs.some(d => d.file === u.doc), `${u.text}: its notice is one of the documents`);
+  assert.match(guidePage('gujarat'), /<a href="\/counselling#docs-gujarat">Official documents \(\d+\)<\/a>/, 'a guide links to its state\'s documents');
+});
