@@ -174,6 +174,10 @@ Guides may leave out the doctype and the `<html>`, `<head>` and `<body>` tags, o
 ]
 ```
 
+The home page's top banner shows `"highlight"` when it is set (`{ "eyebrow", "text", "href", "go" }`, for the newest thing to see, such as the MCC Round 1 result), and otherwise a summary of the guides.
+
+Two of the guides are RankRound's own pages built from official data rather than client HTML: `mcc-round1-result.html` (every MCC Round 1 allotment, loaded from `guides/assets/mcc-round1-2026.json`, which the MCC seed conversion also writes) and `odisha-merit-list.html` (the 28 Oct provisional merit list, extracted from the PDF's tables and checked row by row against the page).
+
 A state with documents but no guide yet (Punjab) still gets a card. The server refuses to start if a document's file is missing or an update points to a document that isn't listed.
 
 ## Coverage map (home page)

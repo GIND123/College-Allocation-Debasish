@@ -776,6 +776,9 @@ async function renderRoadmap() {
         <div class="rm-pred-row"><div><b>Pre-counselling predictor</b> <span class="gd-pill open">Available</span>
           <p>Based on previous year closing ranks${ds ? ` · ${esc(ds)}` : ''}.</p></div>
           <a class="btn btn-line btn-sm" href="#res" id="rm-view">View prediction ${icon.down}</a></div>
+        ${guidesFor(ALL_INDIA).some(g => g.slug === 'mcc-round1-result') ? `<div class="rm-pred-row"><div><b>MCC Round 1 result</b> <span class="gd-pill info">New</span>
+          <p>Every seat allotted in Round 1, searchable by All India Rank, college, course and quota.</p></div>
+          <a class="btn btn-line btn-sm" href="/counselling/mcc-round1-result">Open the result ${icon.arrowR}</a></div>` : ''}
       </div>
       <p class="rm-src">${esc(rm.source || '')}</p>
     </div>`;
@@ -1428,7 +1431,7 @@ async function viewGuides() {
   // The latest counselling news, newest first; the student's own state stands out.
   const news = [...updates].sort((a, b) => b.date.localeCompare(a.date));
   const newsLink = u => u.doc ? `<a href="/counselling/assets/${esc(u.doc)}" target="_blank" rel="noopener">Notice (PDF)</a>`
-    : u.link ? `<a href="${esc(u.link)}" data-link>Open</a>`
+    : u.link ? `<a href="${esc(u.link)}"${appRoute(u.link) ? ' data-link' : ''}>Open</a>`
     : guidesFor(u.region)[0] ? `<a href="/counselling/${esc(guidesFor(u.region)[0].slug)}">Guide</a>` : '';
   const SHOW = 6;
   view.innerHTML = `<div class="gd">
@@ -1493,6 +1496,7 @@ async function viewGuides() {
   }, 30e3);
 }
 
+const appRoute = href => !/^\/counselling\/./.test(href);
 const shortDate = iso => new Date(`${iso.slice(0, 10)}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' });
 // Must match docsAnchor() in server/guides.js.
 const docsAnchor = region => 'docs-' + region.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -1632,11 +1636,13 @@ function viewHome() {
   const st = latest('state'), aq = latest('aiq'), covered = S.cfg.dataStates || [], stateCov = S.cfg.stateData || [];
   const year = st[0]?.year || 2025;
   view.innerHTML = `
-  <a class="priority" href="/counselling" data-link><div class="priority-in">
-    <span class="eyebrow">NEET-PG 2026 counselling</span>
-    <b>${esc(guideBanner())}</b>
-    <span class="priority-go">Open the guide ${icon.arrowR}</span>
-  </div></a>
+  ${(h => `<a class="priority" href="${esc(h.href)}"${appRoute(h.href) ? ' data-link' : ''}><div class="priority-in">
+    <span class="eyebrow">${esc(h.eyebrow)}</span>
+    <b>${esc(h.text)}</b>
+    <span class="priority-go">${esc(h.go)} ${icon.arrowR}</span>
+  </div></a>`)(S.cfg.highlight
+    ? { eyebrow: 'NEET-PG 2026 counselling', go: 'Open', ...S.cfg.highlight }
+    : { href: '/counselling', eyebrow: 'NEET-PG 2026 counselling', text: guideBanner(), go: 'Open the guide' })}
   <section class="hero"><div class="hero-in">
     <div class="hero-copy">
       <div class="eyebrow">NEET-PG counselling · state quota and All India Quota</div>

@@ -37,6 +37,23 @@
       ]
     },
     {
+      "slug": "mcc-round1-result",
+      "file": "mcc-round1-result.html",
+      "region": "All India",
+      "title": "NEET-PG 2026 Round 1 result (MCC): every seat allotted",
+      "label": "Round 1 result",
+      "authority": "MCC · Round 1 result for MD/MS, DNB and NBEMS diploma",
+      "summary": "Find the seat your All India Rank got in Round 1, or the rank range for any college, course, quota and category: all 28,584 allotments.",
+      "official": "https://mcc.nic.in",
+      "dates": [
+        {
+          "what": "Round 1 result",
+          "when": "24 Oct · 28,584 seats allotted · searchable here",
+          "label": "Published"
+        }
+      ]
+    },
+    {
       "slug": "dnb-seats",
       "file": "dnb-seats.html",
       "region": "All India",
@@ -608,6 +625,29 @@
           "what": "Upgraded allotment against vacant seats",
           "when": "8 Nov · report 10 Nov",
           "on": "2026-11-08T00:00:00+05:30"
+        }
+      ]
+    },
+    {
+      "slug": "odisha-merit-list",
+      "file": "odisha-merit-list.html",
+      "region": "Odisha",
+      "title": "Odisha PG (Medical) provisional merit list 2026-27",
+      "label": "Merit list (searchable)",
+      "authority": "PG (Medical) Counselling Committee, MKCG Medical College, Berhampur · notification of 28 Oct 2026",
+      "summary": "Find your state merit rank by name or NEET roll number: 1,216 direct, 312 in-service and 185 PMN diploma candidates, and the rejected list.",
+      "asOf": "2026-10-28",
+      "official": "https://dmetodisha.in",
+      "dates": [
+        {
+          "what": "Provisional merit list",
+          "when": "28 Oct · searchable here",
+          "label": "Published"
+        },
+        {
+          "what": "Revised merit list and seat matrix",
+          "when": "30 Oct, 4 pm",
+          "on": "2026-10-30T16:00:00+05:30"
         }
       ]
     },
@@ -1506,8 +1546,20 @@
   "updates": [
     {
       "region": "All India",
+      "date": "2026-10-30",
+      "text": "MCC Round 1 result now searchable: find the seat any All India Rank got, or the rank range for any college, course and quota.",
+      "link": "/counselling/mcc-round1-result"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-10-30",
+      "text": "Provisional merit list (28 Oct) now searchable by name, NEET roll number or application number, with every category rank.",
+      "link": "/counselling/odisha-merit-list"
+    },
+    {
+      "region": "All India",
       "date": "2026-10-29",
-      "text": "MCC Round 1 result: All India cut-offs for every state are now in the predictor (MD/MS, DNB and diploma).",
+      "text": "MCC Round 1 result: All India cut-offs for every state are in the predictor (MD/MS, DNB and diploma).",
       "link": "/predict"
     },
     {
@@ -1614,5 +1666,11 @@
       "text": "BFUHS: MD/MS fee structure for Adesh Institute of Medical Sciences & Research, Bathinda.",
       "doc": "punjab/adesh-institute-fee-structure.pdf"
     }
-  ]
+  ],
+  "highlight": {
+    "eyebrow": "New · NEET-PG 2026 Round 1 result",
+    "text": "Search all 28,584 MCC Round 1 allotments by rank, college, course and quota.",
+    "href": "/counselling/mcc-round1-result",
+    "go": "Open the result"
+  }
 }

@@ -111,6 +111,7 @@
 .rm-pred-row{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap}
 .rm-pred-row b{font-weight:600}
 .rm-pred-row p{margin-top:4px}
+.rm-pred-row + .rm-pred-row{margin-top:14px; padding-top:14px; border-top:1px solid var(--rule)}
 .rm-src{grid-column:1 / -1; font-size:11.5px !important; color:var(--muted) !important}
 
 /* ---------- workspace ---------- */

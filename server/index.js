@@ -74,6 +74,7 @@ app.get('/api/config', (req, res) => {
     stateData: dataStates('state'),
     datasets: publishedSets(req.user),
     guides: guideList().map(({ slug, region, title, label }) => ({ slug, region, title, label })),
+    highlight: registry().highlight || null,
     user: publicUser(req.user)
   });
 });

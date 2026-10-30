@@ -73,6 +73,8 @@ function validate(data) {
     if (u.doc && !files.has(u.doc)) throw new Error(`${where}: "doc" must be the file of one of the documents.`);
     if (u.link && !u.link.startsWith('/')) throw new Error(`${where}: "link" must be a path on this site.`);
   }
+  const h = data.highlight;
+  if (h && (!h.text || !String(h.href || '').startsWith('/'))) throw new Error('guides/guides.json, "highlight": needs "text" and an "href" on this site.');
   return data;
 }
 

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEET-PG 2026 Round 1 result (MCC)</title>
+<style>
+:root{--accent:#1c4f9c; --accent-soft:#e9eef7; --ok:#17663f; --ok-bg:#e4f1ea; --warn-bg:#f8eed9; --warn:#7a5000; --hl:#fff4cc}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:#9dbcf0; --accent-soft:#172133; --ok:#5cc48d; --ok-bg:#10261b; --warn-bg:#2a2112; --warn:#e2b45c; --hl:#3a3114}}
+:root[data-theme="dark"]{--accent:#9dbcf0; --accent-soft:#172133; --ok:#5cc48d; --ok-bg:#10261b; --warn-bg:#2a2112; --warn:#e2b45c; --hl:#3a3114}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 var(--body, system-ui, sans-serif)}
+.wrap{max-width:1240px; margin:0 auto; padding:32px 24px 56px}
+.eyebrow{margin:0; font:600 11px/1.3 var(--body, sans-serif); letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+h1{margin:10px 0 10px; font:600 clamp(28px,3.4vw,40px)/1.1 var(--display, Georgia, serif); letter-spacing:-.02em}
+.lede{margin:0; max-width:72ch; color:var(--muted)}
+.stats{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:22px 0}
+.stat{background:var(--surface); border:1px solid var(--line); padding:12px 14px}
+.stat b{display:block; font:600 24px/1.1 var(--display, Georgia, serif)}
+.stat span{font-size:12.5px; color:var(--muted)}
+.find{display:flex; flex-wrap:wrap; align-items:end; gap:10px 14px; padding:16px; background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent)}
+.find label{display:grid; gap:4px; font:600 12px/1.2 var(--body, sans-serif); color:var(--ink)}
+.find input{width:180px; height:40px; padding:0 12px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font:500 16px var(--mono, monospace)}
+#found{flex:1 1 320px; margin:0; font-size:14px}
+#found b{font-weight:600}
+.filters{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin:18px 0 12px}
+.filters label{display:grid; gap:4px; font:600 11.5px/1.2 var(--body, sans-serif); color:var(--muted); letter-spacing:.02em}
+.filters select, .filters input{width:100%; height:36px; padding:0 8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font:400 13.5px var(--body, sans-serif)}
+.filters .wide{grid-column:span 2}
+.bar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:4px 0 10px}
+#summary{margin:0; font-size:14px}
+#summary b{font-weight:600}
+.btn{height:34px; padding:0 12px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font:500 13px var(--body, sans-serif); cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.tablewrap{overflow-x:auto; border:1px solid var(--line); background:var(--surface)}
+table{width:100%; border-collapse:collapse; font-size:13.5px}
+th{position:sticky; top:0; background:var(--surface); text-align:left; font:600 11.5px/1.2 var(--body, sans-serif); letter-spacing:.04em; text-transform:uppercase; color:var(--muted); padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap}
+td{padding:9px 12px; border-top:1px solid var(--line); vertical-align:top}
+td.n{font:500 13.5px var(--mono, monospace); text-align:right; white-space:nowrap}
+td small{display:block; margin-top:2px; font-size:11.5px; color:var(--muted); max-width:52ch}
+tr.me td{background:var(--hl)}
+.q{display:inline-block; padding:2px 6px; font-size:11.5px; background:var(--accent-soft); color:var(--accent); white-space:nowrap}
+.more{display:block; margin:14px auto 0}
+.note{margin:18px 0 0; font-size:12.5px; color:var(--muted); max-width:90ch}
+.empty{padding:28px; text-align:center; color:var(--muted)}
+@media (max-width:900px){
+  .wrap{padding:24px 16px 48px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filters .wide{grid-column:1 / -1}
+  .find input{width:100%}
+  .find label{flex:1 1 100%}
+  .hide-sm{display:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">All India · MCC · NEET-PG 2026</p>
+  <h1>Round 1 result: every seat allotted</h1>
+  <p class="lede">All <b>28,584</b> seats the Medical Counselling Committee allotted in Round 1, for MD/MS, DNB and NBEMS diploma,
+    with the NEET All India Rank each went to. Find your rank, or filter by state, quota, course and category to see the
+    rank range each seat went to. Compiled from MCC's Round 1 result; check your allotment letter on mcc.nic.in.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <form class="find" id="find" role="search">
+    <label>Your NEET All India Rank<input id="rank" inputmode="numeric" autocomplete="off" placeholder="e.g. 12450"></label>
+    <p id="found" aria-live="polite">Enter your rank to see the seat allotted to it in Round 1.</p>
+  </form>
+
+  <div class="filters">
+    <label>Programme<select id="f-prog"></select></label>
+    <label>State<select id="f-state"></select></label>
+    <label>Quota<select id="f-quota"></select></label>
+    <label>Category<select id="f-cat"></select></label>
+    <label class="wide">Course<select id="f-course"></select></label>
+    <label class="wide">College<input id="f-q" type="search" placeholder="Name of college or hospital" autocomplete="off"></label>
+    <label>From rank<input id="f-min" inputmode="numeric" autocomplete="off" placeholder="1"></label>
+    <label>To rank<input id="f-max" inputmode="numeric" autocomplete="off" placeholder="any"></label>
+    <label class="wide" style="align-self:end"><button type="button" class="btn" id="reset">Clear filters</button></label>
+  </div>
+
+  <div class="bar"><p id="summary" aria-live="polite">Loading the result…</p><button type="button" class="btn" id="csv">Download CSV</button></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>AIR</th><th>College / hospital</th><th class="hide-sm">State</th><th>Course</th><th>Quota</th><th>Category</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <button type="button" class="btn more" id="more" hidden>Show 100 more</button>
+  <p class="note">Category is the seat's category; the candidate's own category is shown below it when it differs. A rank that is missing
+    was not allotted a seat in Round 1. College type and short names are RankRound's; the full name as MCC printed it is under each college.
+    Ranks here are Round 1 only: later rounds usually reach further down the list.</p>
+</main>
+<script>
+(function () {
+  var D = null, view = [], shown = 0, PAGE = 100;
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = function (n) { return Number(n).toLocaleString('en-IN'); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var prog = function (course) { return /^DNB Diploma/.test(course) ? 'Diploma (NBEMS)' : /^DNB/.test(course) ? 'DNB' : 'MD/MS'; };
+  var num = function (el) { var n = parseInt(String(el.value).replace(/\D/g, ''), 10); return n > 0 ? n : 0; };
+  function options(id, label, values) {
+    $(id).innerHTML = '<option value="">' + label + '</option>' + values.map(function (v) { return '<option>' + esc(v) + '</option>'; }).join('');
+  }
+  function filtered() {
+    var p = $('f-prog').value, st = $('f-state').value, q = $('f-quota').value, cat = $('f-cat').value, c = $('f-course').value;
+    var text = $('f-q').value.trim().toLowerCase(), lo = num($('f-min')), hi = num($('f-max'));
+    var si = D.state.indexOf(st), qi = D.quota.indexOf(q), ci = D.cat.indexOf(cat), co = D.course.indexOf(c);
+    return D.rows.filter(function (r) {
+      if (st && r[2] !== si) return false;
+      if (q && r[3] !== qi) return false;
+      if (c && r[4] !== co) return false;
+      if (cat && r[5] !== ci) return false;
+      if (p && prog(D.course[r[4]]) !== p) return false;
+      if (lo && r[0] < lo) return false;
+      if (hi && r[0] > hi) return false;
+      if (text && (D.inst[r[1]] + ' ' + D.full[r[1]]).toLowerCase().indexOf(text) < 0) return false;
+      return true;
+    });
+  }
+  function row(r, me) {
+    var cand = D.cand[r[6]], seat = D.cat[r[5]];
+    var differs = cand.replace('General', 'OPEN').toUpperCase() !== seat.toUpperCase();
+    return '<tr' + (me ? ' class="me"' : '') + '><td class="n">' + fmt(r[0]) + '</td>' +
+      '<td>' + esc(D.inst[r[1]]) + '<small>' + esc(D.full[r[1]]) + '</small></td>' +
+      '<td class="hide-sm">' + esc(D.state[r[2]]) + '</td><td>' + esc(D.course[r[4]]) + '</td>' +
+      '<td><span class="q">' + esc(D.quota[r[3]]) + '</span></td>' +
+      '<td>' + esc(seat) + (differs ? '<small>Candidate: ' + esc(cand) + '</small>' : '') + '</td></tr>';
+  }
+  function render(reset) {
+    if (reset) { view = filtered(); shown = 0; }
+    var me = num($('rank'));
+    var next = view.slice(shown, shown + PAGE);
+    var html = next.map(function (r) { return row(r, r[0] === me); }).join('');
+    if (reset) $('rows').innerHTML = html || '<tr><td colspan="6" class="empty">No allotments match these filters.</td></tr>';
+    else $('rows').insertAdjacentHTML('beforeend', html);
+    shown += next.length;
+    $('more').hidden = shown >= view.length;
+    var lo = view.length ? view[0][0] : 0, hi = view.length ? view[view.length - 1][0] : 0;
+    $('summary').innerHTML = view.length
+      ? '<b>' + fmt(view.length) + '</b> seat' + (view.length === 1 ? '' : 's') + ' · ranks <b>' + fmt(lo) + '</b> to <b>' + fmt(hi) + '</b>'
+        + (view.length < D.rows.length ? ' (opening to closing rank for this selection)' : '') + ' · showing ' + fmt(shown)
+      : 'No seats match these filters.';
+  }
+  function find() {
+    var n = num($('rank'));
+    if (!n) { $('found').textContent = 'Enter your rank to see the seat allotted to it in Round 1.'; render(true); return; }
+    var r = D.rows.find(function (x) { return x[0] === n; });
+    if (!r) {
+      var after = D.rows.find(function (x) { return x[0] > n; });
+      $('found').innerHTML = 'Rank <b>' + fmt(n) + '</b> was not allotted a seat in Round 1.' +
+        (after ? ' The next allotted rank is ' + fmt(after[0]) + '.' : '') + ' Filter below to see where nearby ranks went.';
+    } else {
+      $('found').innerHTML = 'Rank <b>' + fmt(n) + '</b> was allotted <b>' + esc(D.course[r[4]]) + '</b> at <b>' + esc(D.inst[r[1]]) + '</b>, ' +
+        esc(D.state[r[2]]) + ' · ' + esc(D.quota[r[3]]) + ' · ' + esc(D.cat[r[5]]) + '.';
+    }
+    if (!num($('f-min')) && !num($('f-max'))) { $('f-min').value = Math.max(1, n - 500); $('f-max').value = n + 500; }
+    render(true);
+  }
+  function csv() {
+    var q = function (s) { s = String(s); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    var lines = ['AIR,College,Full name,State,Programme,Course,Quota,Seat category,Candidate category'].concat(view.map(function (r) {
+      return [r[0], D.inst[r[1]], D.full[r[1]], D.state[r[2]], prog(D.course[r[4]]), D.course[r[4]], D.quota[r[3]], D.cat[r[5]], D.cand[r[6]]].map(q).join(',');
+    }));
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv' }));
+    a.download = 'neet-pg-2026-round1-result.csv'; a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+  fetch('/counselling/assets/mcc-round1-2026.json').then(function (r) { return r.json(); }).then(function (data) {
+    D = data;
+    var count = function (p) { return D.rows.filter(function (r) { return prog(D.course[r[4]]) === p; }).length; };
+    $('stats').innerHTML = [[D.rows.length, 'seats allotted'], [count('MD/MS'), 'MD/MS'], [count('DNB'), 'DNB'], [count('Diploma (NBEMS)'), 'NBEMS diploma']]
+      .map(function (s) { return '<div class="stat"><b>' + fmt(s[0]) + '</b><span>' + s[1] + '</span></div>'; }).join('');
+    options('f-prog', 'All programmes', ['MD/MS', 'DNB', 'Diploma (NBEMS)']);
+    options('f-state', 'All states', D.state.slice().sort());
+    options('f-quota', 'All quotas', D.quota.slice().sort());
+    options('f-cat', 'All categories', D.cat.slice());
+    options('f-course', 'All courses', D.course.slice().sort());
+    ['f-prog', 'f-state', 'f-quota', 'f-cat', 'f-course'].forEach(function (id) { $(id).addEventListener('change', function () { render(true); }); });
+    var t; ['f-q', 'f-min', 'f-max'].forEach(function (id) { $(id).addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { render(true); }, 200); }); });
+    var tr; $('rank').addEventListener('input', function () { clearTimeout(tr); tr = setTimeout(find, 300); });
+    $('find').addEventListener('submit', function (e) { e.preventDefault(); find(); });
+    $('more').addEventListener('click', function () { render(false); });
+    $('reset').addEventListener('click', function () {
+      ['f-prog', 'f-state', 'f-quota', 'f-cat', 'f-course', 'f-q', 'f-min', 'f-max'].forEach(function (id) { $(id).value = ''; });
+      render(true);
+    });
+    $('csv').addEventListener('click', csv);
+    render(true);
+  }).catch(function () { $('summary').textContent = 'The result could not be loaded. Reload the page to try again.'; });
+})();
+</script>
+</body>
+</html>
