@@ -91,13 +91,13 @@ Accounts created before sign-up asked for CMR and state are asked to complete th
 ## Passwords
 
 - **Sign up:** details and a password, then a one-time code to the mobile proves the number. The password is saved once the code is right.
-- **Sign in:** mobile number and password. No code.
+- **Sign in:** mobile number and password. No code. Or **sign in with a one-time code** instead (mobile number only).
 - **Forgot password:** mobile number and a new password, then a one-time code. Accounts made before passwords existed use this to set one.
 - **Keep me logged in** (ticked by default, and remembered on the device): signed in for 30 days. Unticked, the sign-in ends when the browser closes (and after 12 hours at most).
 
 Where passwords live: the free Render plan wipes the server's database on every restart, so passwords for mobile accounts are kept on the student's **Firebase** account, which never resets. Firebase holds passwords against an email address, so each account uses one made from its verified number (`919876543210@phone.rankround.com`); students never see it, and no mail is sent to it. The student's name, CMR and state are kept on the Firebase account too (display name and profile link), so a returning student's profile comes back after a restart. Email accounts, and every account in local test mode, keep a scrypt hash in the server's database instead.
 
-If Email/Password isn't switched on in Firebase, sign-up and "Forgot password" still sign the student in with their code and say the password couldn't be saved; sign-in with a password says to use "Forgot password".
+If Email/Password isn't switched on in Firebase, sign-up and "Forgot password" still sign the student in with their code and say the password couldn't be saved; sign-in with a password sends a one-time code instead and signs the student in with that, keeping the password they typed for when it can be saved.
 
 ## Main tabs and the counselling roadmap
 

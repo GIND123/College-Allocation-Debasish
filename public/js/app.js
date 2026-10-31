@@ -344,11 +344,12 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
   function form(err) {
     clearInterval(timer);
     onMode?.(a.mode);
-    const up = a.mode === 'signup', reset = a.mode === 'reset', signin = a.mode === 'signin';
+    const up = a.mode === 'signup', reset = a.mode === 'reset', signin = a.mode === 'signin', byCode = a.mode === 'code';
     const what = a.channel === 'email' ? 'email' : 'mobile number';
     host.innerHTML = `
       <form class="auth" novalidate>
         ${reset ? `<p class="auth-intro">Enter your ${what} and a new password. We'll send a one-time code to confirm it's you.</p>` : ''}
+        ${byCode ? `<p class="auth-intro">Enter your ${what}. We'll send a one-time code to sign you in.</p>` : ''}
         ${up ? `<label class="field"><span class="label">Full name</span>
           <input class="input" name="name" autocomplete="name" value="${esc(a.name)}" maxlength="80" required></label>` : ''}
         <div class="field"><span class="label">${emailOk ? 'Mobile or email' : 'Mobile number'}${up ? ' <span class="hint">verified with a one-time code</span>' : ''}</span>
@@ -360,13 +361,13 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
             : `<div class="phone"><span>+91</span><input class="input" name="phone" inputmode="numeric" autocomplete="${signin ? 'username' : 'tel-national'}"
                 placeholder="98765 43210" value="${esc(a.phone)}" maxlength="14" aria-label="Mobile number" required></div>`}
         </div>
-        <div class="field">
+        ${byCode ? '' : `<div class="field">
           <span class="label pw-label"><span>${reset ? 'New password' : 'Password'}${signin ? '' : ' <span class="hint">at least 8 characters</span>'}</span>
             ${signin ? '<button type="button" class="linkbtn" data-mode="reset">Forgot password?</button>' : ''}</span>
           <div class="pw"><input class="input" name="password" type="password" autocomplete="${signin ? 'current-password' : 'new-password'}"
               value="${esc(a.password)}" maxlength="128" aria-label="${reset ? 'New password' : 'Password'}" required>
             <button type="button" class="pw-show" aria-pressed="false" aria-label="Show password">Show</button></div>
-        </div>
+        </div>`}
         ${up ? `<div class="auth-pair">${cmrField(a.cmr)}${stateField(a.state)}</div>` : ''}
         <label class="check auth-keep"><input type="checkbox" name="remember" ${a.remember ? 'checked' : ''}> Keep me logged in</label>
         ${err?.setup ? unavailable(err.setup) : err ? `<div class="alert alert-err form-err" role="alert">${err.html || esc(err)}</div>` : ''}
@@ -375,7 +376,9 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
         <p class="auth-switch">${up
           ? 'Already registered? <button type="button" class="linkbtn" data-mode="signin">Sign in</button>'
           : signin ? 'New here? <button type="button" class="linkbtn" data-mode="signup">Create an account</button>'
+          : byCode ? 'Have a password? <button type="button" class="linkbtn" data-mode="signin">Sign in with it</button>'
           : 'Remembered it? <button type="button" class="linkbtn" data-mode="signin">Sign in</button>'}</p>
+        ${signin ? '<p class="auth-switch">Or <button type="button" class="linkbtn" data-mode="code">sign in with a one-time code</button></p>' : ''}
         ${up ? `<p class="fine">You'll see cut-offs for the state you choose. By signing up you agree that a counsellor may contact you about PG admissions.</p>` : ''}
       </form>`;
     const f = host.querySelector('form'), el = n => f.elements.namedItem(n);
@@ -385,8 +388,8 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
       else if (e.target.name in a) a[e.target.name] = e.target.value;
     };
     $$('[data-ch]', f).forEach(b => b.onclick = () => { a.channel = b.dataset.ch; form(); host.querySelector(`[name="${a.channel}"]`).focus(); });
-    $$('[data-mode]', f).forEach(b => b.onclick = () => { a.mode = b.dataset.mode; a.password = ''; form(); host.querySelector('input').focus(); });
-    f.querySelector('.pw-show').onclick = e => {
+    $$('[data-mode]', f).forEach(b => b.onclick = () => { a.mode = b.dataset.mode; a.password = ''; a.fallback = false; form(); host.querySelector('input').focus(); });
+    if (!byCode) f.querySelector('.pw-show').onclick = e => {
       const on = e.currentTarget.getAttribute('aria-pressed') !== 'true', input = el('password');
       input.type = on ? 'text' : 'password';
       e.currentTarget.setAttribute('aria-pressed', on);
@@ -406,9 +409,9 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
         a.phone = el('phone').value.replace(/\D/g, '').replace(/^(91|0)(?=\d{10}$)/, '');
         if (!/^[6-9]\d{9}$/.test(a.phone)) return form('Enter a valid 10-digit Indian mobile number.');
       }
-      a.password = el('password').value;
+      if (!byCode) a.password = el('password').value;
       if (signin && !a.password) return form('Enter your password.');
-      if (!signin && a.password.length < 8) return form('Use a password of at least 8 characters.');
+      if ((up || reset) && a.password.length < 8) return form('Use a password of at least 8 characters.');
       if (up) {
         a.cmr = el('cmr').value.replace(/\D/g, '');
         a.state = el('state').value;
@@ -431,7 +434,14 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
           }
           onDone?.();
           await signedIn(r.user, r.isNew);
-        } catch (err) { form(passwordProblem(err, what)); }
+        } catch (err) {
+          // Firebase has password sign-in switched off: the number can still be proven with a code.
+          if (viaFirebase() && String(err?.code).endsWith('operation-not-allowed')) {
+            a.mode = 'code'; a.fallback = true;
+            form(); return host.querySelector('form').requestSubmit();
+          }
+          form(passwordProblem(err, what));
+        }
         return;
       }
       btn.innerHTML = '<span class="spinner"></span> Sending code';
@@ -459,6 +469,7 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
   function code(err) {
     clearInterval(timer);
     host.innerHTML = `
+      ${a.fallback ? `<div class="alert alert-info" style="margin-bottom:18px">Password sign-in is unavailable right now, so we've sent you a code instead.</div>` : ''}
       <p class="signin-lead">Enter the ${len}-digit code sent to <b class="num">${esc(shown())}</b>.
         <button class="linkbtn" id="chg">Change</button></p>
       ${provider === 'mock' ? `<div class="alert alert-info" style="margin-bottom:18px">Test mode — no SMS or email is sent. Use code <b class="num">1234</b>.</div>` : ''}
@@ -507,7 +518,10 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
         if (viaFirebase()) {
           const cred = await confirmation.confirm(c);
           // The number is proven; a password that can't be saved mustn't keep the student out.
-          try { await savePassword(cred.user); } catch (err) { saved = false; console.error('Password not saved', err?.code || err); }
+          // A code sign-in after a refused password keeps that password too, once it can be saved.
+          if (a.mode !== 'code' || (a.fallback && a.password.length >= 8)) {
+            try { await savePassword(cred.user); } catch (err) { saved = a.mode === 'code'; console.error('Password not saved', err?.code || err); }
+          }
           r = await finishFirebase(cred.user);
         } else {
           r = await api('/api/auth/otp/verify', { method: 'POST', body: { ...contact(), code: c, password: a.password, remember: a.remember } });
