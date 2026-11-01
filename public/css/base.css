@@ -15,6 +15,7 @@
   --brass:#a67a2b; --brass-soft:#f5edde;
   --focus:#2457c5;
   --ok:#17663f; --ok-bg:#e4f1ea; --warn:#8a5a00; --warn-bg:#f8eed9; --err:#9e3426; --err-bg:#f9e6e2;
+  --violet:#5b3fa6; --violet-bg:#efebf8;
 
   /* chance bands: green → amber → red so the grade reads at a glance.
      Each band has a swatch, a tinted badge background and a badge text colour;
@@ -39,6 +40,7 @@
     --brass:#d6ab5a; --brass-soft:#2a2214;
     --focus:#7ea6f0;
     --ok:#5cc48d; --ok-bg:#10261b; --warn:#e2b45c; --warn-bg:#2a2112; --err:#f09684; --err-bg:#2c1612;
+    --violet:#b6a3ee; --violet-bg:#1d1730;
     --b4:#34c46e; --b3:#a3d65c; --b2:#f2a93b; --b1:#f26b5e;
     --b4-bg:#0f2a1a; --b3-bg:#1c2610; --b2-bg:#2d1f0c; --b1-bg:#2f1513;
     --b4-ink:#6ee09a; --b3-ink:#bfe68a; --b2-ink:#f7c47a; --b1-ink:#f8a39a;
@@ -57,6 +59,7 @@
   --brass:#d6ab5a; --brass-soft:#2a2214;
   --focus:#7ea6f0;
   --ok:#5cc48d; --ok-bg:#10261b; --warn:#e2b45c; --warn-bg:#2a2112; --err:#f09684; --err-bg:#2c1612;
+  --violet:#b6a3ee; --violet-bg:#1d1730;
   --b4:#34c46e; --b3:#a3d65c; --b2:#f2a93b; --b1:#f26b5e;
   --b4-bg:#0f2a1a; --b3-bg:#1c2610; --b2-bg:#2d1f0c; --b1-bg:#2f1513;
   --b4-ink:#6ee09a; --b3-ink:#bfe68a; --b2-ink:#f7c47a; --b1-ink:#f8a39a;

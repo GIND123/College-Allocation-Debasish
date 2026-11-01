@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { KINDS } from './schema.js';
+import { ALL_INDIA } from './states.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const file = path.resolve(process.env.DB_PATH || path.join(here, '..', 'data', 'rankround.db'));
@@ -162,6 +163,7 @@ if (!columns('users').includes('email')) {
 // Passwords (local test mode and email accounts; phone accounts on Firebase keep theirs there).
 if (!columns('users').includes('password_hash')) db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''`);
 if (!columns('aiq_rows').includes('quota')) db.exec(`ALTER TABLE aiq_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
+if (!columns('aiq_rows').includes('state')) db.exec(`ALTER TABLE aiq_rows ADD COLUMN state TEXT NOT NULL DEFAULT ''`);
 if (!columns('state_rows').includes('quota')) db.exec(`ALTER TABLE state_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
 if (!columns('datasets').includes('state')) {
   // Every dataset before per-state data was the client's Odisha data.
@@ -199,8 +201,10 @@ const SEEDS = [
     notes: "ACPPGMEC 'Institutewise Last Rank' PG-2025 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." },
   { file: 'gujarat-state-2024.json', kind: 'state', state: 'Gujarat', year: 2024, label: 'Gujarat state counselling 2024 · final closing ranks',
     notes: "ACPPGMEC 'Institutewise Last Rank' PG-2024 (final round), via the client's workbook. Only the last admitted rank is published: no opening ranks or seat counts. Seats converted to another quota are left out." },
-  // One file holding every state's rows ({ state: rows }); each state gets its own dataset.
-  { file: 'mcc-aiq-2026-r1.json', kind: 'aiq', perState: true, year: 2026, label: 'All India counselling 2026 · Round 1 allotments (MCC)',
+  // One file holding every state's rows ({ state: rows }), loaded as one national dataset with
+  // each row's college state. (It was once split into a dataset per state: "id" marks the change.)
+  { id: 'mcc-aiq-2026-r1.json#all-india', file: 'mcc-aiq-2026-r1.json', kind: 'aiq', perState: true, year: 2026,
+    label: 'All India counselling 2026 · Round 1 allotments (MCC)',
     notes: 'MCC NEET-PG 2026 Round 1 result (MD/MS, DNB and NBEMS diploma), 28,584 allotments rolled up by college, course, category and quota. '
       + 'Opening and closing ranks are those allotted in Round 1 only. College type is from the quota; for DNB hospitals it is inferred from the name.' }
 ];
@@ -215,12 +219,15 @@ function loadSeed(s, state, rows) {
   insertRows(s.kind, Number(lastInsertRowid), rows);
 }
 for (const s of SEEDS) {
-  if (db.prepare('SELECT 1 FROM seeds WHERE file = ?').get(s.file)) continue;
+  const id = s.id || s.file;
+  if (db.prepare('SELECT 1 FROM seeds WHERE file = ?').get(id)) continue;
   const data = JSON.parse(fs.readFileSync(path.join(here, 'seed', s.file), 'utf8'));
   tx(() => {
-    if (s.perState) for (const [state, rows] of Object.entries(data)) loadSeed(s, state, rows);
-    else loadSeed(s, s.state, data);
-    db.prepare('INSERT INTO seeds (file, loaded_at) VALUES (?, ?)').run(s.file, now());
+    if (s.perState) {
+      db.prepare('DELETE FROM datasets WHERE kind = ? AND label = ? AND state <> ?').run(s.kind, s.label, ALL_INDIA); // the old split
+      loadSeed(s, ALL_INDIA, Object.entries(data).flatMap(([state, rows]) => rows.map(r => ({ ...r, state }))));
+    } else loadSeed(s, s.state, data);
+    db.prepare('INSERT INTO seeds (file, loaded_at) VALUES (?, ?)').run(id, now());
   });
   console.log(`[db] loaded ${s.label}${s.perState ? ` (${Object.keys(data).length} states)` : ''}`);
 }

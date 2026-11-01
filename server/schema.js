@@ -51,7 +51,9 @@ export const KINDS = {
       { name: 'quota', type: 'text', label: 'Quota', optional: true },
       { name: 'seats', type: 'int', label: 'Seats', min: 1 },
       { name: 'open_rank', type: 'int', label: 'Opening rank', min: 1 },
-      { name: 'close_rank', type: 'int', label: 'Closing rank', min: 1 }
+      { name: 'close_rank', type: 'int', label: 'Closing rank', min: 1 },
+      // The college's state, in a dataset covering the whole country (MCC's national list).
+      { name: 'state', type: 'text', label: 'College state', optional: true }
     ],
     allotment: [
       { name: 'college', type: 'text', label: 'College' },
@@ -59,7 +61,8 @@ export const KINDS = {
       { name: 'branch', type: 'text', label: 'Branch' },
       { name: 'category', type: 'text', label: 'Category' },
       { name: 'quota', type: 'text', label: 'Quota', optional: true },
-      { name: 'air', type: 'int', label: 'NEET AIR', min: 1 }
+      { name: 'air', type: 'int', label: 'NEET AIR', min: 1 },
+      { name: 'state', type: 'text', label: 'College state', optional: true }
     ]
   }
 };
@@ -86,7 +89,8 @@ const ALIASES = {
   close_rank: ['closerank', 'closing', 'closingrank', 'close', 'cutoff'],
   cmr: ['cmr', 'statemeritrank', 'meritrank', 'staterank', 'rank'],
   air: ['air', 'neetair', 'allindiarank', 'neetrank', 'rank'],
-  round: ['round', 'roundno', 'allotmentround']
+  round: ['round', 'roundno', 'allotmentround'],
+  state: ['state', 'collegestate', 'statename']
 };
 
 const norm = s => String(s ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -202,7 +206,7 @@ export function aggregate(kind, allotments) {
   const def = KINDS[kind];
   const groups = new Map();
   for (const a of allotments) {
-    const k = def.key.map(f => a[f]).join('\u0001') + '\u0001' + (kind === 'aiq' ? a.type + '\u0001' : '') + (a.quota || '');
+    const k = def.key.map(f => a[f]).join('\u0001') + '\u0001' + (kind === 'aiq' ? a.type + '\u0001' + (a.state || '') + '\u0001' : '') + (a.quota || '');
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(a);
   }
@@ -224,7 +228,7 @@ export function aggregate(kind, allotments) {
       const air = list.map(a => a.air);
       out.push({
         college: f.college, type: f.type, branch: f.branch, category: f.category, quota: f.quota || '', seats: list.length,
-        open_rank: Math.min(...air), close_rank: Math.max(...air)
+        open_rank: Math.min(...air), close_rank: Math.max(...air), state: f.state || ''
       });
     }
   }

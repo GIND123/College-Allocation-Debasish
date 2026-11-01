@@ -8,7 +8,9 @@ const SHEETJS = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs';
 const ROWS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5h18v14H3zM3 10h18M3 15h18M9 5v14"/></svg>';
 const KLABEL = { state: 'State counselling', aiq: 'All India Quota' };
 const MAIL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg>';
-const stateSelect = (attrs, sel) => `<select class="select" ${attrs}><option value="">Choose a state</option>${A.states.map(s => `<option ${s === sel ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>`;
+// "All India" is for national All India Quota data (every candidate sees it); the server refuses it for state counselling.
+const stateSelect = (attrs, sel) => `<select class="select" ${attrs}><option value="">Choose a state</option>${[A.allIndia, ...A.states].filter(Boolean)
+  .map(s => `<option ${s === sel ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>`;
 
 const nav = {
   overview: ['Overview', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>'],
@@ -28,6 +30,7 @@ async function boot() {
     const me = await api('/api/admin/me');
     A.provider = me.provider;
     A.states = me.states || [];
+    A.allIndia = me.allIndia || '';
     me.admin ? shell() : login();
   } catch (e) { app.innerHTML = `<div class="login"><div class="login-card"><header><b>Can't reach the server</b><span>${esc(e.message)}</span></header></div></div>`; }
 }
@@ -463,8 +466,9 @@ async function datasets(arg) {
           </div></td></tr>`).join('')}</tbody></table></div>`
         : `<div class="panel"><div class="empty"><h3>No ${KLABEL[kind]} data</h3><p>Upload a file to add one.</p></div></div>`}
     </section>`;
-  }).join('') + `<p class="muted" style="font-size:12.5px;margin-top:20px;max-width:80ch">Each published dataset is shown to candidates who chose
-    its state at sign-up, newest year first; when a state has more than one per counselling, they get a dataset picker. Drafts are visible only here.</p>`;
+  }).join('') + `<p class="muted" style="font-size:12.5px;margin-top:20px;max-width:80ch">Each published state counselling dataset is shown to candidates who chose
+    its state at sign-up; All India Quota datasets are shown to every candidate. Newest year first; when there is more than one, candidates get a
+    dataset picker. Drafts are visible only here.</p>`;
 
   $('#dl').onclick = async e => {
     const b = e.target.closest('[data-a]');

@@ -3,9 +3,11 @@
 PG medical counselling cut-off predictor. It covers state counselling (CMR) and the All India Quota (NEET AIR), with:
 
 - a sign-up page that opens the site: name, mobile or email (one-time code), NEET-PG CMR and state
-- cut-off data shown per state: each candidate sees only the state they chose
+- All India Quota data for every candidate; state counselling data for the candidate's own state only (other states stay locked)
+- programme buttons (MD/MS, DNB, diploma) on the predictions and the cut-off table
 - a shortlist builder
 - plain-language NEET-PG 2026 counselling guides for the All India Quota and each state, with live dates
+- a counselling roadmap page per state, in one common layout: stage, dates, the guide section by section, merit list, seat matrix and allotments
 - an admin console with traffic analytics, leads, and data uploads
 
 Built-in data is loaded automatically: Odisha 2025 (state counselling and All India Quota, from the original `odisha_1.html`) and Gujarat 2025 and 2024 (state counselling final closing ranks, from ACPPGMEC).
@@ -84,7 +86,7 @@ Without these, and with `AUTH_PROVIDER=firebase`, the sign-up form offers mobile
 
 ## Sign-up and states
 
-The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, a password, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which datasets they see: a candidate who chose Karnataka sees only datasets tagged Karnataka, and gets a "coming soon" page until one is published. Candidates can change their state, CMR or name from the account menu (Edit profile).
+The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, a password, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which state counselling data they see: a candidate who chose Karnataka sees only state datasets tagged Karnataka, and gets a "coming soon" page until one is published. All India Quota datasets (tagged "All India", or with a state for older per-state files) are open to every candidate; other states' counselling data stays locked (planned as a premium service). Candidates can change their state, CMR or name from the account menu (Edit profile).
 
 Accounts created before sign-up asked for CMR and state are asked to complete their profile the next time they open the predictor.
 
@@ -176,7 +178,35 @@ Guides may leave out the doctype and the `<html>`, `<head>` and `<body>` tags, o
 
 The home page's top banner shows `"highlight"` when it is set (`{ "eyebrow", "text", "href", "go" }`, for the newest thing to see, such as the MCC Round 1 result), and otherwise a summary of the guides.
 
-Two of the guides are RankRound's own pages built from official data rather than client HTML: `mcc-round1-result.html` (every MCC Round 1 allotment, loaded from `guides/assets/mcc-round1-2026.json`, which the MCC seed conversion also writes) and `odisha-merit-list.html` (the 28 Oct provisional merit list, extracted from the PDF's tables and checked row by row against the page).
+The searchable MCC Round 1 result and the Odisha merit list used to be guide pages of their own; they now live on the roadmap pages, behind sign-in (the old addresses redirect there).
+
+## Counselling roadmap pages
+
+`/roadmap/<region>` is one page per region (`all-india`, `odisha`, `tamil-nadu`, …; `/roadmap` opens the candidate's own state), all in the same layout:
+
+- **Important dates** down the side: the region's guide dates in date order, each with its status; closed ones fold away behind "View all dates".
+- **The six stages** (Registration, Merit List, Round 1, Round 2, Round 3, Stray Vacancy), each Completed, Current stage or Upcoming, from `"progress"` in `guides/guides.json`, and a tab for each (`/roadmap/odisha/merit-list`, `/roadmap/odisha/round-1/allotment`).
+- **Registration**: the region's guides section by section. Every guide is split at its `<h2>` headings (`server/sections.js`) and each section is cleaned down to plain content (paragraphs, lists, tables, emphasis, links out) so all guides read in RankRound's own type. "At a glance" shows a card per section; the original page stays one click away.
+- **Merit List** and each **round** (choice filling with the seat matrix, allotment, joining): a filterable table with the programme tabs (MD/MS, DNB, diploma), filters, search and an Excel (CSV) download, or "available soon" with the official PDFs.
+
+Guides, stages and dates are public. The data needs an account: All India data for every candidate, a state's data for candidates registered for that state; a candidate from another state sees a locked card (the server refuses with 403).
+
+```jsonc
+"progress": { "Odisha": { "stage": "Round 1", "note": "Choice locking 1–3 Nov…", "asOf": "2026-11-01" } },
+"data": [
+  // kind: merit | seats | allotment; seats and allotments name their round; the file is in server/region-data/
+  { "id": "seat-matrix-round-1", "region": "Odisha", "kind": "seats", "round": "Round 1", "title": "Revised provisional seat matrix (MD/MS)",
+    "date": "2026-10-31", "doc": "odisha/round1-revised-seat-matrix.pdf", "file": "odisha/seat-matrix-round1.json" }
+]
+```
+
+The data files are JSON in `server/region-data/` (not served as static files):
+
+- **merit**: `{ "lists": [{ "label", "programme", "type", "rows": [{ "name", "roll", "app", "cat", "sub", "score", "weight", "total", "air", "ranks": { "UR": 1, … }, "reason" }] }] }`
+- **seats**: `{ "rows": [{ "college", "type", "course", "programme", "stream", "quota", "category", "seats" }] }`
+- **allotment**: MCC's compact form, `{ "format": "mcc", "inst", "full", "state", "quota", "course", "cat", "cand", "type", "rows": [[rank, inst, state, quota, course, cat, cand, type]] }`
+
+Built so far: Odisha's provisional merit list (28 Oct; 1,216 direct, 312 in-service, 185 PMN diploma and 34 rejected, extracted from the PDF's tables and checked row by row), Odisha's revised Round 1 seat matrix (31 Oct, No. 65; every cell checked against the printed category split and totals: 193 + 39 management direct, 193 + 38 management in-service) and the MCC Round 1 result (28,584 allotments).
 
 A state with documents but no guide yet (Punjab) still gets a card. The server refuses to start if a document's file is missing or an update points to a document that isn't listed.
 
@@ -214,7 +244,7 @@ State cut-off files can carry an optional **Quota** column (for example Governme
 
 All India files can carry the same optional **Quota** column (MCC's All India, Self-Financed Merit Seat, DNB Quota, NRI, university quotas…); it becomes a filter too.
 
-**MCC 2026 Round 1** is built in: `server/seed/mcc-aiq-2026-r1.json` holds MCC's Round 1 result (MD/MS, DNB and NBEMS diploma; 28,584 allotments) rolled up by college, course, category and quota, one All India dataset per state. Institute names are shortened from MCC's "name, address" text; the college type comes from the quota, and for DNB hospitals is inferred from the name. When the Round 2 result comes out, convert it the same way and add it as a new file.
+**MCC 2026 Round 1** is built in: `server/seed/mcc-aiq-2026-r1.json` holds MCC's Round 1 result (MD/MS, DNB and NBEMS diploma; 28,584 allotments) rolled up by college, course, category and quota, as one national All India dataset with each seat's college state (a filter on the predictor). Institute names are shortened from MCC's "name, address" text; the college type comes from the quota, and for DNB hospitals is inferred from the name. When the Round 2 result comes out, convert it the same way and add it as a new file.
 
 The built-in files in `server/seed/` load once into each database, so Render's free tier, which starts with an empty database after every restart, always has them. Datasets uploaded through the admin console don't survive such a restart: use a persistent disk (see Deploying), or ask for the file to be added to `server/seed/`.
 

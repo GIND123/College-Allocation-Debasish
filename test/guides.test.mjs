@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registry, guideList, guidePage, roadmap, followSiteTheme, siteFonts } from '../server/guides.js';
+import { clean } from '../server/sections.js';
 
 test('the registry lists every guide with a valid region and file', () => {
   const { guides } = registry();
@@ -10,8 +11,7 @@ test('the registry lists every guide with a valid region and file', () => {
   for (const g of guideList()) assert.equal('file' in g, false, `${g.slug}: file names stay private`);
   for (const s of ['bihar', 'madhya-pradesh', 'maharashtra', 'rajasthan', 'rims-imphal', 'tamil-nadu-dnb', 'deemed-seats',
     'chhattisgarh', 'dadra-nagar-haveli', 'puducherry', 'uttar-pradesh', 'uttarakhand', 'uttarakhand-seats',
-    'himachal-pradesh', 'kerala-seats', 'madhya-pradesh-fees', 'odisha-seats', 'rajasthan-bond', 'uttarakhand-nri',
-    'mcc-round1-result', 'odisha-merit-list'])
+    'himachal-pradesh', 'kerala-seats', 'madhya-pradesh-fees', 'odisha-seats', 'rajasthan-bond', 'uttarakhand-nri'])
     assert.ok(guides.some(g => g.slug === s), `${s} is listed`);
 });
 
@@ -78,4 +78,13 @@ test('official documents and updates are listed with real files and valid dates'
   assert.ok(updates().length >= 20);
   for (const u of updates()) assert.ok(!u.doc || docs.some(d => d.file === u.doc), `${u.text}: its notice is one of the documents`);
   assert.match(guidePage('gujarat'), /<a href="\/counselling#docs-gujarat">Official documents \(\d+\)<\/a>/, 'a guide links to its state\'s documents');
+});
+
+test('guide sections are cleaned to plain structure for the roadmap reader', () => {
+  const out = clean('<div class="card" style="color:red"><h4 class="t">Fees</h4><p>Pay <b>₹5,000</b> <a href="https://x.gov.in/a" class="l">online</a>'
+    + ' or <a href="#fees">see below</a>.</p><script>alert(1)</script><button onclick="x()">Go</button><svg><path d="M0"/></svg>'
+    + '<table><tr><td colspan="2" style="x">A &amp; B</td></tr></table><span>left open');
+  assert.equal(out, '<div><h4>Fees</h4><p>Pay <b>₹5,000</b> <a href="https://x.gov.in/a" target="_blank" rel="noopener">online</a>'
+    + ' or <span>see below</span>.</p><table><tr><td colspan="2">A &amp; B</td></tr></table>left open</div>');
+  assert.equal(clean('<p>a</div></p>'), '<p>a</p>', 'stray closing tags are dropped');
 });

@@ -9,8 +9,9 @@ import {
   saveAttempt, firebaseDomainStatus, phoneSignInReady
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
-import { STATES, normState } from './states.js';
+import { STATES, ALL_INDIA, normState } from './states.js';
 import { registry, guideList, compareTable, roadmap, stateSeats, documents, updates, guidePage, GUIDES_DIR } from './guides.js';
+import { regionOf, regionInfo, sectionOf, regionData, access } from './regions.js';
 
 registry(); // a malformed guides/guides.json stops the server here, with the reason
 
@@ -53,12 +54,23 @@ function datasetSummary(d) {
   return { id: d.id, kind: d.kind, state: d.state, label: d.label, year: d.year, notes: d.notes, published: !!d.published,
     updatedAt: d.updated_at, createdAt: d.created_at, ...s };
 }
-// Signed-in candidates see only their own state's data; visitors see what exists.
+// Signed-in candidates see All India Quota data and their own state's counselling data (other
+// states' data is locked); visitors see what exists.
+const VISIBLE = `published = 1 AND (kind = 'aiq' OR state = ?)`;
 const publishedSets = user => (user
-  ? db.prepare('SELECT * FROM datasets WHERE published = 1 AND state = ? ORDER BY year DESC, id DESC').all(user.state)
+  ? db.prepare(`SELECT * FROM datasets WHERE ${VISIBLE} ORDER BY year DESC, id DESC`).all(user.state)
   : db.prepare('SELECT * FROM datasets WHERE published = 1 ORDER BY year DESC, id DESC').all()).map(datasetSummary);
-const dataStates = (kind = null) => db.prepare(`SELECT DISTINCT state FROM datasets WHERE published = 1${kind ? ' AND kind = ?' : ''} ORDER BY state`)
-  .all(...(kind ? [kind] : [])).map(r => r.state);
+// A dataset is tagged with a state, or "All India" for national All India Quota data.
+const datasetState = (kind, s) => kind === 'aiq' && s === ALL_INDIA ? ALL_INDIA : normState(s);
+// States with published data: the state a dataset is tagged with, and (unless only state counselling is asked
+// for) the college states inside national All India data.
+const dataStates = (kind = null) => {
+  const tagged = db.prepare(`SELECT DISTINCT state FROM datasets WHERE published = 1 AND state <> ?${kind ? ' AND kind = ?' : ''}`)
+    .all(ALL_INDIA, ...(kind ? [kind] : [])).map(r => r.state);
+  const national = kind === 'state' ? [] : db.prepare(`SELECT DISTINCT r.state FROM aiq_rows r JOIN datasets d ON d.id = r.dataset_id
+    WHERE d.published = 1 AND r.state <> ''`).all().map(r => r.state);
+  return [...new Set([...tagged, ...national])].sort();
+};
 
 // ======================================================================
 // Public
@@ -75,6 +87,8 @@ app.get('/api/config', (req, res) => {
     datasets: publishedSets(req.user),
     guides: guideList().map(({ slug, region, title, label }) => ({ slug, region, title, label })),
     highlight: registry().highlight || null,
+    // Which regions have which data on their roadmap page: { Odisha: ['merit', 'seats'], … }
+    regionData: (registry().data || []).reduce((o, d) => ({ ...o, [d.region]: [...new Set([...(o[d.region] || []), d.kind])] }), {}),
     user: publicUser(req.user)
   });
 });
@@ -125,9 +139,33 @@ app.patch('/api/me', requireUser, (req, res) => {
 
 app.post('/api/events', ingest);
 
+// ---- counselling roadmap pages (one per region) -------------------------
+const regionParam = key => { const r = regionOf(key); if (!r) throw new HttpError(404, 'No such state.'); return r; };
+app.get('/api/regions/:key', (req, res) => {
+  res.set('Cache-Control', 'no-cache');
+  res.json(regionInfo(regionParam(req.params.key), req.user));
+});
+app.get('/api/sections/:slug/:id', (req, res) => {
+  const s = sectionOf(req.params.slug, req.params.id);
+  if (!s) throw new HttpError(404, 'That section is not in the guide.');
+  res.set('Cache-Control', 'no-cache');
+  res.json(s);
+});
+// Data needs an account: All India data for everyone signed in, a state's data for its own candidates.
+app.get('/api/regions/:key/data/:id', (req, res) => {
+  const region = regionParam(req.params.key);
+  const a = isAdmin(req) ? 'open' : access(req.user, region);
+  if (a === 'signin') throw new HttpError(401, 'Sign in to see this data.');
+  if (a === 'locked') throw new HttpError(403, `${region} data is open to candidates registered for ${region}.`);
+  const d = regionData(region, req.params.id);
+  if (!d) throw new HttpError(404, 'No such data.');
+  record(req, 'region_data', { region, id: d.meta.id });
+  res.set('Cache-Control', 'private, no-cache').type('json').send(d.json);
+});
+
 // Row data is only for signed-in users.
 app.get('/api/datasets/:id', requireUser, (req, res) => {
-  const d = db.prepare('SELECT * FROM datasets WHERE id = ? AND published = 1 AND state = ?').get(int(req.params.id), req.user.state);
+  const d = db.prepare(`SELECT * FROM datasets WHERE id = ? AND ${VISIBLE}`).get(int(req.params.id), req.user.state);
   if (!d) throw new HttpError(404, 'Dataset not found.');
   const def = KINDS[d.kind];
   const cols = def.columns.map(c => c.name);
@@ -139,7 +177,7 @@ app.get('/api/datasets/:id', requireUser, (req, res) => {
 // ---- shortlist ---------------------------------------------------------
 // The quota is appended only when a seat has one, so keys saved before quotas existed still match.
 const rowKey = (kind, row) => KINDS[kind].key.map(k => String(row[k] ?? '')).join(' | ')
-  + (kind === 'aiq' ? ' | ' + row.type : '') + (row.quota ? ' | ' + row.quota : '');
+  + (kind === 'aiq' ? ' | ' + row.type : '') + (row.quota ? ' | ' + row.quota : '') + (kind === 'aiq' && row.state ? ' | ' + row.state : '');
 const shortlistOf = uid => db.prepare('SELECT id, kind, row_key, snapshot, position, created_at FROM shortlist WHERE user_id = ? ORDER BY position, id').all(uid)
   .map(r => ({ id: r.id, kind: r.kind, key: r.row_key, createdAt: r.created_at, ...JSON.parse(r.snapshot) }));
 
@@ -175,7 +213,7 @@ app.put('/api/shortlist/order', requireUser, (req, res) => {
 // ======================================================================
 app.post('/api/admin/login', (req, res) => { adminLogin(req, res, req.body?.password); res.json({ ok: true }); });
 app.post('/api/admin/logout', (req, res) => { endSession(req, res, 'admin'); res.json({ ok: true }); });
-app.get('/api/admin/me', (req, res) => res.json({ admin: isAdmin(req), provider: PROVIDER, email: EMAIL_ENABLED, states: STATES }));
+app.get('/api/admin/me', (req, res) => res.json({ admin: isAdmin(req), provider: PROVIDER, email: EMAIL_ENABLED, states: STATES, allIndia: ALL_INDIA }));
 app.use('/api/admin', requireAdmin);
 
 app.get('/api/admin/health', wrap(async (req, res) => {
@@ -272,8 +310,8 @@ app.get('/api/admin/template', (req, res) => {
   const sample = {
     state: { columns: ['SCB MCH Cuttack', 'General Medicine', 'MD/MS', 'Direct', 'UR', '', 5, 1, 17, 106, 872, 5, 'R-1 UGR-1'],
       allotment: ['SCB MCH Cuttack', 'General Medicine', 'MD/MS', 'Direct', 'UR', '', 1, 106, 'R-1'] },
-    aiq: { columns: ['SCB Medical College, Cuttack', 'Government', 'MD - General Medicine', 'GENERAL', 7, 193, 100683],
-      allotment: ['SCB Medical College, Cuttack', 'Government', 'MD - General Medicine', 'GENERAL', 193] }
+    aiq: { columns: ['SCB Medical College, Cuttack', 'Government', 'MD - General Medicine', 'GENERAL', 'All India', 7, 193, 100683, 'Odisha'],
+      allotment: ['SCB Medical College, Cuttack', 'Government', 'MD - General Medicine', 'GENERAL', 'All India', 193, 'Odisha'] }
   }[kind][fmt];
   sendCsv(res, `template-${kind}-${fmt === 'columns' ? 'cutoffs' : 'allotments'}.csv`, csv(cols.map(c => c.name), [sample]));
 });
@@ -312,7 +350,7 @@ app.post('/api/admin/datasets', (req, res) => {
   if (!p.rows.length) throw new HttpError(400, 'No valid rows to import.');
   const label = String(b.label || '').trim().slice(0, 120);
   const year = parseInt(b.year, 10);
-  const state = normState(b.state);
+  const state = datasetState(p.kind, b.state);
   if (!state) throw new HttpError(400, 'Choose the state this data is for.');
   if (!label) throw new HttpError(400, 'Give the dataset a name.');
   if (!(year >= 2000 && year <= 2100)) throw new HttpError(400, 'Enter the counselling year.');
@@ -352,7 +390,7 @@ app.patch('/api/admin/datasets/:id', (req, res) => {
   const b = req.body || {};
   const label = b.label !== undefined ? String(b.label).trim().slice(0, 120) : d.label;
   const year = b.year !== undefined ? parseInt(b.year, 10) : d.year;
-  const state = b.state !== undefined ? normState(b.state) : d.state;
+  const state = b.state !== undefined ? datasetState(d.kind, b.state) : d.state;
   if (!state) throw new HttpError(400, 'Choose the state this data is for.');
   if (!label) throw new HttpError(400, 'Give the dataset a name.');
   if (!(year >= 2000 && year <= 2100)) throw new HttpError(400, 'Enter the counselling year.');
@@ -420,13 +458,16 @@ app.use('/api', (_req, _res, next) => next(new HttpError(404, 'Not found.')));
 // Pages
 // ======================================================================
 const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(PUBLIC, file)); };
-app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method', '/counselling', '/counselling/'], page('index.html'));
+app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}'], page('index.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
 
 // Counselling guides: one page per guide, framed by server/guides.js.
 app.get('/counselling.html', (_req, res) => res.redirect(301, '/counselling'));
 app.use('/counselling/assets', express.static(path.join(GUIDES_DIR, 'assets'), { index: false, maxAge: '1d' }));
+// The searchable result and merit list pages moved into the roadmap pages, behind sign-in.
+const MOVED = { 'mcc-round1-result': '/roadmap/all-india/round-1/allotment', 'odisha-merit-list': '/roadmap/odisha/merit-list' };
 app.get('/counselling/:slug', (req, res) => {
+  if (MOVED[req.params.slug]) return res.redirect(301, MOVED[req.params.slug]);
   const html = guidePage(req.params.slug);
   if (!html) return res.redirect(302, '/counselling');
   res.set('Cache-Control', 'no-cache').type('html').send(html);

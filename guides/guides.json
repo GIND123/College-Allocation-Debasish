@@ -37,23 +37,6 @@
       ]
     },
     {
-      "slug": "mcc-round1-result",
-      "file": "mcc-round1-result.html",
-      "region": "All India",
-      "title": "NEET-PG 2026 Round 1 result (MCC): every seat allotted",
-      "label": "Round 1 result",
-      "authority": "MCC · Round 1 result for MD/MS, DNB and NBEMS diploma",
-      "summary": "Find the seat your All India Rank got in Round 1, or the rank range for any college, course, quota and category: all 28,584 allotments.",
-      "official": "https://mcc.nic.in",
-      "dates": [
-        {
-          "what": "Round 1 result",
-          "when": "24 Oct · 28,584 seats allotted · searchable here",
-          "label": "Published"
-        }
-      ]
-    },
-    {
       "slug": "dnb-seats",
       "file": "dnb-seats.html",
       "region": "All India",
@@ -611,6 +594,11 @@
           "on": "2026-10-30T16:00:00+05:30"
         },
         {
+          "what": "Revised seat matrix (MD/MS, No. 65)",
+          "when": "31 Oct",
+          "label": "Published"
+        },
+        {
           "what": "Round 1 choice locking",
           "when": "1–3 Nov, until 11:55 pm",
           "from": "2026-11-01T00:00:00+05:30",
@@ -625,29 +613,6 @@
           "what": "Upgraded allotment against vacant seats",
           "when": "8 Nov · report 10 Nov",
           "on": "2026-11-08T00:00:00+05:30"
-        }
-      ]
-    },
-    {
-      "slug": "odisha-merit-list",
-      "file": "odisha-merit-list.html",
-      "region": "Odisha",
-      "title": "Odisha PG (Medical) provisional merit list 2026-27",
-      "label": "Merit list (searchable)",
-      "authority": "PG (Medical) Counselling Committee, MKCG Medical College, Berhampur · notification of 28 Oct 2026",
-      "summary": "Find your state merit rank by name or NEET roll number: 1,216 direct, 312 in-service and 185 PMN diploma candidates, and the rejected list.",
-      "asOf": "2026-10-28",
-      "official": "https://dmetodisha.in",
-      "dates": [
-        {
-          "what": "Provisional merit list",
-          "when": "28 Oct · searchable here",
-          "label": "Published"
-        },
-        {
-          "what": "Revised merit list and seat matrix",
-          "when": "30 Oct, 4 pm",
-          "on": "2026-10-30T16:00:00+05:30"
         }
       ]
     },
@@ -1541,6 +1506,166 @@
       "date": "2026-10-28",
       "kind": "Merit list",
       "kb": 433
+    },
+    {
+      "region": "Chandigarh",
+      "title": "Notice: SC category registration link withdrawn (High Court order)",
+      "file": "chandigarh/round1-sc-registration-update.pdf",
+      "date": "2026-10-29",
+      "kind": "Notice",
+      "kb": 260
+    },
+    {
+      "region": "Chandigarh",
+      "title": "Round 1 revised schedule (MD/MS state quota)",
+      "file": "chandigarh/round1-revised-schedule.pdf",
+      "date": "2026-10-29",
+      "kind": "Schedule",
+      "kb": 505
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 1: in-service candidates with bonus marks",
+      "file": "chhattisgarh/round1-in-service-bonus-list.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 558
+    },
+    {
+      "region": "Goa",
+      "title": "Round 1 provisional merit list (Goa Medical College)",
+      "file": "goa/round1-provisional-merit-list.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 42
+    },
+    {
+      "region": "Jharkhand",
+      "title": "Round 1 revised final state merit list",
+      "file": "jharkhand/round1-revised-final-merit-list.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 331
+    },
+    {
+      "region": "Jharkhand",
+      "title": "Round 1 seat matrix",
+      "file": "jharkhand/round1-seat-matrix.pdf",
+      "date": "2026-10-29",
+      "kind": "Seat matrix",
+      "kb": 67
+    },
+    {
+      "region": "Kerala",
+      "title": "Notification: final merit and category lists published",
+      "file": "kerala/final-merit-list-notification.pdf",
+      "date": "2026-10-29",
+      "kind": "Notice",
+      "kb": 103
+    },
+    {
+      "region": "Kerala",
+      "title": "Press release: final merit and category lists (Malayalam)",
+      "file": "kerala/final-merit-list-press-release.pdf",
+      "date": "2026-10-29",
+      "kind": "Notice",
+      "kb": 101
+    },
+    {
+      "region": "Kerala",
+      "title": "Final state merit list",
+      "file": "kerala/round1-final-merit-list.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 476
+    },
+    {
+      "region": "Kerala",
+      "title": "Final category-wise list",
+      "file": "kerala/round1-final-category-list.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 224
+    },
+    {
+      "region": "Kerala",
+      "title": "Newly added seats, category-wise (Travancore Medical College)",
+      "file": "kerala/new-seats-category-wise.pdf",
+      "date": "2026-10-29",
+      "kind": "Seat matrix",
+      "kb": 4
+    },
+    {
+      "region": "Kerala",
+      "title": "Newly added minority and NRI quota seats",
+      "file": "kerala/new-seats-minority-nri.pdf",
+      "date": "2026-10-29",
+      "kind": "Seat matrix",
+      "kb": 2
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Round 1 provisional allotment result",
+      "file": "madhya-pradesh/round1-allotment-result.pdf",
+      "date": "2026-10-30",
+      "kind": "Allotment",
+      "kb": 929
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Government quota: candidates eligible for CMC 20%",
+      "file": "tamil-nadu/round1-cmc-20-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 122
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Government quota: candidates eligible for PwD seats",
+      "file": "tamil-nadu/round1-pwd-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 57
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Management quota: candidates eligible for CMC 50%",
+      "file": "tamil-nadu/round1-cmc-50-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 194
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Management quota: candidates eligible for NRI quota",
+      "file": "tamil-nadu/round1-nri-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 82
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Management quota: Telugu minority eligible candidates",
+      "file": "tamil-nadu/round1-telugu-minority-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 79
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Management quota: Malayalam minority eligible candidates",
+      "file": "tamil-nadu/round1-malayalam-minority-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 57
+    },
+    {
+      "region": "Odisha",
+      "title": "Revised provisional seat matrix, MD/MS Round 1 (No. 65)",
+      "file": "odisha/round1-revised-seat-matrix.pdf",
+      "date": "2026-10-31",
+      "kind": "Seat matrix",
+      "kb": 710
     }
   ],
   "updates": [
@@ -1548,13 +1673,13 @@
       "region": "All India",
       "date": "2026-10-30",
       "text": "MCC Round 1 result now searchable: find the seat any All India Rank got, or the rank range for any college, course and quota.",
-      "link": "/counselling/mcc-round1-result"
+      "link": "/roadmap/all-india/round-1/allotment"
     },
     {
       "region": "Odisha",
       "date": "2026-10-30",
       "text": "Provisional merit list (28 Oct) now searchable by name, NEET roll number or application number, with every category rank.",
-      "link": "/counselling/odisha-merit-list"
+      "link": "/roadmap/odisha/merit-list"
     },
     {
       "region": "All India",
@@ -1665,12 +1790,214 @@
       "date": "2026-10-28",
       "text": "BFUHS: MD/MS fee structure for Adesh Institute of Medical Sciences & Research, Bathinda.",
       "doc": "punjab/adesh-institute-fee-structure.pdf"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-01",
+      "text": "Round 1 choice locking is open until 3 Nov, 11:55 pm. The revised seat matrix (31 Oct) is searchable on the Odisha roadmap: 193 direct and 193 in-service MD/MS seats, plus management quota.",
+      "link": "/roadmap/odisha/round-1"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-01",
+      "text": "Counselling roadmap pages for every state: dates, the guide, merit list, seat matrix and allotments in one layout. The MCC Round 1 result now filters by programme and Govt / private.",
+      "link": "/roadmap/all-india/round-1/allotment"
+    },
+    {
+      "region": "Maharashtra",
+      "date": "2026-10-31",
+      "text": "Round 1: grievance submission opens 1 Nov."
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-10-31",
+      "text": "Revised provisional seat matrix for MD/MS Round 1 published (No. 65), correcting a typographical error in the 30 Oct matrix.",
+      "doc": "odisha/round1-revised-seat-matrix.pdf"
+    },
+    {
+      "region": "Madhya Pradesh",
+      "date": "2026-10-30",
+      "text": "Round 1 provisional allotment out. Reporting and resignation 30 Oct – 10 Nov, 6 pm; willingness to upgrade until 10 Nov, 11:59 pm.",
+      "doc": "madhya-pradesh/round1-allotment-result.pdf"
+    },
+    {
+      "region": "Chandigarh",
+      "date": "2026-10-29",
+      "text": "Revised Round 1 schedule: common merit list 3 Nov, choice filling 3–5 Nov, result 6 Nov, reporting 6–9 Nov. SC category registration withdrawn pending a High Court order.",
+      "doc": "chandigarh/round1-revised-schedule.pdf"
+    },
+    {
+      "region": "Goa",
+      "date": "2026-10-29",
+      "text": "Round 1 provisional merit list published. Discrepancies by 30 Oct, 12 noon.",
+      "doc": "goa/round1-provisional-merit-list.pdf"
+    },
+    {
+      "region": "Jharkhand",
+      "date": "2026-10-29",
+      "text": "Round 1 revised final state merit list and seat matrix published.",
+      "doc": "jharkhand/round1-revised-final-merit-list.pdf"
+    },
+    {
+      "region": "Kerala",
+      "date": "2026-10-29",
+      "text": "Final merit list and category list published. New seats at Travancore Medical College (28 state seats, plus minority and NRI seats) from the first phase.",
+      "doc": "kerala/final-merit-list-notification.pdf"
+    },
+    {
+      "region": "Chhattisgarh",
+      "date": "2026-10-29",
+      "text": "Round 1 list of in-service candidates with bonus marks. Objections by email until 30 Oct, 4 pm.",
+      "doc": "chhattisgarh/round1-in-service-bonus-list.pdf"
+    },
+    {
+      "region": "Tamil Nadu",
+      "date": "2026-10-29",
+      "text": "Round 1 eligible-candidate lists: CMC 20% and PwD (Government quota); CMC 50%, NRI, Telugu and Malayalam minority (Management quota).",
+      "doc": "tamil-nadu/round1-cmc-50-eligible.pdf"
     }
   ],
   "highlight": {
-    "eyebrow": "New · NEET-PG 2026 Round 1 result",
-    "text": "Search all 28,584 MCC Round 1 allotments by rank, college, course and quota.",
-    "href": "/counselling/mcc-round1-result",
-    "go": "Open the result"
-  }
+    "eyebrow": "New · Counselling roadmap",
+    "text": "Each state's counselling in one layout: dates, guide, merit list, seat matrix and allotments. Odisha's revised seat matrix and the MCC Round 1 result are in.",
+    "href": "/roadmap",
+    "go": "Open the roadmap"
+  },
+  "progress": {
+    "All India": {
+      "stage": "Round 1",
+      "note": "Round 1 result out (24 Oct); joining until 2 Nov. Round 2 registration 6–11 Nov.",
+      "asOf": "2026-11-01"
+    },
+    "Odisha": {
+      "stage": "Round 1",
+      "note": "Choice locking 1–3 Nov, until 11:55 pm. Allotment 5 Nov; report 6–7 Nov at MKCG Berhampur.",
+      "asOf": "2026-11-01"
+    },
+    "Andhra Pradesh": {
+      "stage": "Merit List",
+      "note": "PwBD certificate and disability verification from 28 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Assam": {
+      "stage": "Round 1",
+      "note": "Round 1 choice filling from 29 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Bihar": {
+      "stage": "Merit List",
+      "note": "Round 1 and 2 registration closed 28 Oct; merit list awaited.",
+      "asOf": "2026-11-01"
+    },
+    "Chandigarh": {
+      "stage": "Merit List",
+      "note": "Common merit list 3 Nov; choice filling 3–5 Nov; result 6 Nov.",
+      "asOf": "2026-11-01"
+    },
+    "Chhattisgarh": {
+      "stage": "Round 1",
+      "note": "Choice locking closed 28 Oct; in-service bonus list out 29 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Delhi": {
+      "stage": "Round 1",
+      "note": "GGSIPU quota applications for MD Paediatrics closed 28 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Goa": {
+      "stage": "Merit List",
+      "note": "Provisional merit list 29 Oct; discrepancies until 30 Oct, noon.",
+      "asOf": "2026-11-01"
+    },
+    "Gujarat": {
+      "stage": "Round 1",
+      "note": "Round 1 choice filling closed 31 Oct, 10 am.",
+      "asOf": "2026-11-01"
+    },
+    "Himachal Pradesh": {
+      "stage": "Merit List",
+      "note": "Online applications closed 29 Oct, 11 am; merit list awaited.",
+      "asOf": "2026-11-01"
+    },
+    "Jharkhand": {
+      "stage": "Round 1",
+      "note": "Revised final merit list and Round 1 seat matrix out 29 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Kerala": {
+      "stage": "Round 1",
+      "note": "Final merit and category lists out 29 Oct; option registration closed 31 Oct, 10 am.",
+      "asOf": "2026-11-01"
+    },
+    "Madhya Pradesh": {
+      "stage": "Round 1",
+      "note": "Provisional allotment out; reporting until 10 Nov, 6 pm.",
+      "asOf": "2026-11-01"
+    },
+    "Maharashtra": {
+      "stage": "Merit List",
+      "note": "Round 1 grievance submission from 1 Nov.",
+      "asOf": "2026-11-01"
+    },
+    "Mizoram": {
+      "stage": "Merit List",
+      "note": "Offline applications for state quota closed 29 Oct, noon.",
+      "asOf": "2026-11-01"
+    },
+    "Puducherry": {
+      "stage": "Round 1",
+      "note": "Round 1 choice filling closed 29 Oct, 5 pm.",
+      "asOf": "2026-11-01"
+    },
+    "Rajasthan": {
+      "stage": "Merit List",
+      "note": "Revised provisional merit list out 28 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Sikkim": {
+      "stage": "Round 1",
+      "note": "Round 1 choice filling closed 28 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Tamil Nadu": {
+      "stage": "Merit List",
+      "note": "Provisional rank lists 28 Oct; eligible-candidate lists 29 Oct.",
+      "asOf": "2026-11-01"
+    },
+    "Uttarakhand": {
+      "stage": "Round 1",
+      "note": "NRI choice filling 29–30 Oct; provisional merit list out 28 Oct.",
+      "asOf": "2026-11-01"
+    }
+  },
+  "data": [
+    {
+      "id": "merit-list-2026",
+      "region": "Odisha",
+      "kind": "merit",
+      "title": "Provisional merit list",
+      "date": "2026-10-28",
+      "doc": "odisha/merit-list-round1.pdf",
+      "file": "odisha/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Odisha",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Revised provisional seat matrix (MD/MS)",
+      "date": "2026-10-31",
+      "doc": "odisha/round1-revised-seat-matrix.pdf",
+      "file": "odisha/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "All India",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "MCC Round 1 result",
+      "date": "2026-10-24",
+      "file": "all-india/allotment-round1.json"
+    }
+  ]
 }

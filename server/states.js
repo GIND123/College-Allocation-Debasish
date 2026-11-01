@@ -8,5 +8,8 @@ export const STATES = [
   'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
 ];
 
+// National data (the MCC's All India Quota) is tagged with this instead of a state; everyone sees it.
+export const ALL_INDIA = 'All India';
+
 /** Canonical spelling of a state name, or '' if it is not one. */
 export const normState = s => STATES.find(x => x.toLowerCase() === String(s || '').trim().toLowerCase()) || '';

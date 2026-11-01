@@ -5,12 +5,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { STATES } from './states.js';
+import { STATES, ALL_INDIA } from './states.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const GUIDES_DIR = path.join(here, '..', 'guides');
 const REGISTRY = path.join(GUIDES_DIR, 'guides.json');
-export const ALL_INDIA = 'All India';
+export { ALL_INDIA };
+// The stages every region's roadmap page shows, and the data a region can publish (server/region-data/).
+export const STAGES = ['Registration', 'Merit List', 'Round 1', 'Round 2', 'Round 3', 'Stray Vacancy'];
+export const DATA_KINDS = { merit: 'Merit list', seats: 'Seat matrix', allotment: 'Allotment' };
+export const DATA_DIR = path.join(here, 'region-data');
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -72,6 +76,23 @@ function validate(data) {
     if (!u.text || !region(u.region) || Number.isNaN(Date.parse(u.date))) throw new Error(`${where}: needs text, a region and a valid "date".`);
     if (u.doc && !files.has(u.doc)) throw new Error(`${where}: "doc" must be the file of one of the documents.`);
     if (u.link && !u.link.startsWith('/')) throw new Error(`${where}: "link" must be a path on this site.`);
+  }
+  for (const [r, p] of Object.entries(data.progress || {})) {
+    const where = `guides/guides.json, progress for "${r}"`;
+    if (!region(r)) throw new Error(`${where}: not "${ALL_INDIA}" or a state name.`);
+    if (!STAGES.includes(p.stage)) throw new Error(`${where}: "stage" must be one of ${STAGES.join(', ')}.`);
+    if (p.asOf && Number.isNaN(Date.parse(p.asOf))) throw new Error(`${where}: "asOf" is not a valid date.`);
+  }
+  const ids = new Set();
+  for (const d of data.data || []) {
+    const where = `guides/guides.json, data "${d.id}"`;
+    if (!SLUG.test(d.id || '') || ids.has(d.id)) throw new Error(`${where}: needs a unique id in lower-case words joined by hyphens.`);
+    ids.add(d.id);
+    if (!region(d.region) || !DATA_KINDS[d.kind] || !d.title) throw new Error(`${where}: needs a region, a title and a kind (${Object.keys(DATA_KINDS).join(', ')}).`);
+    if (d.kind !== 'merit' && !STAGES.slice(2).includes(d.round)) throw new Error(`${where}: "round" must be one of ${STAGES.slice(2).join(', ')}.`);
+    if (!/^[\w-]+(\/[\w.-]+)+$/.test(d.file || '') || !fs.existsSync(path.join(DATA_DIR, d.file))) throw new Error(`${where}: file "${d.file}" is not in server/region-data/.`);
+    if (Number.isNaN(Date.parse(d.date))) throw new Error(`${where}: needs a valid "date".`);
+    if (d.doc && !files.has(d.doc)) throw new Error(`${where}: "doc" must be the file of one of the documents.`);
   }
   const h = data.highlight;
   if (h && (!h.text || !String(h.href || '').startsWith('/'))) throw new Error('guides/guides.json, "highlight": needs "text" and an "href" on this site.');

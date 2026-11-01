@@ -144,12 +144,12 @@ test('sign-out works for a body-less POST, as browsers send it', async () => {
   assert.equal((await b('/api/me')).json.user, null);
 });
 
-test('Gujarat closing-rank data is built in, with quotas, for Gujarat students only', async () => {
+test('Gujarat closing-rank data is built in, with quotas, for Gujarat students only (All India data for everyone)', async () => {
   const b = browser();
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Gujarat', phone: '9000000105' } });
   await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000105', code: '1234', password: PW } });
   const sets = (await b('/api/config')).json.datasets;
-  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['Gujarat aiq 2026', 'Gujarat state 2024', 'Gujarat state 2025']);
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['All India aiq 2026', 'Gujarat state 2024', 'Gujarat state 2025', 'Odisha aiq 2025']);
   const d = (await b('/api/datasets/' + sets.find(x => x.kind === 'state' && x.year === 2025).id)).json;
   const col = n => d.columns.indexOf(n);
   assert.ok(d.rows.length > 1800);
@@ -160,11 +160,14 @@ test('Gujarat closing-rank data is built in, with quotas, for Gujarat students o
   const sl = await b('/api/shortlist', { method: 'POST', body: { kind: 'state', row, dataset: d.dataset.label } });
   assert.equal(sl.status, 200);
   assert.ok(sl.json.items[0].key.endsWith(' | ' + row.quota));
-  // an Odisha student still sees only Odisha data
+  // an Odisha student sees Odisha's state counselling data, never Gujarat's (other states are locked)
   const o = browser();
   await o('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000106' } });
   await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000106', code: '1234', password: PW } });
-  assert.ok((await o('/api/config')).json.datasets.every(x => x.state === 'Odisha'));
+  const mine = (await o('/api/config')).json.datasets;
+  assert.ok(mine.filter(x => x.kind === 'state').every(x => x.state === 'Odisha'));
+  assert.ok(mine.some(x => x.kind === 'aiq' && x.state === 'All India'), 'and the national All India data');
+  assert.equal((await o('/api/datasets/' + sets.find(x => x.kind === 'state').id)).status, 404, "Gujarat's rows stay locked");
 });
 
 test('cross-site form posts are still refused', async () => {
@@ -228,24 +231,71 @@ test('"Keep me logged in" decides how long the sign-in lasts', async () => {
   assert.doesNotMatch(brief.headers.getSetCookie().find(c => c.startsWith('rr_sid=')), /Max-Age/, 'ends when the browser closes');
 });
 
-test('MCC 2026 Round 1 is built in as All India cut-offs for every state, with quotas', async () => {
+test('MCC 2026 Round 1 is built in as one national All India dataset, with quotas and college states', async () => {
   const visitor = (await browser()('/api/config')).json;
   const r1 = visitor.datasets.filter(d => d.kind === 'aiq' && d.year === 2026);
-  assert.equal(r1.length, 35, 'one dataset per state with Round 1 allotments');
-  assert.equal(r1.reduce((n, d) => n + d.seats, 0), 28584, 'every allotment is counted');
+  assert.equal(r1.length, 1, 'one dataset for the whole country');
+  assert.equal(r1[0].state, 'All India');
+  assert.equal(r1[0].seats, 28584, 'every allotment is counted');
   assert.deepEqual(visitor.stateData, ['Gujarat', 'Odisha'], 'state-counselling data is listed separately');
   const b = browser();
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Maharashtra', phone: '9000000120' } });
   await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000120', code: '1234', password: PW } });
   const sets = (await b('/api/config')).json.datasets;
-  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`), ['Maharashtra aiq 2026']);
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`), ['All India aiq 2026', 'Odisha aiq 2025'], 'a Maharashtra candidate sees all All India data');
   const d = (await b('/api/datasets/' + sets[0].id)).json;
   const rows = d.rows.map(a => Object.fromEntries(d.columns.map((c, i) => [c, a[i]])));
+  assert.equal(new Set(rows.map(r => r.state)).size, 35, 'each seat carries its college state');
+  for (const p of [/^MD /, /^MS /, /^DNB (?!Diploma)/, /^DNB Diploma /]) assert.ok(rows.some(r => p.test(r.branch)), `programme ${p}`);
   const quotas = new Set(rows.map(r => r.quota));
   for (const q of ['All India', 'Self-Financed Merit Seat', 'DNB Quota']) assert.ok(quotas.has(q), q);
   assert.ok(rows.every(r => r.open_rank <= r.close_rank && r.seats >= 1 && ['Government', 'Private'].includes(r.type)));
   // a seat with a quota shortlists with it as part of the key
   const row = rows.find(r => r.quota === 'Self-Financed Merit Seat');
   const sl = await b('/api/shortlist', { method: 'POST', body: { kind: 'aiq', row, dataset: d.dataset.label } });
-  assert.ok(sl.json.items[0].key.endsWith(` | ${row.type} | Self-Financed Merit Seat`));
+  assert.ok(sl.json.items[0].key.endsWith(` | ${row.type} | Self-Financed Merit Seat | ${row.state}`));
+});
+
+test('roadmap pages: guides and stages for everyone, data by account and state', async () => {
+  const v = browser();
+  const od = (await v('/api/regions/odisha')).json;
+  assert.equal(od.region, 'Odisha');
+  assert.deepEqual(od.stages, ['Registration', 'Merit List', 'Round 1', 'Round 2', 'Round 3', 'Stray Vacancy']);
+  assert.equal(od.progress.stage, 'Round 1');
+  assert.equal(od.access, 'signin');
+  assert.deepEqual(od.data.map(d => d.id).sort(), ['merit-list-2026', 'seat-matrix-round-1']);
+  const guide = od.guides.find(g => g.slug === 'odisha');
+  assert.ok(guide.sections.some(s => s.id === 'key-dates'), 'guide sections are listed');
+  const sec = (await v('/api/sections/odisha/key-dates')).json;
+  assert.match(sec.html, /Provisional merit list/);
+  assert.doesNotMatch(sec.html, /<(script|style|svg|button)\b|\b(class|style|onclick)=/, 'cleaned to plain content');
+  assert.equal((await v('/api/sections/odisha/no-such-section')).status, 404);
+  assert.equal((await v('/api/regions/atlantis')).status, 404);
+  // data: signed out → 401; another state → 403; own state and All India → the data
+  assert.equal((await v('/api/regions/odisha/data/merit-list-2026')).status, 401);
+  assert.equal((await v('/api/regions/all-india/data/allotment-round-1')).status, 401);
+  const k = browser();
+  await k('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Kerala', phone: '9000000130' } });
+  await k('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000130', code: '1234', password: PW } });
+  assert.equal((await k('/api/regions/odisha')).json.access, 'locked');
+  assert.equal((await k('/api/regions/odisha/data/merit-list-2026')).status, 403);
+  const all = await k('/api/regions/all-india/data/allotment-round-1');
+  assert.equal(all.status, 200);
+  assert.equal(all.json.rows.length, 28584);
+  assert.deepEqual(all.json.type, ['Government', 'Private'], 'All India allotments carry Govt / private');
+  const o = browser();
+  await o('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000131' } });
+  await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000131', code: '1234', password: PW } });
+  const merit = (await o('/api/regions/odisha/data/merit-list-2026')).json;
+  assert.deepEqual(merit.lists.map(l => `${l.label} ${l.rows.length}`), ['Direct 1216', 'In-service 312', 'PMN Diploma 185', 'Rejected 34']);
+  const seats = (await o('/api/regions/odisha/data/seat-matrix-round-1')).json.rows;
+  const sum = (stream, quota) => seats.filter(r => r.stream === stream && r.quota === quota).reduce((n, r) => n + r.seats, 0);
+  assert.deepEqual([sum('Direct', 'State quota'), sum('In-service', 'State quota'), sum('Direct', 'Management quota'), sum('In-service', 'Management quota')], [193, 193, 39, 38],
+    "the printed totals of Odisha's revised seat matrix");
+  // the two standalone pages moved behind sign-in, into the roadmap pages
+  const moved = await v('/counselling/odisha-merit-list');
+  assert.equal(moved.status, 301);
+  assert.equal(moved.headers.get('location'), '/roadmap/odisha/merit-list');
+  assert.equal((await v('/counselling/assets/mcc-round1-2026.json')).status, 404, 'the result file is no longer public');
+  assert.equal((await v('/roadmap/odisha/round-1')).status, 200);
 });

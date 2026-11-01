@@ -8,7 +8,7 @@ const BAND = { 4: 'Very high', 3: 'High', 2: 'Moderate', 1: 'Low' };
 const KIND = {
   state: {
     label: 'State counselling', rank: 'CMR', spec: 'speciality', specLabel: 'Speciality',
-    open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'category', 'quota', 'programme', 'speciality', 'college'],
+    open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'prog', 'category', 'quota', 'speciality', 'college'],
     get rankLong() { return `${myState()} CMR`; },
     get note() {
       return S.data?.closingOnly
@@ -18,18 +18,24 @@ const KIND = {
   },
   aiq: {
     label: 'All India Quota', rank: 'AIR', rankLong: 'NEET All India Rank', spec: 'branch', specLabel: 'Branch',
-    open: 'open_rank', close: 'close_rank', openCat: 'GENERAL', filters: ['category', 'quota', 'type', 'branch', 'college'],
+    open: 'open_rank', close: 'close_rank', openCat: 'GENERAL', filters: ['prog', 'category', 'quota', 'type', 'state', 'branch', 'college'],
     get note() {
+      const where = S.data?.rows?.some(r => r.state) ? 'across India' : `in ${S.data?.dataset?.label.replace(/^.*— | colleges.*$/g, '') || myState()} colleges`;
       return S.data?.rows?.some(r => r.quota)
-        ? `Seats in ${myState()} filled by the MCC on NEET All India Rank: the All India Quota, deemed universities, DNB and more. ${/Round 1/.test(S.data.dataset?.label || '') ? 'Ranks are Round 1 allotments; later rounds usually go further. ' : ''}Pick a quota under More filters.`
-        : `Seats in ${myState()} colleges filled by the MCC on NEET All India Rank — a national pool, separate from state counselling.`;
+        ? `Seats ${where} filled by the MCC on NEET All India Rank: the All India Quota, deemed universities, DNB and more. ${/Round 1/.test(S.data.dataset?.label || '') ? 'Ranks are Round 1 allotments; later rounds usually go further. ' : ''}Narrow by college state, quota or Govt / private under More filters.`
+        : `Seats ${where} filled by the MCC on NEET All India Rank — a national pool, separate from state counselling.`;
     }
   }
 };
 const myState = () => S.user?.state || 'State';
 const profileComplete = () => !!(S.user?.name && S.user?.cmr && S.user?.state);
-const FILTER_LABEL = { quota: 'Quota', stream: 'Stream', category: 'Category', programme: 'Programme', speciality: 'Speciality', branch: 'Branch', college: 'College', type: 'College type' };
-const ALL_LABEL = { quota: 'All quotas', category: 'All categories', programme: 'All programmes', speciality: 'All specialities', branch: 'All branches', college: 'All colleges', type: 'Government & private' };
+const FILTER_LABEL = { quota: 'Quota', stream: 'Stream', category: 'Category', programme: 'Programme', speciality: 'Speciality', branch: 'Branch', college: 'College', type: 'College type', state: 'College state' };
+const ALL_LABEL = { quota: 'All quotas', category: 'All categories', programme: 'All programmes', speciality: 'All specialities', branch: 'All branches', college: 'All colleges', type: 'Government & private', state: 'All states' };
+// The three programmes, from a seat's programme (state data) or course name (All India: "DNB Diploma …", "DNB …", "MD …").
+const PROGS = ['MD/MS', 'DNB', 'Diploma'];
+const progOf = v => /diploma/i.test(v) ? 'Diploma' : /^(DNB|NBEMS)\b|\bDNB\b/i.test(v) ? 'DNB' : 'MD/MS';
+// Filters that only some datasets carry: shown when the data has values for them.
+const OPTIONAL_FILTERS = ['quota', 'state'];
 
 /**
  * Same thresholds as the original tool: lower rank is better. Where only the last admitted
@@ -55,11 +61,11 @@ const grade = (rank, r, K) => band(rank, r[K.open], r[K.close], closingOnly(r));
 // Quota where the state publishes one (Gujarat), otherwise the stream (Odisha).
 const seatPool = r => r.quota || r.stream || '';
 // An All India seat: college type, and MCC's quota where known.
-const poolOf = (kind, r) => kind === 'state' ? seatPool(r) : [r.type, r.quota].filter(Boolean).join(' · ');
+const poolOf = (kind, r) => kind === 'state' ? seatPool(r) : [r.type, r.quota, r.state].filter(Boolean).join(' · ');
 // Must match rowKey() in server/index.js — it identifies a shortlisted seat.
 const rowKey = (kind, r) => kind === 'state'
   ? [r.college, r.speciality, r.programme, r.stream, r.category].join(' | ') + (r.quota ? ' | ' + r.quota : '')
-  : [r.college, r.branch, r.category].join(' | ') + ' | ' + r.type + (r.quota ? ' | ' + r.quota : '');
+  : [r.college, r.branch, r.category].join(' | ') + ' | ' + r.type + (r.quota ? ' | ' + r.quota : '') + (r.state ? ' | ' + r.state : '');
 // Display names for the long official titles in the national AIQ list, matched
 // to the names the state list uses. Anything not listed shows in full.
 const SHORT = {
@@ -82,8 +88,8 @@ const mobile = matchMedia('(max-width:720px)');
 // A candidate is on exactly one merit list: direct or in-service (never both).
 const STREAMS = [['Direct', 'Direct'], ['In-service', 'In-service']];
 const freshFilters = () => ({
-  state: { rank: '', stream: 'Direct', category: '', withOpen: true, quota: '', programme: '', speciality: '', college: '', q: '' },
-  aiq: { rank: '', category: '', withOpen: true, quota: '', type: '', branch: '', college: '', q: '' }
+  state: { rank: '', stream: 'Direct', prog: '', category: '', withOpen: true, quota: '', speciality: '', college: '', q: '' },
+  aiq: { rank: '', prog: '', category: '', withOpen: true, quota: '', type: '', state: '', branch: '', college: '', q: '' }
 });
 
 const S = {
@@ -123,7 +129,7 @@ async function boot() {
 
 const ROUTES = {
   '/': viewHome, '/predict': () => viewWork('predict'), '/cutoffs': () => viewWork('cutoffs'), '/shortlist': viewShortlist,
-  '/method': viewMethod, '/counselling': viewGuides
+  '/method': viewMethod, '/counselling': viewGuides, '/roadmap': viewRoadmap
 };
 const GATED = new Set(['/predict', '/cutoffs', '/shortlist']);
 
@@ -139,11 +145,11 @@ addEventListener('hashchange', () => { if (S.path === '/counselling') viewGuides
 
 async function route() {
   const path = location.pathname.replace(/(.)\/+$/, '$1');
-  let p = ROUTES[path] ? path : '/';
+  let p = path.startsWith('/roadmap') ? '/roadmap' : ROUTES[path] ? path : '/'; // /roadmap/<region>/<stage>/… is one view
   if (p === '/' && S.user) { history.replaceState({}, '', '/predict'); p = '/predict'; }
   const changed = p !== S.path;
   S.path = p;
-  const tab = GATED.has(p) ? '/predict' : p; // cut-offs and shortlist live under "Intelligent prediction"
+  const tab = GATED.has(p) ? '/predict' : p === '/roadmap' ? '/counselling' : p; // cut-offs and shortlist live under "Intelligent prediction"
   $$('#nav a').forEach(a => a.pathname === tab ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
   if (GATED.has(p) && !S.user) viewGate(p);
   else if (GATED.has(p) && !profileComplete()) viewProfile();
@@ -653,7 +659,7 @@ async function load(kind) {
   if (!S.cache.has(id)) {
     const r = await api('/api/datasets/' + id);
     const rows = r.rows.map(a => Object.fromEntries(r.columns.map((c, i) => [c, a[i]])));
-    for (const o of rows) o._k = rowKey(kind, o);
+    for (const o of rows) { o._k = rowKey(kind, o); o._prog = progOf(kind === 'state' ? o.programme : o.branch); }
     S.cache.set(id, {
       dataset: r.dataset, rows,
       openCat: rows.some(o => o.category === 'OPEN') ? 'OPEN' : null, // Gujarat calls its unreserved seats OPEN
@@ -672,7 +678,7 @@ function matches(kind, r, f, except) {
     if (!v) continue;
     if (k === 'category') {
       if (r.category !== v && !(f.withOpen && r.category === openCatOf(kind))) return false;
-    } else if (r[k] !== v) return false;
+    } else if ((k === 'prog' ? r._prog : r[k]) !== v) return false;
   }
   return true;
 }
@@ -753,7 +759,6 @@ async function renderRoadmap() {
   const { st, cur } = stagesNow(rm);
   const open = !store.get('rr-roadmap-closed', false);
   const PILL = { done: 'Done', current: 'Current stage', next: 'Next', upcoming: 'Upcoming' };
-  const g = guidesFor(myState())[0], mcc = guidesFor(ALL_INDIA).find(x => x.slug === 'mcc');
   // The student's own state dates still to come, then this stage's MCC events.
   const steps = S.guideIndex.guides.filter(x => x.region === myState()).flatMap(x => (x.dates || []).map(d => ({ ...d, slug: x.slug })))
     .map(d => ({ d, s: stepStatus(d) })).filter(x => x.s.tone !== 'done' && x.s.tone !== 'info').slice(0, 3);
@@ -775,8 +780,8 @@ async function renderRoadmap() {
           <h3>${esc(cur.name)} <small>${stageSpan(cur)}</small></h3><p>${esc(cur.detail || '')}</p>`
           : '<h3>NEET-PG 2026 counselling has finished</h3><p>Check your state authority for any special stray rounds.</p>'}
         <div class="rm-links">
-          ${g ? `<a class="btn btn-primary btn-sm" href="/counselling/${esc(g.slug)}">${esc(myState())} counselling guide ${icon.arrowR}</a>` : ''}
-          ${mcc ? `<a class="btn btn-line btn-sm" href="/counselling/mcc">MCC (All India) guide ${icon.arrowR}</a>` : ''}
+          <a class="btn btn-primary btn-sm" href="/roadmap/${esc(slugOf(myState()))}" data-link>${esc(myState())} roadmap ${icon.arrowR}</a>
+          <a class="btn btn-line btn-sm" href="/roadmap/all-india" data-link>All India roadmap ${icon.arrowR}</a>
         </div>
       </div>
       <div class="rm-card rm-dates">
@@ -790,9 +795,9 @@ async function renderRoadmap() {
         <div class="rm-pred-row"><div><b>Pre-counselling predictor</b> <span class="gd-pill open">Available</span>
           <p>Based on previous year closing ranks${ds ? ` · ${esc(ds)}` : ''}.</p></div>
           <a class="btn btn-line btn-sm" href="#res" id="rm-view">View prediction ${icon.down}</a></div>
-        ${guidesFor(ALL_INDIA).some(g => g.slug === 'mcc-round1-result') ? `<div class="rm-pred-row"><div><b>MCC Round 1 result</b> <span class="gd-pill info">New</span>
-          <p>Every seat allotted in Round 1, searchable by All India Rank, college, course and quota.</p></div>
-          <a class="btn btn-line btn-sm" href="/counselling/mcc-round1-result">Open the result ${icon.arrowR}</a></div>` : ''}
+        ${S.cfg.regionData?.[ALL_INDIA]?.includes('allotment') ? `<div class="rm-pred-row"><div><b>MCC Round 1 result</b> <span class="gd-pill info">New</span>
+          <p>Every seat allotted in Round 1, searchable by All India Rank, college, course, quota and Govt / private.</p></div>
+          <a class="btn btn-line btn-sm" href="/roadmap/all-india/round-1/allotment" data-link>Open the result ${icon.arrowR}</a></div>` : ''}
       </div>
       <p class="rm-src">${esc(rm.source || '')}</p>
     </div>`;
@@ -881,6 +886,7 @@ function renderRail() {
         <label class="label" for="f-q">Search</label>
         <div class="search-wrap">${icon.search}<input class="input" id="f-q" type="search" autocomplete="off" placeholder="College, speciality, category" value="${esc(f.q)}"></div>
       `}
+      ${progSeg(kind)}
       ${kind === 'state' ? `
         <div class="field" style="margin-top:16px"><span class="label">Stream</span>
           <div class="seg" role="group" aria-label="Stream">
@@ -901,7 +907,7 @@ function renderRail() {
         <input type="checkbox" id="f-open" ${f.withOpen ? 'checked' : ''}>
         <span>Also show ${openCatName(openCatOf(kind))} seats — reserved-category candidates compete for these on merit too.</span>
       </label>
-      ${K.filters.filter(k => !['stream', 'category'].includes(k) && (k !== 'quota' || optionsFor(kind, 'quota').length)).map(k => `
+      ${K.filters.filter(k => !['stream', 'prog', 'category'].includes(k) && (!OPTIONAL_FILTERS.includes(k) || optionsFor(kind, k).length)).map(k => `
         <label class="field"><span class="label">${FILTER_LABEL[k]}</span>
           ${k === 'type'
             ? `<select class="select" data-f="type">${['', 'Government', 'Private'].map(v => `<option value="${v}" ${f.type === v ? 'selected' : ''}>${v || ALL_LABEL.type}</option>`).join('')}</select>`
@@ -932,6 +938,11 @@ function renderRail() {
   }
   const q = $('#f-q');
   if (q) { const go = debounce(() => changed(false), 200); q.oninput = () => { f.q = q.value; go(); }; }
+  $$('[data-prog]').forEach(b => b.onclick = () => {
+    f.prog = b.dataset.prog;
+    $$('[data-prog]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    changed();
+  });
   $$('[data-stream]').forEach(b => b.onclick = () => {
     f.stream = b.dataset.stream;
     $$('[data-stream]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
@@ -949,6 +960,14 @@ function renderRail() {
     saveFilters();
     renderRail(); renderResults();
   };
+}
+// MD/MS, DNB and diploma as one row of buttons; a programme the dataset doesn't have is disabled.
+function progSeg(kind) {
+  const f = S.f[kind], have = new Set(S.data.rows.map(r => r._prog));
+  if (f.prog && !have.has(f.prog)) f.prog = '';
+  return `<div class="field" style="margin-top:16px"><span class="label">Programme</span>
+    <div class="seg seg-prog" role="group" aria-label="Programme">${[['', 'All'], ...PROGS.map(p => [p, p])].map(([v, t]) =>
+      `<button data-prog="${v}" aria-pressed="${f.prog === v}"${v && !have.has(v) ? ' disabled title="Not in this dataset"' : ''}>${t}</button>`).join('')}</div></div>`;
 }
 function refreshSelects() {
   const kind = S.scope;
@@ -1046,7 +1065,7 @@ function renderResults() {
   S.list = list; S.cols = cols;
 
   const total = list.length;
-  const who = [kind === 'state' ? f.quota || f.stream : '', f.category ? f.category + (f.withOpen && f.category !== openCatOf(kind) ? ` + ${openCatOf(kind)}` : '') : 'all categories']
+  const who = [kind === 'state' ? f.quota || f.stream : '', f.prog, f.category ? f.category + (f.withOpen && f.category !== openCatOf(kind) ? ` + ${openCatOf(kind)}` : '') : 'all categories']
     .filter(Boolean).join(' · ');
   const head = mode === 'predict' ? `
       <div><div class="eyebrow">Seats in reach · ${esc(S.data.dataset.label)}</div>
@@ -1079,8 +1098,7 @@ function renderResults() {
       <tbody id="tb"></tbody>
     </table></div>
     <div class="more" id="more" hidden></div>` : `
-    <div class="grid-wrap"><div class="empty"><h3>${mode === 'predict' ? 'No seats in reach with these filters' : 'Nothing matches'}</h3>
-      <p>${mode === 'predict' ? `In ${S.data.dataset.year}, no seat in this selection closed at or near ${K.rank} ${fmt(rank)}. Try widening the filters${kind === 'state' ? ' or check your stream' : ''}.` : 'Try a different search or clear some filters.'}</p></div></div>`}`;
+    ${mode === 'predict' ? outOfReach(kind, rank) : `<div class="grid-wrap"><div class="empty"><h3>Nothing matches</h3><p>Try a different search or clear some filters.</p></div></div>`}`}`;
 
   $$('th.sortable', res).forEach(th => th.onclick = () => {
     const id = th.dataset.col;
@@ -1096,6 +1114,33 @@ function renderResults() {
     renderResults();
   };
   if (total) { drawRows(true); bindRows(); }
+  $('#to-aiq2')?.addEventListener('click', () => { S.scope = 'aiq'; store.set('rr-scope', 'aiq'); S.shown = STEP; route(); });
+  $$('[data-near]', res).forEach(el => el.onclick = () => openSeat(kind, S.near[+el.dataset.near]));
+}
+
+// No seat in reach. Say why: the rank is past every closing rank in this selection (often an All India
+// Rank typed as a state CMR), or the filters leave nothing. Show the seats that went furthest anyway.
+function outOfReach(kind, rank) {
+  const K = KIND[kind], f = S.f[kind], ds = S.data.dataset;
+  const base = S.data.rows.filter(r => matches(kind, r, f));
+  if (!base.length) return `<div class="grid-wrap"><div class="empty"><h3>No ${ds.year} seats match these filters</h3>
+    <p>Clear a filter or two${kind === 'state' ? ', or check your stream' : ''}.</p></div></div>`;
+  S.near = [...base].sort((a, b) => b[K.close] - a[K.close]).slice(0, 8);
+  const last = S.near[0][K.close];
+  const merit = kind === 'state' && S.cfg.regionData?.[myState()]?.includes('merit');
+  const hint = kind === 'state' && rank > last
+    ? `<p>Your CMR is your rank on the <b>${esc(myState())} state merit list</b>, not your NEET All India Rank.${merit
+      ? ` <a href="/roadmap/${esc(slugOf(myState()))}/merit-list" data-link>Find your CMR on the ${esc(myState())} merit list</a>.` : ''}
+      To see where your NEET AIR reaches, use the All India Quota.</p>
+      <div class="empty-actions"><button class="btn btn-primary btn-sm" id="to-aiq2">Use my NEET AIR in the All India Quota</button></div>` : '';
+  return `<div class="grid-wrap"><div class="empty oor">
+      <h3>${rank > last ? `${K.rank} ${fmt(rank)} is past every ${ds.year} closing rank here` : 'No seats in reach with these filters'}</h3>
+      <p>${rank > last ? `In ${esc(ds.label)}, the last seat in this selection closed at ${K.rank} <b class="num">${fmt(last)}</b>.`
+        : `In ${ds.year}, no seat in this selection closed at or near ${K.rank} ${fmt(rank)}.`}</p>${hint}
+    </div>
+    <div class="near"><div class="eyebrow">The seats that went furthest in ${ds.year}</div>
+      <ul>${S.near.map((r, i) => `<li data-near="${i}" tabindex="0"><b>${esc(r[K.spec])}</b><span>${esc(shortCollege(r.college))} · ${esc(r.category)}</span>
+        <span class="num">${K.rank} ${fmt(r[K.close])}</span></li>`).join('')}</ul></div></div>`;
 }
 mobile.addEventListener('change', () => { if (S.data && $('#res')) renderResults(); });
 
@@ -1439,8 +1484,9 @@ async function viewGuides() {
         <span class="gd-what">${esc(d.what)}<small>${esc(d.when)}</small></span>${stepPill(S.gdSteps.indexOf(d))}</li>`).join('')}</ul>` : ''}
       ${docsOf(c).length ? `<details class="gd-docs"${c.guides.length ? '' : ' open'}><summary>Official documents <span>${docsOf(c).length}</span></summary>
         <ul>${docsOf(c).map(d => `<li>${docLink(d)}</li>`).join('')}</ul></details>` : ''}
-      ${c.guides.length ? `<div class="gd-links">${c.guides.map(g => `<a class="gd-link" href="/counselling/${esc(g.slug)}">
-        <span><b>${esc(c.guides.length > 1 ? g.label : 'Open the guide')}</b><small>${esc(g.summary)}</small></span>${icon.arrowR}</a>`).join('')}</div>` : ''}
+      <div class="gd-links">${c.region === ALL_INDIA ? '' : `<a class="gd-link gd-rm" href="/roadmap/${esc(slugOf(c.region))}" data-link>
+        <span><b>Counselling roadmap</b><small>Stage, dates, ${c.guides.length ? 'the guide, ' : ''}merit list and seat matrix in one place</small></span>${icon.arrowR}</a>`}${c.guides.map(g => `<a class="gd-link" href="/counselling/${esc(g.slug)}">
+        <span><b>${esc(c.guides.length > 1 ? g.label : 'Open the guide')}</b><small>${esc(g.summary)}</small></span>${icon.arrowR}</a>`).join('')}</div>
     </article>`;
   // The latest counselling news, newest first; the student's own state stands out.
   const news = [...updates].sort((a, b) => b.date.localeCompare(a.date));
@@ -1456,7 +1502,7 @@ async function viewGuides() {
         from the official notices. Always confirm on the official website before acting.</p>
       <label class="gd-search">${icon.search}<input class="input" type="search" id="gd-q" placeholder="Find your state or a guide"
         autocomplete="off" aria-label="Find your state or a guide"></label>
-      ${guidesFor(mine).length ? `<p class="gd-yours"><span class="eyebrow">Your state · ${esc(mine)}</span>${guidesFor(mine)
+      ${mine ? `<p class="gd-yours"><span class="eyebrow">Your state · ${esc(mine)}</span><a href="/roadmap/${esc(slugOf(mine))}" data-link>${esc(mine)} roadmap ${icon.arrowR}</a>${guidesFor(mine)
         .map(g => `<a href="/counselling/${esc(g.slug)}">${esc(g.label)} ${icon.arrowR}</a>`).join('')}</p>` : ''}
     </div>
     ${news.length ? `<section class="gd-updates" aria-labelledby="gd-up-h">
@@ -1468,7 +1514,8 @@ async function viewGuides() {
     <div id="gd-soon"></div>
     <section class="gd-sec" data-sec>
       <div class="gd-sec-head"><h2>All India</h2>
-        <p>MCC counsels the All India Quota, deemed universities, central institutes and DNB seats.</p></div>
+        <p>MCC counsels the All India Quota, deemed universities, central institutes and DNB seats.
+          <a href="/roadmap/all-india" data-link>All India roadmap: stage, dates and the Round 1 result ${icon.arrowR}</a></p></div>
       <div class="gd-grid">${cards.filter(c => c.region === ALL_INDIA).map(card).join('')}</div>
     </section>
     <section class="gd-sec" data-sec>
@@ -1525,6 +1572,486 @@ function renderSoon() {
     <ul>${soon.map(d => `<li><a href="/counselling/${esc(d.slug)}"><b>${esc(d.card)}</b>
       <span>${esc(d.what)} · closes ${esc(istWhen(Date.parse(d.to)))}</span></a>${stepPill(S.gdSteps.indexOf(d))}</li>`).join('')}</ul>
   </section>` : '';
+}
+
+// =====================================================================
+// Counselling roadmap: one page per region, in the same layout for All India and every state
+// (/roadmap/<region>/<stage>/<view>). Stages, dates and guides are for everyone; merit lists, seat
+// matrices and allotments need an account: All India data for every candidate, a state's data for
+// candidates registered for that state.
+// =====================================================================
+const STAGES = ['Registration', 'Merit List', 'Round 1', 'Round 2', 'Round 3', 'Stray Vacancy'];
+const slugOf = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const ROUND_VIEWS = [
+  ['choice-filling', 'Choice filling', 'Seat matrix, enter and lock your choices', 'doc'],
+  ['allotment', 'Allotment', 'Seats allotted in this round', 'check'],
+  ['joined', 'Joined', 'Joining status after allotment', 'users']
+];
+const RP_ICON = {
+  doc: '<path d="M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5"/>',
+  calendar: '<path d="M4 5h16v15H4zM4 10h16M9 3v4M15 3v4"/>',
+  cap: '<path d="M2 9l10-5 10 5-10 5zM6 11v5c3 2 9 2 12 0v-5"/>',
+  seat: '<path d="M8 4h8v7H8zM6 11h12v3H6zM8 14l-1 6M16 14l1 6"/>',
+  users: '<circle cx="9" cy="8" r="3"/><path d="M3 20c.5-3.5 3-5.5 6-5.5s5.5 2 6 5.5M16 5.5a3 3 0 0 1 0 5.5M18 14.8c1.8.8 2.8 2.6 3 5.2"/>',
+  list: '<path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/>',
+  swap: '<path d="M7 20V5M3 9l4-4 4 4M17 4v15M13 15l4 4 4-4"/>',
+  alert: '<path d="M12 3l9.5 17h-19zM12 10v4M12 17v.5"/>',
+  rupee: '<path d="M7 5h11M7 9.5h11M7 5h4a4.5 4.5 0 0 1 0 9H8l8 6"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  folder: '<path d="M3 6h7l2 2h9v11H3z"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+  grid: '<path d="M4 4h16v16H4zM4 12h16M12 4v16"/>',
+  chevron: '<path d="M9 6l6 6-6 6"/>'
+};
+const rpSvg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RP_ICON[k]}</svg>`;
+// An icon and a colour for each kind of guide section, read from its heading. First match wins.
+const SECTION_LOOK = [
+  [/mop-up|stray|upgrad|seat order|getting out|exit/i, 'swap', 'orange'],
+  [/certificate|form|photo|signature/i, 'doc', 'blue'],
+  [/date|schedule|timeline/i, 'calendar', 'blue'],
+  [/eligib|who can|apply|qualif|local/i, 'cap', 'blue'],
+  [/bonus|in-service|service quota|weightage/i, 'users', 'green'],
+  [/seat|reservation|quota|matrix|college|subject/i, 'seat', 'green'],
+  [/round|counselling works|process|steps|allotment|choice|how /i, 'list', 'purple'],
+  [/rule|penalt|bond|strict|forfeit|life/i, 'alert', 'red'],
+  [/fee|deposit|cost|stipend|refund|money/i, 'rupee', 'orange'],
+  [/watch|mistake|tip|caution|gap|issue|error|unclear|points|bottom line|read before/i, 'eye', 'orange'],
+  [/document|checklist|upload|ready/i, 'folder', 'purple'],
+  [/contact|help/i, 'phone', 'blue']
+];
+const sectionLook = t => (SECTION_LOOK.find(([re]) => re.test(t)) || [null, 'info', 'blue']).slice(1);
+const secTitle = s => /^at a glance$/i.test(s.title) ? 'Summary' : s.title; // the overview chip is already "At a glance"
+const rpStatus = (info, stage) => {
+  const cur = STAGES.indexOf(info.progress?.stage), i = STAGES.indexOf(stage);
+  return cur < 0 ? '' : i < cur ? 'done' : i === cur ? 'current' : 'upcoming';
+};
+const RP_PILL = { done: ['open', 'Completed'], current: ['info', 'Current stage'], upcoming: ['wait', 'Upcoming'] };
+const rpPill = st => st ? `<span class="gd-pill ${RP_PILL[st][0]}">${RP_PILL[st][1]}</span>` : '';
+
+async function regionInfo(key) {
+  const ck = `${key}|${S.user?.state || ''}`; // what a candidate may open depends on their state
+  S.rpInfo ||= {};
+  return S.rpInfo[ck] ||= await api('/api/regions/' + encodeURIComponent(key));
+}
+
+async function viewRoadmap() {
+  const key = location.pathname.split('/').filter(Boolean)[1];
+  if (!key) { // the student's own state, or All India
+    history.replaceState({}, '', `/roadmap/${slugOf(S.user?.state || ALL_INDIA)}`);
+    return viewRoadmap();
+  }
+  if (!S.rpInfo?.[`${key}|${S.user?.state || ''}`]) view.innerHTML = '<div class="rp-wait"><span class="spinner"></span></div>';
+  let info;
+  try {
+    [info] = await Promise.all([regionInfo(key), key === 'all-india' && !S.guideIndex ? api('/api/guides').then(g => { S.guideIndex = g; }).catch(() => {}) : null]);
+  } catch (e) {
+    view.innerHTML = `<div class="gd"><div class="empty"><h3>${e.status === 404 ? 'There is no such state' : "We couldn't load this page"}</h3><p>${esc(e.message)}</p>
+      <div class="empty-actions"><a class="btn btn-line" href="/roadmap/all-india" data-link>All India roadmap</a></div></div></div>`;
+    return;
+  }
+  if (S.path !== '/roadmap' || location.pathname.split('/')[2] !== key) return;
+  const regions = [ALL_INDIA, ...S.cfg.states];
+  view.innerHTML = `<div class="rp">
+    <div class="rp-main">
+      <nav class="rp-crumb" aria-label="Breadcrumb"><a href="/counselling" data-link>Counselling 2026</a><span aria-hidden="true">›</span><span>Roadmap</span>
+        <span aria-hidden="true">›</span><select class="select" id="rp-region" aria-label="State">${regions.map(r =>
+          `<option value="${slugOf(r)}"${r === info.region ? ' selected' : ''}>${esc(r)}${r === S.user?.state ? ' · your state' : ''}</option>`).join('')}</select></nav>
+      <h1>NEET-PG 2026 Counselling Roadmap</h1>
+      <p class="rp-lede"><b>${esc(info.region === ALL_INDIA ? 'All India Quota (MCC)' : `${info.region} state quota`)}.</b>
+        Track the counselling progress and get predictions as data becomes available.</p>
+      ${info.progress ? `<p class="rp-now">${esc(info.progress.note || '')}${info.progress.asOf ? ` <small>As of ${esc(shortDate(info.progress.asOf))}</small>` : ''}</p>`
+        : `<p class="rp-now">We don't track ${esc(info.region)}'s stage yet: the dates and official documents here are the latest we have.</p>`}
+      <ol class="rp-steps">${STAGES.map((s, i) => { const st = rpStatus(info, s); return `<li class="${st}"${st === 'current' ? ' aria-current="step"' : ''}>
+        <span class="rp-dot">${st === 'done' ? '✓' : i + 1}</span><b>${s}</b>${rpPill(st)}</li>`; }).join('')}</ol>
+      <nav class="rp-tabs" id="rp-tabs" aria-label="Stages"></nav>
+      <section class="rp-panel" id="rp-panel"></section>
+    </div>
+    <aside class="rp-side" aria-label="Important dates">${rpDates(info)}</aside>
+  </div>`;
+  $('#rp-region').onchange = e => go('/roadmap/' + e.target.value);
+  $('.rp').addEventListener('click', e => {
+    const a = e.target.closest('a[data-rp]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    history.pushState({}, '', a.pathname);
+    rpPanel(info);
+    const p = $('#rp-panel');
+    if (p.getBoundingClientRect().top < 0) p.scrollIntoView({ block: 'start' });
+  });
+  const more = $('#rp-alldates');
+  if (more) more.onclick = () => { $$('.rp-dates li[hidden]').forEach(li => { li.hidden = false; }); more.remove(); };
+  rpPanel(info);
+}
+
+function rpPanel(info) {
+  const parts = location.pathname.split('/').filter(Boolean).slice(2);
+  const stage = STAGES.find(s => slugOf(s) === parts[0]) || info.progress?.stage || 'Registration';
+  $('#rp-tabs').innerHTML = STAGES.map(s => `<a href="/roadmap/${info.key}/${slugOf(s)}" data-rp${s === stage ? ' aria-current="page"' : ''}>${s}</a>`).join('');
+  const box = $('#rp-panel');
+  if (stage === 'Registration') rpRegistration(info, box, parts.slice(1));
+  else if (stage === 'Merit List') rpMerit(info, box);
+  else rpRound(info, box, stage, parts.slice(1));
+}
+
+// "31 Oct", "Dated 14 Oct 2026": the day a label-only date names (this counselling year), or Infinity.
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+function dayIn(text) {
+  const m = /(\d{1,2})\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?(?:\s+(\d{4}))?/i.exec(text || '');
+  if (!m) return Infinity;
+  const mon = MONTHS.indexOf(m[2].toLowerCase()), now = new Date();
+  const year = +m[3] || now.getFullYear() + (mon < now.getMonth() - 6 ? 1 : 0); // Jan–Mar belong to the next calendar year
+  return Date.parse(`${year}-${String(mon + 1).padStart(2, '0')}-${m[1].padStart(2, '0')}T12:00:00+05:30`);
+}
+// The region's dates, in date order. Closed ones fold away (all but the last two).
+function rpDates(info) {
+  const items = [...info.dates];
+  if (info.region === ALL_INDIA) for (const s of S.guideIndex?.roadmap?.stages || [])
+    items.push({ what: s.name, when: stageSpan({ a: Date.parse(s.from), b: Date.parse(s.to) }), from: s.from, to: s.to });
+  const at = d => Date.parse(d.on || d.from || d.to || '') || dayIn(d.when);
+  const list = items.map(d => ({ d, t: at(d), s: stepStatus(d) })).sort((a, b) => a.t - b.t);
+  const done = list.filter(x => x.s.tone === 'done').length;
+  const hide = x => x.s.tone === 'done' && list.indexOf(x) < done - 2;
+  const day = t => new Date(t).toLocaleDateString('en-IN', { day: '2-digit', timeZone: 'Asia/Kolkata' });
+  const mon = t => new Date(t).toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+  return `<h2>${rpSvg('calendar')} Important dates <small>Upcoming events</small></h2>
+    ${list.length ? `<ol class="rp-dates">${list.map(x => `<li class="${x.s.tone}"${hide(x) ? ' hidden' : ''}>
+      <span class="rp-day">${Number.isFinite(x.t) ? `<b>${day(x.t)}</b><small>${mon(x.t)}</small>` : '<b>·</b>'}</span>
+      <span class="rp-what"><b>${esc(x.d.what)}</b><small>${esc(x.d.when)}</small><span class="gd-pill ${x.s.tone}">${esc(x.s.text)}</span></span></li>`).join('')}</ol>
+      ${list.some(hide) ? `<button type="button" class="btn btn-line rp-more" id="rp-alldates">${rpSvg('calendar')} View all dates (${list.length})</button>` : ''}`
+      : `<p class="rp-nodates">No dates for ${esc(info.region)} yet. They appear here as its notices come out.</p>`}`;
+}
+
+const rpHead = (info, stage, ic, text, action = '') => `
+  <div class="rp-head"><span class="rp-hicon">${rpSvg(ic)}</span>
+    <div><h2>${esc(stage)} ${rpPill(rpStatus(info, stage))}</h2><p>${text}</p></div>
+    ${action ? `<div class="rp-head-act">${action}</div>` : ''}</div>`;
+const rpSoon = (ic, title, text) => `<div class="rp-soon">${rpSvg(ic)}<h3>${esc(title)}</h3><p>${esc(text)}</p></div>`;
+const rpDocList = (docs, title, open = false) => docs.length ? `<details class="rp-docs"${open ? ' open' : ''}><summary>${esc(title)} <span>${docs.length}</span></summary>
+  <ul>${docs.map(d => `<li><a href="/counselling/assets/${esc(d.file)}" target="_blank" rel="noopener"><span class="gd-doc-kind">${esc(d.kind)}</span>
+    <b>${esc(d.title)}</b><small>${esc(shortDate(d.date))} · PDF · ${d.kb >= 1024 ? (d.kb / 1024).toFixed(1) + ' MB' : d.kb + ' KB'}</small></a></li>`).join('')}</ul></details>` : '';
+
+// ---- Registration: the region's guides, section by section, in one common layout ----
+async function rpRegistration(info, box, rest) {
+  const guides = info.guides.filter(g => g.sections.length), tools = info.guides.filter(g => !g.sections.length);
+  const g = guides.find(x => x.slug === rest[0]) || guides[0];
+  const secId = g && rest[0] === g.slug ? rest[1] : null;
+  const official = (g || info.guides[0])?.official;
+  const href = (...p) => `/roadmap/${info.key}/registration/${p.join('/')}`;
+  box.innerHTML = rpHead(info, 'Registration', 'doc', 'Complete online registration, fill choices and upload the documents the official notification asks for.',
+    official ? `<a class="btn btn-primary" href="${esc(official)}" target="_blank" rel="noopener">Go to official website ${icon.ext}</a>` : '')
+    + (g ? `${guides.length > 1 ? `<div class="rp-guides" role="group" aria-label="Guide">${guides.map(x =>
+        `<a href="${href(x.slug)}" data-rp${x === g ? ' aria-current="true"' : ''}>${esc(x.label)}</a>`).join('')}</div>` : ''}
+      <nav class="rp-chips" aria-label="Sections"><a href="${href(g.slug)}" data-rp${secId ? '' : ' aria-current="true"'}>At a glance</a>${g.sections.map(s =>
+        `<a href="${href(g.slug, s.id)}" data-rp${s.id === secId ? ' aria-current="true"' : ''}>${esc(secTitle(s))}</a>`).join('')}</nav>
+      <div id="rp-read"></div>`
+      : rpSoon('doc', `No ${info.region} guide yet`, "We write a plain-language guide once the state's prospectus is out. Meanwhile, its official documents are below."))
+    + (tools.length ? `<div class="rp-tools">${tools.map(t => `<a class="rp-tool" href="/counselling/${esc(t.slug)}">${rpSvg('grid')}
+        <span><b>${esc(t.label)}</b><small>${esc(t.summary || '')}</small></span>${icon.arrowR}</a>`).join('')}</div>` : '')
+    + rpDocList(info.documents, 'Official documents', !g);
+  if (!g) return;
+  const read = $('#rp-read');
+  const idx = secId ? g.sections.findIndex(s => s.id === secId) : -1;
+  if (idx < 0) {
+    read.innerHTML = `<div class="rp-glance-head">${rpSvg('doc')}<div><h3>At a glance</h3><p>${esc(g.summary || g.title)}</p></div></div>
+      <div class="rp-glance">${g.sections.map(s => { const [ic, tone] = sectionLook(s.title); return `<a class="rp-gcard t-${tone}" href="${href(g.slug, s.id)}" data-rp>
+        <span class="rp-gicon">${rpSvg(ic)}</span><span class="rp-gtext"><b>${esc(secTitle(s))}</b><small>${esc(s.blurb)}</small></span>${rpSvg('chevron')}</a>`; }).join('')}</div>
+      <p class="rp-orig"><a href="/counselling/${esc(g.slug)}">Open the full guide in its original layout ${icon.ext}</a></p>`;
+    return;
+  }
+  const s = g.sections[idx], [ic, tone] = sectionLook(s.title), prev = g.sections[idx - 1], next = g.sections[idx + 1];
+  read.innerHTML = '<div class="rp-wait"><span class="spinner"></span></div>';
+  S.rpSec ||= {};
+  let sec;
+  try { sec = S.rpSec[g.slug + '/' + s.id] ||= await api(`/api/sections/${g.slug}/${s.id}`); }
+  catch (e) { read.innerHTML = `<div class="empty"><h3>We couldn't load this section</h3><p>${esc(e.message)}</p></div>`; return; }
+  if (!read.isConnected) return;
+  read.innerHTML = `<article class="rp-read">
+    <div class="rp-read-head"><span class="rp-gicon t-${tone}">${rpSvg(ic)}</span><div><h3>${esc(secTitle(sec))}</h3><small>${esc(g.title)}</small></div></div>
+    <div class="rp-prose">${sec.html}</div>
+    <div class="rp-read-nav">${prev ? `<a href="${href(g.slug, prev.id)}" data-rp><small>Previous</small><b>${esc(secTitle(prev))}</b></a>` : `<a href="${href(g.slug)}" data-rp><small>Back to</small><b>At a glance</b></a>`}
+      ${next ? `<a class="next" href="${href(g.slug, next.id)}" data-rp><small>Next</small><b>${esc(secTitle(next))}</b></a>` : ''}</div>
+    <p class="rp-orig">Summarised from the official notice: confirm on the official website before acting. <a href="/counselling/${esc(g.slug)}">Original layout ${icon.ext}</a></p>
+  </article>`;
+}
+
+// ---- Merit list ----
+function rpMerit(info, box) {
+  const d = info.data.find(x => x.kind === 'merit');
+  const docs = info.documents.filter(x => x.kind === 'Merit list');
+  const pdf = d?.doc || docs[0]?.file;
+  box.innerHTML = rpHead(info, 'Merit List', 'list', info.region === ALL_INDIA
+    ? 'For the All India Quota, the merit list is the NEET-PG 2026 result: the MCC allots seats in order of All India Rank.'
+    : `View the ${esc(info.region)} state merit list for NEET-PG 2026, as per the official release.`,
+    pdf ? `<a class="btn btn-line" href="/counselling/assets/${esc(pdf)}" target="_blank" rel="noopener">${icon.download} Download (PDF)</a>` : '')
+    + '<div id="rp-data"></div>' + rpDocList(docs, 'Official merit list documents');
+  const host = $('#rp-data');
+  if (info.region === ALL_INDIA) {
+    host.innerHTML = `<div class="rp-soon">${rpSvg('info')}<h3>No separate merit list</h3>
+      <p>Your NEET-PG 2026 All India Rank is your place in the queue. See where every rank went in Round 1, or where yours can reach.</p>
+      <div class="empty-actions"><a class="btn btn-primary" href="/roadmap/all-india/round-1/allotment" data-link>Round 1 allotments</a>
+        <a class="btn btn-line" href="/predict" data-link id="rp-aiq">All India predictor</a></div></div>`;
+    $('#rp-aiq').addEventListener('click', () => { S.scope = 'aiq'; store.set('rr-scope', 'aiq'); });
+    return;
+  }
+  if (!d) { host.innerHTML = rpSoon('list', 'Merit list data will be available soon.', `The ${info.region} state merit list will be published here once it is released by the competent authority.`); return; }
+  host.insertAdjacentHTML('beforebegin', `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}</small></h3>`);
+  rpLoad(info, d, host, data => meritExplorer(host, data, info));
+}
+
+// ---- Rounds: choice filling (seat matrix), allotment, joining ----
+function rpRound(info, box, stage, rest) {
+  const v = ROUND_VIEWS.find(x => x[0] === rest[0]) || ROUND_VIEWS[0];
+  box.innerHTML = rpHead(info, stage, 'users', `Explore the seat matrix, fill choices, and view allotment and joining details for ${stage}.`)
+    + `<div class="rp-round"><nav class="rp-sub" aria-label="${stage}">${ROUND_VIEWS.map(([id, t, s, ic]) =>
+      `<a href="/roadmap/${info.key}/${slugOf(stage)}/${id}" data-rp${id === v[0] ? ' aria-current="page"' : ''}>${rpSvg(ic)}<span><b>${t}</b><small>${s}</small></span></a>`).join('')}</nav>
+      <div class="rp-round-body" id="rp-data"></div></div>`;
+  const host = $('#rp-data');
+  const kind = { 'choice-filling': 'seats', allotment: 'allotment' }[v[0]];
+  const d = kind && info.data.find(x => x.kind === kind && x.round === stage);
+  const title = { seats: 'Seat Matrix', allotment: `${stage} allotment` }[kind] || 'Joining status';
+  if (!d) {
+    const docKind = { seats: 'Seat matrix', allotment: 'Allotment' }[kind];
+    const docs = docKind && (stage === info.progress?.stage || stage === 'Round 1') ? info.documents.filter(x => x.kind === docKind) : [];
+    host.innerHTML = `<h3 class="rp-sub-title">${title}</h3>` + rpSoon(kind === 'seats' ? 'grid' : kind ? 'check' : 'users', `${title} data will be available soon.`,
+      kind === 'seats' ? `The college and specialty-wise seat matrix for ${stage} will be published here once released by the competent authority.`
+        : kind ? `${stage} allotments will appear here once the result is out.` : "Joining status is published after each round's reporting closes.")
+      + rpDocList(docs, 'Official documents', true);
+    return;
+  }
+  host.innerHTML = `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}${d.doc
+    ? ` · <a href="/counselling/assets/${esc(d.doc)}" target="_blank" rel="noopener">Official PDF</a>` : ''}</small></h3><div id="rp-x"></div>`;
+  const x = $('#rp-x');
+  rpLoad(info, d, x, data => kind === 'seats' ? seatExplorer(x, data, info) : allotExplorer(x, data));
+}
+
+// A region's data: loaded once it may be seen, otherwise a sign-in or locked card.
+async function rpLoad(info, d, host, render) {
+  const lock = access => {
+    host.innerHTML = rpLock({ ...info, access }, d.title);
+    $$('[data-signin]', host).forEach(b => b.onclick = () => openSignIn(location.pathname, b.dataset.signin));
+  };
+  if (info.access !== 'open') return lock(info.access);
+  const ck = info.key + '/' + d.id;
+  S.rpData ||= {};
+  if (!S.rpData[ck]) {
+    host.innerHTML = '<div class="rp-wait"><span class="spinner"></span></div>';
+    try { S.rpData[ck] = await api(`/api/regions/${info.key}/data/${d.id}`); }
+    catch (e) {
+      if (e.status === 401 || e.status === 403) return lock(e.status === 401 ? 'signin' : 'locked');
+      host.innerHTML = `<div class="empty"><h3>We couldn't load the data</h3><p>${esc(e.message)}</p></div>`; return;
+    }
+  }
+  if (host.isConnected) render(S.rpData[ck]);
+}
+function rpLock(info, what) {
+  const own = S.user?.state;
+  return info.access === 'signin'
+    ? `<div class="rp-lock">${icon.lock}<h3>Sign in to see the ${esc(what.toLowerCase())}</h3>
+        <p>It's free. All India data is open to every account, and each state's data to the candidates registered for that state.</p>
+        <div class="empty-actions"><button class="btn btn-primary" data-signin="signup">Create a free account</button><button class="btn btn-line" data-signin="signin">Sign in</button></div></div>`
+    : `<div class="rp-lock">${icon.lock}<h3>${esc(info.region)} data is for ${esc(info.region)} candidates</h3>
+        <p>Your account is registered for ${esc(own)}. You can follow ${esc(info.region)}'s counselling progress, dates and guide here; its data stays locked.
+          Access to other states' data is planned as a premium service.</p>
+        <div class="empty-actions">${own ? `<a class="btn btn-primary" href="/roadmap/${esc(slugOf(own))}" data-link>Open the ${esc(own)} roadmap</a>` : ''}
+          <a class="btn btn-line" href="/roadmap/all-india" data-link>All India data</a></div></div>`;
+}
+
+/**
+ * A filterable table for a region's data (merit list, seat matrix, allotments). cfg:
+ *   rows; prog: { of(r) → 'MD/MS' | 'DNB' | 'Diploma', all: offer "All", value }
+ *   segs: [{ id, label, values, of, value }]  rows of buttons
+ *   selects: [{ id, label, all, of }]  dropdowns, offered the values left by the buttons
+ *   search: { placeholder, of(r) → text }; range: { label, of(r) → number }
+ *   find: { label, placeholder, run(n) → html }  look up one rank (it is marked in the table)
+ *   cols: [{ t, r(r, i) → html, cls }]; mark(r, f) → highlight; summary(view) → html; csv: { name, head, row }
+ */
+function explorer(host, cfg) {
+  const init = () => ({ prog: cfg.prog?.value ?? '', q: '', lo: 0, hi: 0, find: 0,
+    ...Object.fromEntries([...(cfg.segs || []), ...(cfg.selects || [])].map(x => [x.id, x.value ?? ''])) });
+  let f = init(), view = [], shown = 0;
+  const PAGE = 100, segs = cfg.segs || [], selects = cfg.selects || [];
+  const inProg = r => !f.prog || cfg.prog.of(r) === f.prog;
+  const base = () => cfg.rows.filter(r => inProg(r) && segs.every(s => !f[s.id] || s.of(r) === f[s.id]));
+  const progs = cfg.prog ? new Set(cfg.rows.map(cfg.prog.of)) : null;
+  host.innerHTML = `${cfg.intro || ''}
+    ${cfg.prog ? `<div class="rp-prog" role="group" aria-label="Programme">${[...(cfg.prog.all ? [['', 'All']] : []), ...PROGS.map(p => [p, p])].map(([v, t]) =>
+      `<button type="button" data-p="${v}" aria-pressed="${f.prog === v}"${v && !progs.has(v) ? ' disabled title="Not in this data"' : ''}>${t}</button>`).join('')}</div>` : ''}
+    ${cfg.find ? `<form class="rp-find" id="x-find" novalidate><label class="label" for="x-rank">${cfg.find.label}</label>
+      <div class="rp-find-row"><input class="input" id="x-rank" inputmode="numeric" autocomplete="off" placeholder="${cfg.find.placeholder}"><button class="btn btn-primary">Find</button></div>
+      <p id="x-found" aria-live="polite"></p></form>` : ''}
+    <div class="rp-filters">
+      ${segs.map(s => `<div class="field${s.values.length > 2 ? ' rp-wide' : ''}"><span class="label">${s.label}</span><div class="seg" role="group" aria-label="${s.label}">${s.values.map(v =>
+        `<button type="button" data-s="${s.id}" data-v="${esc(v)}" aria-pressed="${f[s.id] === v}">${esc(v)}</button>`).join('')}</div></div>`).join('')}
+      ${selects.map(s => `<label class="field"><span class="label">${s.label}</span><select class="select" data-x="${s.id}"></select></label>`).join('')}
+      ${cfg.range ? `<div class="field rp-range"><span class="label">${cfg.range.label}</span><div><input class="input" id="x-lo" inputmode="numeric" placeholder="From" aria-label="From">
+        <input class="input" id="x-hi" inputmode="numeric" placeholder="To" aria-label="To"></div></div>` : ''}
+      <label class="field rp-q"><span class="label">Search</span><span class="search-wrap">${icon.search}<input class="input" id="x-q" type="search" autocomplete="off"
+        placeholder="${esc(cfg.search.placeholder)}"></span></label>
+      <div class="field rp-clear"><button type="button" class="btn btn-line" id="x-clear">${icon.filter} Clear filters</button></div>
+    </div>
+    <div class="rp-sum"><p id="x-sum" aria-live="polite"></p><button type="button" class="btn btn-line btn-sm" id="x-csv">${icon.download} Excel (CSV)</button></div>
+    <div class="grid-wrap"><table class="grid rp-grid"><thead><tr>${cfg.cols.map(c => `<th scope="col" class="${c.cls || ''}">${c.t}</th>`).join('')}</tr></thead>
+      <tbody id="x-rows"></tbody></table></div>
+    <button type="button" class="btn btn-line rp-more" id="x-more" hidden>Show 100 more</button>`;
+  const q = sel => host.querySelector(sel);
+  // A button row shows only what the programme (and the rows before it) leave; a choice that's gone moves to the first left.
+  const syncSegs = () => segs.forEach((s, i) => {
+    const have = new Set(cfg.rows.filter(r => inProg(r) && segs.slice(0, i).every(p => !f[p.id] || p.of(r) === f[p.id])).map(s.of));
+    if (f[s.id] && !have.has(f[s.id])) f[s.id] = s.values.find(v => have.has(v)) || '';
+    host.querySelectorAll(`[data-s="${s.id}"]`).forEach(b => { b.hidden = !have.has(b.dataset.v); b.setAttribute('aria-pressed', String(b.dataset.v === f[s.id])); });
+  });
+  const fillSelects = () => {
+    const b = base();
+    for (const s of selects) {
+      const vals = uniq(b.map(s.of).filter(Boolean)).sort((x, y) => String(x).localeCompare(String(y)));
+      if (f[s.id] && !vals.includes(f[s.id])) f[s.id] = '';
+      q(`[data-x="${s.id}"]`).innerHTML = `<option value="">${esc(s.all)}</option>` + vals.map(v => `<option${v === f[s.id] ? ' selected' : ''}>${esc(v)}</option>`).join('');
+    }
+  };
+  const run = (reset = true) => {
+    if (reset) {
+      const terms = f.q.toLowerCase().split(/\s+/).filter(Boolean);
+      view = base().filter(r => selects.every(s => !f[s.id] || s.of(r) === f[s.id])
+        && (!terms.length || terms.every(t => cfg.search.of(r).toLowerCase().includes(t)))
+        && (!cfg.range || ((!f.lo || cfg.range.of(r) >= f.lo) && (!f.hi || cfg.range.of(r) <= f.hi))));
+      shown = 0;
+    }
+    const next = view.slice(shown, shown + PAGE);
+    const html = next.map((r, i) => `<tr${cfg.mark?.(r, f) ? ' class="me"' : ''}>${cfg.cols.map(c => `<td class="${c.cls || ''}">${c.r(r, shown + i)}</td>`).join('')}</tr>`).join('');
+    if (reset) q('#x-rows').innerHTML = html || `<tr><td colspan="${cfg.cols.length}" class="rp-none">Nothing matches these filters.</td></tr>`;
+    else q('#x-rows').insertAdjacentHTML('beforeend', html);
+    shown += next.length;
+    q('#x-more').hidden = shown >= view.length;
+    q('#x-sum').innerHTML = cfg.summary(view) + (view.length > shown ? ` · showing ${fmt(shown)}` : '');
+  };
+  const refresh = () => { syncSegs(); fillSelects(); run(); };
+  host.querySelectorAll('[data-p]').forEach(b => b.onclick = () => {
+    f.prog = b.dataset.p;
+    host.querySelectorAll('[data-p]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    refresh();
+  });
+  host.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { f[b.dataset.s] = b.dataset.v; refresh(); });
+  host.querySelectorAll('[data-x]').forEach(s => s.onchange = () => { f[s.dataset.x] = s.value; run(); });
+  const later = debounce(() => run(), 200);
+  const num = el => parseInt(String(el?.value || '').replace(/\D/g, ''), 10) || 0;
+  q('#x-q').oninput = e => { f.q = e.target.value.trim(); later(); };
+  if (cfg.range) [q('#x-lo'), q('#x-hi')].forEach(el => el.oninput = () => { f.lo = num(q('#x-lo')); f.hi = num(q('#x-hi')); later(); });
+  q('#x-clear').onclick = () => {
+    f = { ...init(), prog: f.prog, find: f.find };
+    host.querySelectorAll('#x-q, #x-lo, #x-hi').forEach(el => { el.value = ''; });
+    refresh();
+  };
+  q('#x-more').onclick = () => run(false);
+  q('#x-csv').onclick = () => { downloadCsv(cfg.csv.name, cfg.csv.head, view.map(cfg.csv.row)); track('export', { mode: 'region-csv', rows: view.length }); };
+  if (cfg.find) {
+    const find = () => {
+      const n = num(q('#x-rank'));
+      f.find = n;
+      q('#x-found').innerHTML = n ? cfg.find.run(n) : '';
+      if (n && cfg.range) { f.lo = Math.max(1, n - 500); f.hi = n + 500; q('#x-lo').value = f.lo; q('#x-hi').value = f.hi; }
+      run();
+    };
+    q('#x-find').onsubmit = e => { e.preventDefault(); find(); };
+    q('#x-rank').oninput = debounce(find, 350);
+  }
+  refresh();
+}
+
+function meritExplorer(host, data, info) {
+  const rows = data.lists.flatMap(l => l.rows.map(r => ({ ...r, _l: l })));
+  const catName = c => c.replace(/,.*$/, '').replace(/^SEBC - Non Creamy Layer$/, 'SEBC').replace(/^Qualified OBC.*$/, 'OBC (central list)');
+  const pwd = r => /PWD/i.test(r.sub) ? 'Yes' : '';
+  const score = r => r.weight ? `${fmt(r.total)}<span class="sub">${fmt(r.score)} + ${fmt(r.weight)} bonus</span>` : fmt(r.total);
+  const remarks = r => r._l.type === 'Rejected' ? `<span class="rp-bad">${esc(r.reason || 'Rejected')}</span>`
+    : Object.entries(r.ranks || {}).filter(([k]) => k !== 'UR').map(([k, n]) => `<span class="rp-chip">${esc(k)} ${fmt(n)}</span>`).join(' ') || '—';
+  explorer(host, {
+    rows,
+    prog: { of: r => r._l.programme, value: data.lists[0].programme },
+    segs: [{ id: 'type', label: 'Candidate type', values: [...new Set(data.lists.map(l => l.type))], of: r => r._l.type, value: data.lists[0].type }],
+    selects: [{ id: 'cat', label: 'Category', all: 'All categories', of: r => catName(r.cat) }],
+    search: { placeholder: 'Search by name, NEET roll no. or application no.', of: r => `${r.name} ${r.roll} ${r.app}` },
+    mark: (r, f) => /^\d{8,}$/.test(f.q) && (r.roll === f.q || r.app === f.q),
+    cols: [
+      { t: '#', cls: 'n soft', r: (r, i) => fmt(i + 1) },
+      { t: 'AIR', cls: 'n', r: r => fmt(r.air) },
+      { t: 'State rank', cls: 'n strong', r: r => r.ranks?.UR ? fmt(r.ranks.UR) : '—' },
+      { t: 'Name', cls: 'wrapcell', r: r => `<b>${esc(r.name)}</b><span class="sub">Roll ${esc(r.roll)} · Appl. ${esc(r.app)}</span>` },
+      { t: 'Category', cls: 'wrapcell', r: r => esc(catName(r.cat)) + (r.sub ? `<span class="sub">${esc(r.sub.replace(/PWD- Persons with Disabilities/i, 'PwD'))}</span>` : '') },
+      { t: 'PwD', r: r => pwd(r) || '—' },
+      { t: 'Candidate type', r: r => esc(r._l.type) + (r.job ? `<span class="sub">${esc(r.job.toLowerCase())}</span>` : '') },
+      { t: 'Score <span class="sub">out of 800</span>', cls: 'n', r: score },
+      { t: 'Remarks', cls: 'wrapcell', r: remarks }
+    ],
+    summary: v => `<b>${fmt(v.length)}</b> candidate${v.length === 1 ? '' : 's'}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
+    csv: { name: `${slugOf(info.region)}-merit-list-2026.csv`, head: ['List', 'State rank', 'NEET AIR', 'Name', 'NEET roll no.', 'Application no.', 'Category', 'Sub-category', 'PwD', 'NEET score', 'Bonus', 'Total', 'Category ranks', 'Remarks'],
+      row: r => [r._l.label, r.ranks?.UR || '', r.air, r.name, r.roll, r.app, catName(r.cat), r.sub, pwd(r), r.score, r.weight || '', r.total,
+        Object.entries(r.ranks || {}).map(([k, n]) => `${k} ${n}`).join('; '), r.reason || r.job || ''] }
+  });
+}
+
+function seatExplorer(host, data, info) {
+  const baseCat = c => c.replace(/\s*\(.*\)$/, '');
+  explorer(host, {
+    rows: data.rows,
+    prog: { of: r => progOf(r.programme), value: 'MD/MS' },
+    segs: [{ id: 'stream', label: 'Candidate type', values: ['Direct', 'In-service'], of: r => r.stream, value: 'Direct' }],
+    selects: [{ id: 'college', label: 'Institution', all: 'All institutions', of: r => r.college },
+      { id: 'cat', label: 'Category', all: 'All categories', of: r => baseCat(r.category) },
+      { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type }],
+    search: { placeholder: 'Search by college, course or branch (e.g. SCB, Radiodiagnosis, General Medicine)', of: r => `${r.college} ${r.course} ${r.category} ${r.quota}` },
+    cols: [
+      { t: '#', cls: 'n soft', r: (r, i) => fmt(i + 1) },
+      { t: 'Institution', cls: 'strong wrapcell', r: r => `${esc(r.college)}<span class="sub">${esc(r.type)}</span>` },
+      { t: 'Course', cls: 'wrapcell', r: r => `${esc(r.course)}<span class="sub">${esc(r.programme)}</span>` },
+      { t: 'Quota', r: r => `${esc(r.quota)}<span class="sub">${esc(r.stream)}</span>` },
+      { t: 'Category', r: r => esc(r.category) },
+      { t: 'Total seats', cls: 'n r strong', r: r => fmt(r.seats) }
+    ],
+    summary: v => `<b>${fmt(v.reduce((n, r) => n + r.seats, 0))}</b> seats in ${(n => `${fmt(n)} institution${n === 1 ? '' : 's'}`)(new Set(v.map(r => r.college)).size)}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
+    csv: { name: `${slugOf(info.region)}-seat-matrix.csv`, head: ['Institution', 'College type', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats'],
+      row: r => [r.college, r.type, r.course, r.programme, r.stream, r.quota, r.category, r.seats] }
+  });
+}
+
+// MCC's result in its compact form: lists of names, and rows of [rank, inst, state, quota, course, seat cat, candidate cat, college type].
+function allotExplorer(host, D) {
+  const at = (k, i) => D[k]?.[i] ?? '';
+  const prog = r => progOf(D.course[r[4]]);
+  const count = p => D.rows.filter(r => prog(r) === p).length;
+  explorer(host, {
+    rows: D.rows,
+    intro: `<div class="rp-stats">${[[D.rows.length, 'seats allotted'], ...PROGS.map(p => [count(p), p])].map(([n, t]) => `<div><b>${fmt(n)}</b><span>${t}</span></div>`).join('')}</div>`,
+    prog: { of: prog, all: true, value: '' },
+    selects: [{ id: 'state', label: 'State', all: 'All states', of: r => at('state', r[2]) },
+      { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => at('type', r[7]) },
+      { id: 'quota', label: 'Quota', all: 'All quotas', of: r => at('quota', r[3]) },
+      { id: 'cat', label: 'Category', all: 'All categories', of: r => at('cat', r[5]) },
+      { id: 'course', label: 'Course', all: 'All courses', of: r => at('course', r[4]) }],
+    search: { placeholder: 'College name (e.g. Sir Ganga Ram, AIIMS, SCB)', of: r => `${D.inst[r[1]]} ${D.full[r[1]]}` },
+    range: { label: 'AIR range', of: r => r[0] },
+    find: { label: 'Find your All India Rank', placeholder: 'e.g. 12450', run: n => {
+      const r = D.rows.find(x => x[0] === n);
+      if (r) return `Rank <b>${fmt(n)}</b> was allotted <b>${esc(D.course[r[4]])}</b> at <b>${esc(D.inst[r[1]])}</b>, ${esc(D.state[r[2]])} · ${esc(D.quota[r[3]])} · ${esc(D.cat[r[5]])}. Nearby ranks are listed below.`;
+      const after = D.rows.find(x => x[0] > n);
+      return `Rank <b>${fmt(n)}</b> was not allotted a seat in Round 1.${after ? ` The next allotted rank is ${fmt(after[0])}.` : ''} Nearby ranks are listed below.`;
+    } },
+    mark: (r, f) => r[0] === f.find,
+    cols: [
+      { t: 'AIR', cls: 'n strong', r: r => fmt(r[0]) },
+      { t: 'Institution', cls: 'wrapcell', r: r => `<b>${esc(D.inst[r[1]])}</b><span class="sub">${esc(D.full[r[1]])}</span>` },
+      { t: 'State', r: r => esc(D.state[r[2]]) },
+      { t: 'Course', cls: 'wrapcell', r: r => esc(D.course[r[4]]) },
+      { t: 'Quota', cls: 'wrapcell', r: r => `${esc(D.quota[r[3]])}<span class="sub">${esc(at('type', r[7]))}</span>` },
+      { t: 'Category', r: r => { const seat = D.cat[r[5]], cand = D.cand[r[6]];
+        return esc(seat) + (cand.replace('General', 'OPEN').toUpperCase() !== seat.toUpperCase() ? `<span class="sub">Candidate: ${esc(cand)}</span>` : ''); } }
+    ],
+    summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ranks <b>${fmt(v[0][0])}</b> to <b>${fmt(v[v.length - 1][0])}</b>${v.length < D.rows.length ? ' (opening to closing rank for this selection)' : ''}`
+      : 'No seats match these filters.',
+    csv: { name: 'neet-pg-2026-round1-result.csv', head: ['AIR', 'College', 'Full name', 'State', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category'],
+      row: r => [r[0], D.inst[r[1]], D.full[r[1]], D.state[r[2]], at('type', r[7]), prog(r), D.course[r[4]], D.quota[r[3]], D.cat[r[5]], D.cand[r[6]]] }
+  });
 }
 
 // =====================================================================
@@ -1647,7 +2174,9 @@ function viewHome() {
   // Latest published dataset per state, so several years don't double count.
   const latest = kind => { const seen = new Set(); return (S.cfg.datasets || []).filter(d => d.kind === kind && !seen.has(d.state) && seen.add(d.state)); };
   const total = (list, k) => list.reduce((n, d) => n + (d[k] || 0), 0);
-  const st = latest('state'), aq = latest('aiq'), covered = S.cfg.dataStates || [], stateCov = S.cfg.stateData || [];
+  // All India: the national dataset when there is one (it already holds every state's colleges).
+  const national = (S.cfg.datasets || []).find(d => d.kind === 'aiq' && d.state === ALL_INDIA);
+  const st = latest('state'), aq = national ? [national] : latest('aiq'), covered = S.cfg.dataStates || [], stateCov = S.cfg.stateData || [];
   const year = st[0]?.year || 2025;
   view.innerHTML = `
   ${(h => `<a class="priority" href="${esc(h.href)}"${appRoute(h.href) ? ' data-link' : ''}><div class="priority-in">
@@ -1675,7 +2204,7 @@ function viewHome() {
     <div class="stat"><span class="eyebrow">State admissions</span><strong>${fmt(total(st, 'seats'))}</strong><span>${fmt(total(st, 'colleges'))} colleges, direct and in-service</span></div>
     <div class="stat"><span class="eyebrow">All India Quota</span><strong>${fmt(total(aq, 'seats'))}</strong><span>admissions in ${fmt(total(aq, 'colleges'))} colleges</span></div>
     <div class="stat"><span class="eyebrow">Seat groups</span><strong>${fmt(total(st, 'rows') + total(aq, 'rows'))}</strong><span>college × speciality × category cut-offs</span></div>
-    <div class="stat"><span class="eyebrow">States with data</span><strong>${fmt(covered.length)}</strong><span>${stateCov.length ? `State counselling: ${esc(stateCov.join(', '))}` : 'State counselling being added'}${aq.length ? ` · All India: ${fmt(aq.length)} states` : ''}</span></div>
+    <div class="stat"><span class="eyebrow">States with data</span><strong>${fmt(covered.length)}</strong><span>${stateCov.length ? `State counselling: ${esc(stateCov.join(', '))}` : 'State counselling being added'}${national ? ' · All India Quota: every state' : aq.length ? ` · All India: ${fmt(aq.length)} states` : ''}</span></div>
   </div></section>
 
   <section class="cov" id="coverage" aria-label="Coverage by state"><div class="cov-in"><div class="empty"><span class="spinner"></span></div></div></section>
