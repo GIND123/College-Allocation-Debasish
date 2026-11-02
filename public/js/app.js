@@ -1744,9 +1744,7 @@ async function viewRoadmap() {
         Track the counselling progress and get predictions as data becomes available.</p>
       ${info.progress ? `<p class="rp-now">${esc(info.progress.note || '')}${info.progress.asOf ? ` <small>As of ${esc(shortDate(info.progress.asOf))}</small>` : ''}</p>`
         : `<p class="rp-now">We don't track ${esc(info.region)}'s stage yet: the dates and official documents here are the latest we have.</p>`}
-      <ol class="rp-steps">${STAGES.map((s, i) => { const st = rpStatus(info, s); return `<li class="${st}"${st === 'current' ? ' aria-current="step"' : ''}>
-        <span class="rp-dot">${st === 'done' ? '✓' : i + 1}</span><b>${s}</b>${rpPill(st)}</li>`; }).join('')}</ol>
-      <nav class="rp-tabs" id="rp-tabs" aria-label="Stages"></nav>
+      <nav aria-label="Stages"><ol class="rp-steps" id="rp-steps"></ol></nav>
       <section class="rp-panel" id="rp-panel"></section>
     </div>
     <aside class="rp-side" aria-label="Important dates">${rpDates(info)}</aside>
@@ -1769,7 +1767,9 @@ async function viewRoadmap() {
 function rpPanel(info) {
   const parts = location.pathname.split('/').filter(Boolean).slice(2);
   const stage = STAGES.find(s => slugOf(s) === parts[0]) || info.progress?.stage || 'Registration';
-  $('#rp-tabs').innerHTML = STAGES.map(s => `<a href="/roadmap/${info.key}/${slugOf(s)}" data-rp${s === stage ? ' aria-current="page"' : ''}>${s}</a>`).join('');
+  // the stepper is the stage menu: each step opens its stage, the one shown is marked
+  $('#rp-steps').innerHTML = STAGES.map((s, i) => { const st = rpStatus(info, s); return `<li class="${st}${s === stage ? ' on' : ''}">
+    <a href="/roadmap/${info.key}/${slugOf(s)}" data-rp${s === stage ? ' aria-current="page"' : ''}><span class="rp-dot">${st === 'done' ? '✓' : i + 1}</span><b>${s}</b>${rpPill(st)}</a></li>`; }).join('');
   const box = $('#rp-panel');
   if (stage === 'Registration') rpRegistration(info, box, parts.slice(1));
   else if (stage === 'Merit List') rpMerit(info, box);
@@ -2341,6 +2341,11 @@ function viewHome() {
       <p class="hero-lede">Every seat in your state's counselling and the All India Quota — by college, speciality, stream and
         category — with the ranks that actually got in. Sign up with your NEET-PG rank and state to see what was within reach.</p>
       <div class="hero-cta"><a class="btn btn-line btn-lg" href="/method" data-link>How it works</a></div>
+    </div>
+    <div class="hero-arrow" aria-hidden="true">
+      <span>Start here<small>free · takes a minute</small></span>
+      <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 98 C 40 104, 92 96, 140 54"/><path d="M106 50 L 142 52 L 134 88"/></svg>
     </div>
     <div class="auth-card hero-auth" id="home-auth">
       <div class="auth-card-head"><span class="eyebrow" id="ha-eye"></span><h2 id="ha-title"></h2></div>

@@ -86,7 +86,7 @@ Without these, and with `AUTH_PROVIDER=firebase`, the sign-up form offers mobile
 
 ## Sign-up and states
 
-The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, a password, their NEET-PG rank (All India Rank) and their state. The rank is pre-filled into the All India Quota predictor.
+The home page opens with the sign-up form, with a large "Start here" arrow pointing to it from the headline on wide screens (on narrower screens the form comes first). Every candidate gives their name, a mobile number or email, a password, their NEET-PG rank (All India Rank) and their state. The rank is pre-filled into the All India Quota predictor.
 
 The **state CMR** (the rank on the state merit list) is a different number and is not asked at sign-up. Where we hold the state's merit list (Odisha), "Find my CMR" on the predictor, the merit list and the seat matrix looks the candidate up by their NEET-PG rank, or by name, and saves the CMR (and the stream: direct or in-service) to their profile with one click. Elsewhere the candidate types it from the state merit list and saves it. Accounts from before this split had typed their NEET-PG rank into the old "NEET-PG CMR" field; those values moved to the NEET-PG rank, and the state CMR starts empty. The state decides which state counselling data they see: a candidate who chose Karnataka sees only state datasets tagged Karnataka, and gets a "coming soon" page until one is published. All India Quota datasets (tagged "All India", or with a state for older per-state files) are open to every candidate; other states' counselling data stays locked (planned as a premium service). Candidates can change their name, NEET-PG rank, state or state CMR from the account menu (Edit profile).
 
@@ -189,7 +189,7 @@ Each state's counselling lives in one place. A link to a guide (`/counselling/od
 `/roadmap/<region>` is one page per region (`all-india`, `odisha`, `tamil-nadu`, …; `/roadmap` opens the candidate's own state), all in the same layout:
 
 - **Important dates** down the side: the region's guide dates in date order, each with its status; closed ones fold away behind "View all dates".
-- **The six stages** (Registration, Merit List, Round 1, Round 2, Round 3, Stray Vacancy), each Completed, Current stage or Upcoming, from `"progress"` in `guides/guides.json`, and a tab for each (`/roadmap/odisha/merit-list`, `/roadmap/odisha/round-1/allotment`).
+- **The six stages** (Registration, Merit List, Round 1, Round 2, Round 3, Stray Vacancy), each Completed, Current stage or Upcoming, from `"progress"` in `guides/guides.json`. The stepper is also the menu: each step opens that stage (`/roadmap/odisha/merit-list`, `/roadmap/odisha/round-1/allotment`), and the stage shown is highlighted.
 - **Registration**: the region's guides section by section. Every guide is split at its `<h2>` headings (`server/sections.js`) and each section is cleaned down to plain content (paragraphs, lists, tables, emphasis, links out) so all guides read in RankRound's own type. "At a glance" shows a card per section; the original page stays one click away.
 - **Merit List** and each **round** (choice filling with the seat matrix, allotment, joining): a filterable table with the programme tabs (MD/MS, DNB, diploma), filters, search and an Excel (CSV) download, or "available soon" with the official PDFs. Each dropdown offers only what the other filters leave.
 - **Predictions on the seat matrix**: for a candidate's own state, each seat of this year's matrix is graded for their state CMR against last year's closing rank for the same college, course, stream and category (or, where that category had no seat, the same seat's unreserved closing rank, a stricter yardstick), with "Only seats in reach, best chances first".
@@ -219,7 +219,7 @@ A state with documents but no guide yet (Punjab) still gets a card. The server r
 
 ## Coverage map (home page)
 
-The home page has a map of India with every state and union territory. States with a counselling guide are marked, and states that also have predictor data are marked more strongly. Hovering over a state (or tapping it on a phone, or focusing it with the keyboard) shows its name and the PG seats we hold figures for, broken down by source. Clicking a marked state opens its guide.
+The home page has a map of India with every state and union territory. States with a counselling guide are marked, and states that also have predictor data are marked more strongly. Hovering over a state (or tapping it on a phone, or focusing it with the keyboard) shows its name and the PG seats we hold figures for, broken down by source. Clicking a marked state opens its counselling roadmap.
 
 The seat figures come from `"seats"` in `guides/guides.json`:
 

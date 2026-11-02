@@ -351,6 +351,14 @@
 .hero h1 em{font-style:italic; font-weight:500; color:var(--brass)}
 .hero-lede{font-size:17px; line-height:1.6; color:var(--ink-2); max-width:52ch; margin:0 0 30px}
 .hero-cta{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+/* the big arrow from the pitch to the sign-up card */
+.hero-in:has(.hero-arrow){grid-template-columns:minmax(0,1.05fr) auto minmax(0,1fr); gap:28px}
+.hero-arrow{display:grid; justify-items:center; row-gap:10px; color:var(--brass); width:clamp(170px,15vw,240px)}
+.hero-arrow span{font:italic 600 clamp(26px,2.4vw,34px)/1.1 var(--serif); text-align:center}
+.hero-arrow small{display:block; margin-top:6px; font:500 13px/1.3 var(--sans); font-style:normal; color:var(--muted); letter-spacing:.02em}
+.hero-arrow svg{width:100%; height:auto; animation:hero-nudge 1.8s ease-in-out infinite}
+@keyframes hero-nudge{50%{transform:translateX(10px)}}
+@media (prefers-reduced-motion:reduce){.hero-arrow svg{animation:none}}
 .hero-cta .muted{font-size:12.5px; margin-left:6px}
 
 .stats{border-bottom:1px solid var(--rule)}
@@ -500,8 +508,9 @@
 @media (max-width:1180px){
   .ctx-note{margin-left:0; text-align:left; flex-basis:100%}
   .ctx-guide{justify-content:flex-start}
-  .hero-in{grid-template-columns:1fr; gap:32px; padding-top:40px}
+  .hero-in, .hero-in:has(.hero-arrow){grid-template-columns:1fr; gap:32px; padding-top:40px}
   .hero-auth{order:-1; max-width:520px; justify-self:start}
+  .hero-arrow{display:none}
 }
 @media (max-width:960px){
   .gd{padding:28px 16px 48px}
@@ -584,7 +593,7 @@
 .rp-steps{list-style:none; margin:24px 0 0; padding:18px 12px; display:grid; grid-template-columns:repeat(6, minmax(0,1fr));
   background:var(--surface); border:1px solid var(--rule)}
 .rp-steps li{position:relative; display:grid; justify-items:center; row-gap:6px; text-align:center; font-size:13px}
-.rp-steps li::before{content:""; position:absolute; top:17px; left:calc(-50% + 22px); right:calc(50% + 22px); height:2px; background:var(--rule)}
+.rp-steps li::before{content:""; position:absolute; top:23px; left:calc(-50% + 22px); right:calc(50% + 22px); height:2px; background:var(--rule)}
 .rp-steps li:first-child::before{display:none}
 .rp-steps li.done::before, .rp-steps li.current::before{background:var(--ok)}
 .rp-dot{display:grid; place-items:center; width:36px; height:36px; border-radius:50%; background:var(--sunk); border:2px solid var(--rule-2);
@@ -593,13 +602,12 @@
 .rp-steps li.current .rp-dot{background:var(--link); border-color:var(--link); color:var(--surface); box-shadow:0 0 0 4px var(--brand-soft)}
 .rp-steps b{font-weight:600; color:var(--ink); line-height:1.25}
 .rp-steps li.upcoming b{color:var(--ink-2)}
-
-.rp-tabs{display:flex; margin-top:14px; background:var(--surface); border:1px solid var(--rule); overflow-x:auto}
-.rp-tabs a{flex:1 0 auto; padding:13px 16px 11px; text-align:center; color:var(--ink-2); font:500 13.5px/1 var(--sans); border-bottom:2px solid transparent;
-  white-space:nowrap; text-decoration:none !important}
-.rp-tabs a + a{border-left:1px solid var(--rule)}
-.rp-tabs a:hover{color:var(--ink); background:var(--hover)}
-.rp-tabs a[aria-current="page"]{color:var(--link); font-weight:600; border-bottom-color:var(--link)}
+.rp-steps a{position:relative; z-index:1; display:grid; justify-items:center; row-gap:6px; width:calc(100% - 8px); padding:6px 4px 10px;
+  color:inherit; text-decoration:none !important; border-bottom:3px solid transparent}
+.rp-steps a:hover{background:var(--hover)}
+.rp-steps a:hover b{color:var(--link)}
+.rp-steps li.on a{border-bottom-color:var(--link); background:var(--brand-soft)}
+.rp-steps li.on b{color:var(--link)}
 .rp-panel{margin-top:14px; padding:22px 22px 26px; background:var(--surface); border:1px solid var(--rule); scroll-margin-top:72px; min-width:0}
 
 .rp-head{display:flex; align-items:flex-start; gap:14px; padding-bottom:18px; border-bottom:1px solid var(--rule)}
@@ -830,7 +838,7 @@
 
 /* ---------- print (shortlist) ---------- */
 @media print{
-  .topbar, .announce, .foot, .page-head .res-actions, .reorder, .no-print, .worktabs, .roadmap, .rp-side, .rp-tabs, .rp-steps{display:none !important}
+  .topbar, .announce, .foot, .page-head .res-actions, .reorder, .no-print, .worktabs, .roadmap, .rp-side, .rp-steps{display:none !important}
   body{background:#fff; color:#000}
   .grid-wrap{border:0; overflow:visible}
   .grid th{position:static; background:#fff; color:#000; border-bottom:1px solid #000}
