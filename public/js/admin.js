@@ -348,19 +348,19 @@ async function leads(tab) {
       return;
     }
     $('#lt').innerHTML = unv ? `<div class="grid-wrap"><table class="grid">
-      <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">CMR</th><th>Last tried</th><th>What happened</th><th></th></tr></thead>
+      <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">NEET-PG rank</th><th>Last tried</th><th>What happened</th><th></th></tr></thead>
       <tbody>${list.map(a => {
         const who = { name: a.name, phone: a.channel === 'phone' ? a.contact : null, email: a.channel === 'email' ? a.contact : null };
         return `<tr data-aid="${a.id}">
         <td class="strong">${esc(a.name)}</td><td class="nowrap num">${esc(a.contact)}</td>
-        <td class="nowrap">${esc(a.state || '—')}</td><td class="n">${fmt(a.cmr)}</td>
+        <td class="nowrap">${esc(a.state || '—')}</td><td class="n">${fmt(a.air)}</td>
         <td class="nowrap">${ago(a.updatedAt)}</td><td>${esc(problemText(a.error))}</td>
         <td><div class="actions">${reachHtml(who)}<button class="icon-btn" data-del aria-label="Remove ${esc(a.name)}" title="Remove">${icon.trash}</button></div></td></tr>`;
       }).join('')}</tbody></table></div>` : `<div class="grid-wrap"><table class="grid">
-      <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">CMR</th><th>Signed up</th><th>Last active</th><th class="r">Sign-ins</th><th class="r">Predictions</th><th class="r">Shortlisted</th><th>Last search</th><th></th></tr></thead>
+      <thead><tr><th>Name</th><th>Mobile / email</th><th>State</th><th class="r">NEET-PG rank</th><th class="r">State CMR</th><th>Signed up</th><th>Last active</th><th class="r">Sign-ins</th><th class="r">Predictions</th><th class="r">Shortlisted</th><th>Last search</th><th></th></tr></thead>
       <tbody>${list.map(l => `<tr class="clickable" data-id="${l.id}">
         <td class="strong">${esc(l.name || '—')}</td><td class="nowrap num">${esc(contactOf(l))}</td>
-        <td class="nowrap">${esc(l.state || '—')}</td><td class="n">${fmt(l.cmr)}</td>
+        <td class="nowrap">${esc(l.state || '—')}</td><td class="n">${fmt(l.air)}</td><td class="n">${l.cmr ? fmt(l.cmr) : '—'}</td>
         <td class="nowrap">${dateIN(l.createdAt)}</td><td class="nowrap">${ago(l.lastSeenAt)}</td>
         <td class="n">${fmt(l.logins)}</td><td class="n">${fmt(l.predictions)}</td><td class="n">${fmt(l.shortlisted)}</td>
         <td class="nowrap">${lastSearch(l)}</td>
@@ -392,7 +392,7 @@ const EV = {
   contact_click: () => 'Clicked “Talk to a counsellor”',
   login: p => p.isNew ? 'Signed up' : 'Signed in',
   signin_open: () => 'Opened sign-in', otp_request: p => `Requested a code by ${p.channel === 'email' ? 'email' : 'SMS'}`,
-  profile_update: p => `Updated profile — ${esc(p.state)}${p.cmr ? ' · CMR ' + fmt(p.cmr) : ''}`
+  profile_update: p => `Updated profile — ${esc(p.state)}${p.air ? ' · NEET-PG rank ' + fmt(p.air) : ''}${p.cmr ? ' · CMR ' + fmt(p.cmr) : ''}`
 };
 async function leadDrawer(id, reload) {
   let r;
@@ -404,7 +404,7 @@ async function leadDrawer(id, reload) {
       <button class="icon-btn" data-close aria-label="Close" style="position:absolute;right:16px;top:16px">${icon.x}</button>
       <h2 style="margin:10px 0 4px;font:600 24px/1.2 var(--serif)">${esc(u.name || 'No name')}</h2>
       <p class="num" style="margin:0;color:var(--ink-2)">${esc(contactOf(u))}</p>
-      <p style="margin:4px 0 0;color:var(--ink-2);font-size:13px">${esc(u.state || 'State not given')}${u.cmr ? ` · NEET-PG CMR <b class="num">${fmt(u.cmr)}</b>` : ''}</p>
+      <p style="margin:4px 0 0;color:var(--ink-2);font-size:13px">${esc(u.state || 'State not given')}${u.air ? ` · NEET-PG rank <b class="num">${fmt(u.air)}</b>` : ''}${u.cmr ? ` · state CMR <b class="num">${fmt(u.cmr)}</b>` : ''}</p>
       <div style="display:flex;gap:8px;margin-top:14px">
         ${u.phone ? `<a class="btn btn-primary btn-sm" href="https://wa.me/${waNum(u.phone)}" target="_blank" rel="noopener">${icon.chat} WhatsApp</a>
         <a class="btn btn-line btn-sm" href="tel:${esc(u.phone)}">Call</a>`

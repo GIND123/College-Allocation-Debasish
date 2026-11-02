@@ -110,7 +110,7 @@ export function requireAdmin(req, _res, next) {
 export const isAdmin = req => !!readSession(req, 'rr_admin', 'admin');
 
 export const publicUser = u => u && ({
-  id: u.id, name: u.name, phone: u.phone, email: u.email, cmr: u.cmr, state: u.state, since: u.created_at
+  id: u.id, name: u.name, phone: u.phone, email: u.email, air: u.air, cmr: u.cmr, state: u.state, since: u.created_at
 });
 
 // ---- contact details + profile -----------------------------------------
@@ -153,20 +153,30 @@ function passwordMatches(pw, stored) {
   return crypto.timingSafeEqual(crypto.scryptSync(String(pw), Buffer.from(salt, 'base64'), 32), Buffer.from(hash, 'base64'));
 }
 
-/** Name, CMR and state kept on the Firebase account (display name, and a profile link holding cmr and state). */
+/**
+ * Name, ranks and state kept on the Firebase account (display name, and a profile link holding air, cmr and state).
+ * Links from before the NEET-PG rank had its own field hold only "cmr": what students typed there was their NEET-PG rank.
+ */
 function profileFromClaims(claims) {
   const out = {};
   try { Object.assign(out, readProfile({ name: claims.name })); } catch { /* no usable name */ }
   try {
     const q = new URL(claims.picture).searchParams;
-    Object.assign(out, readProfile({ cmr: q.get('cmr') || '', state: q.get('state') || '' }));
+    const air = q.has('air') ? q.get('air') : q.get('cmr');
+    Object.assign(out, readProfile({ air: air || '', cmr: q.has('air') ? q.get('cmr') || '' : '', state: q.get('state') || '' }));
   } catch { /* no profile link */ }
   return out;
 }
 
+const readRank = (v, what) => {
+  const n = Number(String(v).replace(/[\s,]/g, ''));
+  if (!Number.isInteger(n) || n < 1 || n > 500000) throw new HttpError(400, `Enter your ${what} as a whole number.`);
+  return n;
+};
 /**
- * Name, NEET-PG CMR and state from a request body. Fields left out stay out
- * of the result; with `required` all three must be given (sign-up).
+ * Name, NEET-PG rank (All India Rank), state CMR and state from a request body. Fields left out stay
+ * out of the result; a null "cmr" clears it. With `required`, name, NEET-PG rank and state must be
+ * given (sign-up); the state CMR is optional, found later on the state merit list or typed in.
  */
 export function readProfile(b = {}, required = false) {
   const out = {};
@@ -174,18 +184,16 @@ export function readProfile(b = {}, required = false) {
     out.name = cleanName(b.name);
     if (out.name.length < 2) throw new HttpError(400, 'Enter your name.');
   }
-  if (b.cmr !== undefined && b.cmr !== '' && b.cmr !== null) {
-    const n = Number(String(b.cmr).replace(/[\s,]/g, ''));
-    if (!Number.isInteger(n) || n < 1 || n > 500000) throw new HttpError(400, 'Enter your NEET-PG CMR as a whole number.');
-    out.cmr = n;
-  }
+  if (b.air !== undefined && b.air !== '' && b.air !== null) out.air = readRank(b.air, 'NEET-PG rank');
+  if (b.cmr === null) out.cmr = null;
+  else if (b.cmr !== undefined && b.cmr !== '') out.cmr = readRank(b.cmr, 'state CMR');
   if (b.state !== undefined && b.state !== '') {
     out.state = normState(b.state);
     if (!out.state) throw new HttpError(400, 'Choose your state from the list.');
   }
   if (required) {
     if (!out.name) throw new HttpError(400, 'Enter your name.');
-    if (!out.cmr) throw new HttpError(400, 'Enter your NEET-PG CMR.');
+    if (!out.air) throw new HttpError(400, 'Enter your NEET-PG rank (All India Rank).');
     if (!out.state) throw new HttpError(400, 'Choose your state.');
   }
   return out;
@@ -202,13 +210,13 @@ function signIn(res, { channel, contact }, profile, { remember = true, password,
   const isNew = !u;
   if (isNew) {
     const p = { ...known, ...profile };
-    db.prepare(`INSERT INTO users (${channel}, name, cmr, state, created_at, last_seen_at, logins) VALUES (?, ?, ?, ?, ?, ?, 1)`)
-      .run(contact, p.name || '', p.cmr ?? null, p.state || '', t, t);
+    db.prepare(`INSERT INTO users (${channel}, name, air, cmr, state, created_at, last_seen_at, logins) VALUES (?, ?, ?, ?, ?, ?, ?, 1)`)
+      .run(contact, p.name || '', p.air ?? null, p.cmr ?? null, p.state || '', t, t);
   } else {
     // Signing up again with the same contact refreshes the details given.
     db.prepare(`UPDATE users SET logins = logins + 1, last_seen_at = ?,
-        name = COALESCE(?, name), cmr = COALESCE(?, cmr), state = COALESCE(?, state) WHERE id = ?`)
-      .run(t, profile.name ?? null, profile.cmr ?? null, profile.state ?? null, u.id);
+        name = COALESCE(?, name), air = COALESCE(?, air), cmr = COALESCE(?, cmr), state = COALESCE(?, state) WHERE id = ?`)
+      .run(t, profile.name ?? null, profile.air ?? null, profile.cmr ?? null, profile.state ?? null, u.id);
   }
   if (password) db.prepare(`UPDATE users SET password_hash = ? WHERE ${channel} = ?`).run(hashPassword(password), contact);
   u = find();
@@ -230,10 +238,10 @@ export function saveAttempt(req, body) {
   const t = now();
   const open = db.prepare('SELECT id FROM signup_attempts WHERE contact = ? AND verified_at IS NULL AND created_at > ? ORDER BY id DESC LIMIT 1')
     .get(contact, t - 86400e3);
-  if (open) db.prepare(`UPDATE signup_attempts SET name = ?, cmr = ?, state = ?, error = CASE WHEN ? <> '' THEN ? ELSE error END, updated_at = ?
-      WHERE id = ?`).run(p.name, p.cmr, p.state, error, error, t, open.id);
-  else db.prepare('INSERT INTO signup_attempts (contact, channel, name, cmr, state, error, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-    .run(contact, channel, p.name, p.cmr, p.state, error, t, t);
+  if (open) db.prepare(`UPDATE signup_attempts SET name = ?, air = ?, state = ?, error = CASE WHEN ? <> '' THEN ? ELSE error END, updated_at = ?
+      WHERE id = ?`).run(p.name, p.air, p.state, error, error, t, open.id);
+  else db.prepare('INSERT INTO signup_attempts (contact, channel, name, air, state, error, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .run(contact, channel, p.name, p.air, p.state, error, t, t);
   return { channel };
 }
 

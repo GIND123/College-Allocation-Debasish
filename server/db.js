@@ -160,6 +160,11 @@ if (!columns('users').includes('email')) {
     ALTER TABLE users_new RENAME TO users;`));
   db.exec('PRAGMA foreign_keys = ON');
 }
+// The NEET-PG rank (All India Rank) has its own field. Sign-up used to ask for a "NEET-PG CMR", and students
+// typed their NEET-PG rank there: those values move across, and the state CMR starts empty (found on the
+// state merit list, or typed in by the student).
+for (const t of ['users', 'signup_attempts']) if (!columns(t).includes('air'))
+  db.exec(`ALTER TABLE ${t} ADD COLUMN air INTEGER; UPDATE ${t} SET air = cmr, cmr = NULL;`);
 // Passwords (local test mode and email accounts; phone accounts on Firebase keep theirs there).
 if (!columns('users').includes('password_hash')) db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''`);
 if (!columns('aiq_rows').includes('quota')) db.exec(`ALTER TABLE aiq_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);

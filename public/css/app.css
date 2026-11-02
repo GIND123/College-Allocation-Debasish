@@ -722,6 +722,28 @@
 .rp-find-row .input{font:500 16px var(--mono)}
 .rp-find p{margin:8px 0 0; font-size:13.5px; color:var(--ink-2)}
 .rp-find p:empty{display:none}
+.rp-pred{display:grid; grid-template-columns:200px minmax(0,1fr); gap:16px; align-items:start; margin-top:14px; padding:14px 16px;
+  background:var(--brand-soft); border:1px solid var(--rule)}
+.rp-pred .field{margin:0}
+.rp-pred .input-rank{height:46px; font-size:22px}
+.rp-pred p{margin:0; font-size:13px; line-height:1.55; color:var(--ink-2)}
+.rp-pred p b{color:var(--ink)}
+.rp-pred .check{margin-top:10px; font-size:13px; color:var(--ink)}
+.rp-grid .band.chip{white-space:nowrap}
+.cf-box{margin-top:10px; font-size:12.5px; line-height:1.5; color:var(--ink-2)}
+.cf-box:empty{display:none}
+.cf-box p{margin:0 0 8px}
+.cf-box b{color:var(--ink)}
+.cf-box .btn svg{width:13px; height:13px}
+.cf-out:empty{display:none}
+.cf-out{margin-top:10px; display:grid; gap:8px}
+.cf-out .spinner{justify-self:start}
+.cf-hit{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:9px 10px; background:var(--surface); border:1px solid var(--rule)}
+.cf-hit b{display:block; font-weight:600}
+.cf-hit small{color:var(--muted)}
+.cf-name{display:grid; gap:4px; font-size:12px; color:var(--muted)}
+.cf-name .input{height:34px; font-size:13px}
+.cf-wide{margin:12px 0 0; padding:12px 14px; background:var(--brand-soft); border:1px solid var(--rule)}
 .rp-stats{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); border:1px solid var(--rule); margin-top:14px}
 .rp-stats div{padding:12px 14px; display:grid; gap:2px}
 .rp-stats div + div{border-left:1px solid var(--rule)}
@@ -796,6 +818,7 @@
   .rp-filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .rp-filters > .field:has(.seg), .rp-q, .rp-clear, .rp-range{grid-column:1 / -1}
   .rp-stats{grid-template-columns:1fr 1fr}
+  .rp-pred{grid-template-columns:minmax(0,1fr)}
   .rp-stats div:nth-child(3){border-left:0}
   .rp-stats div:nth-child(n+3){border-top:1px solid var(--rule)}
   .rp-prog{overflow-x:auto}

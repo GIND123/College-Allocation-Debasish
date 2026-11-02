@@ -8,7 +8,7 @@ const BAND = { 4: 'Very high', 3: 'High', 2: 'Moderate', 1: 'Low' };
 const KIND = {
   state: {
     label: 'State counselling', rank: 'CMR', spec: 'speciality', specLabel: 'Speciality',
-    open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'prog', 'category', 'quota', 'speciality', 'college'],
+    open: 'cmr_open', close: 'cmr_close', openCat: 'UR', filters: ['stream', 'prog', 'category', 'quota', 'type', 'speciality', 'college'],
     get rankLong() { return `${myState()} CMR`; },
     get note() {
       return S.data?.closingOnly
@@ -28,12 +28,15 @@ const KIND = {
   }
 };
 const myState = () => S.user?.state || 'State';
-const profileComplete = () => !!(S.user?.name && S.user?.cmr && S.user?.state);
+const profileComplete = () => !!(S.user?.name && S.user?.air && S.user?.state);
 const FILTER_LABEL = { quota: 'Quota', stream: 'Stream', category: 'Category', programme: 'Programme', speciality: 'Speciality', branch: 'Branch', college: 'College', type: 'College type', state: 'College state' };
 const ALL_LABEL = { quota: 'All quotas', category: 'All categories', programme: 'All programmes', speciality: 'All specialities', branch: 'All branches', college: 'All colleges', type: 'Government & private', state: 'All states' };
 // The three programmes, from a seat's programme (state data) or course name (All India: "DNB Diploma …", "DNB …", "MD …").
 const PROGS = ['MD/MS', 'DNB', 'Diploma'];
 const progOf = v => /diploma/i.test(v) ? 'Diploma' : /^(DNB|NBEMS)\b|\bDNB\b/i.test(v) ? 'DNB' : 'MD/MS';
+// State counselling lists don't say who runs a college. These are the private (and public-private) ones in the
+// built-in data; everything else there is a government, government-society (GMERS) or municipal college.
+const PRIVATE_COLLEGE = /Hi-Tech|DRIEMS|\(Management\)|M\. K\. Shah|GCS Medical|N\. D\. Desai|Parul|C\.U\. Shah|Pramukh Swami|Adani|Zydus|Kiran Medical|Nootan|Swaminarayan|Shantabaa|Ananya/i;
 // Filters that only some datasets carry: shown when the data has values for them.
 const OPTIONAL_FILTERS = ['quota', 'state'];
 
@@ -88,7 +91,7 @@ const mobile = matchMedia('(max-width:720px)');
 // A candidate is on exactly one merit list: direct or in-service (never both).
 const STREAMS = [['Direct', 'Direct'], ['In-service', 'In-service']];
 const freshFilters = () => ({
-  state: { rank: '', stream: 'Direct', prog: '', category: '', withOpen: true, quota: '', speciality: '', college: '', q: '' },
+  state: { rank: '', stream: 'Direct', prog: '', category: '', withOpen: true, quota: '', type: '', speciality: '', college: '', q: '' },
   aiq: { rank: '', prog: '', category: '', withOpen: true, quota: '', type: '', state: '', branch: '', college: '', q: '' }
 });
 
@@ -194,7 +197,7 @@ function toggleMenu() {
   m.setAttribute('role', 'menu');
   m.innerHTML = `
     <div class="menu-head"><b>${esc(S.user.name)}</b><span>${esc(prettyPhone(S.user.phone) || S.user.email || '')}</span>
-      ${S.user.state ? `<span>${esc(S.user.state)}${S.user.cmr ? ` · CMR ${fmt(S.user.cmr)}` : ''}</span>` : ''}</div>
+      ${S.user.state ? `<span>${esc(S.user.state)}${S.user.air ? ` · AIR ${fmt(S.user.air)}` : ''}${S.user.cmr ? ` · CMR ${fmt(S.user.cmr)}` : ''}</span>` : ''}</div>
     <a href="/shortlist" data-link role="menuitem">${icon.star} My shortlist</a>
     <button role="menuitem" id="m-name">${icon.user} Edit profile</button>
     <button role="menuitem" id="m-out">${icon.logout} Sign out</button>`;
@@ -205,7 +208,7 @@ function toggleMenu() {
   m.addEventListener('click', e => { if (e.target.closest('a')) { m.remove(); document.removeEventListener('click', close); } });
   $('#m-out').onclick = async () => {
     await api('/api/auth/logout', { method: 'POST' }).catch(() => {});
-    S.user = null; S.shortlist = []; S.cache.clear();
+    S.user = null; S.shortlist = []; S.cache.clear(); S.rpInfo = S.rpData = S.lastYear = null;
     renderTop(); go('/');
     toast('Signed out.');
   };
@@ -219,7 +222,7 @@ function editProfile() {
 }
 
 // =====================================================================
-// Profile: name, NEET-PG CMR and state (the state decides which data shows)
+// Profile: name, NEET-PG rank (All India Rank), state, and the state CMR once known (the state decides which data shows)
 // =====================================================================
 function stateOptions(sel) {
   const have = S.cfg.stateData || [];
@@ -229,13 +232,18 @@ function stateOptions(sel) {
     ? `<optgroup label="State counselling cut-offs available">${have.map(opt).join('')}</optgroup><optgroup label="All states and UTs">${rest.map(opt).join('')}</optgroup>`
     : rest.map(opt).join(''));
 }
-const cmrField = v => `<label class="field"><span class="label">NEET-PG CMR</span>
-  <input class="input num" name="cmr" inputmode="numeric" autocomplete="off" placeholder="e.g. 250" value="${esc(v ?? '')}" maxlength="7" required></label>`;
+const airField = v => `<label class="field"><span class="label">NEET-PG rank <span class="hint">All India Rank</span></span>
+  <input class="input num" name="air" inputmode="numeric" autocomplete="off" placeholder="e.g. 24500" value="${esc(v ?? '')}" maxlength="7" required></label>`;
+// The state CMR is the rank on the state merit list, a different number from the NEET-PG rank.
+const cmrField = v => `<label class="field"><span class="label">State CMR <span class="hint">optional · your rank on the state merit list</span></span>
+  <input class="input num" name="cmr" inputmode="numeric" autocomplete="off" placeholder="Leave empty if not out yet" value="${esc(v ?? '')}" maxlength="7"></label>`;
 const stateField = v => `<label class="field"><span class="label">State</span><select class="select" name="state" required>${stateOptions(v)}</select></label>`;
 
-/** The CMR given at sign-up is the starting rank for state counselling. */
+/** The state CMR (once known) starts state counselling; the NEET-PG rank starts the All India Quota. */
 function applyProfile(force = false) {
-  if (S.user?.cmr && (force || !S.f.state.rank)) { S.f.state.rank = String(S.user.cmr); saveFilters(); }
+  const set = (kind, v) => { if (force || !S.f[kind].rank) S.f[kind].rank = v ? String(v) : ''; };
+  set('state', S.user?.cmr); set('aiq', S.user?.air);
+  saveFilters();
 }
 
 function profileForm(host, { onSaved, onCancel }) {
@@ -243,7 +251,8 @@ function profileForm(host, { onSaved, onCancel }) {
   const draw = err => {
     host.innerHTML = `<form class="auth" novalidate>
       <label class="field"><span class="label">Full name</span><input class="input" name="name" autocomplete="name" value="${esc(u.name)}" maxlength="80" required></label>
-      <div class="auth-pair">${cmrField(u.cmr)}${stateField(u.state)}</div>
+      <div class="auth-pair">${airField(u.air)}${stateField(u.state)}</div>
+      ${cmrField(u.cmr)}
       ${err ? `<div class="alert alert-err form-err" role="alert">${esc(err)}</div>` : ''}
       <div class="auth-actions">${onCancel ? '<button type="button" class="btn btn-line" data-cancel>Cancel</button>' : ''}
         <button class="btn btn-primary">Save and continue</button></div>
@@ -252,10 +261,11 @@ function profileForm(host, { onSaved, onCancel }) {
     if (onCancel) f.querySelector('[data-cancel]').onclick = onCancel;
     f.onsubmit = async e => {
       e.preventDefault();
-      const body = { name: el('name').value.trim(), cmr: el('cmr').value.replace(/\D/g, ''), state: el('state').value };
+      const body = { name: el('name').value.trim(), air: el('air').value.replace(/\D/g, ''), cmr: el('cmr').value.replace(/\D/g, '') || null, state: el('state').value };
       if (body.name.length < 2) return draw('Enter your full name.');
-      if (!body.cmr) return draw('Enter your NEET-PG CMR.');
+      if (!body.air) return draw('Enter your NEET-PG rank (All India Rank).');
       if (!body.state) return draw('Choose your state.');
+      if (body.state !== S.user.state && body.cmr === String(S.user.cmr)) body.cmr = null; // another state: another merit list
       try {
         const prev = S.user;
         S.user = (await api('/api/me', { method: 'PATCH', body })).user;
@@ -264,7 +274,8 @@ function profileForm(host, { onSaved, onCancel }) {
           S.f = freshFilters(); S.dsId = { state: null, aiq: null };
           S.cfg = await api('/api/config').catch(() => S.cfg);
         }
-        applyProfile(prev.cmr !== S.user.cmr || prev.state !== S.user.state);
+        S.rpInfo = S.rpData = S.lastYear = null;
+        applyProfile(prev.cmr !== S.user.cmr || prev.air !== S.user.air || prev.state !== S.user.state);
         renderTop();
         onSaved();
       } catch (err) { draw(err.message); }
@@ -277,7 +288,7 @@ function viewProfile() {
   view.innerHTML = `<div class="gate">
     <div class="eyebrow">One more step</div>
     <h1>Complete your profile</h1>
-    <p>We show cut-offs for the state you choose. Add your NEET-PG CMR and state to continue.</p>
+    <p>We show cut-offs for the state you choose. Add your NEET-PG rank and state to continue.</p>
     <div class="auth-card" id="pf"></div>
   </div>`;
   profileForm($('#pf'), { onSaved: () => { toast('Profile saved.'); route(); } });
@@ -305,11 +316,11 @@ async function firebase() {
  */
 function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } = {}) {
   const provider = S.cfg.auth.provider, len = S.cfg.auth.otpLength || 4, emailOk = S.cfg.auth.email;
-  const a = { mode, channel: 'phone', name: '', phone: '', email: '', cmr: '', state: '', password: '', remember: store.get('rr-remember', true) };
+  const a = { mode, channel: 'phone', name: '', phone: '', email: '', air: '', state: '', password: '', remember: store.get('rr-remember', true) };
   let confirmation = null, verifier = null, timer = null, opened = false;
   const viaFirebase = () => provider === 'firebase' && a.channel === 'phone';
   const shown = () => a.channel === 'email' ? a.email : '+91 ' + a.phone.replace(/(\d{5})(\d{5})/, '$1 $2');
-  const profile = () => a.mode === 'signup' ? { name: a.name, cmr: a.cmr, state: a.state } : {};
+  const profile = () => a.mode === 'signup' ? { name: a.name, air: a.air, state: a.state } : {};
   const contact = () => ({ channel: a.channel, phone: a.phone, email: a.email });
   host.addEventListener('focusin', () => { if (!opened) { opened = true; track('signin_open'); } });
   const resetVerifier = () => { try { verifier?.clear(); } catch { /* already gone */ } verifier = null; };
@@ -339,8 +350,8 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
     : fb.mod.linkWithCredential(user, fb.mod.EmailAuthProvider.credential(fbEmail(), a.password));
   async function finishFirebase(user) {
     const r = await api('/api/auth/firebase', { method: 'POST', body: { idToken: await user.getIdToken(), mode: a.mode, remember: a.remember, ...profile() } });
-    // The name, CMR and state are kept on the Firebase account too, to restore them after a restart.
-    const link = `${location.origin}/profile?${new URLSearchParams({ cmr: r.user.cmr || '', state: r.user.state || '' })}`;
+    // The name, ranks and state are kept on the Firebase account too, to restore them after a restart.
+    const link = `${location.origin}/profile?${new URLSearchParams({ air: r.user.air || '', cmr: r.user.cmr || '', state: r.user.state || '' })}`;
     await fb.mod.updateProfile(user, { displayName: r.user.name || null, photoURL: link }).catch(() => {});
     fb.mod.signOut(fb.auth).catch(() => {});
     return r;
@@ -374,7 +385,7 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
               value="${esc(a.password)}" maxlength="128" aria-label="${reset ? 'New password' : 'Password'}" required>
             <button type="button" class="pw-show" aria-pressed="false" aria-label="Show password">Show</button></div>
         </div>`}
-        ${up ? `<div class="auth-pair">${cmrField(a.cmr)}${stateField(a.state)}</div>` : ''}
+        ${up ? `<div class="auth-pair">${airField(a.air)}${stateField(a.state)}</div>` : ''}
         <label class="check auth-keep"><input type="checkbox" name="remember" ${a.remember ? 'checked' : ''}> Keep me logged in</label>
         ${err?.setup ? unavailable(err.setup) : err ? `<div class="alert alert-err form-err" role="alert">${err.html || esc(err)}</div>` : ''}
         <button class="btn btn-primary btn-lg auth-go" id="send">${up ? 'Sign up' : signin ? 'Sign in' : 'Send code'} ${icon.arrowR}</button>
@@ -419,9 +430,9 @@ function mountAuth(host, { mode = 'signup', autofocus = false, onMode, onDone } 
       if (signin && !a.password) return form('Enter your password.');
       if ((up || reset) && a.password.length < 8) return form('Use a password of at least 8 characters.');
       if (up) {
-        a.cmr = el('cmr').value.replace(/\D/g, '');
+        a.air = el('air').value.replace(/\D/g, '');
         a.state = el('state').value;
-        if (!(+a.cmr > 0)) return form('Enter your NEET-PG CMR — your rank on the state merit list.');
+        if (!(+a.air > 0)) return form('Enter your NEET-PG rank (All India Rank).');
         if (!a.state) return form('Choose your state.');
       }
       a.remember = el('remember').checked;
@@ -659,7 +670,10 @@ async function load(kind) {
   if (!S.cache.has(id)) {
     const r = await api('/api/datasets/' + id);
     const rows = r.rows.map(a => Object.fromEntries(r.columns.map((c, i) => [c, a[i]])));
-    for (const o of rows) { o._k = rowKey(kind, o); o._prog = progOf(kind === 'state' ? o.programme : o.branch); }
+    for (const o of rows) {
+      o._k = rowKey(kind, o); o._prog = progOf(kind === 'state' ? o.programme : o.branch);
+      if (kind === 'state') o.type = PRIVATE_COLLEGE.test(o.college) ? 'Private' : 'Government';
+    }
     S.cache.set(id, {
       dataset: r.dataset, rows,
       openCat: rows.some(o => o.category === 'OPEN') ? 'OPEN' : null, // Gujarat calls its unreserved seats OPEN
@@ -711,8 +725,8 @@ function ctxbar(kind) {
 }
 // The student's own counselling guide, next to their data (MCC's for the All India Quota).
 function ctxGuide(kind) {
-  const g = guidesFor(kind === 'aiq' ? ALL_INDIA : myState())[0];
-  return g ? `<a class="ctx-guide" href="/counselling/${esc(g.slug)}">${esc(kind === 'aiq' ? 'MCC counselling guide' : `${myState()} counselling guide`)} ${icon.arrowR}</a>` : '';
+  const region = kind === 'aiq' ? ALL_INDIA : myState();
+  return `<a class="ctx-guide" href="/roadmap/${esc(slugOf(region))}" data-link>${esc(kind === 'aiq' ? 'All India roadmap' : `${region} roadmap`)}: dates, guide, merit list, seats ${icon.arrowR}</a>`;
 }
 function bindCtx() {
   $$('[data-scope]').forEach(b => b.onclick = () => {
@@ -786,7 +800,7 @@ async function renderRoadmap() {
       </div>
       <div class="rm-card rm-dates">
         <h3>Important dates <small>Upcoming events</small></h3>
-        <ul>${steps.map(({ d, s }) => `<li><a href="/counselling/${esc(d.slug)}">${esc(myState())}: ${esc(d.what)}</a><span>${esc(d.when)}</span><span class="gd-pill ${s.tone}">${esc(s.text)}</span></li>`).join('')}
+        <ul>${steps.map(({ d, s }) => `<li><a href="/roadmap/${esc(slugOf(myState()))}" data-link>${esc(myState())}: ${esc(d.what)}</a><span>${esc(d.when)}</span><span class="gd-pill ${s.tone}">${esc(s.text)}</span></li>`).join('')}
           ${(cur?.events || []).map(e => `<li><b>${esc(e.what)}</b><span>${esc(e.when)}</span></li>`).join('')}</ul>
         <button class="btn btn-line btn-sm" id="rm-ics">${icon.download} Set reminders (calendar)</button>
       </div>
@@ -795,6 +809,9 @@ async function renderRoadmap() {
         <div class="rm-pred-row"><div><b>Pre-counselling predictor</b> <span class="gd-pill open">Available</span>
           <p>Based on previous year closing ranks${ds ? ` · ${esc(ds)}` : ''}.</p></div>
           <a class="btn btn-line btn-sm" href="#res" id="rm-view">View prediction ${icon.down}</a></div>
+        ${S.cfg.regionData?.[myState()]?.includes('seats') ? `<div class="rm-pred-row"><div><b>${esc(myState())} Round 1: your chance at every seat</b> <span class="gd-pill info">New</span>
+          <p>This year's seat matrix, each seat graded against last year's closing rank for your CMR.</p></div>
+          <a class="btn btn-line btn-sm" href="/roadmap/${esc(slugOf(myState()))}/round-1/choice-filling" data-link>Open the seat matrix ${icon.arrowR}</a></div>` : ''}
         ${S.cfg.regionData?.[ALL_INDIA]?.includes('allotment') ? `<div class="rm-pred-row"><div><b>MCC Round 1 result</b> <span class="gd-pill info">New</span>
           <p>Every seat allotted in Round 1, searchable by All India Rank, college, course, quota and Govt / private.</p></div>
           <a class="btn btn-line btn-sm" href="/roadmap/all-india/round-1/allotment" data-link>Open the result ${icon.arrowR}</a></div>` : ''}
@@ -847,6 +864,9 @@ async function viewWork(mode) {
     return;
   }
   S.data = data;
+  // A filter saved on another dataset ("MD - Radio Diagnosis" in 2025, "MD Radio Diagnosis" in 2026) would match nothing here.
+  const f = S.f[kind];
+  for (const k of KIND[kind].filters) if (f[k] && k !== 'stream' && !data.rows.some(r => (k === 'prog' ? r._prog : r[k]) === f[k])) f[k] = '';
   $('#ctx-note').textContent = KIND[kind].note; // the note depends on the dataset just loaded
   renderRail();
   renderResults();
@@ -882,6 +902,7 @@ function renderRail() {
       ${S.mode === 'predict' ? `
         <label class="label" for="f-rank">Your ${K.rankLong}</label>
         <input class="input input-rank" id="f-rank" inputmode="numeric" autocomplete="off" placeholder="${kind === 'state' ? 'e.g. 250' : 'e.g. 25000'}" value="${esc(f.rank)}">
+        ${kind === 'state' ? '<div class="cf-box" id="cmr-help"></div>' : ''}
       ` : `
         <label class="label" for="f-q">Search</label>
         <div class="search-wrap">${icon.search}<input class="input" id="f-q" type="search" autocomplete="off" placeholder="College, speciality, category" value="${esc(f.q)}"></div>
@@ -938,6 +959,7 @@ function renderRail() {
   }
   const q = $('#f-q');
   if (q) { const go = debounce(() => changed(false), 200); q.oninput = () => { f.q = q.value; go(); }; }
+  if ($('#cmr-help')) cmrFinder($('#cmr-help'), myState(), { typed: () => $('#f-rank').value, onSet: () => { renderRail(); renderResults(); } });
   $$('[data-prog]').forEach(b => b.onclick = () => {
     f.prog = b.dataset.prog;
     $$('[data-prog]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
@@ -995,7 +1017,7 @@ function columns(kind, mode, rank) {
   const c = [{ id: 'star', t: '<span class="sr">Shortlist</span>', cls: 'nowrap', r: r => starHtml(kind, r) }];
   if (mode === 'predict') c.push({ id: 'band', t: 'Chance', v: r => r._b, num: true, cls: 'nowrap', r: r => bandHtml(r._b) });
   c.push({ id: 'college', t: 'College', v: r => shortCollege(r.college), cls: 'strong wrapcell',
-    r: r => `<span title="${esc(r.college)}">${esc(shortCollege(r.college))}</span>` + (kind === 'aiq' ? `<span class="sub">${esc(poolOf(kind, r))}</span>` : '') });
+    r: r => `<span title="${esc(r.college)}">${esc(shortCollege(r.college))}</span><span class="sub">${esc(kind === 'aiq' ? poolOf(kind, r) : r.type)}</span>` });
   c.push({ id: 'spec', t: K.specLabel, v: r => r[K.spec], cls: 'wrapcell',
     r: r => esc(r[K.spec]) + (kind === 'state' ? `<span class="sub">${esc(r.programme)} · ${esc(r.rounds || 'R-?')}</span>` : '') });
   c.push({ id: 'category', t: 'Category', v: r => r.category + seatPool(r), cls: 'nowrap',
@@ -1035,7 +1057,8 @@ function renderResults() {
         <p class="res-sub">Type your ${esc(K.rankLong)} in the panel. We'll list every seat it reached in ${S.data.dataset.year}, graded by how comfortably.</p></div></div>
       <div class="empty" style="text-align:left;padding:28px 0">
         <p class="muted" style="max-width:62ch;line-height:1.65">${kind === 'state'
-          ? `Your CMR is the rank on the ${esc(myState())} state merit list — not your NEET All India Rank. Pick your stream (direct or in-service) first: the two lists are numbered separately.`
+          ? `Your CMR is the rank on the ${esc(myState())} state merit list — not your NEET-PG rank (All India Rank). ${S.cfg.regionData?.[myState()]?.includes('merit')
+            ? `Use “Find my CMR” in the panel: we look your NEET-PG rank up on the ${esc(myState())} merit list.` : 'Type it from the state merit list once it is out.'} Pick your stream (direct or in-service) too: the two lists are numbered separately.`
           : 'All India Quota seats are allotted by the MCC on your NEET All India Rank. Candidates from every state compete for these seats.'}</p>
       </div>`;
     return;
@@ -1120,6 +1143,64 @@ function renderResults() {
 
 // No seat in reach. Say why: the rank is past every closing rank in this selection (often an All India
 // Rank typed as a state CMR), or the filters leave nothing. Show the seats that went furthest anyway.
+// ---- the state CMR -------------------------------------------------------------
+// The state CMR is the rank on the state merit list, not the NEET-PG rank. Where we hold the merit list, it is
+// found there from the NEET-PG rank (or the name); elsewhere the candidate types it. Either way it is saved.
+async function meritOf(region) {
+  if (S.user?.state !== region || !S.cfg.regionData?.[region]?.includes('merit')) return null;
+  const info = await regionInfo(slugOf(region)), d = info.data.find(x => x.kind === 'merit');
+  S.rpData ||= {};
+  return S.rpData[info.key + '/' + d.id] ||= await api(`/api/regions/${info.key}/data/${d.id}`);
+}
+async function saveCmr(cmr, stream) {
+  S.user = (await api('/api/me', { method: 'PATCH', body: { cmr } })).user;
+  S.f.state.rank = String(cmr);
+  if (stream === 'Direct' || stream === 'In-service') S.f.state.stream = stream;
+  saveFilters(); renderTop();
+  toast(`Saved: your ${S.user.state} CMR is ${fmt(cmr)}.`);
+}
+/** typed(): the rank typed next to it (states without a merit list); onSet(cmr) after saving. */
+function cmrFinder(box, region, { typed, onSet } = {}) {
+  if (S.user?.state !== region) { box.innerHTML = ''; return; }
+  const list = S.cfg.regionData?.[region]?.includes('merit');
+  const saved = S.user.cmr ? `Saved CMR: <b class="num">${fmt(S.user.cmr)}</b>. ` : '';
+  const use = (cmr, stream) => saveCmr(cmr, stream).then(() => onSet?.(cmr, stream)).catch(e => toast(e.message, true));
+  if (!list) {
+    box.innerHTML = `<p>${saved}Your <b>${esc(region)} CMR</b> is your rank on the state merit list, not your NEET-PG rank.
+      ${typed ? '<button type="button" class="linkbtn" id="cf-keep">Save the rank above as my CMR</button>' : ''}</p>`;
+    $('#cf-keep', box)?.addEventListener('click', () => { const n = parseInt(typed(), 10); if (n > 0) use(n); else toast('Type your state CMR first.', true); });
+    return;
+  }
+  box.innerHTML = `<p>${saved}Your <b>${esc(region)} CMR</b> is your rank on the ${esc(region)} merit list, not your NEET-PG rank.</p>
+    <button type="button" class="btn btn-line btn-sm" id="cf-go">${icon.search} Find my CMR${S.user.air ? ` from NEET-PG rank ${fmt(S.user.air)}` : ''}</button>
+    <div class="cf-out" id="cf-out" aria-live="polite"></div>`;
+  const out = $('#cf-out', box);
+  const show = (hits, note) => {
+    out.innerHTML = (note ? `<p>${note}</p>` : '') + hits.slice(0, 6).map(({ r, l }, i) => `<div class="cf-hit"><div><b>${esc(r.name)}</b>
+        <small>${esc(l.label)} list · NEET-PG rank ${fmt(r.air)} · ${esc(r.cat.replace(/,.*$/, ''))}${r.sub ? ' · ' + esc(r.sub) : ''}</small></div>
+      ${l.type === 'Rejected' ? `<span class="rp-bad">Rejected: ${esc(r.reason || '')}</span>`
+        : `<button type="button" class="btn btn-primary btn-sm" data-hit="${i}">Use CMR ${fmt(r.ranks.UR)}</button>`}</div>`).join('')
+      + `<label class="cf-name">Not you? Search the list by name<input class="input" id="cf-q" type="search" autocomplete="off" placeholder="Your name as on the merit list"></label>`;
+    $$('[data-hit]', out).forEach(b => b.onclick = () => { const { r, l } = hits[+b.dataset.hit]; use(r.ranks.UR, l.type); });
+    const q = $('#cf-q', out);
+    q.oninput = debounce(() => {
+      const terms = q.value.toLowerCase().split(/\s+/).filter(t => t.length > 1);
+      if (!terms.length) return;
+      const found = all.filter(({ r }) => terms.every(t => r.name.toLowerCase().includes(t)));
+      show(found, found.length ? `${fmt(found.length)} on the list for “${esc(q.value)}”${found.length > 6 ? ' (first 6)' : ''}:` : `No one called “${esc(q.value)}” on the list.`);
+      const nq = $('#cf-q', out); nq.value = q.value; nq.focus();
+    }, 300);
+  };
+  let all = [];
+  $('#cf-go', box).onclick = async () => {
+    out.innerHTML = '<span class="spinner"></span>';
+    try { all = (await meritOf(region)).lists.flatMap(l => l.rows.map(r => ({ r, l }))); }
+    catch (e) { out.innerHTML = `<p>${esc(e.message)}</p>`; return; }
+    const hits = S.user.air ? all.filter(({ r }) => r.air === S.user.air) : [];
+    show(hits, hits.length ? 'Found you on the merit list:' : S.user.air ? `NEET-PG rank ${fmt(S.user.air)} isn't on the ${esc(region)} merit list.` : '');
+  };
+}
+
 function outOfReach(kind, rank) {
   const K = KIND[kind], f = S.f[kind], ds = S.data.dataset;
   const base = S.data.rows.filter(r => matches(kind, r, f));
@@ -1757,7 +1838,7 @@ async function rpRegistration(info, box, rest) {
     read.innerHTML = `<div class="rp-glance-head">${rpSvg('doc')}<div><h3>At a glance</h3><p>${esc(g.summary || g.title)}</p></div></div>
       <div class="rp-glance">${g.sections.map(s => { const [ic, tone] = sectionLook(s.title); return `<a class="rp-gcard t-${tone}" href="${href(g.slug, s.id)}" data-rp>
         <span class="rp-gicon">${rpSvg(ic)}</span><span class="rp-gtext"><b>${esc(secTitle(s))}</b><small>${esc(s.blurb)}</small></span>${rpSvg('chevron')}</a>`; }).join('')}</div>
-      <p class="rp-orig"><a href="/counselling/${esc(g.slug)}">Open the full guide in its original layout ${icon.ext}</a></p>`;
+      <p class="rp-orig"><a href="/counselling/${esc(g.slug)}?original">Open the full guide in its original layout ${icon.ext}</a></p>`;
     return;
   }
   const s = g.sections[idx], [ic, tone] = sectionLook(s.title), prev = g.sections[idx - 1], next = g.sections[idx + 1];
@@ -1772,7 +1853,7 @@ async function rpRegistration(info, box, rest) {
     <div class="rp-prose">${sec.html}</div>
     <div class="rp-read-nav">${prev ? `<a href="${href(g.slug, prev.id)}" data-rp><small>Previous</small><b>${esc(secTitle(prev))}</b></a>` : `<a href="${href(g.slug)}" data-rp><small>Back to</small><b>At a glance</b></a>`}
       ${next ? `<a class="next" href="${href(g.slug, next.id)}" data-rp><small>Next</small><b>${esc(secTitle(next))}</b></a>` : ''}</div>
-    <p class="rp-orig">Summarised from the official notice: confirm on the official website before acting. <a href="/counselling/${esc(g.slug)}">Original layout ${icon.ext}</a></p>
+    <p class="rp-orig">Summarised from the official notice: confirm on the official website before acting. <a href="/counselling/${esc(g.slug)}?original">Original layout ${icon.ext}</a></p>
   </article>`;
 }
 
@@ -1796,17 +1877,22 @@ function rpMerit(info, box) {
     return;
   }
   if (!d) { host.innerHTML = rpSoon('list', 'Merit list data will be available soon.', `The ${info.region} state merit list will be published here once it is released by the competent authority.`); return; }
-  host.insertAdjacentHTML('beforebegin', `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}</small></h3>`);
+  host.insertAdjacentHTML('beforebegin', `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}</small></h3>
+    ${info.access === 'open' && S.user?.state === info.region ? '<div class="cf-box cf-wide" id="rp-cf"></div>' : ''}`);
+  if ($('#rp-cf')) cmrFinder($('#rp-cf'), info.region);
   rpLoad(info, d, host, data => meritExplorer(host, data, info));
 }
 
 // ---- Rounds: choice filling (seat matrix), allotment, joining ----
 function rpRound(info, box, stage, rest) {
   const v = ROUND_VIEWS.find(x => x[0] === rest[0]) || ROUND_VIEWS[0];
-  box.innerHTML = rpHead(info, stage, 'users', `Explore the seat matrix, fill choices, and view allotment and joining details for ${stage}.`)
+  const pred = info.region === ALL_INDIA || (S.user?.state === info.region && setsOf('state').some(x => x.state === info.region));
+  box.innerHTML = rpHead(info, stage, 'users', `Explore the seat matrix, fill choices, and view allotment and joining details for ${stage}.`,
+    pred ? `<a class="btn btn-line" href="/predict" data-link data-to-scope="${info.region === ALL_INDIA ? 'aiq' : 'state'}">Open the predictor ${icon.arrowR}</a>` : '')
     + `<div class="rp-round"><nav class="rp-sub" aria-label="${stage}">${ROUND_VIEWS.map(([id, t, s, ic]) =>
       `<a href="/roadmap/${info.key}/${slugOf(stage)}/${id}" data-rp${id === v[0] ? ' aria-current="page"' : ''}>${rpSvg(ic)}<span><b>${t}</b><small>${s}</small></span></a>`).join('')}</nav>
       <div class="rp-round-body" id="rp-data"></div></div>`;
+  $('[data-to-scope]', box)?.addEventListener('click', e => { S.scope = e.currentTarget.dataset.toScope; store.set('rr-scope', S.scope); });
   const host = $('#rp-data');
   const kind = { 'choice-filling': 'seats', allotment: 'allotment' }[v[0]];
   const d = kind && info.data.find(x => x.kind === kind && x.round === stage);
@@ -1823,7 +1909,7 @@ function rpRound(info, box, stage, rest) {
   host.innerHTML = `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}${d.doc
     ? ` · <a href="/counselling/assets/${esc(d.doc)}" target="_blank" rel="noopener">Official PDF</a>` : ''}</small></h3><div id="rp-x"></div>`;
   const x = $('#rp-x');
-  rpLoad(info, d, x, data => kind === 'seats' ? seatExplorer(x, data, info) : allotExplorer(x, data));
+  rpLoad(info, d, x, async data => kind === 'seats' ? seatExplorer(x, data, info, await lastYear(info.region).catch(() => null)) : allotExplorer(x, data));
 }
 
 // A region's data: loaded once it may be seen, otherwise a sign-in or locked card.
@@ -1843,7 +1929,7 @@ async function rpLoad(info, d, host, render) {
       host.innerHTML = `<div class="empty"><h3>We couldn't load the data</h3><p>${esc(e.message)}</p></div>`; return;
     }
   }
-  if (host.isConnected) render(S.rpData[ck]);
+  if (host.isConnected) await render(S.rpData[ck]);
 }
 function rpLock(info, what) {
   const own = S.user?.state;
@@ -1866,6 +1952,7 @@ function rpLock(info, what) {
  *   search: { placeholder, of(r) → text }; range: { label, of(r) → number }
  *   find: { label, placeholder, run(n) → html }  look up one rank (it is marked in the table)
  *   cols: [{ t, r(r, i) → html, cls }]; mark(r, f) → highlight; summary(view) → html; csv: { name, head, row }
+ *   keep(r) → false hides a row; order(view) → the view sorted. Returns { refresh } to redraw after outside changes.
  */
 function explorer(host, cfg) {
   const init = () => ({ prog: cfg.prog?.value ?? '', q: '', lo: 0, hi: 0, find: 0,
@@ -1902,10 +1989,12 @@ function explorer(host, cfg) {
     if (f[s.id] && !have.has(f[s.id])) f[s.id] = s.values.find(v => have.has(v)) || '';
     host.querySelectorAll(`[data-s="${s.id}"]`).forEach(b => { b.hidden = !have.has(b.dataset.v); b.setAttribute('aria-pressed', String(b.dataset.v === f[s.id])); });
   });
+  // Each dropdown offers what the other filters leave, so no combination ends in an empty table.
   const fillSelects = () => {
     const b = base();
     for (const s of selects) {
-      const vals = uniq(b.map(s.of).filter(Boolean)).sort((x, y) => String(x).localeCompare(String(y)));
+      const vals = uniq(b.filter(r => selects.every(o => o === s || !f[o.id] || o.of(r) === f[o.id])).map(s.of).filter(Boolean))
+        .sort((x, y) => String(x).localeCompare(String(y)));
       if (f[s.id] && !vals.includes(f[s.id])) f[s.id] = '';
       q(`[data-x="${s.id}"]`).innerHTML = `<option value="">${esc(s.all)}</option>` + vals.map(v => `<option${v === f[s.id] ? ' selected' : ''}>${esc(v)}</option>`).join('');
     }
@@ -1915,7 +2004,9 @@ function explorer(host, cfg) {
       const terms = f.q.toLowerCase().split(/\s+/).filter(Boolean);
       view = base().filter(r => selects.every(s => !f[s.id] || s.of(r) === f[s.id])
         && (!terms.length || terms.every(t => cfg.search.of(r).toLowerCase().includes(t)))
-        && (!cfg.range || ((!f.lo || cfg.range.of(r) >= f.lo) && (!f.hi || cfg.range.of(r) <= f.hi))));
+        && (!cfg.range || ((!f.lo || cfg.range.of(r) >= f.lo) && (!f.hi || cfg.range.of(r) <= f.hi)))
+        && (!cfg.keep || cfg.keep(r)));
+      if (cfg.order) view = cfg.order(view);
       shown = 0;
     }
     const next = view.slice(shown, shown + PAGE);
@@ -1933,7 +2024,7 @@ function explorer(host, cfg) {
     refresh();
   });
   host.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { f[b.dataset.s] = b.dataset.v; refresh(); });
-  host.querySelectorAll('[data-x]').forEach(s => s.onchange = () => { f[s.dataset.x] = s.value; run(); });
+  host.querySelectorAll('[data-x]').forEach(s => s.onchange = () => { f[s.dataset.x] = s.value; fillSelects(); run(); });
   const later = debounce(() => run(), 200);
   const num = el => parseInt(String(el?.value || '').replace(/\D/g, ''), 10) || 0;
   q('#x-q').oninput = e => { f.q = e.target.value.trim(); later(); };
@@ -1957,6 +2048,7 @@ function explorer(host, cfg) {
     q('#x-rank').oninput = debounce(find, 350);
   }
   refresh();
+  return { refresh };
 }
 
 function meritExplorer(host, data, info) {
@@ -1991,28 +2083,84 @@ function meritExplorer(host, data, info) {
   });
 }
 
-function seatExplorer(host, data, info) {
+// Last year's state counselling closing ranks for the candidate's own state (the predictor's data), to grade each
+// seat of this year's matrix; null when there are none.
+async function lastYear(region) {
+  const set = setsOf('state').filter(d => d.state === region).sort((a, b) => b.year - a.year)[0];
+  if (!set || S.user?.state !== region) return null;
+  S.lastYear ||= {};
+  if (!S.lastYear[set.id]) {
+    const r = await api('/api/datasets/' + set.id);
+    S.lastYear[set.id] = { dataset: r.dataset, rows: r.rows.map(a => Object.fromEntries(r.columns.map((c, i) => [c, a[i]]))) };
+  }
+  return S.lastYear[set.id];
+}
+
+function seatExplorer(host, data, info, prev = null) {
+  const rows = data.rows, has = k => rows.some(r => r[k]);
   const baseCat = c => c.replace(/\s*\(.*\)$/, '');
-  explorer(host, {
-    rows: data.rows,
+  const many = k => new Set(rows.map(r => r[k])).size;
+  // A 2026 seat's 2025 counterpart: the same college, course, stream and category ("SC (Green Card)" was "Green Card",
+  // management seats "UR"); failing that, the same seat's unreserved closing rank, a stricter yardstick for a reserved seat.
+  const cat0 = c => (/\((.*)\)/.exec(c) || [])[1] || (c === 'Open' ? 'UR' : c);
+  const past = new Map();
+  for (const r of prev?.rows || []) {
+    const k = [r.college, r.speciality, progOf(r.programme), r.stream, r.category].join('|'), o = past.get(k);
+    if (!o || r.cmr_close > o.cmr_close) past.set(k, r);
+  }
+  const refOf = r => {
+    const k = c => [r.college, r.course, progOf(r.programme), r.stream, c].join('|');
+    return r._ref ??= past.get(k(cat0(r.category))) ? { p: past.get(k(cat0(r.category))), same: true }
+      : past.get(k('UR')) ? { p: past.get(k('UR')), same: false } : null;
+  };
+  const p = { rank: parseInt(S.user?.cmr, 10) || 0, reach: false };
+  const chance = r => { const x = refOf(r); return x && p.rank ? band(p.rank, x.p.cmr_open, x.p.cmr_close) : 0; };
+  const year = prev?.dataset.year;
+  const predCols = prev ? [
+    { t: `${year} closing CMR`, cls: 'n', r: r => { const x = refOf(r); return x ? `${fmt(x.p.cmr_close)}<span class="sub">${x.same ? 'same seat' : `UR seat; no ${esc(cat0(r.category))} seat in ${year}`}</span>` : `—<span class="sub">new seat</span>`; } },
+    { t: 'Your chance', r: r => !p.rank ? '<span class="muted">Enter your CMR</span>' : refOf(r) ? bandHtml(chance(r)) || '<span class="muted">Out of reach</span>' : '<span class="muted">No history</span>' }
+  ] : [];
+  const x = explorer(host, {
+    rows,
+    intro: prev ? `<div class="rp-pred">
+      <label class="field"><span class="label">Your ${esc(info.region)} CMR</span><input class="input input-rank" id="x-cmr" inputmode="numeric" autocomplete="off" value="${p.rank || ''}" placeholder="e.g. 250"></label>
+      <div><p><b>Your chances, seat by seat.</b> Each ${new Date().getFullYear()} seat is graded against its ${year} closing rank (${esc(prev.dataset.label)}): Very high, High, Moderate or Low,
+        as on the predictor. Pick your candidate type and category below; the CMR restarts at 1 in each stream.</p>
+        <label class="check"><input type="checkbox" id="x-reach"> Only seats in reach, best chances first</label>
+        <div class="cf-box" id="x-cf"></div></div></div>` : '',
     prog: { of: r => progOf(r.programme), value: 'MD/MS' },
-    segs: [{ id: 'stream', label: 'Candidate type', values: ['Direct', 'In-service'], of: r => r.stream, value: 'Direct' }],
-    selects: [{ id: 'college', label: 'Institution', all: 'All institutions', of: r => r.college },
+    segs: has('stream') ? [{ id: 'stream', label: 'Candidate type', values: ['Direct', 'In-service'], of: r => r.stream, value: 'Direct' }] : [],
+    selects: [
+      ...(has('state') ? [{ id: 'state', label: 'State', all: 'All states', of: r => r.state }] : []),
+      ...(many('college') <= 300 ? [{ id: 'college', label: 'Institution', all: 'All institutions', of: r => r.college }] : []),
+      { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type },
+      ...(many('quota') > 2 ? [{ id: 'quota', label: 'Quota', all: 'All quotas', of: r => r.quota }] : []),
       { id: 'cat', label: 'Category', all: 'All categories', of: r => baseCat(r.category) },
-      { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type }],
-    search: { placeholder: 'Search by college, course or branch (e.g. SCB, Radiodiagnosis, General Medicine)', of: r => `${r.college} ${r.course} ${r.category} ${r.quota}` },
+      ...(has('state') ? [{ id: 'course', label: 'Course', all: 'All courses', of: r => r.course }] : [])],
+    search: { placeholder: has('state') ? 'Search by institute, city or course (e.g. Apollo, Hyderabad, Radio Diagnosis)'
+      : 'Search by college, course or branch (e.g. SCB, Radiodiagnosis, General Medicine)', of: r => `${r.college} ${r.course} ${r.category} ${r.quota} ${r.state || ''}` },
+    keep: r => !p.reach || chance(r) > 0,
+    order: v => p.reach ? [...v].sort((a, b) => chance(b) - chance(a) || refOf(b).p.cmr_close - refOf(a).p.cmr_close) : v,
     cols: [
       { t: '#', cls: 'n soft', r: (r, i) => fmt(i + 1) },
-      { t: 'Institution', cls: 'strong wrapcell', r: r => `${esc(r.college)}<span class="sub">${esc(r.type)}</span>` },
+      { t: 'Institution', cls: 'strong wrapcell', r: r => `${esc(r.college)}<span class="sub">${esc([r.type, r.state].filter(Boolean).join(' · '))}</span>` },
       { t: 'Course', cls: 'wrapcell', r: r => `${esc(r.course)}<span class="sub">${esc(r.programme)}</span>` },
-      { t: 'Quota', r: r => `${esc(r.quota)}<span class="sub">${esc(r.stream)}</span>` },
+      { t: 'Quota', cls: 'wrapcell', r: r => esc(r.quota) + (r.stream ? `<span class="sub">${esc(r.stream)}</span>` : '') },
       { t: 'Category', r: r => esc(r.category) },
-      { t: 'Total seats', cls: 'n r strong', r: r => fmt(r.seats) }
+      { t: 'Total seats', cls: 'n r strong', r: r => fmt(r.seats) },
+      ...predCols
     ],
     summary: v => `<b>${fmt(v.reduce((n, r) => n + r.seats, 0))}</b> seats in ${(n => `${fmt(n)} institution${n === 1 ? '' : 's'}`)(new Set(v.map(r => r.college)).size)}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
-    csv: { name: `${slugOf(info.region)}-seat-matrix.csv`, head: ['Institution', 'College type', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats'],
-      row: r => [r.college, r.type, r.course, r.programme, r.stream, r.quota, r.category, r.seats] }
+    csv: { name: `${slugOf(info.region)}-seat-matrix.csv`,
+      head: ['Institution', 'College type', 'State', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats', ...(prev ? [`${year} closing CMR`, 'Your chance'] : [])],
+      row: r => [r.college, r.type, r.state || '', r.course, r.programme, r.stream || '', r.quota, r.category, r.seats,
+        ...(prev ? [refOf(r)?.p.cmr_close || '', p.rank && refOf(r) ? BAND[chance(r)] || 'Out of reach' : ''] : [])] }
   });
+  if (!prev) return;
+  const cmr = host.querySelector('#x-cmr');
+  cmrFinder(host.querySelector('#x-cf'), info.region, { onSet: n => { cmr.value = n; p.rank = n; x.refresh(); } });
+  cmr.oninput = debounce(() => { cmr.value = cmr.value.replace(/\D/g, '').slice(0, 7); p.rank = parseInt(cmr.value, 10) || 0; x.refresh(); }, 250);
+  host.querySelector('#x-reach').onchange = e => { p.reach = e.target.checked; x.refresh(); };
 }
 
 // MCC's result in its compact form: lists of names, and rows of [rank, inst, state, quota, course, seat cat, candidate cat, college type].
@@ -2063,7 +2211,7 @@ function viewGate(p) {
   view.innerHTML = `<div class="gate">
     <div class="eyebrow" style="display:inline-flex;gap:8px;align-items:center">${icon.lock.replace('<svg', '<svg style="width:13px;height:13px"')} Members' tool</div>
     <h1>Sign up to open ${what}</h1>
-    <p>Your name, mobile or email, NEET-PG CMR and state — then one code. We'll show cut-offs for your state.</p>
+    <p>Your name, mobile or email, NEET-PG rank and state — then one code. We'll show cut-offs for your state.</p>
     <div class="auth-card" id="gate-auth"></div>
   </div>`;
   mountAuth($('#gate-auth'), { mode: 'signup' });
@@ -2137,7 +2285,7 @@ async function coverageMap(box) {
         <strong class="cov-tip-total">${i.total ? fmt(i.total) : '—'}<small>${i.total ? 'PG seats in our data' : 'no seat figures yet'}</small></strong>
         ${i.parts.length ? `<dl>${i.parts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${fmt(v)}</dd></div>`).join('')}</dl>` : ''}
         ${i.note ? `<p>${esc(i.note)}</p>` : ''}
-        ${i.gs.length ? `<span class="cov-tip-go">${matchMedia('(hover: none)').matches ? 'Tap again' : 'Click'} to open the guide ${icon.arrowR}</span>` : ''}`;
+        ${i.gs.length ? `<span class="cov-tip-go">${matchMedia('(hover: none)').matches ? 'Tap again' : 'Click'} to open its counselling roadmap ${icon.arrowR}</span>` : ''}`;
       tip.hidden = false;
     }
     const r = map.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
@@ -2147,7 +2295,7 @@ async function coverageMap(box) {
     tip.style.transform = `translate(${Math.max(8, left)}px, ${Math.max(8, top)}px)`;
   };
   const hide = () => { current = tapped = null; tip.hidden = true; $$('.on', box).forEach(el => el.classList.remove('on')); };
-  const open = st => { const g = info[st]?.gs[0]; if (g) { track('map', { state: st }); location.href = `/counselling/${g.slug}`; } };
+  const open = st => { if (info[st]?.gs.length) { track('map', { state: st }); go(`/roadmap/${slugOf(st)}`); } };
   map.addEventListener('pointermove', e => {
     if (e.pointerType === 'touch') return;
     const st = e.target.closest?.('[data-st]')?.dataset.st;
@@ -2191,7 +2339,7 @@ function viewHome() {
       <div class="eyebrow">NEET-PG counselling · state quota and All India Quota</div>
       <h1>Know where your rank lands <em>before</em> you lock a choice.</h1>
       <p class="hero-lede">Every seat in your state's counselling and the All India Quota — by college, speciality, stream and
-        category — with the ranks that actually got in. Sign up with your NEET-PG CMR and state to see what was within reach.</p>
+        category — with the ranks that actually got in. Sign up with your NEET-PG rank and state to see what was within reach.</p>
       <div class="hero-cta"><a class="btn btn-line btn-lg" href="/method" data-link>How it works</a></div>
     </div>
     <div class="auth-card hero-auth" id="home-auth">
@@ -2216,7 +2364,7 @@ function viewHome() {
         comfortably — before you spend a single preference on them.</p>
     </div>
     <div class="steps">
-      <div class="step"><span class="num">01</span><h3>Sign up with your rank</h3><p>Your NEET-PG CMR and your state. For the All India Quota, enter your NEET All India Rank. Pick your stream and category.</p></div>
+      <div class="step"><span class="num">01</span><h3>Sign up with your rank</h3><p>Your NEET-PG rank (All India Rank) and your state. For state counselling we find your state CMR on the state merit list, or you type it in. Pick your stream and category.</p></div>
       <div class="step"><span class="num">02</span><h3>See what was in reach</h3><p>Every seat in your state that closed at or past your rank, graded from very high to low, with the margin and the round it went in.</p></div>
       <div class="step"><span class="num">03</span><h3>Build your shortlist</h3><p>Star seats, put them in preference order, and export or print the list to take into choice filling.</p></div>
     </div>

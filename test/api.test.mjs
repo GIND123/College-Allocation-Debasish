@@ -42,7 +42,7 @@ function browser() {
     return { status: r.status, headers: r.headers, text, json };
   };
 }
-const signUp = { mode: 'signup', channel: 'phone', name: 'Test Student', cmr: '1592', state: 'Odisha' };
+const signUp = { mode: 'signup', channel: 'phone', name: 'Test Student', air: '15920', state: 'Odisha' };
 const PW = 'good-password-1';
 
 test('guides: index data, pages, redirects and assets', async () => {
@@ -55,7 +55,12 @@ test('guides: index data, pages, redirects and assets', async () => {
   const pdf = await b('/counselling/assets/' + g.json.documents[0].file);
   assert.equal(pdf.status, 200);
   assert.match(pdf.headers.get('content-type'), /application\/pdf/);
-  const page = await b('/counselling/kerala-checklist');
+  // one place per state: a guide opens on its roadmap page; ?original shows the client's own layout
+  const go = await b('/counselling/kerala-checklist');
+  assert.equal(go.status, 302);
+  assert.equal(go.headers.get('location'), '/roadmap/kerala/registration/kerala-checklist');
+  assert.equal((await b('/counselling/kerala-seats')).status, 200, 'a seat tool with no sections still opens as it is');
+  const page = await b('/counselling/kerala-checklist?original');
   assert.equal(page.status, 200);
   assert.match(page.headers.get('content-type'), /text\/html/);
   assert.equal(page.headers.get('cache-control'), 'no-cache');
@@ -93,7 +98,7 @@ test('sign-up keeps the details first, then signs in and clears them from the un
   const att = await student('/api/auth/attempt', { method: 'POST', body: { ...signUp, phone: '9000000101', stage: 'send' } });
   assert.equal(att.status, 200);
   let list = (await admin('/api/admin/attempts')).json.attempts;
-  assert.ok(list.some(a => a.contact === '+919000000101' && a.name === 'Test Student' && a.cmr === 1592 && a.state === 'Odisha'));
+  assert.ok(list.some(a => a.contact === '+919000000101' && a.name === 'Test Student' && a.air === 15920 && a.state === 'Odisha'));
   assert.equal((await student('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000101' } })).status, 200);
   const v = await student('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000101', code: '1234', password: PW } });
   assert.equal(v.status, 200);
@@ -117,7 +122,7 @@ test('a failed code request is kept with its reason, and exports to CSV', async 
 });
 
 test('attempts need the full sign-up details', async () => {
-  const r = await browser()('/api/auth/attempt', { method: 'POST', body: { channel: 'phone', phone: '9000000103', name: 'No State', cmr: '5' } });
+  const r = await browser()('/api/auth/attempt', { method: 'POST', body: { channel: 'phone', phone: '9000000103', name: 'No State', air: '5' } });
   assert.equal(r.status, 400);
 });
 
@@ -213,7 +218,7 @@ test('forgot password sets the new password and keeps the profile', async () => 
   await b('/api/auth/otp/request', { method: 'POST', body: { mode: 'reset', channel: 'phone', phone: '9000000112' } });
   const r = await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000112', code: '1234', password: 'brand-new-pass' } });
   assert.equal(r.status, 200);
-  assert.equal(r.json.user.cmr, 1592);
+  assert.equal(r.json.user.air, 15920);
   const c = browser();
   assert.equal((await c('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000112', password: PW } })).status, 401, 'the old password stops working');
   assert.equal((await c('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000112', password: 'brand-new-pass' } })).status, 200);
@@ -283,6 +288,11 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   assert.equal(all.status, 200);
   assert.equal(all.json.rows.length, 28584);
   assert.deepEqual(all.json.type, ['Government', 'Private'], 'All India allotments carry Govt / private');
+  const aiqSeats = (await k('/api/regions/all-india/data/seat-matrix-round-1')).json.rows;
+  const by = prog => aiqSeats.filter(r => r.programme === prog).reduce((n, r) => n + r.seats, 0);
+  assert.deepEqual([by('MD/MS') + by('DNB') + by('Diploma'), by('DNB') + aiqSeats.filter(r => r.quota === 'DNB Quota' && r.programme === 'Diploma').reduce((n, r) => n + r.seats, 0)], [17445, 9201],
+    'All India seat matrix: DNB 9,201 + deemed 7,537 + central quota 707');
+  assert.ok(aiqSeats.every(r => r.state && ['Government', 'Private'].includes(r.type)));
   const o = browser();
   await o('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000131' } });
   await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000131', code: '1234', password: PW } });
@@ -296,6 +306,26 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   const moved = await v('/counselling/odisha-merit-list');
   assert.equal(moved.status, 301);
   assert.equal(moved.headers.get('location'), '/roadmap/odisha/merit-list');
+  assert.equal((await v('/counselling/dnb-seats')).headers.get('location'), '/roadmap/all-india/round-1/choice-filling');
+  assert.equal((await v('/counselling/odisha-seats')).headers.get('location'), '/roadmap/odisha/round-1/choice-filling', "Odisha's old seat explorer: the revised matrix");
   assert.equal((await v('/counselling/assets/mcc-round1-2026.json')).status, 404, 'the result file is no longer public');
   assert.equal((await v('/roadmap/odisha/round-1')).status, 200);
+});
+
+test('sign-up asks for the NEET-PG rank; the state CMR is separate, saved later and cleared', async () => {
+  const b = browser();
+  const noRank = await b('/api/auth/attempt', { method: 'POST', body: { channel: 'phone', phone: '9000000140', name: 'No Rank', state: 'Odisha' } });
+  assert.equal(noRank.status, 400);
+  assert.match(noRank.json.error, /NEET-PG rank/);
+  await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000140' } });
+  const v = await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000140', code: '1234', password: PW } });
+  assert.equal(v.json.user.air, 15920);
+  assert.equal(v.json.user.cmr, null, 'no state CMR until it is known');
+  const set = await b('/api/me', { method: 'PATCH', body: { cmr: 57 } });
+  assert.equal(set.status, 200);
+  assert.deepEqual([set.json.user.air, set.json.user.cmr], [15920, 57]);
+  const clear = await b('/api/me', { method: 'PATCH', body: { cmr: null } });
+  assert.deepEqual([clear.json.user.air, clear.json.user.cmr], [15920, null]);
+  assert.equal((await b('/api/me', { method: 'PATCH', body: { air: '' } })).status, 200, 'an empty field leaves the rank as it was');
+  assert.equal((await b('/api/me', { method: 'PATCH', body: { air: 'abc' } })).status, 400);
 });

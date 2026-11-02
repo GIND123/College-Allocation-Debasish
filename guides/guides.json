@@ -12,6 +12,11 @@
       "official": "https://mcc.nic.in",
       "dates": [
         {
+          "what": "Round 1 seat matrix: DNB, deemed and central quota",
+          "when": "Final DNB matrix, 14 Oct 2026",
+          "label": "Published"
+        },
+        {
           "what": "Round 1 reporting and joining",
           "when": "26 Oct – 2 Nov · state round 1: 21 Oct – 2 Nov",
           "from": "2026-10-26T00:00:00+05:30",
@@ -33,58 +38,6 @@
           "when": "26 Nov – 1 Dec · locking closes 2 Dec, 10 am",
           "from": "2026-11-26T00:00:00+05:30",
           "to": "2026-12-02T10:00:00+05:30"
-        }
-      ]
-    },
-    {
-      "slug": "dnb-seats",
-      "file": "dnb-seats.html",
-      "region": "All India",
-      "title": "DNB Round 1 seat matrix 2026",
-      "label": "DNB Round 1 seat matrix",
-      "authority": "MCC · DNB quota (NBEMS hospitals)",
-      "summary": "Search all 9,201 Round 1 DNB seats by state, category, hospital, branch and course.",
-      "asOf": "2026-10-14",
-      "official": "https://mcc.nic.in",
-      "dates": [
-        {
-          "what": "Round 1 final seat matrix",
-          "when": "Dated 14 Oct 2026",
-          "label": "Reference"
-        }
-      ]
-    },
-    {
-      "slug": "central-quota-seats",
-      "file": "central-quota-seats.html",
-      "region": "All India",
-      "title": "Central internal quota seat matrix 2026",
-      "label": "Central internal quota seats",
-      "authority": "MCC · internal quota at DU, IP University, BHU and AMU institutes",
-      "summary": "Search 707 MD / MS / Diploma internal-quota seats at central-university institutes.",
-      "official": "https://mcc.nic.in",
-      "dates": [
-        {
-          "what": "Internal quota seat matrix",
-          "when": "Privately circulated copy · confirm on mcc.nic.in",
-          "label": "Reference"
-        }
-      ]
-    },
-    {
-      "slug": "deemed-seats",
-      "file": "deemed-seats.html",
-      "region": "All India",
-      "title": "Deemed university seat matrix 2026 (MD/MS)",
-      "label": "Deemed seat matrix",
-      "authority": "MCC · deemed universities (100% of their PG seats)",
-      "summary": "Search 7,537 MD/MS seats at 54 deemed universities by state, institute, branch and quota.",
-      "official": "https://mcc.nic.in",
-      "dates": [
-        {
-          "what": "Final deemed seat matrix",
-          "when": "54 institutes · 7,537 seats",
-          "label": "Reference"
         }
       ]
     },
@@ -584,6 +537,11 @@
           "to": "2026-10-23T17:00:00+05:30"
         },
         {
+          "what": "Provisional seat matrix",
+          "when": "26 Oct",
+          "label": "Published"
+        },
+        {
           "what": "Provisional merit list",
           "when": "28 Oct, 12 noon · complaints by 29 Oct, 2 pm",
           "on": "2026-10-28T12:00:00+05:30"
@@ -613,24 +571,6 @@
           "what": "Upgraded allotment against vacant seats",
           "when": "8 Nov · report 10 Nov",
           "on": "2026-11-08T00:00:00+05:30"
-        }
-      ]
-    },
-    {
-      "slug": "odisha-seats",
-      "file": "odisha-seats.html",
-      "region": "Odisha",
-      "title": "Odisha PG seat explorer 2026",
-      "label": "Seat explorer",
-      "authority": "AHPGIC Odisha · provisional seat matrix",
-      "summary": "MD/MS, diploma and DNB seats by college, specialty and reservation, with a 2025 vs 2026 comparison.",
-      "asOf": "2026-10-26",
-      "official": "https://www.ahpgic.in",
-      "dates": [
-        {
-          "what": "Provisional seat matrix",
-          "when": "26 Oct",
-          "label": "Published"
         }
       ]
     },
@@ -1855,11 +1795,23 @@
       "date": "2026-10-29",
       "text": "Round 1 eligible-candidate lists: CMC 20% and PwD (Government quota); CMC 50%, NRI, Telugu and Malayalam minority (Management quota).",
       "doc": "tamil-nadu/round1-cmc-50-eligible.pdf"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-02",
+      "text": "All India Round 1 seat matrix on the roadmap: 17,445 DNB, deemed university and central quota seats, with MD/MS, DNB and diploma tabs and Govt / private and state filters.",
+      "link": "/roadmap/all-india/round-1/choice-filling"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-02",
+      "text": "Your chance at every Round 1 seat: the revised seat matrix now grades each seat against its 2025 closing CMR. Choice locking closes 3 Nov, 11:55 pm.",
+      "link": "/roadmap/odisha/round-1/choice-filling"
     }
   ],
   "highlight": {
-    "eyebrow": "New · Counselling roadmap",
-    "text": "Each state's counselling in one layout: dates, guide, merit list, seat matrix and allotments. Odisha's revised seat matrix and the MCC Round 1 result are in.",
+    "eyebrow": "New · Round 1 choice filling",
+    "text": "Odisha: your chance at every seat of the revised seat matrix. All India: 17,445 DNB, deemed and central quota seats, and every Round 1 allotment.",
     "href": "/roadmap",
     "go": "Open the roadmap"
   },
@@ -1998,6 +1950,15 @@
       "title": "MCC Round 1 result",
       "date": "2026-10-24",
       "file": "all-india/allotment-round1.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "All India",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix: DNB, deemed universities and central quota",
+      "date": "2026-10-14",
+      "file": "all-india/seat-matrix-round1.json"
     }
   ]
 }

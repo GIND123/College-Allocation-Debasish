@@ -2,7 +2,7 @@
 
 PG medical counselling cut-off predictor. It covers state counselling (CMR) and the All India Quota (NEET AIR), with:
 
-- a sign-up page that opens the site: name, mobile or email (one-time code), NEET-PG CMR and state
+- a sign-up page that opens the site: name, mobile or email (one-time code), NEET-PG rank (All India Rank) and state
 - All India Quota data for every candidate; state counselling data for the candidate's own state only (other states stay locked)
 - programme buttons (MD/MS, DNB, diploma) on the predictions and the cut-off table
 - a shortlist builder
@@ -86,9 +86,11 @@ Without these, and with `AUTH_PROVIDER=firebase`, the sign-up form offers mobile
 
 ## Sign-up and states
 
-The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, a password, their NEET-PG CMR and their state. The CMR is pre-filled into the predictor. The state decides which state counselling data they see: a candidate who chose Karnataka sees only state datasets tagged Karnataka, and gets a "coming soon" page until one is published. All India Quota datasets (tagged "All India", or with a state for older per-state files) are open to every candidate; other states' counselling data stays locked (planned as a premium service). Candidates can change their state, CMR or name from the account menu (Edit profile).
+The home page opens with the sign-up form. Every candidate gives their name, a mobile number or email, a password, their NEET-PG rank (All India Rank) and their state. The rank is pre-filled into the All India Quota predictor.
 
-Accounts created before sign-up asked for CMR and state are asked to complete their profile the next time they open the predictor.
+The **state CMR** (the rank on the state merit list) is a different number and is not asked at sign-up. Where we hold the state's merit list (Odisha), "Find my CMR" on the predictor, the merit list and the seat matrix looks the candidate up by their NEET-PG rank, or by name, and saves the CMR (and the stream: direct or in-service) to their profile with one click. Elsewhere the candidate types it from the state merit list and saves it. Accounts from before this split had typed their NEET-PG rank into the old "NEET-PG CMR" field; those values moved to the NEET-PG rank, and the state CMR starts empty. The state decides which state counselling data they see: a candidate who chose Karnataka sees only state datasets tagged Karnataka, and gets a "coming soon" page until one is published. All India Quota datasets (tagged "All India", or with a state for older per-state files) are open to every candidate; other states' counselling data stays locked (planned as a premium service). Candidates can change their name, NEET-PG rank, state or state CMR from the account menu (Edit profile).
+
+Accounts created before sign-up asked for a rank and state are asked to complete their profile the next time they open the predictor.
 
 ## Passwords
 
@@ -97,7 +99,7 @@ Accounts created before sign-up asked for CMR and state are asked to complete th
 - **Forgot password:** mobile number and a new password, then a one-time code. Accounts made before passwords existed use this to set one.
 - **Keep me logged in** (ticked by default, and remembered on the device): signed in for 30 days. Unticked, the sign-in ends when the browser closes (and after 12 hours at most).
 
-Where passwords live: the free Render plan wipes the server's database on every restart, so passwords for mobile accounts are kept on the student's **Firebase** account, which never resets. Firebase holds passwords against an email address, so each account uses one made from its verified number (`919876543210@phone.rankround.com`); students never see it, and no mail is sent to it. The student's name, CMR and state are kept on the Firebase account too (display name and profile link), so a returning student's profile comes back after a restart. Email accounts, and every account in local test mode, keep a scrypt hash in the server's database instead.
+Where passwords live: the free Render plan wipes the server's database on every restart, so passwords for mobile accounts are kept on the student's **Firebase** account, which never resets. Firebase holds passwords against an email address, so each account uses one made from its verified number (`919876543210@phone.rankround.com`); students never see it, and no mail is sent to it. The student's name, NEET-PG rank, state CMR and state are kept on the Firebase account too (display name and profile link), so a returning student's profile comes back after a restart. Email accounts, and every account in local test mode, keep a scrypt hash in the server's database instead.
 
 If Email/Password isn't switched on in Firebase, sign-up and "Forgot password" still sign the student in with their code and say the password couldn't be saved; sign-in with a password sends a one-time code instead and signs the student in with that, keeping the password they typed for when it can be saved.
 
@@ -182,12 +184,15 @@ The searchable MCC Round 1 result and the Odisha merit list used to be guide pag
 
 ## Counselling roadmap pages
 
+Each state's counselling lives in one place. A link to a guide (`/counselling/odisha`) opens it on its roadmap page, in the Registration tab; `/counselling/<slug>?original` still shows the page exactly as the client wrote it. Seat and merit-list tools without sections (Kerala, Uttarakhand, …) open as they are. Odisha's provisional seat explorer and the All India DNB, deemed and central-quota explorers have been replaced by the seat matrices on the roadmap pages, and their old addresses redirect there.
+
 `/roadmap/<region>` is one page per region (`all-india`, `odisha`, `tamil-nadu`, …; `/roadmap` opens the candidate's own state), all in the same layout:
 
 - **Important dates** down the side: the region's guide dates in date order, each with its status; closed ones fold away behind "View all dates".
 - **The six stages** (Registration, Merit List, Round 1, Round 2, Round 3, Stray Vacancy), each Completed, Current stage or Upcoming, from `"progress"` in `guides/guides.json`, and a tab for each (`/roadmap/odisha/merit-list`, `/roadmap/odisha/round-1/allotment`).
 - **Registration**: the region's guides section by section. Every guide is split at its `<h2>` headings (`server/sections.js`) and each section is cleaned down to plain content (paragraphs, lists, tables, emphasis, links out) so all guides read in RankRound's own type. "At a glance" shows a card per section; the original page stays one click away.
-- **Merit List** and each **round** (choice filling with the seat matrix, allotment, joining): a filterable table with the programme tabs (MD/MS, DNB, diploma), filters, search and an Excel (CSV) download, or "available soon" with the official PDFs.
+- **Merit List** and each **round** (choice filling with the seat matrix, allotment, joining): a filterable table with the programme tabs (MD/MS, DNB, diploma), filters, search and an Excel (CSV) download, or "available soon" with the official PDFs. Each dropdown offers only what the other filters leave.
+- **Predictions on the seat matrix**: for a candidate's own state, each seat of this year's matrix is graded for their state CMR against last year's closing rank for the same college, course, stream and category (or, where that category had no seat, the same seat's unreserved closing rank, a stricter yardstick), with "Only seats in reach, best chances first".
 
 Guides, stages and dates are public. The data needs an account: All India data for every candidate, a state's data for candidates registered for that state; a candidate from another state sees a locked card (the server refuses with 403).
 
@@ -205,6 +210,8 @@ The data files are JSON in `server/region-data/` (not served as static files):
 - **merit**: `{ "lists": [{ "label", "programme", "type", "rows": [{ "name", "roll", "app", "cat", "sub", "score", "weight", "total", "air", "ranks": { "UR": 1, … }, "reason" }] }] }`
 - **seats**: `{ "rows": [{ "college", "type", "course", "programme", "stream", "quota", "category", "seats" }] }`
 - **allotment**: MCC's compact form, `{ "format": "mcc", "inst", "full", "state", "quota", "course", "cat", "cand", "type", "rows": [[rank, inst, state, quota, course, cat, cand, type]] }`
+
+The All India Round 1 seat matrix combines the client's three MCC files: 9,201 DNB seats at NBEMS hospitals (diploma flagged), 7,537 deemed university seats and 707 central-university internal quota seats (17,445 in all; the 50% All India Quota seats at government colleges are not in them).
 
 Built so far: Odisha's provisional merit list (28 Oct; 1,216 direct, 312 in-service, 185 PMN diploma and 34 rejected, extracted from the PDF's tables and checked row by row), Odisha's revised Round 1 seat matrix (31 Oct, No. 65; every cell checked against the printed category split and totals: 193 + 39 management direct, 193 + 38 management in-service) and the MCC Round 1 result (28,584 allotments).
 
@@ -240,6 +247,8 @@ Each upload is validated, and you see a preview before anything is saved. Messy 
 
 Every dataset is tagged with a state when it is uploaded. A published dataset is shown to candidates who chose that state, newest year first. The state can be changed later under the dataset's details. Individual rows can be corrected in the row editor.
 
+State counselling lists don't say who runs a college, so the predictor's **Govt / private** filter for them comes from a list of the private colleges in the built-in data (`PRIVATE_COLLEGE` in `public/js/app.js`; add new private colleges there). When a saved filter doesn't exist in another dataset (a branch spelled differently in 2025 and 2026), it is cleared rather than leaving an empty table.
+
 State cut-off files can carry an optional **Quota** column (for example Government, University, Management, NRI, In-service, as in Gujarat). It becomes a filter in the predictor. If a state publishes only the last admitted rank, put the same number in CMR opening and closing and leave **Seats** blank: the site then shows "last admitted" and "not published" rather than inventing a range, and grades a rank by how far inside that closing rank it is (see Method).
 
 All India files can carry the same optional **Quota** column (MCC's All India, Self-Financed Merit Seat, DNB Quota, NRI, university quotas…); it becomes a filter too.
@@ -259,7 +268,7 @@ The dashboard shows:
 - speciality and college interest
 - traffic sources, devices and pages
 
-**Leads** lists everyone who verified a mobile or email, with their state, NEET-PG CMR, last search, shortlist and activity timeline, and exports to CSV. The **Didn't verify** tab lists students who filled in the sign-up form and asked for a code but never got in, with what went wrong (code not entered, SMS limit reached, site address not authorised in Firebase, …), so a counsellor can still follow up. A student moves to Signed up as soon as they verify. The overview also shows sign-ups by state and by contact type (mobile or email).
+**Leads** lists everyone who verified a mobile or email, with their state, NEET-PG rank, state CMR, last search, shortlist and activity timeline, and exports to CSV. The **Didn't verify** tab lists students who filled in the sign-up form and asked for a code but never got in, with what went wrong (code not entered, SMS limit reached, site address not authorised in Firebase, …), so a counsellor can still follow up. A student moves to Signed up as soon as they verify. The overview also shows sign-ups by state and by contact type (mobile or email).
 
 ## Deploying
 

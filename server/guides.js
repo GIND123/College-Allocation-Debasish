@@ -86,8 +86,8 @@ function validate(data) {
   const ids = new Set();
   for (const d of data.data || []) {
     const where = `guides/guides.json, data "${d.id}"`;
-    if (!SLUG.test(d.id || '') || ids.has(d.id)) throw new Error(`${where}: needs a unique id in lower-case words joined by hyphens.`);
-    ids.add(d.id);
+    if (!SLUG.test(d.id || '') || ids.has(d.region + '/' + d.id)) throw new Error(`${where}: needs an id, unique within its region, in lower-case words joined by hyphens.`);
+    ids.add(d.region + '/' + d.id);
     if (!region(d.region) || !DATA_KINDS[d.kind] || !d.title) throw new Error(`${where}: needs a region, a title and a kind (${Object.keys(DATA_KINDS).join(', ')}).`);
     if (d.kind !== 'merit' && !STAGES.slice(2).includes(d.round)) throw new Error(`${where}: "round" must be one of ${STAGES.slice(2).join(', ')}.`);
     if (!/^[\w-]+(\/[\w.-]+)+$/.test(d.file || '') || !fs.existsSync(path.join(DATA_DIR, d.file))) throw new Error(`${where}: file "${d.file}" is not in server/region-data/.`);

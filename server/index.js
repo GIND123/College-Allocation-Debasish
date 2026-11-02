@@ -11,7 +11,8 @@ import {
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, ALL_INDIA, normState } from './states.js';
 import { registry, guideList, compareTable, roadmap, stateSeats, documents, updates, guidePage, GUIDES_DIR } from './guides.js';
-import { regionOf, regionInfo, sectionOf, regionData, access } from './regions.js';
+import { regionOf, regionKey, regionInfo, sectionOf, regionData, access } from './regions.js';
+import { sections } from './sections.js';
 
 registry(); // a malformed guides/guides.json stops the server here, with the reason
 
@@ -131,9 +132,10 @@ app.get('/api/me', (req, res) => res.json({ user: publicUser(req.user) }));
 app.patch('/api/me', requireUser, (req, res) => {
   const p = readProfile(req.body || {});
   const u = { ...req.user, ...p };
-  if (!u.name || !u.cmr || !u.state) throw new HttpError(400, 'Enter your name, NEET-PG CMR and state.');
-  db.prepare('UPDATE users SET name = ?, cmr = ?, state = ? WHERE id = ?').run(u.name, u.cmr, u.state, u.id);
-  if (u.state !== req.user.state || u.cmr !== req.user.cmr) record(req, 'profile_update', { state: u.state, cmr: u.cmr });
+  if (!u.name || !u.air || !u.state) throw new HttpError(400, 'Enter your name, NEET-PG rank and state.');
+  db.prepare('UPDATE users SET name = ?, air = ?, cmr = ?, state = ? WHERE id = ?').run(u.name, u.air, u.cmr ?? null, u.state, u.id);
+  if (u.state !== req.user.state || u.cmr !== req.user.cmr || u.air !== req.user.air)
+    record(req, 'profile_update', { state: u.state, air: u.air, cmr: u.cmr ?? null });
   res.json({ user: publicUser(u) });
 });
 
@@ -228,7 +230,7 @@ app.get('/api/admin/analytics', (req, res) => {
 // ---- leads -------------------------------------------------------------
 function leads(q) {
   const like = '%' + String(q || '').trim() + '%';
-  return db.prepare(`SELECT u.id, u.name, u.phone, u.email, u.cmr, u.state, u.created_at, u.last_seen_at, u.logins,
+  return db.prepare(`SELECT u.id, u.name, u.phone, u.email, u.air, u.cmr, u.state, u.created_at, u.last_seen_at, u.logins,
       (SELECT COUNT(*) FROM events e WHERE e.user_id = u.id AND e.type = 'predict') predictions,
       (SELECT props FROM events e WHERE e.user_id = u.id AND e.type = 'predict' ORDER BY e.ts DESC LIMIT 1) last_predict,
       (SELECT COUNT(*) FROM shortlist s WHERE s.user_id = u.id) shortlisted
@@ -236,7 +238,7 @@ function leads(q) {
     ORDER BY u.created_at DESC LIMIT 2000`).all(like, like, like, like)
     .map(u => {
       const p = u.last_predict ? JSON.parse(u.last_predict) : {};
-      return { id: u.id, name: u.name, phone: u.phone, email: u.email, cmr: u.cmr, state: u.state,
+      return { id: u.id, name: u.name, phone: u.phone, email: u.email, air: u.air, cmr: u.cmr, state: u.state,
         createdAt: u.created_at, lastSeenAt: u.last_seen_at, logins: u.logins,
         predictions: u.predictions, shortlisted: u.shortlisted,
         lastScope: p.scope || '', lastRank: p.rank || null, lastStream: p.stream || '', lastCategory: p.category || '' };
@@ -254,8 +256,8 @@ app.get('/api/admin/leads', (req, res) => {
   const list = leads(req.query.q);
   if (req.query.format !== 'csv') return res.json({ leads: list });
   sendCsv(res, `rankround-leads-${new Date().toISOString().slice(0, 10)}.csv`, csv(
-    ['Name', 'Mobile', 'Email', 'State', 'NEET-PG CMR', 'Signed up (IST)', 'Last active (IST)', 'Sign-ins', 'Predictions', 'Shortlisted', 'Last counselling', 'Last rank', 'Last stream', 'Last category'],
-    list.map(l => [l.name, l.phone, l.email, l.state, l.cmr ?? '', istDate(l.createdAt), istDate(l.lastSeenAt), l.logins, l.predictions, l.shortlisted,
+    ['Name', 'Mobile', 'Email', 'State', 'NEET-PG rank (AIR)', 'State CMR', 'Signed up (IST)', 'Last active (IST)', 'Sign-ins', 'Predictions', 'Shortlisted', 'Last counselling', 'Last rank', 'Last stream', 'Last category'],
+    list.map(l => [l.name, l.phone, l.email, l.state, l.air ?? '', l.cmr ?? '', istDate(l.createdAt), istDate(l.lastSeenAt), l.logins, l.predictions, l.shortlisted,
       l.lastScope === 'state' ? 'State' : l.lastScope === 'aiq' ? 'AIQ' : '', l.lastRank ?? '', l.lastStream, l.lastCategory])));
 });
 app.get('/api/admin/leads/:id', (req, res) => {
@@ -264,7 +266,7 @@ app.get('/api/admin/leads/:id', (req, res) => {
   if (!u) throw new HttpError(404, 'Not found.');
   const activity = db.prepare(`SELECT ts, type, path, props FROM events WHERE user_id = ? AND type <> 'pageview' ORDER BY ts DESC LIMIT 40`).all(id)
     .map(e => ({ ...e, props: JSON.parse(e.props) }));
-  res.json({ user: { id: u.id, name: u.name, phone: u.phone, email: u.email, cmr: u.cmr, state: u.state,
+  res.json({ user: { id: u.id, name: u.name, phone: u.phone, email: u.email, air: u.air, cmr: u.cmr, state: u.state,
     createdAt: u.created_at, lastSeenAt: u.last_seen_at, logins: u.logins },
     shortlist: shortlistOf(id), activity });
 });
@@ -276,22 +278,22 @@ app.delete('/api/admin/leads/:id', (req, res) => {
 // Sign-ups that never verified: the latest attempt per contact that has no account.
 function attempts(q) {
   const like = '%' + String(q || '').trim() + '%';
-  return db.prepare(`SELECT a.id, a.contact, a.channel, a.name, a.cmr, a.state, a.error, a.created_at, a.updated_at
+  return db.prepare(`SELECT a.id, a.contact, a.channel, a.name, a.air, a.state, a.error, a.created_at, a.updated_at
     FROM signup_attempts a
     WHERE a.verified_at IS NULL
       AND a.id = (SELECT MAX(b.id) FROM signup_attempts b WHERE b.contact = a.contact)
       AND NOT EXISTS (SELECT 1 FROM users u WHERE u.phone = a.contact OR u.email = a.contact)
       AND (a.contact LIKE ? OR a.name LIKE ? OR a.state LIKE ?)
     ORDER BY a.updated_at DESC LIMIT 2000`).all(like, like, like)
-    .map(a => ({ id: a.id, name: a.name, contact: a.contact, channel: a.channel, cmr: a.cmr, state: a.state, error: a.error,
+    .map(a => ({ id: a.id, name: a.name, contact: a.contact, channel: a.channel, air: a.air, state: a.state, error: a.error,
       createdAt: a.created_at, updatedAt: a.updated_at }));
 }
 app.get('/api/admin/attempts', (req, res) => {
   const list = attempts(req.query.q);
   if (req.query.format !== 'csv') return res.json({ attempts: list });
   sendCsv(res, `rankround-unverified-${new Date().toISOString().slice(0, 10)}.csv`, csv(
-    ['Name', 'Mobile or email', 'State', 'NEET-PG CMR', 'First tried (IST)', 'Last tried (IST)', 'Problem'],
-    list.map(a => [a.name, a.contact, a.state, a.cmr ?? '', istDate(a.createdAt), istDate(a.updatedAt), a.error || 'Code not entered'])));
+    ['Name', 'Mobile or email', 'State', 'NEET-PG rank (AIR)', 'First tried (IST)', 'Last tried (IST)', 'Problem'],
+    list.map(a => [a.name, a.contact, a.state, a.air ?? '', istDate(a.createdAt), istDate(a.updatedAt), a.error || 'Code not entered'])));
 });
 app.delete('/api/admin/attempts/:id', (req, res) => {
   const a = db.prepare('SELECT contact FROM signup_attempts WHERE id = ?').get(int(req.params.id));
@@ -464,10 +466,16 @@ app.get(['/admin', '/admin/'], page('admin.html'));
 // Counselling guides: one page per guide, framed by server/guides.js.
 app.get('/counselling.html', (_req, res) => res.redirect(301, '/counselling'));
 app.use('/counselling/assets', express.static(path.join(GUIDES_DIR, 'assets'), { index: false, maxAge: '1d' }));
-// The searchable result and merit list pages moved into the roadmap pages, behind sign-in.
-const MOVED = { 'mcc-round1-result': '/roadmap/all-india/round-1/allotment', 'odisha-merit-list': '/roadmap/odisha/merit-list' };
+// The searchable result, merit list and All India seat explorers moved into the roadmap pages, behind sign-in.
+const MOVED = { 'mcc-round1-result': '/roadmap/all-india/round-1/allotment', 'odisha-merit-list': '/roadmap/odisha/merit-list',
+  ...Object.fromEntries(['dnb-seats', 'deemed-seats', 'central-quota-seats'].map(s => [s, '/roadmap/all-india/round-1/choice-filling'])),
+  'odisha-seats': '/roadmap/odisha/round-1/choice-filling' };
 app.get('/counselling/:slug', (req, res) => {
   if (MOVED[req.params.slug]) return res.redirect(301, MOVED[req.params.slug]);
+  // One place per state: a guide opens in its roadmap page, section by section; "?original" shows the page as the client wrote it.
+  const g = registry().guides.find(x => x.slug === req.params.slug);
+  if (g && !('original' in req.query) && sections(path.join(GUIDES_DIR, g.file)).length)
+    return res.redirect(302, `/roadmap/${regionKey(g.region)}/registration/${g.slug}`);
   const html = guidePage(req.params.slug);
   if (!html) return res.redirect(302, '/counselling');
   res.set('Cache-Control', 'no-cache').type('html').send(html);

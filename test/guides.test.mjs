@@ -9,9 +9,9 @@ test('the registry lists every guide with a valid region and file', () => {
   assert.ok(guides.length >= 13);
   assert.equal(new Set(guides.map(g => g.slug)).size, guides.length, 'slugs are unique');
   for (const g of guideList()) assert.equal('file' in g, false, `${g.slug}: file names stay private`);
-  for (const s of ['bihar', 'madhya-pradesh', 'maharashtra', 'rajasthan', 'rims-imphal', 'tamil-nadu-dnb', 'deemed-seats',
+  for (const s of ['bihar', 'madhya-pradesh', 'maharashtra', 'rajasthan', 'rims-imphal', 'tamil-nadu-dnb',
     'chhattisgarh', 'dadra-nagar-haveli', 'puducherry', 'uttar-pradesh', 'uttarakhand', 'uttarakhand-seats',
-    'himachal-pradesh', 'kerala-seats', 'madhya-pradesh-fees', 'odisha-seats', 'rajasthan-bond', 'uttarakhand-nri'])
+    'himachal-pradesh', 'kerala-seats', 'madhya-pradesh-fees', 'rajasthan-bond', 'uttarakhand-nri'])
     assert.ok(guides.some(g => g.slug === s), `${s} is listed`);
 });
 
