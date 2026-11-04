@@ -24,15 +24,15 @@
         },
         {
           "what": "Round 2 seat matrix verified by institutes",
-          "when": "4–5 Nov (moved from 6–7 Nov)",
-          "from": "2026-11-04T00:00:00+05:30",
-          "to": "2026-11-05T23:59:00+05:30"
+          "when": "By 6 Nov, with the seats newly approved by NMC",
+          "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-06T23:59:00+05:30"
         },
         {
           "what": "Round 2 registration and choices",
-          "when": "6–11 Nov · locking closes 12 Nov, 10 am",
-          "from": "2026-11-06T00:00:00+05:30",
-          "to": "2026-11-12T10:00:00+05:30"
+          "when": "Expected from 7 Nov (revised schedule awaited)",
+          "from": "2026-11-07T00:00:00+05:30",
+          "label": "Awaited"
         },
         {
           "what": "Round 2 result",
@@ -170,8 +170,8 @@
         },
         {
           "what": "Round 1 result",
-          "when": "4 Nov · admission 6–9 Nov",
-          "on": "2026-11-04T00:00:00+05:30"
+          "when": "6 Nov (revised schedule)",
+          "on": "2026-11-06T00:00:00+05:30"
         },
         {
           "what": "Round 2 result",
@@ -257,6 +257,12 @@
           "what": "Round 1 selected list",
           "when": "31 Oct · report 2 Nov, join by 10 Nov",
           "on": "2026-10-31T00:00:00+05:30"
+        },
+        {
+          "what": "Admission confirmation",
+          "when": "2–10 Nov at NAMO MERI, Silvassa",
+          "from": "2026-11-02T09:00:00+05:30",
+          "to": "2026-11-10T23:59:00+05:30"
         }
       ]
     },
@@ -405,9 +411,14 @@
         },
         {
           "what": "Round 1 option entry (mock round)",
-          "when": "Until 2 Nov · deadline shown in the KEA candidate login",
+          "when": "Extended to 3 Nov, noon",
           "from": "2026-10-30T00:00:00+05:30",
-          "to": "2026-11-02T16:00:00+05:30"
+          "to": "2026-11-03T12:00:00+05:30"
+        },
+        {
+          "what": "Mock allotment",
+          "when": "3 Nov · republished after corrections",
+          "on": "2026-11-03T00:00:00+05:30"
         },
         {
           "what": "Change options after the mock allotment",
@@ -468,6 +479,12 @@
           "when": "31 Oct · complaints by email before 2 Nov, 10 am",
           "from": "2026-10-31T00:00:00+05:30",
           "to": "2026-11-02T10:00:00+05:30"
+        },
+        {
+          "what": "Round 1 final allotment: join",
+          "when": "By 10 Nov, 4 pm",
+          "from": "2026-11-02T00:00:00+05:30",
+          "to": "2026-11-10T16:00:00+05:30"
         }
       ]
     },
@@ -504,6 +521,11 @@
           "what": "Round 1 schedule",
           "when": "See the DME notice on dme.mponline.gov.in",
           "label": "Awaited"
+        },
+        {
+          "what": "Round 1 reporting withheld (High Court order)",
+          "when": "Next hearing 5 Nov, 2:30 pm",
+          "on": "2026-11-05T14:30:00+05:30"
         }
       ]
     },
@@ -549,19 +571,18 @@
         },
         {
           "what": "Final merit list and Round 1 seat matrix",
-          "when": "1 Nov",
-          "on": "2026-11-01T00:00:00+05:30"
+          "when": "3 Nov",
+          "on": "2026-11-03T00:00:00+05:30"
         },
         {
           "what": "Round 1 choice filling",
-          "when": "2–4 Nov, 11:59 pm",
-          "from": "2026-11-02T00:00:00+05:30",
-          "to": "2026-11-04T23:59:00+05:30"
+          "when": "Dates per the revised schedule of 30 Oct",
+          "label": "Awaited"
         },
         {
           "what": "Round 1 allotment",
-          "when": "5 Nov · join 6–10 Nov, 5:30 pm",
-          "on": "2026-11-05T00:00:00+05:30"
+          "when": "Per the revised schedule of 30 Oct",
+          "label": "Awaited"
         }
       ]
     },
@@ -579,6 +600,12 @@
           "what": "All India Quota seats",
           "when": "Allotted through MCC counselling",
           "label": "Reference"
+        },
+        {
+          "what": "RIMS Round 1: registration, choices and documents",
+          "when": "3–10 Nov",
+          "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-10T23:59:00+05:30"
         }
       ]
     },
@@ -709,6 +736,12 @@
           "what": "Round 1 allotment",
           "when": "2 Nov · report 3–6 Nov at SMS MC, Jaipur",
           "on": "2026-11-02T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 reporting and fee payment",
+          "when": "From 3 Nov",
+          "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-06T23:59:00+05:30"
         }
       ]
     },
@@ -750,6 +783,11 @@
           "what": "Round 1 provisional rank lists (GQ and MQ)",
           "when": "28 Oct · in Official documents",
           "on": "2026-10-28T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 PwD allotment",
+          "when": "31 Oct · in Official documents",
+          "on": "2026-10-31T00:00:00+05:30"
         },
         {
           "what": "Round 1 registration, choice filling and locking",
@@ -830,8 +868,8 @@
       "dates": [
         {
           "what": "Counselling schedule",
-          "when": "See upneet.gov.in and dgme.up.gov.in",
-          "label": "Awaited"
+          "when": "Round 1 schedule of 17 Oct · in Official documents",
+          "label": "Published"
         },
         {
           "what": "OBC and EWS certificates",
@@ -842,6 +880,17 @@
           "what": "Round 1 choice filling",
           "when": "Closed 31 Oct, 5 pm (extended)",
           "to": "2026-10-31T17:00:00+05:30"
+        },
+        {
+          "what": "Round 1 allotment",
+          "when": "2 Nov · MD/MS, diploma and DNB",
+          "on": "2026-11-02T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 reporting and allotment letter",
+          "when": "3–7 Nov and 12–13 Nov",
+          "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-13T23:59:00+05:30"
         }
       ]
     },
@@ -879,8 +928,14 @@
         },
         {
           "what": "Round 1 result",
-          "when": "2 Nov, after 8 pm · join by 10 Nov",
-          "on": "2026-11-02T00:00:00+05:30"
+          "when": "3 Nov · letters after 4 pm on 4 Nov; discrepancies until 4 Nov, 2 pm",
+          "on": "2026-11-03T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 reporting (including NRI)",
+          "when": "3–10 Nov",
+          "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-10T23:59:00+05:30"
         }
       ]
     },
@@ -1116,23 +1171,15 @@
         "name": "Round 2",
         "from": "2026-11-03T00:00:00+05:30",
         "to": "2026-11-23T23:59:00+05:30",
-        "detail": "Institutes verify the seat matrix 4–5 Nov (moved from 6–7 Nov). Registration 6–11 Nov, choice locking until 12 Nov, 10 am, result 14 Nov, joining 16–23 Nov. Not joining or resigning forfeits the security deposit.",
+        "detail": "Seats newly approved by NMC were sent to MCC on 3 Nov; institutes verify the seat matrix by 6 Nov and Round 2 is expected from 7 Nov (revised schedule awaited). Not joining or resigning forfeits the security deposit.",
         "events": [
           {
             "what": "Seat matrix verified by institutes",
-            "when": "4–5 Nov"
+            "when": "By 6 Nov"
           },
           {
             "what": "Registration",
-            "when": "6–11 Nov"
-          },
-          {
-            "what": "Result",
-            "when": "14 Nov"
-          },
-          {
-            "what": "Joining / upload",
-            "when": "16–23 Nov"
+            "when": "From 7 Nov (expected)"
           },
           {
             "what": "Academic session begins",
@@ -1537,11 +1584,11 @@
     },
     {
       "region": "Uttarakhand",
-      "title": "Round 1 provisional merit list",
+      "title": "Round 1 merit list (MD/MS, updated)",
       "file": "uttarakhand/round1-provisional-merit-list.pdf",
-      "date": "2026-10-28",
+      "date": "2026-10-30",
       "kind": "Merit list",
-      "kb": 848
+      "kb": 765
     },
     {
       "region": "Uttarakhand",
@@ -1657,7 +1704,7 @@
     },
     {
       "region": "Tamil Nadu",
-      "title": "Government quota: candidates eligible for CMC 20%",
+      "title": "Government quota: candidates eligible for CMC 20% (revised)",
       "file": "tamil-nadu/round1-cmc-20-eligible.pdf",
       "date": "2026-10-29",
       "kind": "Merit list",
@@ -1681,15 +1728,15 @@
     },
     {
       "region": "Tamil Nadu",
-      "title": "Management quota: candidates eligible for NRI quota",
+      "title": "Management quota: candidates eligible for NRI quota (revised)",
       "file": "tamil-nadu/round1-nri-eligible.pdf",
       "date": "2026-10-29",
       "kind": "Merit list",
-      "kb": 82
+      "kb": 84
     },
     {
       "region": "Tamil Nadu",
-      "title": "Management quota: Telugu minority eligible candidates",
+      "title": "Management quota: Telugu minority eligible candidates (revised)",
       "file": "tamil-nadu/round1-telugu-minority-eligible.pdf",
       "date": "2026-10-29",
       "kind": "Merit list",
@@ -1710,6 +1757,454 @@
       "date": "2026-10-31",
       "kind": "Seat matrix",
       "kb": 710
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 1 online application notice, rules and seat roster",
+      "file": "chhattisgarh/round1-application-notice-and-seat-roster.pdf",
+      "date": "2026-10-21",
+      "kind": "Notice",
+      "kb": 4605
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "NRI quota: document verification notice",
+      "file": "chhattisgarh/nri-quota-document-verification.pdf",
+      "date": "2026-10-21",
+      "kind": "Notice",
+      "kb": 515
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "GMC Rajnandgaon: revised seat matrix",
+      "file": "chhattisgarh/gmc-rajnandgaon-revised-seat-matrix.pdf",
+      "date": "2026-10-22",
+      "kind": "Seat matrix",
+      "kb": 13
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 1 provisional merit list (MD/MS)",
+      "file": "chhattisgarh/round1-provisional-merit-list.pdf",
+      "date": "2026-10-30",
+      "kind": "Merit list",
+      "kb": 1826
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 1 provisional allotment, with the joining schedule",
+      "file": "chhattisgarh/round1-allotment.pdf",
+      "date": "2026-10-31",
+      "kind": "Allotment",
+      "kb": 1109
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Prospectus: PG degree and diploma, Government quota",
+      "file": "tamil-nadu/prospectus-government-quota.pdf",
+      "date": "2026-10-07",
+      "kind": "Rules",
+      "kb": 3326
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Prospectus: Management quota, including NRI",
+      "file": "tamil-nadu/prospectus-management-quota.pdf",
+      "date": "2026-10-07",
+      "kind": "Rules",
+      "kb": 2491
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Prospectus: DNB and 2-year diploma for service candidates",
+      "file": "tamil-nadu/prospectus-dnb-diploma.pdf",
+      "date": "2026-10-07",
+      "kind": "Rules",
+      "kb": 3305
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Not eligible for the Government quota",
+      "file": "tamil-nadu/not-eligible-government-quota.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 90
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Not eligible for the Management quota",
+      "file": "tamil-nadu/not-eligible-management-quota.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 78
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Claimed but not eligible for CMC 20%",
+      "file": "tamil-nadu/not-eligible-cmc-20.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 61
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Not eligible for PwD seats",
+      "file": "tamil-nadu/not-eligible-pwd.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 56
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Not eligible for the NRI quota",
+      "file": "tamil-nadu/not-eligible-nri.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 79
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Not eligible for Malayalam and Telugu minority seats",
+      "file": "tamil-nadu/not-eligible-malayalam-telugu-minority.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 113
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Not eligible for Christian minority seats",
+      "file": "tamil-nadu/not-eligible-christian-minority.pdf",
+      "date": "2026-10-27",
+      "kind": "Merit list",
+      "kb": 61
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Service (incentive) marks for in-service candidates",
+      "file": "tamil-nadu/service-marks.pdf",
+      "date": "2026-10-28",
+      "kind": "Merit list",
+      "kb": 119
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Rank list: DNB and 2-year diploma (service candidates)",
+      "file": "tamil-nadu/rank-list-dnb-diploma.pdf",
+      "date": "2026-10-28",
+      "kind": "Merit list",
+      "kb": 19
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Management quota: Christian minority eligible candidates",
+      "file": "tamil-nadu/round1-christian-minority-eligible.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 84
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Addendum 1 to the Government quota rank list",
+      "file": "tamil-nadu/addendum-1-government-quota.pdf",
+      "date": "2026-10-31",
+      "kind": "Merit list",
+      "kb": 3
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Addendum 2 to the Government quota rank list",
+      "file": "tamil-nadu/addendum-2-government-quota.pdf",
+      "date": "2026-10-31",
+      "kind": "Merit list",
+      "kb": 4
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Addendum 3 to the Government quota rank list",
+      "file": "tamil-nadu/addendum-3-government-quota.pdf",
+      "date": "2026-11-02",
+      "kind": "Merit list",
+      "kb": 8
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Addendum to the Management quota rank list",
+      "file": "tamil-nadu/addendum-management-quota.pdf",
+      "date": "2026-11-02",
+      "kind": "Merit list",
+      "kb": 2
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 PwD counselling schedule",
+      "file": "tamil-nadu/round1-pwd-schedule.pdf",
+      "date": "2026-10-30",
+      "kind": "Schedule",
+      "kb": 39
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 PwD seat matrix",
+      "file": "tamil-nadu/round1-pwd-seat-matrix.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 14
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 counselling schedule (Government and Management quota)",
+      "file": "tamil-nadu/round1-schedule.pdf",
+      "date": "2026-10-30",
+      "kind": "Schedule",
+      "kb": 43
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Fee structure 2026-27 (Notification 1152)",
+      "file": "tamil-nadu/fee-structure-2026.pdf",
+      "date": "2026-10-30",
+      "kind": "Fees",
+      "kb": 13
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 seat matrix (tentative vacancy as on 31 Oct)",
+      "file": "tamil-nadu/round1-seat-matrix.pdf",
+      "date": "2026-10-31",
+      "kind": "Seat matrix",
+      "kb": 292
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 seat matrix: DNB and 2-year diploma",
+      "file": "tamil-nadu/round1-seat-matrix-dnb-diploma.pdf",
+      "date": "2026-10-31",
+      "kind": "Seat matrix",
+      "kb": 25
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 provisional allotment: PwD candidates",
+      "file": "tamil-nadu/round1-pwd-allotment.pdf",
+      "date": "2026-10-31",
+      "kind": "Allotment",
+      "kb": 386
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Counselling brochure: MD/MS, diploma, DNB and MDS",
+      "file": "uttar-pradesh/brochure-2026.pdf",
+      "date": "2026-10-17",
+      "kind": "Rules",
+      "kb": 4965
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "In-service (PMHS) doctors eligible for MD/MS weightage",
+      "file": "uttar-pradesh/in-service-eligible-md-ms.pdf",
+      "date": "2026-10-16",
+      "kind": "Merit list",
+      "kb": 3699
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "In-service (PMHS) doctors eligible for DNB and diploma seats",
+      "file": "uttar-pradesh/in-service-eligible-dnb-diploma.pdf",
+      "date": "2026-10-16",
+      "kind": "Merit list",
+      "kb": 7473
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Private college fee structures, 2026-27",
+      "file": "uttar-pradesh/private-college-fees.pdf",
+      "date": "2026-10-16",
+      "kind": "Fees",
+      "kb": 1136
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 schedule (in Hindi)",
+      "file": "uttar-pradesh/round1-schedule.pdf",
+      "date": "2026-10-17",
+      "kind": "Schedule",
+      "kb": 165
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Important instructions for candidates (in Hindi)",
+      "file": "uttar-pradesh/instructions-for-candidates.pdf",
+      "date": "2026-10-21",
+      "kind": "Notice",
+      "kb": 724
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Candidates debarred after resigning or not reporting (2024, 2025)",
+      "file": "uttar-pradesh/resigned-candidates-notice.pdf",
+      "date": "2026-10-23",
+      "kind": "Notice",
+      "kb": 2389
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 seat matrix: post-MBBS DNB and diploma",
+      "file": "uttar-pradesh/round1-seat-matrix-dnb.pdf",
+      "date": "2026-10-23",
+      "kind": "Seat matrix",
+      "kb": 1604
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 seat matrix: MD/MS and diploma",
+      "file": "uttar-pradesh/round1-seat-matrix-md-ms.pdf",
+      "date": "2026-10-24",
+      "kind": "Seat matrix",
+      "kb": 624
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 state merit list: MD/MS and diploma",
+      "file": "uttar-pradesh/round1-merit-list-md-ms.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 2590
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 state merit list: DNB",
+      "file": "uttar-pradesh/round1-merit-list-dnb.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 440
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 allotment: MD/MS and diploma (Excel)",
+      "file": "uttar-pradesh/round1-allotment-md-ms.xlsx",
+      "date": "2026-11-02",
+      "kind": "Allotment",
+      "kb": 191
+    },
+    {
+      "region": "Uttar Pradesh",
+      "title": "Round 1 allotment: DNB and diploma (Excel)",
+      "file": "uttar-pradesh/round1-allotment-dnb.xlsx",
+      "date": "2026-11-02",
+      "kind": "Allotment",
+      "kb": 16
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Fees: Government Medical College, Haldwani",
+      "file": "uttarakhand/fees-gmc-haldwani.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 410
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Fees: Government Doon Medical College, Dehradun",
+      "file": "uttarakhand/fees-doon.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 54
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Fees: SSJ Govt. Institute of Medical Science & Research, Almora",
+      "file": "uttarakhand/fees-almora.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 141
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Fees: Himalayan Institute of Medical Sciences",
+      "file": "uttarakhand/fees-himalayan.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 476
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Fees: Shri Guru Ram Rai Institute of Medical & Health Sciences",
+      "file": "uttarakhand/fees-sgrr.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 612
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Fees: Gautam Buddha Chikitsa Mahavidyalaya",
+      "file": "uttarakhand/fees-gautam-buddha.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 878
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Government colleges: fee order (2013), bond and diploma rules",
+      "file": "uttarakhand/govt-fee-order-and-bond.pdf",
+      "date": "2026-10-14",
+      "kind": "Fees",
+      "kb": 940
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Provisional seat matrix: state quota (roster)",
+      "file": "uttarakhand/seat-matrix-state-quota.pdf",
+      "date": "2026-10-22",
+      "kind": "Seat matrix",
+      "kb": 647
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Provisional seat matrix: all-India open seats in private colleges",
+      "file": "uttarakhand/seat-matrix-all-india-open.pdf",
+      "date": "2026-10-22",
+      "kind": "Seat matrix",
+      "kb": 375
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Provisional seat matrix: NRI quota",
+      "file": "uttarakhand/seat-matrix-nri.pdf",
+      "date": "2026-10-22",
+      "kind": "Seat matrix",
+      "kb": 360
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "NRI quota: procedure, schedule and forms",
+      "file": "uttarakhand/nri-quota-procedure.pdf",
+      "date": "2026-10-22",
+      "kind": "Rules",
+      "kb": 1816
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "NRI quota: registered candidates (not a merit list)",
+      "file": "uttarakhand/nri-registered-candidates.pdf",
+      "date": "2026-10-26",
+      "kind": "Merit list",
+      "kb": 248
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Round 1 revised schedule",
+      "file": "uttarakhand/round1-revised-schedule.pdf",
+      "date": "2026-10-27",
+      "kind": "Schedule",
+      "kb": 773
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Round 1 provisional allotment: complete broadsheet",
+      "file": "uttarakhand/round1-allotment-broadsheet.pdf",
+      "date": "2026-11-03",
+      "kind": "Allotment",
+      "kb": 6173
     }
   ],
   "updates": [
@@ -2041,6 +2536,150 @@
       "region": "Meghalaya",
       "date": "2026-11-01",
       "text": "NEIGRIHMS: Round 1 willingness for online counselling by email closed 1 Nov, 4 pm."
+    },
+    {
+      "region": "Chhattisgarh",
+      "date": "2026-11-03",
+      "text": "Merit list, seat matrix and Round 1 allotment now on the Chhattisgarh roadmap: 874 candidates, 453 state and NRI seats, 278 allotted. Find your CMR by NEET-PG rank or name.",
+      "link": "/roadmap/chhattisgarh/round-1/allotment"
+    },
+    {
+      "region": "Tamil Nadu",
+      "date": "2026-11-03",
+      "text": "Rank lists now searchable on the Tamil Nadu roadmap: Government quota (7,969), Management quota (3,644) and DNB/diploma (71), with every addendum and the CMC, minority, NRI and PwD eligibility marked; and the Round 1 seat matrix (2,430 seats).",
+      "link": "/roadmap/tamil-nadu/merit-list"
+    },
+    {
+      "region": "Uttar Pradesh",
+      "date": "2026-11-03",
+      "text": "UP on the roadmap: state merit lists (6,084 MD/MS and 96 DNB), the Round 1 seat matrix (4,125 seats) and the Round 1 allotment (2,904 seats, 2 Nov).",
+      "link": "/roadmap/uttar-pradesh/round-1/allotment"
+    },
+    {
+      "region": "Uttarakhand",
+      "date": "2026-11-03",
+      "text": "Uttarakhand on the roadmap: updated merit list (1,021) and NRI list, the seat matrix (488 seats) and the Round 1 allotment broadsheet (315 allotted).",
+      "link": "/roadmap/uttarakhand/round-1/allotment"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-03",
+      "text": "MCC Round 2: newly approved seats were sent to MCC on 3 Nov; institutes verify the seat matrix by 6 Nov, so Round 2 is expected to start from 7 Nov. Await the revised official schedule."
+    },
+    {
+      "region": "Uttar Pradesh",
+      "date": "2026-11-02",
+      "text": "Round 1 MD/MS and DNB allotment out. Report and download the allotment letter 3–7 Nov and 12–13 Nov, with original documents, the registration form and the security deposit slip."
+    },
+    {
+      "region": "Uttarakhand",
+      "date": "2026-11-03",
+      "text": "Round 1 provisional allotment (regular and NRI) out. Allotment letters after 4 pm on 4 Nov; discrepancies until 4 Nov, 2 pm; report by 10 Nov."
+    },
+    {
+      "region": "Kerala",
+      "date": "2026-11-02",
+      "text": "Round 1 final allotment list out: join by 10 Nov, 4 pm. Travancore Medical College, Kollam seat matrix and the self-financing college fee structure also published."
+    },
+    {
+      "region": "Bihar",
+      "date": "2026-11-02",
+      "text": "Revised Round 1 schedule: the result will be published on 6 Nov."
+    },
+    {
+      "region": "Jammu and Kashmir",
+      "date": "2026-11-03",
+      "text": "Round 1 provisional selection list. Representations to helpdeskjakbopee@gmail.com until 4 Nov, 11 am; reporting 4 Nov, 2 pm – 7 Nov, 4:30 pm (resignation until then)."
+    },
+    {
+      "region": "Jharkhand",
+      "date": "2026-11-03",
+      "text": "Round 1 provisional seat allotment and updated seat matrix published."
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-11-03",
+      "text": "Mock round option entry extended to 3 Nov, noon. Mock allotment published, withdrawn and republished after errors (management quota seats were missing). Revised provisional fee structure, with St John's and Shri Basaveshwara (Chitradurga) fee orders. Change options from 3 Nov, 5 pm to 5 Nov, 10 am."
+    },
+    {
+      "region": "Madhya Pradesh",
+      "date": "2026-11-03",
+      "text": "Round 1 reporting withheld. The High Court (interim order of 2 Nov) limited in-service candidates to their 30% quota; next hearing 5 Nov, 2:30 pm. Bond submission for upgradation published 2 Nov."
+    },
+    {
+      "region": "Maharashtra",
+      "date": "2026-11-03",
+      "text": "Round 1 final provisional merit lists (including in-service) and the provisional seat matrices for MD/MS (government, corporation, central and aided colleges; private and minority colleges) and diploma published."
+    },
+    {
+      "region": "Manipur",
+      "date": "2026-11-02",
+      "text": "RIMS Round 1 schedule: online registration, choice filling and locking, and document verification 3–10 Nov."
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-03",
+      "text": "Round 1 upgraded allotment guidelines published. Choice locking closes today, 3 Nov, 11:55 pm."
+    },
+    {
+      "region": "Punjab",
+      "date": "2026-11-02",
+      "text": "Round 1 provisional allotment. Objections closed 3 Nov, 5 pm."
+    },
+    {
+      "region": "Rajasthan",
+      "date": "2026-11-02",
+      "text": "Round 1 provisional result. Reporting, document verification, allotment letter and fee payment from 3 Nov."
+    },
+    {
+      "region": "Tamil Nadu",
+      "date": "2026-11-02",
+      "text": "Addendum to the provisional rank lists (Government and Management quota). Round 1 registration and choice locking close 3 Nov, 5 pm."
+    },
+    {
+      "region": "Tripura",
+      "date": "2026-11-02",
+      "text": "Round 1 registration open until 5 Nov, 10 am; choice filling 3 Nov, 5 pm – 5 Nov, 5 pm."
+    },
+    {
+      "region": "West Bengal",
+      "date": "2026-11-03",
+      "text": "NEET PG 2026 medical admission guidelines published."
+    },
+    {
+      "region": "Gujarat",
+      "date": "2026-11-02",
+      "text": "Round 1 reporting at help centres 2–6 Nov (10 am – 4 pm); tuition fee at Axis Bank 2–6 Nov (10:30 am – 2 pm). NRI candidates: documents and fee in foreign currency at GMERS Medical College, Gandhinagar."
+    },
+    {
+      "region": "Assam",
+      "date": "2026-11-02",
+      "text": "Round 1 choice filling closed 2 Nov, 5 pm; choice locking until 11:55 pm."
+    },
+    {
+      "region": "Delhi",
+      "date": "2026-11-02",
+      "text": "GGSIPU state and institutional quota: Round 1 offline counselling on 2 Nov."
+    },
+    {
+      "region": "Meghalaya",
+      "date": "2026-11-02",
+      "text": "NEIGRIHMS Round 1 counselling on 2 Nov from 11 am (UGMC building, hybrid)."
+    },
+    {
+      "region": "Dadra and Nagar Haveli and Daman and Diu",
+      "date": "2026-11-02",
+      "text": "Round 1 reporting at NAMO Medical Education & Research Institute, Silvassa, from 2 Nov; admission confirmation until 10 Nov."
+    },
+    {
+      "region": "Chandigarh",
+      "date": "2026-11-03",
+      "text": "Deficient documents of SC category candidates accepted until 3 Nov, noon."
+    },
+    {
+      "region": "Andhra Pradesh",
+      "date": "2026-11-03",
+      "text": "Grievances against the provisional merit lists and the not-eligible lists closed 3 Nov, 1 pm."
     }
   ],
   "highlight": {
@@ -2052,28 +2691,28 @@
   "progress": {
     "All India": {
       "stage": "Round 1",
-      "note": "Round 1 joining closes 2 Nov. Institutes verify the Round 2 seat matrix 4–5 Nov; Round 2 registration 6–11 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 joining closed 2 Nov. Round 2 expected from 7 Nov, once institutes verify the new seats (by 6 Nov).",
+      "asOf": "2026-11-03"
     },
     "Odisha": {
       "stage": "Round 1",
-      "note": "Choice locking 1–3 Nov, until 11:55 pm. Allotment 5 Nov; report 6–7 Nov at MKCG Berhampur.",
-      "asOf": "2026-11-01"
+      "note": "Choice locking closes 3 Nov, 11:55 pm. Allotment 5 Nov; report 6–7 Nov at MKCG Berhampur.",
+      "asOf": "2026-11-03"
     },
     "Andhra Pradesh": {
       "stage": "Merit List",
-      "note": "Provisional merit lists out 1 Nov; grievances by 3 Nov, 1 pm.",
-      "asOf": "2026-11-02"
+      "note": "Grievances against the provisional merit lists closed 3 Nov, 1 pm.",
+      "asOf": "2026-11-03"
     },
     "Assam": {
       "stage": "Round 1",
-      "note": "Choice filling 1–2 Nov, until 5 pm.",
-      "asOf": "2026-11-02"
+      "note": "Choice filling and locking closed 2 Nov.",
+      "asOf": "2026-11-03"
     },
     "Bihar": {
       "stage": "Merit List",
-      "note": "Round 1 rank cards (degree and diploma) out 31 Oct; result due 4 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 result due 6 Nov (revised schedule).",
+      "asOf": "2026-11-03"
     },
     "Chandigarh": {
       "stage": "Merit List",
@@ -2082,8 +2721,8 @@
     },
     "Chhattisgarh": {
       "stage": "Round 1",
-      "note": "Provisional allotment out 31 Oct; report 2–6 Nov and 10–11 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 allotment out 31 Oct; scrutiny and joining 2–6 Nov and 10–11 Nov (not 7–9 Nov).",
+      "asOf": "2026-11-03"
     },
     "Delhi": {
       "stage": "Round 1",
@@ -2097,33 +2736,33 @@
     },
     "Gujarat": {
       "stage": "Round 1",
-      "note": "Round 1 allotment out 31 Oct; report 2–6 Nov, until 4 pm.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 reporting 2–6 Nov, until 4 pm.",
+      "asOf": "2026-11-03"
     },
     "Himachal Pradesh": {
       "stage": "Registration",
-      "note": "Online applications re-opened until 2 Nov, 11 am.",
-      "asOf": "2026-11-02"
+      "note": "Online applications closed 2 Nov, 11 am; merit list awaited.",
+      "asOf": "2026-11-03"
     },
     "Jharkhand": {
       "stage": "Round 1",
-      "note": "Revised final merit list and Round 1 seat matrix out 29 Oct.",
-      "asOf": "2026-11-01"
+      "note": "Round 1 provisional allotment out 3 Nov.",
+      "asOf": "2026-11-03"
     },
     "Kerala": {
       "stage": "Round 1",
-      "note": "Provisional allotment out 31 Oct; complaints by email before 2 Nov, 10 am.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 final allotment out 2 Nov; join by 10 Nov, 4 pm.",
+      "asOf": "2026-11-03"
     },
     "Madhya Pradesh": {
       "stage": "Round 1",
-      "note": "Provisional allotment out; reporting until 10 Nov, 6 pm.",
-      "asOf": "2026-11-01"
+      "note": "Round 1 reporting withheld by a High Court order; hearing 5 Nov.",
+      "asOf": "2026-11-03"
     },
     "Maharashtra": {
-      "stage": "Merit List",
-      "note": "Round 1 grievances closed 1 Nov, noon; revised CAP Round 1 schedule out 30 Oct.",
-      "asOf": "2026-11-02"
+      "stage": "Round 1",
+      "note": "Final merit lists and Round 1 seat matrices out 3 Nov; choice filling next.",
+      "asOf": "2026-11-03"
     },
     "Mizoram": {
       "stage": "Merit List",
@@ -2137,28 +2776,28 @@
     },
     "Rajasthan": {
       "stage": "Round 1",
-      "note": "Indicative Round 1 result out 31 Oct; allotment due 2 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 result out 2 Nov; reporting from 3 Nov.",
+      "asOf": "2026-11-03"
     },
     "Sikkim": {
       "stage": "Round 2",
-      "note": "Round 1 result and waiting list out 31 Oct; Round 2 registration from 2 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 2 registration open from 2 Nov.",
+      "asOf": "2026-11-03"
     },
     "Tamil Nadu": {
       "stage": "Round 1",
-      "note": "Registration and choice locking until 3 Nov, 5 pm; revised seat matrix 1 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 choice locking closes 3 Nov, 5 pm; PwD seats allotted 31 Oct.",
+      "asOf": "2026-11-03"
     },
     "Uttarakhand": {
       "stage": "Round 1",
-      "note": "Revised provisional merit list 30 Oct; Round 1 result 2 Nov.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 allotment out 3 Nov; letters after 4 pm on 4 Nov; report by 10 Nov.",
+      "asOf": "2026-11-03"
     },
     "Karnataka": {
       "stage": "Round 1",
-      "note": "Option entry (mock round) until 2 Nov; change options 3 Nov, 5 pm – 5 Nov, 10 am.",
-      "asOf": "2026-11-02"
+      "note": "Mock allotment out 3 Nov; change options until 5 Nov, 10 am.",
+      "asOf": "2026-11-03"
     },
     "West Bengal": {
       "stage": "Round 1",
@@ -2166,24 +2805,34 @@
       "asOf": "2026-11-02"
     },
     "Tripura": {
-      "stage": "Registration",
-      "note": "Round 1 registration 2 Nov, 2 pm – 5 Nov, 10 am.",
-      "asOf": "2026-11-02"
+      "stage": "Round 1",
+      "note": "Registration until 5 Nov, 10 am; choice filling 3–5 Nov, 5 pm.",
+      "asOf": "2026-11-03"
     },
     "Uttar Pradesh": {
       "stage": "Round 1",
-      "note": "Round 1 choice filling closed 31 Oct, 5 pm.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 allotment out 2 Nov; report 3–7 Nov and 12–13 Nov.",
+      "asOf": "2026-11-03"
     },
     "Jammu and Kashmir": {
       "stage": "Round 1",
-      "note": "Round 1 revised seat matrix out 31 Oct.",
-      "asOf": "2026-11-02"
+      "note": "Provisional selection list out 3 Nov; report 4–7 Nov, until 4:30 pm.",
+      "asOf": "2026-11-03"
     },
     "Telangana": {
       "stage": "Registration",
       "note": "Management quota applications closed 30 Oct; merit lists awaited.",
       "asOf": "2026-11-02"
+    },
+    "Manipur": {
+      "stage": "Registration",
+      "note": "RIMS Round 1 registration and choices 3–10 Nov.",
+      "asOf": "2026-11-03"
+    },
+    "Punjab": {
+      "stage": "Round 1",
+      "note": "Round 1 provisional allotment out 2 Nov.",
+      "asOf": "2026-11-03"
     }
   },
   "data": [
@@ -2223,6 +2872,122 @@
       "title": "Round 1 seat matrix: DNB, deemed universities and central quota",
       "date": "2026-10-14",
       "file": "all-india/seat-matrix-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Chhattisgarh",
+      "kind": "merit",
+      "title": "Round 1 provisional merit list (MD/MS)",
+      "date": "2026-10-30",
+      "doc": "chhattisgarh/round1-provisional-merit-list.pdf",
+      "file": "chhattisgarh/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Chhattisgarh",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix (state quota and NRI)",
+      "date": "2026-10-21",
+      "doc": "chhattisgarh/round1-application-notice-and-seat-roster.pdf",
+      "file": "chhattisgarh/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Chhattisgarh",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment",
+      "date": "2026-10-31",
+      "doc": "chhattisgarh/round1-allotment.pdf",
+      "file": "chhattisgarh/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Tamil Nadu",
+      "kind": "merit",
+      "title": "Round 1 provisional rank lists (GQ, MQ, DNB/diploma)",
+      "date": "2026-10-28",
+      "doc": "tamil-nadu/round1-rank-list-government-quota.pdf",
+      "file": "tamil-nadu/merit-list-2026.json",
+      "byName": true
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Tamil Nadu",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix (tentative vacancy, 31 Oct)",
+      "date": "2026-10-31",
+      "doc": "tamil-nadu/round1-seat-matrix.pdf",
+      "file": "tamil-nadu/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Tamil Nadu",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 PwD allotment",
+      "date": "2026-10-31",
+      "doc": "tamil-nadu/round1-pwd-allotment.pdf",
+      "file": "tamil-nadu/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Uttar Pradesh",
+      "kind": "merit",
+      "title": "Round 1 state merit lists (MD/MS, diploma and DNB)",
+      "date": "2026-10-26",
+      "doc": "uttar-pradesh/round1-merit-list-md-ms.pdf",
+      "file": "uttar-pradesh/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Uttar Pradesh",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix (MD/MS, diploma and DNB)",
+      "date": "2026-10-24",
+      "doc": "uttar-pradesh/round1-seat-matrix-md-ms.pdf",
+      "file": "uttar-pradesh/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Uttar Pradesh",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 allotment",
+      "date": "2026-11-02",
+      "file": "uttar-pradesh/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Uttarakhand",
+      "kind": "merit",
+      "title": "Round 1 merit list (MD/MS) and NRI merit list",
+      "date": "2026-10-30",
+      "doc": "uttarakhand/round1-provisional-merit-list.pdf",
+      "file": "uttarakhand/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Uttarakhand",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix (state quota, all-India open and NRI)",
+      "date": "2026-10-22",
+      "doc": "uttarakhand/seat-matrix-state-quota.pdf",
+      "file": "uttarakhand/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Uttarakhand",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment",
+      "date": "2026-11-03",
+      "doc": "uttarakhand/round1-allotment-broadsheet.pdf",
+      "file": "uttarakhand/allotment-round1.json"
     }
   ]
 }

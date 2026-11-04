@@ -90,6 +90,8 @@ app.get('/api/config', (req, res) => {
     highlight: registry().highlight || null,
     // Which regions have which data on their roadmap page: { Odisha: ['merit', 'seats'], … }
     regionData: (registry().data || []).reduce((o, d) => ({ ...o, [d.region]: [...new Set([...(o[d.region] || []), d.kind])] }), {}),
+    // Regions whose merit list shows no NEET-PG ranks (Tamil Nadu): candidates find their CMR by name.
+    meritByName: (registry().data || []).filter(d => d.kind === 'merit' && d.byName).map(d => d.region),
     user: publicUser(req.user)
   });
 });

@@ -312,6 +312,30 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   assert.equal((await v('/roadmap/odisha/round-1')).status, 200);
 });
 
+test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat matrix and allotment as printed', async () => {
+  const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
+  const STATES = [
+    ['Chhattisgarh', 'chhattisgarh', [['MD/MS', 874]], 453, 278],
+    ['Tamil Nadu', 'tamil-nadu', [['Government quota', 7969], ['Management quota', 3644], ['DNB and 2-year diploma (service)', 71]], 2430, 12],
+    ['Uttar Pradesh', 'uttar-pradesh', [['MD/MS and diploma', 6084], ['DNB (post-MBBS DNB and diploma)', 96]], 4125, 2904],
+    ['Uttarakhand', 'uttarakhand', [['MD/MS (regular)', 1021], ['NRI quota', 13]], 488, 315]
+  ];
+  for (const [state, key, lists, seats, allotted] of STATES) {
+    const b = browser(), phone = '90000002' + String(STATES.findIndex(s => s[0] === state)).padStart(2, '0');
+    await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state, phone } });
+    await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone, code: '1234', password: PW } });
+    const merit = (await b(`/api/regions/${key}/data/merit-list-2026`)).json;
+    for (const [label, n] of lists) assert.equal(merit.lists.find(l => l.label === label)?.rows.length, n, `${state}: ${label}`);
+    assert.equal(sum((await b(`/api/regions/${key}/data/seat-matrix-round-1`)).json.rows), seats, `${state}: seats`);
+    const a = (await b(`/api/regions/${key}/data/allotment-round-1`)).json;
+    assert.equal(a.format, 'state');
+    assert.equal(a.rows.length, allotted, `${state}: allotted`);
+    assert.equal((await b('/api/regions/odisha/data/merit-list-2026')).status, 403, "another state's data stays locked");
+  }
+  const cfg = (await browser()('/api/config')).json;
+  assert.deepEqual(cfg.meritByName, ['Tamil Nadu'], 'Tamil Nadu prints no NEET-PG ranks: its CMR is found by name');
+});
+
 test('sign-up asks for the NEET-PG rank; the state CMR is separate, saved later and cleared', async () => {
   const b = browser();
   const noRank = await b('/api/auth/attempt', { method: 'POST', body: { channel: 'phone', phone: '9000000140', name: 'No Rank', state: 'Odisha' } });

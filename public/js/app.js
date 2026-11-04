@@ -1172,14 +1172,15 @@ function cmrFinder(box, region, { typed, onSet } = {}) {
     return;
   }
   box.innerHTML = `<p>${saved}Your <b>${esc(region)} CMR</b> is your rank on the ${esc(region)} merit list, not your NEET-PG rank.</p>
-    <button type="button" class="btn btn-line btn-sm" id="cf-go">${icon.search} Find my CMR${S.user.air ? ` from NEET-PG rank ${fmt(S.user.air)}` : ''}</button>
+    <button type="button" class="btn btn-line btn-sm" id="cf-go">${icon.search} Find my CMR${S.cfg.meritByName?.includes(region) ? ' by name'
+      : S.user.air ? ` from NEET-PG rank ${fmt(S.user.air)}` : ''}</button>
     <div class="cf-out" id="cf-out" aria-live="polite"></div>`;
   const out = $('#cf-out', box);
   const show = (hits, note) => {
     out.innerHTML = (note ? `<p>${note}</p>` : '') + hits.slice(0, 6).map(({ r, l }, i) => `<div class="cf-hit"><div><b>${esc(r.name)}</b>
-        <small>${esc(l.label)} list · NEET-PG rank ${fmt(r.air)} · ${esc(r.cat.replace(/,.*$/, ''))}${r.sub ? ' · ' + esc(r.sub) : ''}</small></div>
-      ${l.type === 'Rejected' ? `<span class="rp-bad">Rejected: ${esc(r.reason || '')}</span>`
-        : `<button type="button" class="btn btn-primary btn-sm" data-hit="${i}">Use CMR ${fmt(r.ranks.UR)}</button>`}</div>`).join('')
+        <small>${[`${esc(l.label)} list`, r.air && `NEET-PG rank ${fmt(r.air)}`, r.cat && esc(r.cat.replace(/,.*$/, '')), r.sub && esc(r.sub)].filter(Boolean).join(' · ')}</small></div>
+      ${rejectedList(l) ? `<span class="rp-bad">${esc(r.reason || 'Rejected')}</span>`
+        : `<button type="button" class="btn btn-primary btn-sm" data-hit="${i}">Use CMR ${esc(stateRank(r))}</button>`}</div>`).join('')
       + `<label class="cf-name">Not you? Search the list by name<input class="input" id="cf-q" type="search" autocomplete="off" placeholder="Your name as on the merit list"></label>`;
     $$('[data-hit]', out).forEach(b => b.onclick = () => { const { r, l } = hits[+b.dataset.hit]; use(r.ranks.UR, l.type); });
     const q = $('#cf-q', out);
@@ -1196,8 +1197,11 @@ function cmrFinder(box, region, { typed, onSet } = {}) {
     out.innerHTML = '<span class="spinner"></span>';
     try { all = (await meritOf(region)).lists.flatMap(l => l.rows.map(r => ({ r, l }))); }
     catch (e) { out.innerHTML = `<p>${esc(e.message)}</p>`; return; }
-    const hits = S.user.air ? all.filter(({ r }) => r.air === S.user.air) : [];
-    show(hits, hits.length ? 'Found you on the merit list:' : S.user.air ? `NEET-PG rank ${fmt(S.user.air)} isn't on the ${esc(region)} merit list.` : '');
+    // some states (Tamil Nadu) publish no NEET-PG ranks: then the name is the way in
+    const byAir = all.some(({ r }) => r.air);
+    const hits = S.user.air && byAir ? all.filter(({ r }) => r.air === S.user.air) : [];
+    show(hits, hits.length ? 'Found you on the merit list:' : !byAir ? `The ${esc(region)} list doesn't show NEET-PG ranks: search it by your name.`
+      : S.user.air ? `NEET-PG rank ${fmt(S.user.air)} isn't on the ${esc(region)} merit list.` : '');
   };
 }
 
@@ -1909,7 +1913,7 @@ function rpRound(info, box, stage, rest) {
   host.innerHTML = `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}${d.doc
     ? ` · <a href="/counselling/assets/${esc(d.doc)}" target="_blank" rel="noopener">Official PDF</a>` : ''}</small></h3><div id="rp-x"></div>`;
   const x = $('#rp-x');
-  rpLoad(info, d, x, async data => kind === 'seats' ? seatExplorer(x, data, info, await lastYear(info.region).catch(() => null)) : allotExplorer(x, data));
+  rpLoad(info, d, x, async data => kind === 'seats' ? seatExplorer(x, data, info, await lastYear(info.region).catch(() => null)) : allotExplorer(x, data, info));
 }
 
 // A region's data: loaded once it may be seen, otherwise a sign-in or locked card.
@@ -2051,35 +2055,48 @@ function explorer(host, cfg) {
   return { refresh };
 }
 
+// A list of candidates turned away ("Rejected", "Not eligible …"): no ranks, a reason instead.
+const rejectedList = l => l.type === 'Rejected' || !!l.rejected;
+const stateRank = r => r.rl || (r.ranks?.UR ? fmt(r.ranks.UR) : '—');
+
+// State merit lists. Rows: name, roll / app, cat, sub, score, weight (bonus or incentive marks), total, air, ranks
+// ({ UR: state rank, <category>: rank }), and where a state gives them: rl (a rank such as "1980A"), note (candidate
+// type), tags (eligibility), job, reason. Fields a list lacks are left out.
 function meritExplorer(host, data, info) {
   const rows = data.lists.flatMap(l => l.rows.map(r => ({ ...r, _l: l })));
-  const catName = c => c.replace(/,.*$/, '').replace(/^SEBC - Non Creamy Layer$/, 'SEBC').replace(/^Qualified OBC.*$/, 'OBC (central list)');
-  const pwd = r => /PWD/i.test(r.sub) ? 'Yes' : '';
-  const score = r => r.weight ? `${fmt(r.total)}<span class="sub">${fmt(r.score)} + ${fmt(r.weight)} bonus</span>` : fmt(r.total);
-  const remarks = r => r._l.type === 'Rejected' ? `<span class="rp-bad">${esc(r.reason || 'Rejected')}</span>`
-    : Object.entries(r.ranks || {}).filter(([k]) => k !== 'UR').map(([k, n]) => `<span class="rp-chip">${esc(k)} ${fmt(n)}</span>`).join(' ') || '—';
+  const has = k => rows.some(r => r[k] != null && r[k] !== '');
+  const catName = c => (c || '').replace(/,.*$/, '').replace(/^SEBC - Non Creamy Layer$/, 'SEBC').replace(/^Qualified OBC.*$/, 'OBC (central list)');
+  const pwd = r => /PWD/i.test(r.sub || '') ? 'Yes' : '';
+  const score = r => r.total == null ? '—' : r.weight ? `${fmt(r.total)}<span class="sub">${fmt(r.score)} + ${fmt(r.weight)} ${r.wpct ? `(${r.wpct}%)` : 'bonus'}</span>` : fmt(r.total);
+  const ctype = r => r.note || r._l.type;
+  const remarks = r => rejectedList(r._l) ? `<span class="rp-bad">${esc(r.reason || 'Rejected')}</span>`
+    : [...Object.entries(r.ranks || {}).filter(([k]) => k !== 'UR').map(([k, n]) => `<span class="rp-chip">${esc(k)} ${fmt(n)}</span>`),
+      ...(r.tags || []).map(t => `<span class="rp-chip rp-tag${/^Not eligible/.test(t) ? ' rp-tag-bad' : ''}">${esc(t)}</span>`),
+      ...(r.reason ? [`<span class="sub">${esc(r.reason)}</span>`] : [])].join(' ') || '—';
+  const notes = new Set(rows.map(r => r.note).filter(Boolean));
   explorer(host, {
     rows,
     prog: { of: r => r._l.programme, value: data.lists[0].programme },
-    segs: [{ id: 'type', label: 'Candidate type', values: [...new Set(data.lists.map(l => l.type))], of: r => r._l.type, value: data.lists[0].type }],
-    selects: [{ id: 'cat', label: 'Category', all: 'All categories', of: r => catName(r.cat) }],
-    search: { placeholder: 'Search by name, NEET roll no. or application no.', of: r => `${r.name} ${r.roll} ${r.app}` },
-    mark: (r, f) => /^\d{8,}$/.test(f.q) && (r.roll === f.q || r.app === f.q),
+    segs: data.lists.length > 1 ? [{ id: 'type', label: notes.size > 1 ? 'List' : 'Candidate type', values: [...new Set(data.lists.map(l => l.type))], of: r => r._l.type, value: data.lists[0].type }] : [],
+    selects: [{ id: 'cat', label: 'Category', all: 'All categories', of: r => catName(r.cat) },
+      ...(notes.size > 1 ? [{ id: 'note', label: 'Candidate type', all: 'All candidates', of: r => r.note }] : [])],
+    search: { placeholder: `Search by name${has('roll') ? ', NEET roll no.' : ''}${has('app') ? ' or application no.' : ''}`, of: r => `${r.name} ${r.roll || ''} ${r.app || ''}` },
+    mark: (r, f) => /^\w{8,}$/.test(f.q) && (r.roll === f.q || r.app === f.q),
     cols: [
       { t: '#', cls: 'n soft', r: (r, i) => fmt(i + 1) },
-      { t: 'AIR', cls: 'n', r: r => fmt(r.air) },
-      { t: 'State rank', cls: 'n strong', r: r => r.ranks?.UR ? fmt(r.ranks.UR) : '—' },
-      { t: 'Name', cls: 'wrapcell', r: r => `<b>${esc(r.name)}</b><span class="sub">Roll ${esc(r.roll)} · Appl. ${esc(r.app)}</span>` },
-      { t: 'Category', cls: 'wrapcell', r: r => esc(catName(r.cat)) + (r.sub ? `<span class="sub">${esc(r.sub.replace(/PWD- Persons with Disabilities/i, 'PwD'))}</span>` : '') },
+      ...(has('air') ? [{ t: 'AIR', cls: 'n', r: r => r.air ? fmt(r.air) : '—' }] : []),
+      { t: 'State rank', cls: 'n strong', r: r => esc(stateRank(r)) },
+      { t: 'Name', cls: 'wrapcell', r: r => `<b>${esc(r.name)}</b><span class="sub">${[r.roll && `Roll ${esc(r.roll)}`, r.app && `Appl. ${esc(r.app)}`].filter(Boolean).join(' · ')}</span>` },
+      { t: 'Category', cls: 'wrapcell', r: r => esc(catName(r.cat) || '—') + (r.sub ? `<span class="sub">${esc(r.sub.replace(/PWD- Persons with Disabilities/i, 'PwD'))}</span>` : '') },
       { t: 'PwD', r: r => pwd(r) || '—' },
-      { t: 'Candidate type', r: r => esc(r._l.type) + (r.job ? `<span class="sub">${esc(r.job.toLowerCase())}</span>` : '') },
-      { t: 'Score <span class="sub">out of 800</span>', cls: 'n', r: score },
+      { t: 'Candidate type', cls: 'wrapcell', r: r => esc(ctype(r)) + (r.job ? `<span class="sub">${esc(r.job.toLowerCase())}</span>` : '') },
+      ...(has('total') ? [{ t: 'Score <span class="sub">out of 800</span>', cls: 'n', r: score }] : []),
       { t: 'Remarks', cls: 'wrapcell', r: remarks }
     ],
     summary: v => `<b>${fmt(v.length)}</b> candidate${v.length === 1 ? '' : 's'}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
-    csv: { name: `${slugOf(info.region)}-merit-list-2026.csv`, head: ['List', 'State rank', 'NEET AIR', 'Name', 'NEET roll no.', 'Application no.', 'Category', 'Sub-category', 'PwD', 'NEET score', 'Bonus', 'Total', 'Category ranks', 'Remarks'],
-      row: r => [r._l.label, r.ranks?.UR || '', r.air, r.name, r.roll, r.app, catName(r.cat), r.sub, pwd(r), r.score, r.weight || '', r.total,
-        Object.entries(r.ranks || {}).map(([k, n]) => `${k} ${n}`).join('; '), r.reason || r.job || ''] }
+    csv: { name: `${slugOf(info.region)}-merit-list-2026.csv`, head: ['List', 'State rank', 'NEET AIR', 'Name', 'NEET roll no.', 'Application no.', 'Category', 'Sub-category', 'PwD', 'Candidate type', 'NEET score', 'Bonus', 'Total', 'Category ranks', 'Remarks'],
+      row: r => [r._l.label, r.rl || r.ranks?.UR || '', r.air || '', r.name, r.roll || '', r.app || '', catName(r.cat), r.sub || '', pwd(r), ctype(r), r.score ?? '', r.weight || '', r.total ?? '',
+        Object.entries(r.ranks || {}).map(([k, n]) => `${k} ${n}`).join('; '), [...(r.tags || []), r.reason || r.job || ''].filter(Boolean).join('; ')] }
   });
 }
 
@@ -2136,7 +2153,7 @@ function seatExplorer(host, data, info, prev = null) {
       { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type },
       ...(many('quota') > 2 ? [{ id: 'quota', label: 'Quota', all: 'All quotas', of: r => r.quota }] : []),
       { id: 'cat', label: 'Category', all: 'All categories', of: r => baseCat(r.category) },
-      ...(has('state') ? [{ id: 'course', label: 'Course', all: 'All courses', of: r => r.course }] : [])],
+      ...(many('course') > 1 ? [{ id: 'course', label: 'Course', all: 'All courses', of: r => r.course }] : [])],
     search: { placeholder: has('state') ? 'Search by institute, city or course (e.g. Apollo, Hyderabad, Radio Diagnosis)'
       : 'Search by college, course or branch (e.g. SCB, Radiodiagnosis, General Medicine)', of: r => `${r.college} ${r.course} ${r.category} ${r.quota} ${r.state || ''}` },
     keep: r => !p.reach || chance(r) > 0,
@@ -2163,8 +2180,53 @@ function seatExplorer(host, data, info, prev = null) {
   host.querySelector('#x-reach').onchange = e => { p.reach = e.target.checked; x.refresh(); };
 }
 
+// A state's allotment: rows of { rank (place on the state merit list), air, college, type, course, programme, quota,
+// category (the seat's), cand (the candidate's category), note (candidate type), pref / prefs (choice allotted, choices filled),
+// list (when a state ranks programmes separately) }.
+function stateAllotExplorer(host, D, info) {
+  const rows = D.rows, has = k => rows.some(r => r[k] != null && r[k] !== '');
+  const many = k => new Set(rows.map(r => r[k])).size;
+  const count = p => rows.filter(r => r.programme === p).length;
+  const label = D.rankLabel || 'State rank';
+  explorer(host, {
+    rows,
+    intro: `<div class="rp-stats">${[[rows.length, 'seats allotted'], ...PROGS.filter(count).map(p => [count(p), p])].map(([n, t]) => `<div><b>${fmt(n)}</b><span>${t}</span></div>`).join('')}</div>`,
+    prog: { of: r => r.programme, all: true, value: '' },
+    selects: [
+      ...(many('college') <= 300 ? [{ id: 'college', label: 'Institution', all: 'All institutions', of: r => r.college }] : []),
+      { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type },
+      ...(many('quota') > 1 ? [{ id: 'quota', label: 'Quota', all: 'All quotas', of: r => r.quota }] : []),
+      { id: 'cat', label: 'Seat category', all: 'All categories', of: r => r.category.replace(/\s*\(.*\)$/, '') },
+      { id: 'course', label: 'Course', all: 'All courses', of: r => r.course },
+      ...(has('note') && many('note') > 1 ? [{ id: 'note', label: 'Candidate type', all: 'All candidates', of: r => r.note }] : [])],
+    search: { placeholder: 'College or course (e.g. Medical College, Radiodiagnosis)', of: r => `${r.college} ${r.course}` },
+    range: { label: `${label} range`, of: r => r.rank },
+    find: { label: `Find your ${label}`, placeholder: 'e.g. 250', run: n => {
+      const hit = rows.filter(x => x.rank === n);
+      if (hit.length) return hit.map(r => `${esc(label)} <b>${fmt(n)}</b>${r.list ? ` (${esc(r.list)} list)` : ''} was allotted <b>${esc(r.course)}</b> at <b>${esc(r.college)}</b> · ${esc(r.quota)} · ${esc(r.category)}.`).join('<br>') + ' Nearby ranks are listed below.';
+      const after = rows.find(x => x.rank > n);
+      return `${esc(label)} <b>${fmt(n)}</b> was not allotted a seat in this round.${after ? ` The next allotted rank is ${fmt(after.rank)}.` : ''} Nearby ranks are listed below.`;
+    } },
+    mark: (r, f) => r.rank === f.find,
+    cols: [
+      { t: esc(label), cls: 'n strong', r: r => fmt(r.rank) + (r.air ? `<span class="sub">AIR ${fmt(r.air)}</span>` : '') },
+      { t: 'Institution', cls: 'wrapcell', r: r => `<b>${esc(r.college)}</b><span class="sub">${esc(r.type)}</span>` },
+      { t: 'Course', cls: 'wrapcell', r: r => `${esc(r.course)}<span class="sub">${esc(r.programme)}${r.list && r.list !== r.programme ? ` · ${esc(r.list)} list` : ''}</span>` },
+      { t: 'Quota', cls: 'wrapcell', r: r => esc(r.quota) },
+      { t: 'Category', cls: 'wrapcell', r: r => esc(r.category) + (r.cand && r.cand !== r.category ? `<span class="sub">Candidate: ${esc(r.cand)}</span>` : '') },
+      ...(has('note') ? [{ t: 'Candidate type', cls: 'wrapcell', r: r => esc(r.note || '—') }] : []),
+      ...(has('pref') ? [{ t: 'Choice', cls: 'n', r: r => r.pref ? `${fmt(r.pref)}${r.prefs ? `<span class="sub">of ${fmt(r.prefs)}</span>` : ''}` : '—' }] : [])
+    ],
+    summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ${esc(label.toLowerCase())}s <b>${fmt(Math.min(...v.map(r => r.rank)))}</b> to <b>${fmt(Math.max(...v.map(r => r.rank)))}</b>${D.note ? ` · <span class="muted">${esc(D.note)}</span>` : ''}`
+      : 'No seats match these filters.',
+    csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled'],
+      row: r => [r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || ''] }
+  });
+}
+
 // MCC's result in its compact form: lists of names, and rows of [rank, inst, state, quota, course, seat cat, candidate cat, college type].
-function allotExplorer(host, D) {
+function allotExplorer(host, D, info) {
+  if (D.format === 'state') return stateAllotExplorer(host, D, info);
   const at = (k, i) => D[k]?.[i] ?? '';
   const prog = r => progOf(D.course[r[4]]);
   const count = p => D.rows.filter(r => prog(r) === p).length;
