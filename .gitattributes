@@ -1,0 +1,12 @@
+# Binary files: never convert line endings (a PDF without NUL bytes can look like text).
+*.pdf binary
+*.xlsx binary
+*.xls binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
