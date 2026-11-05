@@ -847,3 +847,10 @@
   .grid td{color:#000}
   .sl-group{break-inside:avoid}
 }
+
+/* seats lying vacant after a round, under a state's allotment */
+.rp-vacant{margin-top:22px; border:1px solid var(--rule); border-radius:var(--r); background:var(--surface)}
+.rp-vacant > summary{cursor:pointer; padding:12px 16px; font-size:.95rem}
+.rp-vacant > summary b{font-variant-numeric:tabular-nums}
+.rp-vacant[open] > summary{border-bottom:1px solid var(--rule)}
+.rp-vacant .grid-wrap{border:0; border-radius:0; margin:0}

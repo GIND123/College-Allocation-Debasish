@@ -425,6 +425,16 @@
           "when": "3 Nov, after 5 pm – 5 Nov, 10 am",
           "from": "2026-11-03T17:00:00+05:30",
           "to": "2026-11-05T10:00:00+05:30"
+        },
+        {
+          "what": "Round 1 provisional allotment",
+          "when": "5 Nov, after 8 pm",
+          "on": "2026-11-05T20:00:00+05:30"
+        },
+        {
+          "what": "Round 1 final allotment",
+          "when": "6 Nov, after 11 am",
+          "on": "2026-11-06T11:00:00+05:30"
         }
       ]
     },
@@ -556,33 +566,40 @@
       "authority": "State CET Cell, Maharashtra · State quota",
       "summary": "Round 1 dates, eligibility, the deposit decision, documents, reservation, seat codes, fees and common traps.",
       "asOf": "2026-10-20",
-      "official": "https://www.mahacet.org",
+      "official": "https://medical2026.mahacet.org/NEET-PGM-2026/login",
       "dates": [
         {
           "what": "Registration, fee and documents",
-          "when": "17–24 Oct, 5 pm",
+          "when": "17–27 Oct (extended by Notice 3; documents until 10:30 pm)",
           "from": "2026-10-17T00:00:00+05:30",
-          "to": "2026-10-24T17:00:00+05:30"
+          "to": "2026-10-27T22:30:00+05:30"
         },
         {
           "what": "Provisional merit list",
-          "when": "28 Oct · grievances closed 1 Nov, 12 noon (revised schedule)",
-          "on": "2026-10-28T00:00:00+05:30"
+          "when": "30 Oct · grievances closed 1 Nov, 12 noon",
+          "on": "2026-10-30T00:00:00+05:30"
         },
         {
           "what": "Final merit list and Round 1 seat matrix",
-          "when": "3 Nov",
-          "on": "2026-11-03T00:00:00+05:30"
+          "when": "2 Nov",
+          "on": "2026-11-02T00:00:00+05:30"
         },
         {
           "what": "Round 1 choice filling",
-          "when": "Dates per the revised schedule of 30 Oct",
-          "label": "Awaited"
+          "when": "2–4 Nov, until 11:59 pm",
+          "from": "2026-11-02T00:00:00+05:30",
+          "to": "2026-11-04T23:59:00+05:30"
         },
         {
           "what": "Round 1 allotment",
-          "when": "Per the revised schedule of 30 Oct",
-          "label": "Awaited"
+          "when": "5 Nov (first selection list)",
+          "on": "2026-11-05T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 joining at the allotted college",
+          "when": "6–10 Nov, until 5:30 pm (originals and fees)",
+          "from": "2026-11-06T00:00:00+05:30",
+          "to": "2026-11-10T17:30:00+05:30"
         }
       ]
     },
@@ -660,8 +677,8 @@
         },
         {
           "what": "Round 1 allotment",
-          "when": "5 Nov, 10 am · report 6–7 Nov at MKCG Berhampur",
-          "on": "2026-11-05T10:00:00+05:30"
+          "when": "4 Nov · report 6–7 Nov and 10 Nov, 10 am – 1 pm, at MKCG Berhampur",
+          "on": "2026-11-04T00:00:00+05:30"
         },
         {
           "what": "Upgraded allotment against vacant seats",
@@ -1668,7 +1685,7 @@
       "file": "kerala/round1-final-merit-list.pdf",
       "date": "2026-10-29",
       "kind": "Merit list",
-      "kb": 476
+      "kb": 517
     },
     {
       "region": "Kerala",
@@ -1676,7 +1693,7 @@
       "file": "kerala/round1-final-category-list.pdf",
       "date": "2026-10-29",
       "kind": "Merit list",
-      "kb": 224
+      "kb": 260
     },
     {
       "region": "Kerala",
@@ -2205,6 +2222,318 @@
       "date": "2026-11-03",
       "kind": "Allotment",
       "kb": 6173
+    },
+    {
+      "region": "Karnataka",
+      "title": "PwBD candidates: assessment by the notified medical boards by 8 Oct (Kannada)",
+      "file": "karnataka/pwd-medical-board-notice.pdf",
+      "date": "2026-10-03",
+      "kind": "Notice",
+      "kb": 82
+    },
+    {
+      "region": "Karnataka",
+      "title": "PGET-2026 notification: PG medical courses and in-service DNB / diploma seats",
+      "file": "karnataka/pget-2026-notification.pdf",
+      "date": "2026-10-05",
+      "kind": "Notice",
+      "kb": 109
+    },
+    {
+      "region": "Karnataka",
+      "title": "Annexure 18: verification of original documents and slot booking",
+      "file": "karnataka/annexure-18-document-verification.pdf",
+      "date": "2026-10-05",
+      "kind": "Notice",
+      "kb": 181
+    },
+    {
+      "region": "Karnataka",
+      "title": "St John's Medical College categories: document verification, 14–16 Oct",
+      "file": "karnataka/st-johns-document-verification.pdf",
+      "date": "2026-10-06",
+      "kind": "Notice",
+      "kb": 69
+    },
+    {
+      "region": "Karnataka",
+      "title": "St John's Medical College: sanctioned seats, seat matrix and fees 2026-27",
+      "file": "karnataka/st-johns-seats-and-fees.pdf",
+      "date": "2026-10-07",
+      "kind": "Fees",
+      "kb": 1505
+    },
+    {
+      "region": "Karnataka",
+      "title": "PwBD candidates: medical board assessment by 17 Oct (Kannada)",
+      "file": "karnataka/pwd-medical-board-extension.pdf",
+      "date": "2026-10-14",
+      "kind": "Notice",
+      "kb": 55
+    },
+    {
+      "region": "Karnataka",
+      "title": "Online registration closes 25 Oct",
+      "file": "karnataka/registration-closes-25-oct.pdf",
+      "date": "2026-10-22",
+      "kind": "Notice",
+      "kb": 131
+    },
+    {
+      "region": "Karnataka",
+      "title": "St John's Medical College categories: last chance for document verification, 27 Oct",
+      "file": "karnataka/st-johns-verification-27-oct.pdf",
+      "date": "2026-10-22",
+      "kind": "Notice",
+      "kb": 82
+    },
+    {
+      "region": "Karnataka",
+      "title": "Government order: PG fees in private medical colleges, 2026-27 (Kannada)",
+      "file": "karnataka/fee-order-private-colleges.pdf",
+      "date": "2026-10-29",
+      "kind": "Fees",
+      "kb": 1594
+    },
+    {
+      "region": "Karnataka",
+      "title": "PwD candidates: provisional list as on 29 Oct",
+      "file": "karnataka/pwd-provisional-list.pdf",
+      "date": "2026-10-29",
+      "kind": "Merit list",
+      "kb": 162
+    },
+    {
+      "region": "Karnataka",
+      "title": "Government order: fees at Basaveshwara Medical College, Chitradurga (Kannada)",
+      "file": "karnataka/fee-order-basaveshwara.pdf",
+      "date": "2026-10-30",
+      "kind": "Fees",
+      "kb": 1167
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 option entry and seat allotment schedule (non-in-service)",
+      "file": "karnataka/round1-schedule.pdf",
+      "date": "2026-10-30",
+      "kind": "Schedule",
+      "kb": 247
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 provisional seat matrix: PG medical",
+      "file": "karnataka/round1-seat-matrix-medical.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 2109
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 seat matrix: DNB in-service seats",
+      "file": "karnataka/round1-seat-matrix-dnb.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 67
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 seat matrix: DNB diploma in-service seats",
+      "file": "karnataka/round1-seat-matrix-dnb-diploma.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 55
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 seat matrix: St John's Medical College",
+      "file": "karnataka/round1-seat-matrix-st-johns.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 34
+    },
+    {
+      "region": "Karnataka",
+      "title": "Provisional fee structure by college and course",
+      "file": "karnataka/provisional-fee-structure.pdf",
+      "date": "2026-10-30",
+      "kind": "Fees",
+      "kb": 134
+    },
+    {
+      "region": "Karnataka",
+      "title": "Government order: St John's Medical College PG fees, 2026-27 (Kannada)",
+      "file": "karnataka/fee-order-st-johns.pdf",
+      "date": "2026-10-31",
+      "kind": "Fees",
+      "kb": 1134
+    },
+    {
+      "region": "Kerala",
+      "title": "Prospectus 2026-27 (G.O.(Ms) No. 313/2026)",
+      "file": "kerala/prospectus-2026.pdf",
+      "date": "2026-10-04",
+      "kind": "Rules",
+      "kb": 1544
+    },
+    {
+      "region": "Kerala",
+      "title": "Seat matrix: category-wise, government colleges, RCC and self-financing colleges",
+      "file": "kerala/seat-matrix-category-wise.pdf",
+      "date": "2026-10-28",
+      "kind": "Seat matrix",
+      "kb": 87
+    },
+    {
+      "region": "Kerala",
+      "title": "Seat matrix: minority and NRI quota seats in self-financing colleges",
+      "file": "kerala/seat-matrix-minority-nri.pdf",
+      "date": "2026-10-28",
+      "kind": "Seat matrix",
+      "kb": 14
+    },
+    {
+      "region": "Kerala",
+      "title": "Service quota seats in government colleges (Annexure III B)",
+      "file": "kerala/seat-matrix-service-quota.pdf",
+      "date": "2026-10-28",
+      "kind": "Seat matrix",
+      "kb": 78
+    },
+    {
+      "region": "Kerala",
+      "title": "First phase allotment list",
+      "file": "kerala/round1-allotment.pdf",
+      "date": "2026-11-02",
+      "kind": "Allotment",
+      "kb": 179
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Information brochure NEET-PG 2026 (State CET Cell; scanned annexures compressed)",
+      "file": "maharashtra/information-brochure-2026.pdf",
+      "date": "2026-10-14",
+      "kind": "Rules",
+      "kb": 28961
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Notice 1: registration, documents and preference filling",
+      "file": "maharashtra/notice-01-registration-and-cap-round-1.pdf",
+      "date": "2026-10-16",
+      "kind": "Notice",
+      "kb": 721
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Notice 2: NRI candidates, eligibility and registration",
+      "file": "maharashtra/notice-02-nri-candidates.pdf",
+      "date": "2026-10-16",
+      "kind": "Notice",
+      "kb": 874
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Notice 3: registration extended to 27 Oct",
+      "file": "maharashtra/notice-03-registration-extended.pdf",
+      "date": "2026-10-26",
+      "kind": "Notice",
+      "kb": 516
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Notice 4: revised schedule for CAP Round 1",
+      "file": "maharashtra/notice-04-revised-cap-round-1-schedule.pdf",
+      "date": "2026-10-30",
+      "kind": "Schedule",
+      "kb": 513
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Provisional list of registered candidates",
+      "file": "maharashtra/registered-candidates.pdf",
+      "date": "2026-10-30",
+      "kind": "Merit list",
+      "kb": 1688
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Provisional state merit list (30 Oct, superseded)",
+      "file": "maharashtra/provisional-merit-list.pdf",
+      "date": "2026-10-30",
+      "kind": "Merit list",
+      "kb": 2015
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Provisional merit list: in-service candidates (30 Oct, superseded)",
+      "file": "maharashtra/provisional-merit-list-in-service.pdf",
+      "date": "2026-10-30",
+      "kind": "Merit list",
+      "kb": 30
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Final provisional state merit list",
+      "file": "maharashtra/final-merit-list.pdf",
+      "date": "2026-11-02",
+      "kind": "Merit list",
+      "kb": 1881
+    },
+    {
+      "region": "Maharashtra",
+      "title": "Final provisional merit list: in-service candidates (20% quota)",
+      "file": "maharashtra/final-merit-list-in-service.pdf",
+      "date": "2026-11-02",
+      "kind": "Merit list",
+      "kb": 28
+    },
+    {
+      "region": "Maharashtra",
+      "title": "CAP Round 1 seat matrix: government, corporation and aided colleges, MD/MS",
+      "file": "maharashtra/round1-seat-matrix-government-md-ms.pdf",
+      "date": "2026-11-02",
+      "kind": "Seat matrix",
+      "kb": 279
+    },
+    {
+      "region": "Maharashtra",
+      "title": "CAP Round 1 seat matrix: government colleges, diploma",
+      "file": "maharashtra/round1-seat-matrix-government-diploma.pdf",
+      "date": "2026-11-02",
+      "kind": "Seat matrix",
+      "kb": 41
+    },
+    {
+      "region": "Maharashtra",
+      "title": "CAP Round 1 seat matrix: private and minority colleges",
+      "file": "maharashtra/round1-seat-matrix-private.pdf",
+      "date": "2026-11-02",
+      "kind": "Seat matrix",
+      "kb": 167
+    },
+    {
+      "region": "Odisha",
+      "title": "No. 69: reporting for Round 1 admission, documents and admission fees",
+      "file": "odisha/round1-reporting-and-admission-fees.pdf",
+      "date": "2026-11-03",
+      "kind": "Notice",
+      "kb": 591
+    },
+    {
+      "region": "Odisha",
+      "title": "Round 1 common allotment, with the seats left vacant",
+      "file": "odisha/round1-allotment.pdf",
+      "date": "2026-11-04",
+      "kind": "Allotment",
+      "kb": 178
+    },
+    {
+      "region": "Odisha",
+      "title": "No. 81: how to pay the admission fees",
+      "file": "odisha/admission-fee-payment.pdf",
+      "date": "2026-11-04",
+      "kind": "Notice",
+      "kb": 252
     }
   ],
   "updates": [
@@ -2680,6 +3009,55 @@
       "region": "Andhra Pradesh",
       "date": "2026-11-03",
       "text": "Grievances against the provisional merit lists and the not-eligible lists closed 3 Nov, 1 pm."
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-04",
+      "text": "Round 1 common allotment out: 197 direct and 177 in-service candidates (MD/MS and DNB); 107 seats left vacant. Search it by CMR, college, course, quota and category on the Odisha roadmap.",
+      "link": "/roadmap/odisha/round-1/allotment"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-03",
+      "text": "Notice 69: report for Round 1 admission at 650 LT, MKCG Medical College, Berhampur (10 am – 1 pm) with the listed original documents. Admission fees: ₹58,800 for MD/MS in government colleges (plus university fees), ₹1,25,000 for diploma and DNB; private college fees as listed."
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-04",
+      "text": "Notice 81: pay the admission fee through SBI Collect (Convener PG Medical Counselling Committee, category PG MED ADMISSION FEES) or by bank draft payable at SBI MCC Branch, Berhampur."
+    },
+    {
+      "region": "Kerala",
+      "date": "2026-11-04",
+      "text": "Kerala on the roadmap: state merit list (5,665, with category-wise ranks), seat matrix (1,173 seats) and the first phase allotment (1,082). CEE publishes application numbers, not names.",
+      "link": "/roadmap/kerala/round-1/allotment"
+    },
+    {
+      "region": "Maharashtra",
+      "date": "2026-11-04",
+      "text": "Maharashtra on the roadmap: final state merit list (7,242) and in-service list (65), and the CAP Round 1 seat matrix (2,759 seats in government, private and minority colleges).",
+      "link": "/roadmap/maharashtra/round-1/choice-filling"
+    },
+    {
+      "region": "Maharashtra",
+      "date": "2026-10-30",
+      "text": "Notice 4, revised CAP Round 1 schedule: final merit lists and seat matrix 2 Nov; preference filling 2–4 Nov, until 11:59 pm; first selection list 5 Nov; joining 6–10 Nov, until 5:30 pm."
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-11-04",
+      "text": "Karnataka seat matrix on the roadmap: 4,892 Round 1 seats (PG medical, DNB, DNB diploma and St John's), with KEA's provisional fee beside each seat.",
+      "link": "/roadmap/karnataka/round-1/choice-filling"
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-10-30",
+      "text": "Round 1 schedule: provisional allotment 5 Nov after 8 pm, final allotment 6 Nov after 11 am. Options entered for Round 1 carry over to Round 2."
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-10-29",
+      "text": "Government order: PG fees in private medical colleges for 2026-27 stay at the 2025-26 levels (clinical courses ₹7,68,108 on government-quota seats, ₹13,72,994 on private-quota seats)."
     }
   ],
   "highlight": {
@@ -2696,8 +3074,8 @@
     },
     "Odisha": {
       "stage": "Round 1",
-      "note": "Choice locking closes 3 Nov, 11:55 pm. Allotment 5 Nov; report 6–7 Nov at MKCG Berhampur.",
-      "asOf": "2026-11-03"
+      "note": "Round 1 allotment out 4 Nov (374 allotted, 107 seats vacant); report 6–7 Nov and 10 Nov at MKCG Berhampur.",
+      "asOf": "2026-11-04"
     },
     "Andhra Pradesh": {
       "stage": "Merit List",
@@ -2761,8 +3139,8 @@
     },
     "Maharashtra": {
       "stage": "Round 1",
-      "note": "Final merit lists and Round 1 seat matrices out 3 Nov; choice filling next.",
-      "asOf": "2026-11-03"
+      "note": "Preference filling until 4 Nov, 11:59 pm; first selection list 5 Nov; join 6–10 Nov.",
+      "asOf": "2026-11-04"
     },
     "Mizoram": {
       "stage": "Merit List",
@@ -2796,8 +3174,8 @@
     },
     "Karnataka": {
       "stage": "Round 1",
-      "note": "Mock allotment out 3 Nov; change options until 5 Nov, 10 am.",
-      "asOf": "2026-11-03"
+      "note": "Change options until 5 Nov, 10 am; provisional allotment 5 Nov after 8 pm, final 6 Nov after 11 am.",
+      "asOf": "2026-11-04"
     },
     "West Bengal": {
       "stage": "Round 1",
@@ -2988,6 +3366,74 @@
       "date": "2026-11-03",
       "doc": "uttarakhand/round1-allotment-broadsheet.pdf",
       "file": "uttarakhand/allotment-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Odisha",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 common allotment (direct and in-service)",
+      "date": "2026-11-04",
+      "doc": "odisha/round1-allotment.pdf",
+      "file": "odisha/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Kerala",
+      "kind": "merit",
+      "title": "State merit list with category-wise ranks",
+      "date": "2026-10-29",
+      "doc": "kerala/round1-final-merit-list.pdf",
+      "file": "kerala/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Kerala",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Seat matrix (state, self-financing, minority and NRI quotas)",
+      "date": "2026-10-28",
+      "doc": "kerala/seat-matrix-category-wise.pdf",
+      "file": "kerala/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Kerala",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "First phase allotment",
+      "date": "2026-11-02",
+      "doc": "kerala/round1-allotment.pdf",
+      "file": "kerala/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Maharashtra",
+      "kind": "merit",
+      "title": "Final provisional state merit list and in-service list",
+      "date": "2026-11-02",
+      "doc": "maharashtra/final-merit-list.pdf",
+      "file": "maharashtra/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Maharashtra",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "CAP Round 1 seat matrix (government, private, management, NRI)",
+      "date": "2026-11-02",
+      "doc": "maharashtra/round1-seat-matrix-government-md-ms.pdf",
+      "file": "maharashtra/seat-matrix-round1.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Karnataka",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix (PG medical, DNB, St John's) with fees",
+      "date": "2026-10-30",
+      "doc": "karnataka/round1-seat-matrix-medical.pdf",
+      "file": "karnataka/seat-matrix-round1.json"
     }
   ]
 }

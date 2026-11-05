@@ -268,7 +268,7 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   assert.deepEqual(od.stages, ['Registration', 'Merit List', 'Round 1', 'Round 2', 'Round 3', 'Stray Vacancy']);
   assert.equal(od.progress.stage, 'Round 1');
   assert.equal(od.access, 'signin');
-  assert.deepEqual(od.data.map(d => d.id).sort(), ['merit-list-2026', 'seat-matrix-round-1']);
+  assert.deepEqual(od.data.map(d => d.id).sort(), ['allotment-round-1', 'merit-list-2026', 'seat-matrix-round-1']);
   const guide = od.guides.find(g => g.slug === 'odisha');
   assert.ok(guide.sections.some(s => s.id === 'key-dates'), 'guide sections are listed');
   const sec = (await v('/api/sections/odisha/key-dates')).json;
@@ -334,6 +334,40 @@ test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat 
   }
   const cfg = (await browser()('/api/config')).json;
   assert.deepEqual(cfg.meritByName, ['Tamil Nadu'], 'Tamil Nadu prints no NEET-PG ranks: its CMR is found by name');
+});
+
+test('Odisha allotment; Kerala, Maharashtra and Karnataka data: as printed', async () => {
+  const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
+  const STATES = [
+    // state, key, merit lists, seats, allotted
+    ['Odisha', 'odisha', null, 463, 374],
+    ['Kerala', 'kerala', [['State merit list', 5665], ['Second list (not qualified)', 20]], 1173, 1082],
+    ['Maharashtra', 'maharashtra', [['State merit list', 7242], ['In-service (20% quota)', 65]], 2759, null],
+    ['Karnataka', 'karnataka', null, 4892, null]
+  ];
+  // one account (sign-up codes are rate-limited per address), its state switched in the profile
+  const b = browser(), phone = '9000000300';
+  await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone } });
+  await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone, code: '1234', password: PW } });
+  for (const [state, key, lists, seats, allotted] of STATES) {
+    assert.equal((await b('/api/me', { method: 'PATCH', body: { state } })).json.user.state, state);
+    if (lists) {
+      const merit = (await b(`/api/regions/${key}/data/merit-list-2026`)).json;
+      for (const [label, n] of lists) assert.equal(merit.lists.find(l => l.label === label)?.rows.length, n, `${state}: ${label}`);
+    }
+    assert.equal(sum((await b(`/api/regions/${key}/data/seat-matrix-round-1`)).json.rows), seats, `${state}: seats`);
+    if (allotted) {
+      const a = (await b(`/api/regions/${key}/data/allotment-round-1`)).json;
+      assert.equal(a.format, 'state');
+      assert.equal(a.rows.length, allotted, `${state}: allotted`);
+      if (key === 'odisha') {
+        // every MD/MS seat of the revised matrix is either allotted or listed as vacant
+        const md = a.rows.filter(r => r.programme === 'MD/MS').length + sum(a.vacant.filter(v => v.programme === 'MD/MS'));
+        assert.equal(md, seats, 'Odisha: allotted + vacant = the MD/MS seat matrix');
+      }
+    }
+    assert.equal((await b(`/api/regions/${key === 'odisha' ? 'kerala' : 'odisha'}/data/seat-matrix-round-1`)).status, 403, "another state's data stays locked");
+  }
 });
 
 test('sign-up asks for the NEET-PG rank; the state CMR is separate, saved later and cleared', async () => {

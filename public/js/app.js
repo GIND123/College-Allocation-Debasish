@@ -1177,25 +1177,27 @@ function cmrFinder(box, region, { typed, onSet } = {}) {
     <div class="cf-out" id="cf-out" aria-live="polite"></div>`;
   const out = $('#cf-out', box);
   const show = (hits, note) => {
-    out.innerHTML = (note ? `<p>${note}</p>` : '') + hits.slice(0, 6).map(({ r, l }, i) => `<div class="cf-hit"><div><b>${esc(r.name)}</b>
-        <small>${[`${esc(l.label)} list`, r.air && `NEET-PG rank ${fmt(r.air)}`, r.cat && esc(r.cat.replace(/,.*$/, '')), r.sub && esc(r.sub)].filter(Boolean).join(' · ')}</small></div>
+    out.innerHTML = (note ? `<p>${note}</p>` : '') + hits.slice(0, 6).map(({ r, l }, i) => `<div class="cf-hit"><div><b>${esc(r.name || `Application no. ${r.app}`)}</b>
+        <small>${[`${esc(l.label)}${/\blist\b/i.test(l.label) ? '' : ' list'}`, r.air && `NEET-PG rank ${fmt(r.air)}`, r.cat && esc(r.cat.replace(/,.*$/, '')), r.sub && esc(r.sub)].filter(Boolean).join(' · ')}</small></div>
       ${rejectedList(l) ? `<span class="rp-bad">${esc(r.reason || 'Rejected')}</span>`
         : `<button type="button" class="btn btn-primary btn-sm" data-hit="${i}">Use CMR ${esc(stateRank(r))}</button>`}</div>`).join('')
-      + `<label class="cf-name">Not you? Search the list by name<input class="input" id="cf-q" type="search" autocomplete="off" placeholder="Your name as on the merit list"></label>`;
+      + (named ? `<label class="cf-name">Not you? Search the list by name<input class="input" id="cf-q" type="search" autocomplete="off" placeholder="Your name as on the merit list"></label>`
+        : `<label class="cf-name">Not you? Search the list by application or NEET roll no.<input class="input" id="cf-q" type="search" inputmode="numeric" autocomplete="off" placeholder="e.g. 2601529"></label>`);
     $$('[data-hit]', out).forEach(b => b.onclick = () => { const { r, l } = hits[+b.dataset.hit]; use(r.ranks.UR, l.type); });
     const q = $('#cf-q', out);
     q.oninput = debounce(() => {
       const terms = q.value.toLowerCase().split(/\s+/).filter(t => t.length > 1);
       if (!terms.length) return;
-      const found = all.filter(({ r }) => terms.every(t => r.name.toLowerCase().includes(t)));
-      show(found, found.length ? `${fmt(found.length)} on the list for “${esc(q.value)}”${found.length > 6 ? ' (first 6)' : ''}:` : `No one called “${esc(q.value)}” on the list.`);
+      const found = all.filter(({ r }) => named ? terms.every(t => (r.name || '').toLowerCase().includes(t)) : terms.some(t => t === r.app || t === r.roll));
+      show(found, found.length ? `${fmt(found.length)} on the list for “${esc(q.value)}”${found.length > 6 ? ' (first 6)' : ''}:`
+        : named ? `No one called “${esc(q.value)}” on the list.` : `No candidate with number “${esc(q.value)}” on the list.`);
       const nq = $('#cf-q', out); nq.value = q.value; nq.focus();
     }, 300);
   };
-  let all = [];
+  let all = [], named = true;
   $('#cf-go', box).onclick = async () => {
     out.innerHTML = '<span class="spinner"></span>';
-    try { all = (await meritOf(region)).lists.flatMap(l => l.rows.map(r => ({ r, l }))); }
+    try { all = (await meritOf(region)).lists.flatMap(l => l.rows.map(r => ({ r, l }))); named = all.some(({ r }) => r.name); }
     catch (e) { out.innerHTML = `<p>${esc(e.message)}</p>`; return; }
     // some states (Tamil Nadu) publish no NEET-PG ranks: then the name is the way in
     const byAir = all.some(({ r }) => r.air);
@@ -2074,19 +2076,22 @@ function meritExplorer(host, data, info) {
       ...(r.tags || []).map(t => `<span class="rp-chip rp-tag${/^Not eligible/.test(t) ? ' rp-tag-bad' : ''}">${esc(t)}</span>`),
       ...(r.reason ? [`<span class="sub">${esc(r.reason)}</span>`] : [])].join(' ') || '—';
   const notes = new Set(rows.map(r => r.note).filter(Boolean));
+  const named = has('name'), ids = r => [r.roll && `Roll ${esc(r.roll)}`, r.app && `Appl. ${esc(r.app)}`].filter(Boolean);
   explorer(host, {
     rows,
     prog: { of: r => r._l.programme, value: data.lists[0].programme },
     segs: data.lists.length > 1 ? [{ id: 'type', label: notes.size > 1 ? 'List' : 'Candidate type', values: [...new Set(data.lists.map(l => l.type))], of: r => r._l.type, value: data.lists[0].type }] : [],
     selects: [{ id: 'cat', label: 'Category', all: 'All categories', of: r => catName(r.cat) },
       ...(notes.size > 1 ? [{ id: 'note', label: 'Candidate type', all: 'All candidates', of: r => r.note }] : [])],
-    search: { placeholder: `Search by name${has('roll') ? ', NEET roll no.' : ''}${has('app') ? ' or application no.' : ''}`, of: r => `${r.name} ${r.roll || ''} ${r.app || ''}` },
+    search: { placeholder: named ? `Search by name${has('roll') ? ', NEET roll no.' : ''}${has('app') ? ' or application no.' : ''}` : 'Search by application no. or NEET roll no.',
+      of: r => `${r.name || ''} ${r.roll || ''} ${r.app || ''}` },
     mark: (r, f) => /^\w{8,}$/.test(f.q) && (r.roll === f.q || r.app === f.q),
     cols: [
       { t: '#', cls: 'n soft', r: (r, i) => fmt(i + 1) },
       ...(has('air') ? [{ t: 'AIR', cls: 'n', r: r => r.air ? fmt(r.air) : '—' }] : []),
       { t: 'State rank', cls: 'n strong', r: r => esc(stateRank(r)) },
-      { t: 'Name', cls: 'wrapcell', r: r => `<b>${esc(r.name)}</b><span class="sub">${[r.roll && `Roll ${esc(r.roll)}`, r.app && `Appl. ${esc(r.app)}`].filter(Boolean).join(' · ')}</span>` },
+      named ? { t: 'Name', cls: 'wrapcell', r: r => `<b>${esc(r.name)}</b><span class="sub">${ids(r).join(' · ')}</span>` }
+        : { t: 'Candidate', cls: 'wrapcell', r: r => `<b>${r.app ? `Appl. ${esc(r.app)}` : '—'}</b>${r.roll ? `<span class="sub">Roll ${esc(r.roll)}</span>` : ''}` },
       { t: 'Category', cls: 'wrapcell', r: r => esc(catName(r.cat) || '—') + (r.sub ? `<span class="sub">${esc(r.sub.replace(/PWD- Persons with Disabilities/i, 'PwD'))}</span>` : '') },
       { t: 'PwD', r: r => pwd(r) || '—' },
       { t: 'Candidate type', cls: 'wrapcell', r: r => esc(ctype(r)) + (r.job ? `<span class="sub">${esc(r.job.toLowerCase())}</span>` : '') },
@@ -2095,7 +2100,7 @@ function meritExplorer(host, data, info) {
     ],
     summary: v => `<b>${fmt(v.length)}</b> candidate${v.length === 1 ? '' : 's'}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
     csv: { name: `${slugOf(info.region)}-merit-list-2026.csv`, head: ['List', 'State rank', 'NEET AIR', 'Name', 'NEET roll no.', 'Application no.', 'Category', 'Sub-category', 'PwD', 'Candidate type', 'NEET score', 'Bonus', 'Total', 'Category ranks', 'Remarks'],
-      row: r => [r._l.label, r.rl || r.ranks?.UR || '', r.air || '', r.name, r.roll || '', r.app || '', catName(r.cat), r.sub || '', pwd(r), ctype(r), r.score ?? '', r.weight || '', r.total ?? '',
+      row: r => [r._l.label, r.rl || r.ranks?.UR || '', r.air || '', r.name || '', r.roll || '', r.app || '', catName(r.cat), r.sub || '', pwd(r), ctype(r), r.score ?? '', r.weight || '', r.total ?? '',
         Object.entries(r.ranks || {}).map(([k, n]) => `${k} ${n}`).join('; '), [...(r.tags || []), r.reason || r.job || ''].filter(Boolean).join('; ')] }
   });
 }
@@ -2165,12 +2170,13 @@ function seatExplorer(host, data, info, prev = null) {
       { t: 'Quota', cls: 'wrapcell', r: r => esc(r.quota) + (r.stream ? `<span class="sub">${esc(r.stream)}</span>` : '') },
       { t: 'Category', r: r => esc(r.category) },
       { t: 'Total seats', cls: 'n r strong', r: r => fmt(r.seats) },
+      ...(has('fee') ? [{ t: 'Fee <span class="sub">as published</span>', cls: 'n', r: r => r.fee ? `₹${fmt(r.fee)}` : '—' }] : []),
       ...predCols
     ],
     summary: v => `<b>${fmt(v.reduce((n, r) => n + r.seats, 0))}</b> seats in ${(n => `${fmt(n)} institution${n === 1 ? '' : 's'}`)(new Set(v.map(r => r.college)).size)}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
     csv: { name: `${slugOf(info.region)}-seat-matrix.csv`,
-      head: ['Institution', 'College type', 'State', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats', ...(prev ? [`${year} closing CMR`, 'Your chance'] : [])],
-      row: r => [r.college, r.type, r.state || '', r.course, r.programme, r.stream || '', r.quota, r.category, r.seats,
+      head: ['Institution', 'College type', 'State', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats', ...(has('fee') ? ['Fee (Rs)'] : []), ...(prev ? [`${year} closing CMR`, 'Your chance'] : [])],
+      row: r => [r.college, r.type, r.state || '', r.course, r.programme, r.stream || '', r.quota, r.category, r.seats, ...(has('fee') ? [r.fee || ''] : []),
         ...(prev ? [refOf(r)?.p.cmr_close || '', p.rank && refOf(r) ? BAND[chance(r)] || 'Out of reach' : ''] : [])] }
   });
   if (!prev) return;
@@ -2203,13 +2209,13 @@ function stateAllotExplorer(host, D, info) {
     range: { label: `${label} range`, of: r => r.rank },
     find: { label: `Find your ${label}`, placeholder: 'e.g. 250', run: n => {
       const hit = rows.filter(x => x.rank === n);
-      if (hit.length) return hit.map(r => `${esc(label)} <b>${fmt(n)}</b>${r.list ? ` (${esc(r.list)} list)` : ''} was allotted <b>${esc(r.course)}</b> at <b>${esc(r.college)}</b> · ${esc(r.quota)} · ${esc(r.category)}.`).join('<br>') + ' Nearby ranks are listed below.';
+      if (hit.length) return hit.map(r => `${esc(label)} <b>${esc(r.rl || fmt(n))}</b>${r.list ? ` (${esc(r.list)} list)` : r.note ? ` (${esc(r.note)})` : ''} was allotted <b>${esc(r.course)}</b> at <b>${esc(r.college)}</b> · ${esc(r.quota)} · ${esc(r.category)}.`).join('<br>') + ' Nearby ranks are listed below.';
       const after = rows.find(x => x.rank > n);
       return `${esc(label)} <b>${fmt(n)}</b> was not allotted a seat in this round.${after ? ` The next allotted rank is ${fmt(after.rank)}.` : ''} Nearby ranks are listed below.`;
     } },
     mark: (r, f) => r.rank === f.find,
     cols: [
-      { t: esc(label), cls: 'n strong', r: r => fmt(r.rank) + (r.air ? `<span class="sub">AIR ${fmt(r.air)}</span>` : '') },
+      { t: esc(label), cls: 'n strong', r: r => esc(r.rl || fmt(r.rank)) + (r.air ? `<span class="sub">AIR ${fmt(r.air)}</span>` : '') },
       { t: 'Institution', cls: 'wrapcell', r: r => `<b>${esc(r.college)}</b><span class="sub">${esc(r.type)}</span>` },
       { t: 'Course', cls: 'wrapcell', r: r => `${esc(r.course)}<span class="sub">${esc(r.programme)}${r.list && r.list !== r.programme ? ` · ${esc(r.list)} list` : ''}</span>` },
       { t: 'Quota', cls: 'wrapcell', r: r => esc(r.quota) },
@@ -2220,8 +2226,22 @@ function stateAllotExplorer(host, D, info) {
     summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ${esc(label.toLowerCase())}s <b>${fmt(Math.min(...v.map(r => r.rank)))}</b> to <b>${fmt(Math.max(...v.map(r => r.rank)))}</b>${D.note ? ` · <span class="muted">${esc(D.note)}</span>` : ''}`
       : 'No seats match these filters.',
     csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled'],
-      row: r => [r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || ''] }
+      row: r => [r.rl || r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || ''] }
   });
+  if (D.vacant?.length) vacantSeats(host, D.vacant);
+}
+
+// Seats a state lists as lying vacant after the round: { college, type, course, programme, quota, category, stream, seats }.
+function vacantSeats(host, rows) {
+  const n = rows.reduce((a, r) => a + r.seats, 0);
+  const streams = [...new Set(rows.map(r => r.stream).filter(Boolean))];
+  host.insertAdjacentHTML('beforeend', `<details class="rp-vacant"><summary><b>${fmt(n)}</b> seat${n === 1 ? '' : 's'} lying vacant after this round${streams.length > 1
+      ? ` <span class="muted">(${streams.map(s => `${fmt(rows.filter(r => r.stream === s).reduce((a, r) => a + r.seats, 0))} ${esc(s.toLowerCase())}`).join(', ')})</span>` : ''}</summary>
+    <div class="grid-wrap"><table class="grid rp-grid"><thead><tr><th scope="col">Institution</th><th scope="col">Course</th>
+      <th scope="col">Quota</th><th scope="col">Category</th><th scope="col" class="n">Seats</th></tr></thead>
+    <tbody>${rows.map(r => `<tr><td class="wrapcell"><b>${esc(r.college)}</b><span class="sub">${esc(r.type || '')}</span></td>
+      <td class="wrapcell">${esc(r.course)}<span class="sub">${esc(r.programme)}</span></td>
+      <td class="wrapcell">${esc(r.quota)}${r.stream ? `<span class="sub">${esc(r.stream)}</span>` : ''}</td><td class="wrapcell">${esc(r.category)}</td><td class="n strong">${fmt(r.seats)}</td></tr>`).join('')}</tbody></table></div></details>`);
 }
 
 // MCC's result in its compact form: lists of names, and rows of [rank, inst, state, quota, course, seat cat, candidate cat, college type].
