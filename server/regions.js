@@ -10,13 +10,19 @@ import { STATES } from './states.js';
 
 export const regionKey = r => r.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 export const regionOf = key => [ALL_INDIA, ...STATES].find(r => regionKey(r) === key) || null;
+// Review accounts open every state's data: the admin (signed in at /admin, in the same browser), and the mobile
+// numbers in FULL_ACCESS_PHONES (comma-separated; spaces and +91 are fine). An env var, as the free tier's database is
+// wiped on every restart.
+const FULL = new Set((process.env.FULL_ACCESS_PHONES || '').split(/[,;\n]+/).map(p => p.replace(/\D/g, '').slice(-10)).filter(p => p.length === 10));
+export const fullAccess = user => !!user?.phone && FULL.has(String(user.phone).replace(/\D/g, '').slice(-10));
 /** Who may load a region's data. */
-export const access = (user, region) => !user ? 'signin' : region === ALL_INDIA || user.state === region ? 'open' : 'locked';
+export const access = (user, region, admin = false) => admin ? 'open' : !user ? 'signin'
+  : region === ALL_INDIA || user.state === region || fullAccess(user) ? 'open' : 'locked';
 
 const fileOf = g => path.join(GUIDES_DIR, registry().guides.find(x => x.slug === g.slug).file);
 
 /** Everything public about a region, for its roadmap page. */
-export function regionInfo(region, user) {
+export function regionInfo(region, user, admin = false) {
   const reg = registry();
   const guides = guideList().filter(g => g.region === region);
   const dates = guides.flatMap(g => (g.dates || []).map(d => ({ ...d, slug: g.slug })));
@@ -26,7 +32,8 @@ export function regionInfo(region, user) {
     region, key: regionKey(region), stages: STAGES, progress: reg.progress?.[region] || null,
     guides: guides.map(g => ({ slug: g.slug, label: g.label, title: g.title, summary: g.summary, authority: g.authority, official: g.official,
       sections: sections(fileOf(g)).map(({ id, title, blurb }) => ({ id, title, blurb })) })),
-    dates, documents: documents().filter(d => d.region === region), data, access: access(user, region)
+    dates, documents: documents().filter(d => d.region === region), data, access: access(user, region, admin),
+    review: admin ? 'admin' : fullAccess(user) ? 'account' : null
   };
 }
 

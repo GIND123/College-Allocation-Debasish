@@ -428,8 +428,13 @@
         },
         {
           "what": "Round 1 provisional allotment",
-          "when": "5 Nov, after 8 pm",
+          "when": "5 Nov · 3,272 allotted",
           "on": "2026-11-05T20:00:00+05:30"
+        },
+        {
+          "what": "Objections to the provisional allotment",
+          "when": "By email before 10 am, 6 Nov",
+          "to": "2026-11-06T10:00:00+05:30"
         },
         {
           "what": "Round 1 final allotment",
@@ -536,6 +541,11 @@
           "what": "Round 1 reporting withheld (High Court order)",
           "when": "Next hearing 5 Nov, 2:30 pm",
           "on": "2026-11-05T14:30:00+05:30"
+        },
+        {
+          "what": "Round 1 provisional allotment",
+          "when": "29 Oct · 1,110 allotted",
+          "on": "2026-10-29T00:00:00+05:30"
         }
       ]
     },
@@ -592,13 +602,18 @@
         },
         {
           "what": "Round 1 allotment",
-          "when": "5 Nov (first selection list)",
+          "when": "5 Nov · provisional selection list (2,112 allotted)",
           "on": "2026-11-05T00:00:00+05:30"
         },
         {
           "what": "Round 1 joining at the allotted college",
           "when": "6–10 Nov, until 5:30 pm (originals and fees)",
           "from": "2026-11-06T00:00:00+05:30",
+          "to": "2026-11-10T17:30:00+05:30"
+        },
+        {
+          "what": "Status retention form",
+          "when": "By 10 Nov, 5:30 pm, in person",
           "to": "2026-11-10T17:30:00+05:30"
         }
       ]
@@ -816,6 +831,11 @@
           "what": "Round 1 seat matrix",
           "when": "31 Oct · revised 1 Nov",
           "label": "Published"
+        },
+        {
+          "what": "Round 1 provisional allotment",
+          "when": "5 Nov · Government quota, Management quota, DNB / diploma",
+          "on": "2026-11-05T00:00:00+05:30"
         }
       ]
     },
@@ -952,6 +972,12 @@
           "what": "Round 1 reporting (including NRI)",
           "when": "3–10 Nov",
           "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-10T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 admission: freeze or float, documents and advance fee",
+          "when": "By 10 Nov",
+          "from": "2026-11-04T00:00:00+05:30",
           "to": "2026-11-10T23:59:00+05:30"
         }
       ]
@@ -2534,6 +2560,166 @@
       "date": "2026-11-04",
       "kind": "Notice",
       "kb": 252
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 1 allotment notice: scrutiny and admission dates, scrutiny centre for private colleges (Hindi)",
+      "file": "chhattisgarh/round1-allotment-notice.pdf",
+      "date": "2026-10-31",
+      "kind": "Notice",
+      "kb": 1690
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 provisional seat allotment (MD/MS), with course fees",
+      "file": "karnataka/round1-provisional-allotment.pdf",
+      "date": "2026-11-05",
+      "kind": "Allotment",
+      "kb": 1369
+    },
+    {
+      "region": "Kerala",
+      "title": "Prospectus: post-MBBS DNB and diploma, in-service quota (with the seat list)",
+      "file": "kerala/prospectus-dnb-diploma-in-service.pdf",
+      "date": "2026-10-19",
+      "kind": "Rules",
+      "kb": 269
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Revised merit list (after the High Court order of 26 Oct)",
+      "file": "madhya-pradesh/revised-merit-list.pdf",
+      "date": "2026-10-27",
+      "kind": "Merit list",
+      "kb": 811
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Round 1 seat chart: government and autonomous colleges (MD/MS)",
+      "file": "madhya-pradesh/round1-seat-chart-government.pdf",
+      "date": "2026-10-23",
+      "kind": "Seat matrix",
+      "kb": 902
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Round 1 seat chart: private colleges (MD/MS), with NRI seats",
+      "file": "madhya-pradesh/round1-seat-chart-private.pdf",
+      "date": "2026-10-23",
+      "kind": "Seat matrix",
+      "kb": 884
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Round 1 seats: post-MBBS DNB and diploma in district hospitals",
+      "file": "madhya-pradesh/round1-seats-dnb-diploma.pdf",
+      "date": "2026-10-23",
+      "kind": "Seat matrix",
+      "kb": 340
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Round 1 opening and closing ranks",
+      "file": "madhya-pradesh/round1-opening-closing-ranks.pdf",
+      "date": "2026-10-29",
+      "kind": "Allotment",
+      "kb": 1372
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Round 1 admission withheld (High Court interim order of 2 Nov)",
+      "file": "madhya-pradesh/round1-admission-withheld.pdf",
+      "date": "2026-11-03",
+      "kind": "Notice",
+      "kb": 2348
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Notice for in-service candidates: registration from 10 Oct (Hindi)",
+      "file": "madhya-pradesh/in-service-candidates-notice.pdf",
+      "date": "2026-10-09",
+      "kind": "Notice",
+      "kb": 2477
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Fees: government and autonomous colleges (Hindi)",
+      "file": "madhya-pradesh/fees-government-colleges.pdf",
+      "date": "2026-10-09",
+      "kind": "Fees",
+      "kb": 2162
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "MP medical education admission rules 2018, with amendments (Hindi)",
+      "file": "madhya-pradesh/admission-rules-2018.pdf",
+      "date": "2026-10-09",
+      "kind": "Rules",
+      "kb": 1781
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Registration user manual",
+      "file": "madhya-pradesh/registration-user-manual.pdf",
+      "date": "2026-10-12",
+      "kind": "Guidelines",
+      "kb": 1104
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Frequently asked questions (Hindi)",
+      "file": "madhya-pradesh/faq-2026.pdf",
+      "date": "2026-10-14",
+      "kind": "Guidelines",
+      "kb": 211
+    },
+    {
+      "region": "Madhya Pradesh",
+      "title": "Participating colleges",
+      "file": "madhya-pradesh/participating-colleges.pdf",
+      "date": "2026-10-14",
+      "kind": "Notice",
+      "kb": 185
+    },
+    {
+      "region": "Maharashtra",
+      "title": "CAP Round 1 provisional selection list",
+      "file": "maharashtra/round1-provisional-selection-list.pdf",
+      "date": "2026-11-05",
+      "kind": "Allotment",
+      "kb": 385
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 provisional allotment: Government quota",
+      "file": "tamil-nadu/round1-allotment-government-quota.pdf",
+      "date": "2026-11-05",
+      "kind": "Allotment",
+      "kb": 766
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 provisional allotment: Management quota (CMC, minority, NRI)",
+      "file": "tamil-nadu/round1-allotment-management-quota.pdf",
+      "date": "2026-11-05",
+      "kind": "Allotment",
+      "kb": 520
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Round 1 provisional allotment: DNB and 2-year diploma (service)",
+      "file": "tamil-nadu/round1-allotment-dnb-diploma.pdf",
+      "date": "2026-11-05",
+      "kind": "Allotment",
+      "kb": 387
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Round 1 admission procedure (freeze or float) and advance tuition fee",
+      "file": "uttarakhand/round1-admission-procedure.pdf",
+      "date": "2026-11-04",
+      "kind": "Notice",
+      "kb": 1177
     }
   ],
   "updates": [
@@ -2933,7 +3119,8 @@
     {
       "region": "Madhya Pradesh",
       "date": "2026-11-03",
-      "text": "Round 1 reporting withheld. The High Court (interim order of 2 Nov) limited in-service candidates to their 30% quota; next hearing 5 Nov, 2:30 pm. Bond submission for upgradation published 2 Nov."
+      "text": "Round 1 reporting withheld. The High Court (interim order of 2 Nov) limited in-service candidates to their 30% quota; next hearing 5 Nov, 2:30 pm. Bond submission for upgradation published 2 Nov.",
+      "doc": "madhya-pradesh/round1-admission-withheld.pdf"
     },
     {
       "region": "Maharashtra",
@@ -3058,6 +3245,55 @@
       "region": "Karnataka",
       "date": "2026-10-29",
       "text": "Government order: PG fees in private medical colleges for 2026-27 stay at the 2025-26 levels (clinical courses ₹7,68,108 on government-quota seats, ₹13,72,994 on private-quota seats)."
+    },
+    {
+      "region": "Maharashtra",
+      "date": "2026-11-05",
+      "text": "CAP Round 1 provisional selection list out: 2,112 candidates allotted (government, private, minority, NRI and in-service seats). Join in person 6–10 Nov, until 5:30 pm; the status retention form is due by 10 Nov, 5:30 pm. Search it by state merit rank on the Maharashtra roadmap.",
+      "link": "/roadmap/maharashtra/round-1/allotment"
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-11-05",
+      "text": "Round 1 provisional allotment out: 3,272 MD/MS seats allotted, each with its course fee. Objections by email to keauthority-ka@nic.in before 10 am on 6 Nov; the final allotment follows on 6 Nov, after 11 am. Search it by NEET-PG rank on the Karnataka roadmap.",
+      "link": "/roadmap/karnataka/round-1/allotment"
+    },
+    {
+      "region": "Kerala",
+      "date": "2026-11-05",
+      "text": "In-service quota: 15 post-MBBS DNB seats and 2 post-MBBS diploma seats (DME, DHS and IMS service quotas) added to the Kerala seat matrix, from the prospectus approved on 19 Oct. DNB fee ₹1,25,000 a year, paid online at allotment.",
+      "link": "/roadmap/kerala/round-1/choice-filling",
+      "doc": "kerala/prospectus-dnb-diploma-in-service.pdf"
+    },
+    {
+      "region": "Madhya Pradesh",
+      "date": "2026-11-05",
+      "text": "Madhya Pradesh on the roadmap: revised state merit list (4,777), Round 1 seat charts (2,169 seats in government, private and district hospitals) and the Round 1 allotment (1,110 allotted). Admission stays withheld under the High Court's interim order of 2 Nov.",
+      "link": "/roadmap/madhya-pradesh/round-1/allotment"
+    },
+    {
+      "region": "Madhya Pradesh",
+      "date": "2026-10-09",
+      "text": "Government and autonomous colleges' fees for 2026: tuition ₹1,00,000 a year and student fund ₹1,500 a year, plus refundable caution money ₹3,000 and security deposit ₹10,000 at admission (₹1,14,500 in all; hostel extra). In-service candidates register from 10 Oct; their category is updated to in-service after registration.",
+      "doc": "madhya-pradesh/fees-government-colleges.pdf"
+    },
+    {
+      "region": "Tamil Nadu",
+      "date": "2026-11-05",
+      "text": "Round 1 provisional allotment out: Government quota 1,409, Management quota 468 (including CMC, minority and NRI seats) and DNB / 2-year diploma 11. Search it by rank on the Tamil Nadu roadmap.",
+      "link": "/roadmap/tamil-nadu/round-1/allotment"
+    },
+    {
+      "region": "Uttarakhand",
+      "date": "2026-11-04",
+      "text": "Round 1 admission: choose freeze or float online and upload your documents; freeze candidates pay the advance tuition fee online (government colleges ₹60,000 a year with bond, ₹5,00,000 a year without bond for clinical subjects and pathology, ₹1,00,000 for other non-clinical subjects; private colleges ₹10,00,000), then report with the originals by 10 Nov. A freeze candidate who does not confirm admission loses the seat.",
+      "doc": "uttarakhand/round1-admission-procedure.pdf"
+    },
+    {
+      "region": "Chhattisgarh",
+      "date": "2026-10-31",
+      "text": "Round 1 allotment notice: candidates allotted government colleges complete scrutiny and admission at their college; those allotted Shri Balaji, Raipur Institute and Shri Shankaracharya (private) at the Shikshak Prashikshan Sansthan building, Pt. Deendayal Upadhyay Memorial Health Sciences and AYUSH University, Uparwara, Nava Raipur.",
+      "doc": "chhattisgarh/round1-allotment-notice.pdf"
     }
   ],
   "highlight": {
@@ -3134,13 +3370,13 @@
     },
     "Madhya Pradesh": {
       "stage": "Round 1",
-      "note": "Round 1 reporting withheld by a High Court order; hearing 5 Nov.",
-      "asOf": "2026-11-03"
+      "note": "Round 1 allotment out 29 Oct (1,110 allotted); admission withheld by the High Court's interim order of 2 Nov until its further orders.",
+      "asOf": "2026-11-05"
     },
     "Maharashtra": {
       "stage": "Round 1",
-      "note": "Preference filling until 4 Nov, 11:59 pm; first selection list 5 Nov; join 6–10 Nov.",
-      "asOf": "2026-11-04"
+      "note": "Round 1 provisional selection list out 5 Nov (2,112 allotted); join 6–10 Nov, until 5:30 pm.",
+      "asOf": "2026-11-05"
     },
     "Mizoram": {
       "stage": "Merit List",
@@ -3164,18 +3400,18 @@
     },
     "Tamil Nadu": {
       "stage": "Round 1",
-      "note": "Round 1 choice locking closes 3 Nov, 5 pm; PwD seats allotted 31 Oct.",
-      "asOf": "2026-11-03"
+      "note": "Round 1 provisional allotment out 5 Nov: Government quota 1,409, Management quota 468, DNB / diploma 11.",
+      "asOf": "2026-11-05"
     },
     "Uttarakhand": {
       "stage": "Round 1",
-      "note": "Round 1 allotment out 3 Nov; letters after 4 pm on 4 Nov; report by 10 Nov.",
-      "asOf": "2026-11-03"
+      "note": "Round 1 admission: freeze or float online, documents and advance fee by 10 Nov.",
+      "asOf": "2026-11-05"
     },
     "Karnataka": {
       "stage": "Round 1",
-      "note": "Change options until 5 Nov, 10 am; provisional allotment 5 Nov after 8 pm, final 6 Nov after 11 am.",
-      "asOf": "2026-11-04"
+      "note": "Round 1 provisional allotment out 5 Nov (3,272 allotted); objections before 10 am, 6 Nov; final allotment 6 Nov after 11 am.",
+      "asOf": "2026-11-05"
     },
     "West Bengal": {
       "stage": "Round 1",
@@ -3305,9 +3541,9 @@
       "region": "Tamil Nadu",
       "kind": "allotment",
       "round": "Round 1",
-      "title": "Round 1 PwD allotment",
-      "date": "2026-10-31",
-      "doc": "tamil-nadu/round1-pwd-allotment.pdf",
+      "title": "Round 1 provisional allotment (Government and Management quota, DNB / diploma) and the PwD allotment",
+      "date": "2026-11-05",
+      "doc": "tamil-nadu/round1-allotment-government-quota.pdf",
       "file": "tamil-nadu/allotment-round1.json"
     },
     {
@@ -3391,7 +3627,7 @@
       "region": "Kerala",
       "kind": "seats",
       "round": "Round 1",
-      "title": "Seat matrix (state, self-financing, minority and NRI quotas)",
+      "title": "Seat matrix (state, self-financing, minority and NRI quotas; in-service DNB and diploma)",
       "date": "2026-10-28",
       "doc": "kerala/seat-matrix-category-wise.pdf",
       "file": "kerala/seat-matrix-round1.json"
@@ -3434,6 +3670,55 @@
       "date": "2026-10-30",
       "doc": "karnataka/round1-seat-matrix-medical.pdf",
       "file": "karnataka/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Maharashtra",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "CAP Round 1 provisional selection list",
+      "date": "2026-11-05",
+      "doc": "maharashtra/round1-provisional-selection-list.pdf",
+      "file": "maharashtra/allotment-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Karnataka",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment (MD/MS), with course fees",
+      "date": "2026-11-05",
+      "doc": "karnataka/round1-provisional-allotment.pdf",
+      "file": "karnataka/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Madhya Pradesh",
+      "kind": "merit",
+      "title": "Revised state merit list",
+      "date": "2026-10-27",
+      "doc": "madhya-pradesh/revised-merit-list.pdf",
+      "file": "madhya-pradesh/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Madhya Pradesh",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat charts (government, private, DNB and diploma)",
+      "date": "2026-10-23",
+      "doc": "madhya-pradesh/round1-seat-chart-government.pdf",
+      "file": "madhya-pradesh/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Madhya Pradesh",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment",
+      "date": "2026-10-29",
+      "doc": "madhya-pradesh/round1-allotment-result.pdf",
+      "file": "madhya-pradesh/allotment-round1.json"
     }
   ]
 }

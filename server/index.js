@@ -147,7 +147,7 @@ app.post('/api/events', ingest);
 const regionParam = key => { const r = regionOf(key); if (!r) throw new HttpError(404, 'No such state.'); return r; };
 app.get('/api/regions/:key', (req, res) => {
   res.set('Cache-Control', 'no-cache');
-  res.json(regionInfo(regionParam(req.params.key), req.user));
+  res.json(regionInfo(regionParam(req.params.key), req.user, isAdmin(req)));
 });
 app.get('/api/sections/:slug/:id', (req, res) => {
   const s = sectionOf(req.params.slug, req.params.id);
@@ -158,7 +158,7 @@ app.get('/api/sections/:slug/:id', (req, res) => {
 // Data needs an account: All India data for everyone signed in, a state's data for its own candidates.
 app.get('/api/regions/:key/data/:id', (req, res) => {
   const region = regionParam(req.params.key);
-  const a = isAdmin(req) ? 'open' : access(req.user, region);
+  const a = access(req.user, region, isAdmin(req));
   if (a === 'signin') throw new HttpError(401, 'Sign in to see this data.');
   if (a === 'locked') throw new HttpError(403, `${region} data is open to candidates registered for ${region}.`);
   const d = regionData(region, req.params.id);

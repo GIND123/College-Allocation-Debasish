@@ -1750,6 +1750,9 @@ async function viewRoadmap() {
         Track the counselling progress and get predictions as data becomes available.</p>
       ${info.progress ? `<p class="rp-now">${esc(info.progress.note || '')}${info.progress.asOf ? ` <small>As of ${esc(shortDate(info.progress.asOf))}</small>` : ''}</p>`
         : `<p class="rp-now">We don't track ${esc(info.region)}'s stage yet: the dates and official documents here are the latest we have.</p>`}
+      ${info.review ? `<p class="rp-review">${icon.lock}<span><b>Review access.</b> ${info.review === 'admin'
+        ? "You are signed in to the admin console, so every state's data is open in this browser."
+        : "This account opens every state's data."} Candidates see only their own state's data.</span></p>` : ''}
       <nav aria-label="Stages"><ol class="rp-steps" id="rp-steps"></ol></nav>
       <section class="rp-panel" id="rp-panel"></section>
     </div>
@@ -2095,7 +2098,7 @@ function meritExplorer(host, data, info) {
       { t: 'Category', cls: 'wrapcell', r: r => esc(catName(r.cat) || '—') + (r.sub ? `<span class="sub">${esc(r.sub.replace(/PWD- Persons with Disabilities/i, 'PwD'))}</span>` : '') },
       { t: 'PwD', r: r => pwd(r) || '—' },
       { t: 'Candidate type', cls: 'wrapcell', r: r => esc(ctype(r)) + (r.job ? `<span class="sub">${esc(r.job.toLowerCase())}</span>` : '') },
-      ...(has('total') ? [{ t: 'Score <span class="sub">out of 800</span>', cls: 'n', r: score }] : []),
+      ...(has('total') ? [{ t: `Score <span class="sub">out of ${data.scoreOutOf || 800}</span>`, cls: 'n', r: score }] : []),
       { t: 'Remarks', cls: 'wrapcell', r: remarks }
     ],
     summary: v => `<b>${fmt(v.length)}</b> candidate${v.length === 1 ? '' : 's'}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
@@ -2221,12 +2224,13 @@ function stateAllotExplorer(host, D, info) {
       { t: 'Quota', cls: 'wrapcell', r: r => esc(r.quota) },
       { t: 'Category', cls: 'wrapcell', r: r => esc(r.category) + (r.cand && r.cand !== r.category ? `<span class="sub">Candidate: ${esc(r.cand)}</span>` : '') },
       ...(has('note') ? [{ t: 'Candidate type', cls: 'wrapcell', r: r => esc(r.note || '—') }] : []),
-      ...(has('pref') ? [{ t: 'Choice', cls: 'n', r: r => r.pref ? `${fmt(r.pref)}${r.prefs ? `<span class="sub">of ${fmt(r.prefs)}</span>` : ''}` : '—' }] : [])
+      ...(has('pref') ? [{ t: 'Choice', cls: 'n', r: r => r.pref ? `${fmt(r.pref)}${r.prefs ? `<span class="sub">of ${fmt(r.prefs)}</span>` : ''}` : '—' }] : []),
+      ...(has('fee') ? [{ t: 'Course fee <span class="sub">as published</span>', cls: 'n', r: r => r.fee ? `₹${fmt(r.fee)}` : '—' }] : [])
     ],
     summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ${esc(label.toLowerCase())}s <b>${fmt(Math.min(...v.map(r => r.rank)))}</b> to <b>${fmt(Math.max(...v.map(r => r.rank)))}</b>${D.note ? ` · <span class="muted">${esc(D.note)}</span>` : ''}`
       : 'No seats match these filters.',
-    csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled'],
-      row: r => [r.rl || r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || ''] }
+    csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled', ...(has('fee') ? ['Course fee (Rs)'] : [])],
+      row: r => [r.rl || r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || '', ...(has('fee') ? [r.fee || ''] : [])] }
   });
   if (D.vacant?.length) vacantSeats(host, D.vacant);
 }

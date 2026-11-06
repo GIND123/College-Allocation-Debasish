@@ -59,6 +59,7 @@ function shell() {
       <nav>${Object.entries(nav).map(([k, [t, i]]) => `<a href="#${k}" data-p="${k}">${i}<span>${t}</span></a>`).join('')}</nav>
       <div class="side-foot">
         <a href="/" target="_blank" rel="noopener">${icon.ext}<span>View site</span></a>
+        <a href="/roadmap/all-india" target="_blank" rel="noopener" title="Signed in here, every state's roadmap data opens on the site">${icon.ext}<span>Every state's data</span></a>
         <button id="thm">${icon.moon}<span>Theme</span></button>
         <button id="out">${icon.logout}<span>Sign out</span></button>
       </div>
@@ -753,6 +754,12 @@ async function settings() {
           <li>On the server set <code>AUTH_PROVIDER=firebase</code> plus <code>FIREBASE_API_KEY</code>, <code>FIREBASE_AUTH_DOMAIN</code>, <code>FIREBASE_PROJECT_ID</code> and <code>FIREBASE_APP_ID</code>, then restart.</li>
         </ol>
         <p>The developer can do steps 4–5 in a few minutes once the project exists.</p>`}
+      </div></div>
+      <div class="panel"><div class="panel-head"><h2>Review access</h2></div><div class="panel-body prose-sm">
+        <p>Candidates see the data of their own state only. While you are signed in here, every state's merit lists, seat matrices and allotments
+          open on the site in this browser: <a href="/roadmap/all-india" target="_blank" rel="noopener">open the roadmap</a> and pick any state.</p>
+        <p>To give a mobile account the same access (for example your own phone, for reviewing on the go), the developer adds its number to
+          <code>FULL_ACCESS_PHONES</code> on the server.</p>
       </div></div>
     </div></div>`;
   $('#sf').onsubmit = async e => {

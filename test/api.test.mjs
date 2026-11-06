@@ -13,7 +13,7 @@ let server;
 
 test.before(async () => {
   server = spawn(process.execPath, ['--disable-warning=ExperimentalWarning', 'server/index.js'], {
-    env: { ...process.env, PORT: String(PORT), DB_PATH: DB, AUTH_PROVIDER: 'mock', MOCK_OTP: '1234', ADMIN_PASSWORD: 'test-pw', NODE_ENV: 'test', TRUST_PROXY: '' },
+    env: { ...process.env, PORT: String(PORT), DB_PATH: DB, AUTH_PROVIDER: 'mock', MOCK_OTP: '1234', ADMIN_PASSWORD: 'test-pw', NODE_ENV: 'test', TRUST_PROXY: '', FULL_ACCESS_PHONES: '+91 90000 00113' },
     stdio: 'ignore'
   });
   for (let i = 0; i < 100; i++) {
@@ -316,7 +316,7 @@ test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat 
   const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
   const STATES = [
     ['Chhattisgarh', 'chhattisgarh', [['MD/MS', 874]], 453, 278],
-    ['Tamil Nadu', 'tamil-nadu', [['Government quota', 7969], ['Management quota', 3644], ['DNB and 2-year diploma (service)', 71]], 2430, 12],
+    ['Tamil Nadu', 'tamil-nadu', [['Government quota', 7969], ['Management quota', 3644], ['DNB and 2-year diploma (service)', 71]], 2430, 1409 + 468 + 11 + 12],
     ['Uttar Pradesh', 'uttar-pradesh', [['MD/MS and diploma', 6084], ['DNB (post-MBBS DNB and diploma)', 96]], 4125, 2904],
     ['Uttarakhand', 'uttarakhand', [['MD/MS (regular)', 1021], ['NRI quota', 13]], 488, 315]
   ];
@@ -336,14 +336,15 @@ test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat 
   assert.deepEqual(cfg.meritByName, ['Tamil Nadu'], 'Tamil Nadu prints no NEET-PG ranks: its CMR is found by name');
 });
 
-test('Odisha allotment; Kerala, Maharashtra and Karnataka data: as printed', async () => {
+test('Odisha allotment; Kerala, Maharashtra, Karnataka and Madhya Pradesh data: as printed', async () => {
   const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
   const STATES = [
     // state, key, merit lists, seats, allotted
     ['Odisha', 'odisha', null, 463, 374],
-    ['Kerala', 'kerala', [['State merit list', 5665], ['Second list (not qualified)', 20]], 1173, 1082],
-    ['Maharashtra', 'maharashtra', [['State merit list', 7242], ['In-service (20% quota)', 65]], 2759, null],
-    ['Karnataka', 'karnataka', null, 4892, null]
+    ['Kerala', 'kerala', [['State merit list', 5665], ['Second list (not qualified)', 20]], 1173 + 17, 1082],
+    ['Maharashtra', 'maharashtra', [['State merit list', 7242], ['In-service (20% quota)', 65]], 2759, 2112],
+    ['Karnataka', 'karnataka', null, 4892, 3272],
+    ['Madhya Pradesh', 'madhya-pradesh', [['State common merit list', 4777]], 728 + 1413 + 2 + 26, 1110]
   ];
   // one account (sign-up codes are rate-limited per address), its state switched in the profile
   const b = browser(), phone = '9000000300';
@@ -365,9 +366,36 @@ test('Odisha allotment; Kerala, Maharashtra and Karnataka data: as printed', asy
         const md = a.rows.filter(r => r.programme === 'MD/MS').length + sum(a.vacant.filter(v => v.programme === 'MD/MS'));
         assert.equal(md, seats, 'Odisha: allotted + vacant = the MD/MS seat matrix');
       }
+      // no college and course allotted more seats than the seat matrix has (Maharashtra and Madhya Pradesh match it name for name)
+      if (key === 'maharashtra' || key === 'madhya-pradesh') {
+        const cap = new Map(), got = new Map(), k = r => `${r.college}|${r.course}`;
+        for (const r of (await b(`/api/regions/${key}/data/seat-matrix-round-1`)).json.rows) cap.set(k(r), (cap.get(k(r)) || 0) + r.seats);
+        for (const r of a.rows) got.set(k(r), (got.get(k(r)) || 0) + 1);
+        assert.deepEqual([...got].filter(([x, n]) => n > (cap.get(x) || 0)), [], `${state}: allotments within the seat matrix`);
+      }
+      if (key === 'karnataka') assert.ok(a.rows.every(r => r.fee > 0), 'Karnataka: every allotment carries its course fee');
     }
     assert.equal((await b(`/api/regions/${key === 'odisha' ? 'kerala' : 'odisha'}/data/seat-matrix-round-1`)).status, 403, "another state's data stays locked");
   }
+});
+
+test('review access: the admin, and accounts in FULL_ACCESS_PHONES, open every state’s data', async () => {
+  // (a candidate's own-state-only access is tested above)
+  // the admin, signed in at /admin, with no candidate account
+  const a = browser();
+  assert.equal((await a('/api/regions/kerala/data/allotment-round-1')).status, 401);
+  await a('/api/admin/login', { method: 'POST', body: { password: 'test-pw' } });
+  const info = (await a('/api/regions/madhya-pradesh')).json;
+  assert.deepEqual([info.access, info.review], ['open', 'admin']);
+  for (const key of ['kerala', 'madhya-pradesh', 'maharashtra', 'karnataka', 'tamil-nadu'])
+    assert.equal((await a(`/api/regions/${key}/data/allotment-round-1`)).status, 200, `admin: ${key}`);
+  // a review account: the Odisha account of the "Keep me logged in" test, whose number is in FULL_ACCESS_PHONES
+  // (written there as +91 90000 00113); signed in by password, as sign-up codes are rate-limited per address
+  const r = browser();
+  assert.equal((await r('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000113', password: PW } })).status, 200);
+  const rinfo = (await r('/api/regions/uttar-pradesh')).json;
+  assert.deepEqual([rinfo.access, rinfo.review], ['open', 'account']);
+  assert.equal((await r('/api/regions/uttar-pradesh/data/merit-list-2026')).status, 200);
 });
 
 test('sign-up asks for the NEET-PG rank; the state CMR is separate, saved later and cleared', async () => {
