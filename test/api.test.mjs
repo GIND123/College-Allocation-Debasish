@@ -336,7 +336,7 @@ test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat 
   assert.deepEqual(cfg.meritByName, ['Tamil Nadu'], 'Tamil Nadu prints no NEET-PG ranks: its CMR is found by name');
 });
 
-test('Odisha allotment; Kerala, Maharashtra, Karnataka and Madhya Pradesh data: as printed', async () => {
+test('Odisha allotment; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat and Rajasthan data: as printed', async () => {
   const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
   const STATES = [
     // state, key, merit lists, seats, allotted
@@ -344,7 +344,9 @@ test('Odisha allotment; Kerala, Maharashtra, Karnataka and Madhya Pradesh data: 
     ['Kerala', 'kerala', [['State merit list', 5665], ['Second list (not qualified)', 20]], 1173 + 17, 1082],
     ['Maharashtra', 'maharashtra', [['State merit list', 7242], ['In-service (20% quota)', 65]], 2759, 2112],
     ['Karnataka', 'karnataka', null, 4892, 3272],
-    ['Madhya Pradesh', 'madhya-pradesh', [['State common merit list', 4777]], 728 + 1413 + 2 + 26, 1110]
+    ['Madhya Pradesh', 'madhya-pradesh', [['State common merit list', 4777]], 728 + 1413 + 2 + 26, 1110],
+    ['Gujarat', 'gujarat', [['General merit list', 6095], ['In-service merit lists', 12], ['NRI merit list', 39], ['PwD merit list', 13]], 2675 + 13, 2329],
+    ['Rajasthan', 'rajasthan', [['State merit list', 3165]], 990 + 1444 + 139, 1366]
   ];
   // one account (sign-up codes are rate-limited per address), its state switched in the profile
   const b = browser(), phone = '9000000300';

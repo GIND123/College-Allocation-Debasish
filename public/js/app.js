@@ -2135,14 +2135,14 @@ function seatExplorer(host, data, info, prev = null) {
   }
   const refOf = r => {
     const k = c => [r.college, r.course, progOf(r.programme), r.stream, c].join('|');
-    return r._ref ??= past.get(k(cat0(r.category))) ? { p: past.get(k(cat0(r.category))), same: true }
-      : past.get(k('UR')) ? { p: past.get(k('UR')), same: false } : null;
+    const open = past.get(k('UR')) || past.get(k('OPEN')); // Gujarat calls its unreserved seats OPEN
+    return r._ref ??= past.get(k(cat0(r.category))) ? { p: past.get(k(cat0(r.category))), same: true } : open ? { p: open, same: false } : null;
   };
   const p = { rank: parseInt(S.user?.cmr, 10) || 0, reach: false };
   const chance = r => { const x = refOf(r); return x && p.rank ? band(p.rank, x.p.cmr_open, x.p.cmr_close) : 0; };
   const year = prev?.dataset.year;
   const predCols = prev ? [
-    { t: `${year} closing CMR`, cls: 'n', r: r => { const x = refOf(r); return x ? `${fmt(x.p.cmr_close)}<span class="sub">${x.same ? 'same seat' : `UR seat; no ${esc(cat0(r.category))} seat in ${year}`}</span>` : `—<span class="sub">new seat</span>`; } },
+    { t: `${year} closing CMR`, cls: 'n', r: r => { const x = refOf(r); return x ? `${fmt(x.p.cmr_close)}<span class="sub">${x.same ? 'same seat' : `${esc(x.p.category === 'OPEN' ? 'OPEN' : 'UR')} seat; no ${esc(cat0(r.category))} seat in ${year}`}</span>` : `—<span class="sub">new seat</span>`; } },
     { t: 'Your chance', r: r => !p.rank ? '<span class="muted">Enter your CMR</span>' : refOf(r) ? bandHtml(chance(r)) || '<span class="muted">Out of reach</span>' : '<span class="muted">No history</span>' }
   ] : [];
   const x = explorer(host, {

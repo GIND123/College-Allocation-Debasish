@@ -312,7 +312,7 @@
         },
         {
           "what": "Round 1 allotment",
-          "when": "31 Oct · on medadmgujarat.ncode.in",
+          "when": "31 Oct · 2,329 allotted (in Official documents)",
           "label": "Published"
         },
         {
@@ -348,7 +348,7 @@
         },
         {
           "what": "Merit list and seat matrix",
-          "when": "To be notified on amruhp.ac.in",
+          "when": "To be notified on amruhp.ac.in (prospectus: seat distribution displayed separately)",
           "label": "Awaited"
         }
       ]
@@ -770,10 +770,21 @@
           "on": "2026-11-02T00:00:00+05:30"
         },
         {
-          "what": "Round 1 reporting and fee payment",
-          "when": "From 3 Nov",
+          "what": "Round 1 allotment letter download",
+          "when": "3–6 Nov, until 1 pm",
           "from": "2026-11-03T00:00:00+05:30",
-          "to": "2026-11-06T23:59:00+05:30"
+          "to": "2026-11-06T13:00:00+05:30"
+        },
+        {
+          "what": "Round 1 reporting and fee payment",
+          "when": "3–6 Nov, 9 am – 4 pm, at SMS MC Jaipur · tuition fee by 3 pm, 6 Nov",
+          "from": "2026-11-03T00:00:00+05:30",
+          "to": "2026-11-06T16:00:00+05:30"
+        },
+        {
+          "what": "Academic session begins",
+          "when": "20 Nov",
+          "on": "2026-11-20T00:00:00+05:30"
         }
       ]
     },
@@ -1455,7 +1466,7 @@
       "file": "gujarat/state-counselling-round-instructions.pdf",
       "date": "2026-10-27",
       "kind": "Rules",
-      "kb": 394
+      "kb": 2537
     },
     {
       "region": "Gujarat",
@@ -2720,6 +2731,174 @@
       "date": "2026-11-04",
       "kind": "Notice",
       "kb": 1177
+    },
+    {
+      "region": "Gujarat",
+      "title": "Advertisement: online registration for MD/MS/diploma 2026-27 (Gujarati)",
+      "file": "gujarat/registration-advertisement.pdf",
+      "date": "2026-09-29",
+      "kind": "Notice",
+      "kb": 412
+    },
+    {
+      "region": "Gujarat",
+      "title": "Eligibility criteria and the documents required for admission",
+      "file": "gujarat/eligibility-and-documents.pdf",
+      "date": "2026-09-29",
+      "kind": "Guidelines",
+      "kb": 236
+    },
+    {
+      "region": "Gujarat",
+      "title": "Instructions for NRI candidates",
+      "file": "gujarat/nri-instructions.pdf",
+      "date": "2026-10-01",
+      "kind": "Guidelines",
+      "kb": 407
+    },
+    {
+      "region": "Gujarat",
+      "title": "List of help centres",
+      "file": "gujarat/help-centres.pdf",
+      "date": "2026-09-14",
+      "kind": "Notice",
+      "kb": 361
+    },
+    {
+      "region": "Gujarat",
+      "title": "PG admission rules (Government of Gujarat notification of 13 Mar 2018)",
+      "file": "gujarat/pg-admission-rules-2018.pdf",
+      "date": "2018-03-13",
+      "kind": "Rules",
+      "kb": 2458
+    },
+    {
+      "region": "Gujarat",
+      "title": "Procedure for online registration",
+      "file": "gujarat/online-registration-procedure.pdf",
+      "date": "2026-09-30",
+      "kind": "Guidelines",
+      "kb": 2052
+    },
+    {
+      "region": "Gujarat",
+      "title": "Process of online admission",
+      "file": "gujarat/online-admission-process.pdf",
+      "date": "2026-10-01",
+      "kind": "Guidelines",
+      "kb": 363
+    },
+    {
+      "region": "Gujarat",
+      "title": "Provisional merit list: NRI",
+      "file": "gujarat/merit-list-nri.pdf",
+      "date": "2026-10-27",
+      "kind": "Merit list",
+      "kb": 60
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 1 provisional allotment, merit-wise",
+      "file": "gujarat/round1-allotment-merit-wise.pdf",
+      "date": "2026-10-31",
+      "kind": "Allotment",
+      "kb": 345
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 1 provisional allotment, institute- and branch-wise",
+      "file": "gujarat/round1-allotment-institute-wise.pdf",
+      "date": "2026-10-31",
+      "kind": "Allotment",
+      "kb": 431
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Round 1 provisional seat allotment",
+      "file": "rajasthan/round1-provisional-allotment.pdf",
+      "date": "2026-11-02",
+      "kind": "Allotment",
+      "kb": 1200
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Round 1 provisional seat matrix (MD/MS)",
+      "file": "rajasthan/round1-seat-matrix.pdf",
+      "date": "2026-10-18",
+      "kind": "Seat matrix",
+      "kb": 600
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Round 1 seat matrix: post-MBBS diploma and DNB (in-service)",
+      "file": "rajasthan/round1-seat-matrix-diploma-dnb.pdf",
+      "date": "2026-10-18",
+      "kind": "Seat matrix",
+      "kb": 412
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Counselling schedule (notification of 12 Oct)",
+      "file": "rajasthan/counselling-schedule.pdf",
+      "date": "2026-10-12",
+      "kind": "Schedule",
+      "kb": 554
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Information bulletin 2026",
+      "file": "rajasthan/information-bulletin-2026.pdf",
+      "date": "2026-10-18",
+      "kind": "Rules",
+      "kb": 3604
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Application guidelines",
+      "file": "rajasthan/application-guidelines.pdf",
+      "date": "2026-10-18",
+      "kind": "Guidelines",
+      "kb": 275
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Fees 2026-28: government, society (RajMES) and RUHS colleges",
+      "file": "rajasthan/fees-government-colleges.pdf",
+      "date": "2026-10-27",
+      "kind": "Fees",
+      "kb": 225
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Fees: private colleges",
+      "file": "rajasthan/fees-private-colleges.pdf",
+      "date": "2026-10-22",
+      "kind": "Fees",
+      "kb": 127
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Bond for in-service candidates (study leave)",
+      "file": "rajasthan/in-service-bond.pdf",
+      "date": "2026-10-28",
+      "kind": "Rules",
+      "kb": 364
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Surety bond",
+      "file": "rajasthan/surety-bond.pdf",
+      "date": "2026-10-27",
+      "kind": "Rules",
+      "kb": 1993
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "Prospectus: PG MD/MS/DNB 2026 (with the in-service doctors' PG policy)",
+      "file": "himachal-pradesh/prospectus-2026.pdf",
+      "date": "2026-10-22",
+      "kind": "Rules",
+      "kb": 7305
     }
   ],
   "updates": [
@@ -2980,7 +3159,8 @@
     {
       "region": "Gujarat",
       "date": "2026-10-31",
-      "text": "Round 1 allotment out: merit-wise and institute-wise allotment, last merit and non-converted vacant seats on medadmgujarat.ncode.in. Report 2 Nov, 10 am – 6 Nov, 4 pm."
+      "text": "Round 1 allotment out: merit-wise and institute-wise allotment, last merit and non-converted vacant seats on medadmgujarat.ncode.in. Report 2 Nov, 10 am – 6 Nov, 4 pm.",
+      "doc": "gujarat/round1-allotment-merit-wise.pdf"
     },
     {
       "region": "Goa",
@@ -3145,7 +3325,8 @@
     {
       "region": "Rajasthan",
       "date": "2026-11-02",
-      "text": "Round 1 provisional result. Reporting, document verification, allotment letter and fee payment from 3 Nov."
+      "text": "Round 1 provisional result. Reporting, document verification, allotment letter and fee payment from 3 Nov.",
+      "doc": "rajasthan/round1-provisional-allotment.pdf"
     },
     {
       "region": "Tamil Nadu",
@@ -3294,6 +3475,42 @@
       "date": "2026-10-31",
       "text": "Round 1 allotment notice: candidates allotted government colleges complete scrutiny and admission at their college; those allotted Shri Balaji, Raipur Institute and Shri Shankaracharya (private) at the Shikshak Prashikshan Sansthan building, Pt. Deendayal Upadhyay Memorial Health Sciences and AYUSH University, Uparwara, Nava Raipur.",
       "doc": "chhattisgarh/round1-allotment-notice.pdf"
+    },
+    {
+      "region": "Gujarat",
+      "date": "2026-11-06",
+      "text": "Gujarat on the roadmap: provisional merit lists (6,095 on the general list, with in-service, NRI and PwD lists), the Round 1 vacant seats (2,675 MD/MS and diploma, plus 13 in-service DNB seats) and the Round 1 allotment (2,329). With your Gujarat CMR saved, each seat is graded against its 2025 closing rank.",
+      "link": "/roadmap/gujarat/round-1/allotment"
+    },
+    {
+      "region": "Rajasthan",
+      "date": "2026-11-06",
+      "text": "Rajasthan on the roadmap: revised state merit list (3,165), the Round 1 seat matrix (2,434 MD/MS seats, plus 139 post-MBBS diploma and DNB seats for in-service candidates) and the Round 1 allotment (1,366).",
+      "link": "/roadmap/rajasthan/round-1/allotment"
+    },
+    {
+      "region": "Rajasthan",
+      "date": "2026-10-27",
+      "text": "Fees 2026-28. Government colleges (SMS, SNMC, SPMC, Kota, RNT, JLN): tuition ₹8,858 a year. RajMES and RUHS colleges: tuition ₹63,800 a year on government seats, ₹8,68,200 a year on management seats. Caution money, admission, sports, development and hostel charges extra.",
+      "doc": "rajasthan/fees-government-colleges.pdf"
+    },
+    {
+      "region": "Rajasthan",
+      "date": "2026-10-12",
+      "text": "Schedule: security deposit ₹1,00,000 for government seats, ₹2,00,000 for management seats in society and RUHS colleges, ₹5,00,000 for private colleges. After allotment: allotment letter until 6 Nov, 1 pm; one year's tuition fee by NEFT/RTGS until 6 Nov, 3 pm; reporting at SMS Medical College, Jaipur, 3–6 Nov (9 am – 4 pm). Session begins 20 Nov.",
+      "doc": "rajasthan/counselling-schedule.pdf"
+    },
+    {
+      "region": "Himachal Pradesh",
+      "date": "2026-10-22",
+      "text": "Prospectus (AMRU): government colleges charge ₹31,500 a year (tuition ₹24,000), hostel ₹21,000 a year and refundable securities of ₹12,500. Token amount at counselling: ₹39,000 for government colleges, ₹5,00,000 for private colleges (state or management quota). The seat distribution and merit list are to be notified.",
+      "doc": "himachal-pradesh/prospectus-2026.pdf"
+    },
+    {
+      "region": "Gujarat",
+      "date": "2026-10-01",
+      "text": "NRI candidates: instructions, eligibility and the documents for admission; online registration and admission procedures.",
+      "doc": "gujarat/nri-instructions.pdf"
     }
   ],
   "highlight": {
@@ -3350,13 +3567,13 @@
     },
     "Gujarat": {
       "stage": "Round 1",
-      "note": "Round 1 reporting 2–6 Nov, until 4 pm.",
-      "asOf": "2026-11-03"
+      "note": "Round 1 allotment out 31 Oct (2,329 allotted); reporting closes 6 Nov, 4 pm.",
+      "asOf": "2026-11-06"
     },
     "Himachal Pradesh": {
       "stage": "Registration",
-      "note": "Online applications closed 2 Nov, 11 am; merit list awaited.",
-      "asOf": "2026-11-03"
+      "note": "Online applications closed 2 Nov, 11 am; merit list and seat distribution awaited.",
+      "asOf": "2026-11-06"
     },
     "Jharkhand": {
       "stage": "Round 1",
@@ -3390,8 +3607,8 @@
     },
     "Rajasthan": {
       "stage": "Round 1",
-      "note": "Round 1 result out 2 Nov; reporting from 3 Nov.",
-      "asOf": "2026-11-03"
+      "note": "Round 1 allotment out 2 Nov (1,366 allotted); report at SMS MC Jaipur by 6 Nov, 4 pm; session begins 20 Nov.",
+      "asOf": "2026-11-06"
     },
     "Sikkim": {
       "stage": "Round 2",
@@ -3719,6 +3936,64 @@
       "date": "2026-10-29",
       "doc": "madhya-pradesh/round1-allotment-result.pdf",
       "file": "madhya-pradesh/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Gujarat",
+      "kind": "merit",
+      "title": "Provisional merit lists (general, in-service, NRI and PwD)",
+      "date": "2026-10-27",
+      "doc": "gujarat/merit-list-general.pdf",
+      "file": "gujarat/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Gujarat",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 tentative vacant seats, with in-service DNB seats",
+      "date": "2026-10-27",
+      "doc": "gujarat/round1-vacant-seats.pdf",
+      "file": "gujarat/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Gujarat",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment (merit-wise)",
+      "date": "2026-10-31",
+      "doc": "gujarat/round1-allotment-merit-wise.pdf",
+      "file": "gujarat/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Rajasthan",
+      "kind": "merit",
+      "title": "Revised provisional state merit list",
+      "date": "2026-10-28",
+      "doc": "rajasthan/round1-revised-provisional-merit-list.pdf",
+      "file": "rajasthan/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Rajasthan",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 provisional seat matrix (MD/MS, post-MBBS diploma and DNB)",
+      "date": "2026-10-18",
+      "doc": "rajasthan/round1-seat-matrix.pdf",
+      "file": "rajasthan/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Rajasthan",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment",
+      "date": "2026-11-02",
+      "doc": "rajasthan/round1-provisional-allotment.pdf",
+      "file": "rajasthan/allotment-round1.json"
     }
   ]
 }
