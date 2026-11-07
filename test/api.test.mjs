@@ -400,6 +400,24 @@ test('review access: the admin, and accounts in FULL_ACCESS_PHONES, open every s
   assert.equal((await r('/api/regions/uttar-pradesh/data/merit-list-2026')).status, 200);
 });
 
+test('the seat matrix of India: NMC’s 6 Nov matrix, for signed-in candidates; a health check for uptime pings', async () => {
+  const v = browser();
+  assert.equal((await v('/api/seat-matrix')).status, 401);
+  assert.equal((await v('/seats')).status, 200, 'the page itself loads (and shows the sign-up gate)');
+  const h = await v('/healthz');
+  assert.deepEqual([h.status, h.text], [200, 'ok']);
+  const r = browser();
+  assert.equal((await r('/api/auth/password', { method: 'POST', body: { channel: 'phone', phone: '9000000113', password: PW } })).status, 200);
+  const d = (await r('/api/seat-matrix')).json;
+  assert.equal(d.rows.length, 10476, 'every row of the NMC matrix');
+  assert.equal(d.rows.reduce((n, x) => n + x[2], 0), 68305);
+  const states = new Set(d.colleges.map(c => c[2]));
+  assert.equal(states.size, 33);
+  assert.ok(!states.has('Orissa') && states.has('Odisha'), 'old state spellings merged');
+  const seats = t => d.rows.filter(x => d.colleges[x[0]][3] === t).reduce((n, x) => n + x[2], 0);
+  assert.deepEqual([seats('Government'), seats('Private'), seats('Deemed')], [34473, 24732, 9100]);
+});
+
 test('sign-up asks for the NEET-PG rank; the state CMR is separate, saved later and cleared', async () => {
   const b = browser();
   const noRank = await b('/api/auth/attempt', { method: 'POST', body: { channel: 'phone', phone: '9000000140', name: 'No Rank', state: 'Odisha' } });

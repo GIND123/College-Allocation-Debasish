@@ -10,7 +10,7 @@ import {
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, ALL_INDIA, normState } from './states.js';
-import { registry, guideList, compareTable, roadmap, stateSeats, documents, updates, guidePage, GUIDES_DIR } from './guides.js';
+import { registry, guideList, compareTable, roadmap, stateSeats, documents, updates, guidePage, GUIDES_DIR, DATA_DIR } from './guides.js';
 import { regionOf, regionKey, regionInfo, sectionOf, regionData, access } from './regions.js';
 import { sections } from './sections.js';
 
@@ -142,6 +142,8 @@ app.patch('/api/me', requireUser, (req, res) => {
 });
 
 app.post('/api/events', ingest);
+// For uptime pings (the free host sleeps when idle): no database, no analytics.
+app.get('/healthz', (_req, res) => { res.set('Cache-Control', 'no-store').type('text').send('ok'); });
 
 // ---- counselling roadmap pages (one per region) -------------------------
 const regionParam = key => { const r = regionOf(key); if (!r) throw new HttpError(404, 'No such state.'); return r; };
@@ -165,6 +167,13 @@ app.get('/api/regions/:key/data/:id', (req, res) => {
   if (!d) throw new HttpError(404, 'No such data.');
   record(req, 'region_data', { region, id: d.meta.id });
   res.set('Cache-Control', 'private, no-cache').type('json').send(d.json);
+});
+
+// The national PG seat matrix (NMC), for the "Seat matrix" section: any signed-in candidate.
+const NMC_SEATS = path.join(DATA_DIR, 'all-india', 'nmc-seat-matrix-2026.json');
+app.get('/api/seat-matrix', requireUser, (req, res) => {
+  record(req, 'region_data', { region: 'All India', id: 'nmc-seat-matrix' });
+  res.set('Cache-Control', 'private, no-cache').type('json').sendFile(NMC_SEATS);
 });
 
 // Row data is only for signed-in users.
@@ -462,7 +471,7 @@ app.use('/api', (_req, _res, next) => next(new HttpError(404, 'Not found.')));
 // Pages
 // ======================================================================
 const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(PUBLIC, file)); };
-app.get(['/', '/predict', '/cutoffs', '/shortlist', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}'], page('index.html'));
+app.get(['/', '/predict', '/cutoffs', '/shortlist', '/seats', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}'], page('index.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
 
 // Counselling guides: one page per guide, framed by server/guides.js.

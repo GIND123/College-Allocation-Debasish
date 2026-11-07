@@ -2899,6 +2899,14 @@
       "date": "2026-10-22",
       "kind": "Rules",
       "kb": 7305
+    },
+    {
+      "region": "All India",
+      "title": "NMC: updated PG broad speciality seat matrix 2026-27 (as on 6 Nov), with the public notice",
+      "file": "mcc/nmc-pg-seat-matrix-2026-11-06.pdf",
+      "date": "2026-11-06",
+      "kind": "Seat matrix",
+      "kb": 1593
     }
   ],
   "updates": [
@@ -3511,6 +3519,13 @@
       "date": "2026-10-01",
       "text": "NRI candidates: instructions, eligibility and the documents for admission; online registration and admission procedures.",
       "doc": "gujarat/nri-instructions.pdf"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-06",
+      "text": "NMC published the updated PG broad speciality seat matrix for 2026-27 (6 Nov): 68,305 MD, MS and diploma seats in 738 institutions across 33 states and UTs, including the extra seats approved since 29 Sep. Explore it by state, college type and course in the new Seat matrix section.",
+      "link": "/seats",
+      "doc": "mcc/nmc-pg-seat-matrix-2026-11-06.pdf"
     }
   ],
   "highlight": {

@@ -132,7 +132,7 @@ async function boot() {
 
 const ROUTES = {
   '/': viewHome, '/predict': () => viewWork('predict'), '/cutoffs': () => viewWork('cutoffs'), '/shortlist': viewShortlist,
-  '/method': viewMethod, '/counselling': viewGuides, '/roadmap': viewRoadmap
+  '/method': viewMethod, '/counselling': viewGuides, '/roadmap': viewRoadmap, '/seats': viewSeats
 };
 const GATED = new Set(['/predict', '/cutoffs', '/shortlist']);
 
@@ -154,7 +154,7 @@ async function route() {
   S.path = p;
   const tab = GATED.has(p) ? '/predict' : p === '/roadmap' ? '/counselling' : p; // cut-offs and shortlist live under "Intelligent prediction"
   $$('#nav a').forEach(a => a.pathname === tab ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
-  if (GATED.has(p) && !S.user) viewGate(p);
+  if ((GATED.has(p) || p === '/seats') && !S.user) viewGate(p);
   else if (GATED.has(p) && !profileComplete()) viewProfile();
   else await ROUTES[p]();
   if (changed) { scrollTo(0, 0); track('pageview'); }
@@ -2292,7 +2292,7 @@ function allotExplorer(host, D, info) {
 // Gate, home, method
 // =====================================================================
 function viewGate(p) {
-  const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist' }[p];
+  const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist', '/seats': 'the seat matrix of India' }[p];
   S.intended = p;
   view.innerHTML = `<div class="gate">
     <div class="eyebrow" style="display:inline-flex;gap:8px;align-items:center">${icon.lock.replace('<svg', '<svg style="width:13px;height:13px"')} Members' tool</div>
@@ -2490,6 +2490,110 @@ function viewHome() {
     $('#home-auth input')?.focus({ preventScroll: true });
   };
   coverageMap($('#coverage'));
+}
+
+// =====================================================================
+// Seat matrix: every PG broad speciality seat in India (NMC), with filters and analysis
+// =====================================================================
+const SM_TYPES = ['Government', 'Private', 'Deemed'];
+async function viewSeats() {
+  view.innerHTML = `<div class="sm">
+    <div class="page-head"><div><div class="eyebrow">All states and union territories</div><h1>PG seat matrix of India 2026–27</h1>
+      <p id="sm-lede">Every MD, MS and diploma seat NMC has approved, college by college. Filter by state, college type and course; the totals and charts follow your filters.</p></div></div>
+    <div id="sm-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
+  let D;
+  try { D = S.nmcSeats ||= await api('/api/seat-matrix'); }
+  catch (e) { $('#sm-body').innerHTML = `<div class="empty"><h3>We couldn't load the seat matrix</h3><p>${esc(e.message)}</p></div>`; return; }
+  if (S.path !== '/seats') return;
+  const rows = D.rows.map(([c, k, seats, dip]) => {
+    const [code, college, state, type] = D.colleges[c];
+    return { code, college, state, type, course: D.courses[k], programme: dip ? 'Diploma' : 'MD/MS', seats };
+  });
+  $('#sm-lede').insertAdjacentHTML('beforeend', ` <span class="muted">Source: ${esc(D.source)}. ${esc(D.note)}</span>`);
+  const host = $('#sm-body');
+  const sum = v => v.reduce((n, r) => n + r.seats, 0);
+  const x = explorer(host, {
+    rows,
+    prog: { of: r => r.programme, all: true, value: '' },
+    selects: [{ id: 'state', label: 'State / UT', all: 'All states and UTs', of: r => r.state },
+      { id: 'type', label: 'College type', all: 'Government, private and deemed', of: r => r.type },
+      { id: 'course', label: 'Course', all: 'All courses', of: r => r.course }],
+    search: { placeholder: 'College, city or course (e.g. Manipal, Pune, Radio-Diagnosis)', of: r => `${r.college} ${r.course} ${r.state}` },
+    order: v => [...v].sort((a, b) => a.state.localeCompare(b.state) || a.college.localeCompare(b.college) || a.course.localeCompare(b.course)),
+    cols: [
+      { t: 'Institution', cls: 'strong wrapcell', r: r => `${esc(r.college)}<span class="sub">${esc(r.state)} · ${esc(r.code)}</span>` },
+      { t: 'Type', r: r => `<span class="sm-dot sm-t${SM_TYPES.indexOf(r.type) + 1}" aria-hidden="true"></span>${esc(r.type)}` },
+      { t: 'Course', cls: 'wrapcell', r: r => `${esc(r.course)}<span class="sub">${esc(r.programme)}</span>` },
+      { t: 'Seats', cls: 'n r strong', r: r => fmt(r.seats) }
+    ],
+    summary: v => { smCharts(v); return `<b>${fmt(sum(v))}</b> seats in <b>${fmt(new Set(v.map(r => r.college)).size)}</b> institutions · ${fmt(v.length)} college courses`; },
+    csv: { name: 'pg-seat-matrix-india-2026.csv', head: ['State/UT', 'College code', 'Institution', 'Type', 'Programme', 'Course', 'Seats'],
+      row: r => [r.state, r.code, r.college, r.type, r.programme, r.course, r.seats] }
+  });
+  // the analysis sits between the filters and the table, and follows them
+  host.querySelector('.rp-filters').insertAdjacentHTML('afterend', `<section class="sm-viz" aria-label="Analysis">
+    <div class="sm-kpis" id="sm-kpis"></div>
+    <div class="sm-charts"><figure class="sm-card"><figcaption id="sm-c1t"></figcaption><div class="sm-legend">${SM_TYPES.map((t, i) =>
+      `<span><i class="sm-t${i + 1}"></i>${t}</span>`).join('')}</div><div class="sm-bars" id="sm-c1"></div></figure>
+      <figure class="sm-card"><figcaption id="sm-c2t"></figcaption><div class="sm-bars" id="sm-c2"></div></figure></div>
+    <div class="sm-tip" id="sm-tip" role="tooltip" hidden></div></section>`);
+  x.refresh();
+  // clicking a state's bar filters the table to that state
+  $('#sm-c1').addEventListener('click', e => {
+    const b = e.target.closest('[data-state]');
+    if (!b) return;
+    const sel = host.querySelector('[data-x="state"]');
+    sel.value = b.dataset.state; sel.dispatchEvent(new Event('change'));
+  });
+  addEventListener('resize', () => { const t = $('#sm-tip'); if (t) t.hidden = true; });
+  for (const id of ['#sm-c1', '#sm-c2']) {
+    const box = $(id), tip = $('#sm-tip');
+    const show = (row, ev) => {
+      if (!row) { tip.hidden = true; return; }
+      tip.innerHTML = row.dataset.tip; tip.hidden = false;
+      const r = (ev?.type === 'focusin' ? row : null)?.getBoundingClientRect(), host2 = $('.sm-viz').getBoundingClientRect();
+      const x0 = (ev?.clientX ?? r.left + 40) - host2.left, y0 = (ev?.clientY ?? r.top) - host2.top;
+      tip.style.left = Math.max(0, Math.min(x0 + 14, host2.width - tip.offsetWidth - 4)) + 'px'; tip.style.top = (y0 + 16) + 'px';
+    };
+    box.addEventListener('mousemove', e => show(e.target.closest('.sm-row'), e));
+    box.addEventListener('mouseleave', () => show(null));
+    box.addEventListener('focusin', e => show(e.target.closest('.sm-row'), e));
+    box.addEventListener('focusout', () => show(null));
+  }
+}
+function smCharts(v) {
+  if (!$('#sm-kpis')) return;
+  const sum = list => list.reduce((n, r) => n + r.seats, 0), total = sum(v);
+  const byType = SM_TYPES.map(t => sum(v.filter(r => r.type === t)));
+  const pct = n => total ? Math.round(100 * n / total) + '%' : '—';
+  $('#sm-kpis').innerHTML = [[fmt(total), 'PG seats'], [fmt(new Set(v.map(r => r.college)).size), 'institutions'], [fmt(new Set(v.map(r => r.course)).size), 'courses'],
+    [fmt(new Set(v.map(r => r.state)).size), 'states and UTs']].map(([n, t]) => `<div><b>${n}</b><span>${t}</span></div>`).join('')
+    + `<div class="sm-split"><span>${SM_TYPES.map((t, i) => `<i class="sm-t${i + 1}" style="flex:${byType[i]}"></i>`).join('')}</span>
+      <small>${SM_TYPES.map((t, i) => `${t} ${pct(byType[i])}`).join(' · ')}</small></div>`;
+  // chart 1: by state (or, within one state, by institution), stacked by college type
+  const states = new Set(v.map(r => r.state));
+  const one = states.size === 1, key = one ? 'college' : 'state';
+  const groups = new Map();
+  for (const r of v) { const g = groups.get(r[key]) || groups.set(r[key], [0, 0, 0]).get(r[key]); g[SM_TYPES.indexOf(r.type)] += r.seats; }
+  let list = [...groups].map(([name, t]) => ({ name, t, n: t[0] + t[1] + t[2] })).sort((a, b) => b.n - a.n);
+  const cap = one ? 15 : 40, more = list.length - cap;
+  list = list.slice(0, cap);
+  const max = Math.max(1, ...list.map(g => g.n));
+  $('#sm-c1t').innerHTML = one ? `Seats by institution in ${esc([...states][0])}${more > 0 ? ` <small>top ${cap} of ${cap + more}</small>` : ''}`
+    : `Seats by state and UT <small>click a state to filter</small>`;
+  $('#sm-c1').innerHTML = list.map(g => `<div class="sm-row" tabindex="0"${one ? '' : ` data-state="${esc(g.name)}" role="button"`} aria-label="${esc(g.name)}: ${fmt(g.n)} seats"
+      data-tip="${esc(`<b>${esc(g.name)}</b>${SM_TYPES.map((t, i) => g.t[i] ? `<span><i class="sm-t${i + 1}"></i>${t} <b>${fmt(g.t[i])}</b></span>` : '').join('')}<span>Total <b>${fmt(g.n)}</b></span>`)}">
+      <span class="sm-lab">${esc(g.name)}</span><span class="sm-track"><span class="sm-bar" style="width:${100 * g.n / max}%">${g.t.map((n, i) => n ? `<i class="sm-t${i + 1}" style="flex:${n}"></i>` : '').join('')}</span></span>
+      <span class="sm-val">${fmt(g.n)}</span></div>`).join('') || '<p class="muted">No seats match these filters.</p>';
+  // chart 2: the courses with the most seats
+  const cs = new Map();
+  for (const r of v) cs.set(r.course, (cs.get(r.course) || 0) + r.seats);
+  const top = [...cs].sort((a, b) => b[1] - a[1]).slice(0, 12), cmax = Math.max(1, ...top.map(c => c[1]));
+  $('#sm-c2t').innerHTML = `Courses with the most seats${cs.size > 12 ? ` <small>top 12 of ${cs.size}</small>` : ''}`;
+  $('#sm-c2').innerHTML = top.map(([c, n]) => `<div class="sm-row" tabindex="0" aria-label="${esc(c)}: ${fmt(n)} seats"
+      data-tip="${esc(`<b>${esc(c)}</b><span>${fmt(n)} seats · ${pct(n)} of the seats shown</span>`)}">
+      <span class="sm-lab">${esc(c.replace(/^M\.[DS]\.\s*/, ''))}</span><span class="sm-track"><span class="sm-bar sm-one" style="width:${100 * n / cmax}%"><i></i></span></span>
+      <span class="sm-val">${fmt(n)}</span></div>`).join('') || '<p class="muted">No seats match these filters.</p>';
 }
 
 function viewMethod() {

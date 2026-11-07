@@ -245,6 +245,14 @@ From the client's 6 Nov folder (with its subfolders):
 
 A state with documents but no guide yet (Punjab) still gets a card. The server refuses to start if a document's file is missing or an update points to a document that isn't listed.
 
+## Seat matrix of India (`/seats`)
+
+A section of its own in the top bar ("Seat matrix"), for signed-in candidates: every PG broad speciality seat NMC has approved (MD, MS and diploma; the 6 Nov 2026 matrix, 68,305 seats in 738 institutions across 33 states and UTs). Filters (programme, state/UT, Government/Private/Deemed, course, search) drive the totals, a split of seats by college type, a chart of seats by state (stacked by college type; within one state it lists the institutions; clicking a state filters to it), a chart of the courses with the most seats, and the table with an Excel (CSV) download. Charts have hover and keyboard tooltips; the three college-type colours are a validated palette with light and dark steps (`--sm-1` to `--sm-3`).
+
+The data is `server/region-data/all-india/nmc-seat-matrix-2026.json` (colleges, courses and `[college, course, seats, diploma]` rows), built from NMC's PDF; old state spellings (Orissa, Pondicherry, Chhatisgarh …) are merged into the site's names. When NMC republishes the matrix, rebuild the file and update the date in it.
+
+`/healthz` answers `ok` without touching the database or analytics, for an uptime monitor. On Render's free plan the site sleeps after 15 idle minutes, and the first visitor then waits several seconds while it restarts (and the free database starts empty). A monitor that opens `/healthz` every 10 minutes keeps it awake; the lasting fix is a paid instance with a persistent disk.
+
 ## Coverage map (home page)
 
 The home page has a map of India with every state and union territory. States with a counselling guide are marked, and states that also have predictor data are marked more strongly. Hovering over a state (or tapping it on a phone, or focusing it with the keyboard) shows its name and the PG seats we hold figures for, broken down by source. Clicking a marked state opens its counselling roadmap.
