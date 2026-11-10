@@ -1904,7 +1904,11 @@ function rpRound(info, box, stage, rest) {
   $('[data-to-scope]', box)?.addEventListener('click', e => { S.scope = e.currentTarget.dataset.toScope; store.set('rr-scope', S.scope); });
   const host = $('#rp-data');
   const kind = { 'choice-filling': 'seats', allotment: 'allotment' }[v[0]];
-  const d = kind && info.data.find(x => x.kind === kind && x.round === stage);
+  // a round can have several of a kind (an allotment, then an upgraded one): newest first, with a switcher
+  const sets = kind ? info.data.filter(x => x.kind === kind && x.round === stage).sort((a, b) => (b.date || '').localeCompare(a.date || '')) : [];
+  const pick = `${info.key}/${stage}/${kind}`;
+  S.rpPick ||= {};
+  const d = sets.find(x => x.id === S.rpPick[pick]) || sets[0];
   const title = { seats: 'Seat Matrix', allotment: `${stage} allotment` }[kind] || 'Joining status';
   if (!d) {
     const docKind = { seats: 'Seat matrix', allotment: 'Allotment' }[kind];
@@ -1915,8 +1919,11 @@ function rpRound(info, box, stage, rest) {
       + rpDocList(docs, 'Official documents', true);
     return;
   }
-  host.innerHTML = `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}${d.doc
+  host.innerHTML = (sets.length > 1 ? `<div class="rp-versions" role="group" aria-label="Which ${esc(kind === 'seats' ? 'seat matrix' : 'allotment')}">${sets.map(s =>
+      `<button type="button" data-v="${esc(s.id)}" aria-pressed="${s === d}">${esc(s.short || s.title)}<small>${esc(shortDate(s.date))}</small></button>`).join('')}</div>` : '')
+    + `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}${d.doc
     ? ` · <a href="/counselling/assets/${esc(d.doc)}" target="_blank" rel="noopener">Official PDF</a>` : ''}</small></h3><div id="rp-x"></div>`;
+  $$('.rp-versions button', host).forEach(b => b.onclick = () => { S.rpPick[pick] = b.dataset.v; rpRound(info, box, stage, rest); });
   const x = $('#rp-x');
   rpLoad(info, d, x, async data => kind === 'seats' ? seatExplorer(x, data, info, await lastYear(info.region).catch(() => null)) : allotExplorer(x, data, info));
 }
@@ -2207,7 +2214,8 @@ function stateAllotExplorer(host, D, info) {
       ...(many('quota') > 1 ? [{ id: 'quota', label: 'Quota', all: 'All quotas', of: r => r.quota }] : []),
       { id: 'cat', label: 'Seat category', all: 'All categories', of: r => r.category.replace(/\s*\(.*\)$/, '') },
       { id: 'course', label: 'Course', all: 'All courses', of: r => r.course },
-      ...(has('note') && many('note') > 1 ? [{ id: 'note', label: 'Candidate type', all: 'All candidates', of: r => r.note }] : [])],
+      ...(has('note') && many('note') > 1 ? [{ id: 'note', label: 'Candidate type', all: 'All candidates', of: r => r.note }] : []),
+      ...(has('move') ? [{ id: 'move', label: 'Status', all: 'Every status', of: r => r.move }] : [])],
     search: { placeholder: 'College or course (e.g. Medical College, Radiodiagnosis)', of: r => `${r.college} ${r.course}` },
     range: { label: `${label} range`, of: r => r.rank },
     find: { label: `Find your ${label}`, placeholder: 'e.g. 250', run: n => {
@@ -2225,12 +2233,14 @@ function stateAllotExplorer(host, D, info) {
       { t: 'Category', cls: 'wrapcell', r: r => esc(r.category) + (r.cand && r.cand !== r.category ? `<span class="sub">Candidate: ${esc(r.cand)}</span>` : '') },
       ...(has('note') ? [{ t: 'Candidate type', cls: 'wrapcell', r: r => esc(r.note || '—') }] : []),
       ...(has('pref') ? [{ t: 'Choice', cls: 'n', r: r => r.pref ? `${fmt(r.pref)}${r.prefs ? `<span class="sub">of ${fmt(r.prefs)}</span>` : ''}` : '—' }] : []),
-      ...(has('fee') ? [{ t: 'Course fee <span class="sub">as published</span>', cls: 'n', r: r => r.fee ? `₹${fmt(r.fee)}` : '—' }] : [])
+      ...(has('fee') ? [{ t: 'Course fee <span class="sub">as published</span>', cls: 'n', r: r => r.fee ? `₹${fmt(r.fee)}` : '—' }] : []),
+      ...(has('move') ? [{ t: 'Status', cls: 'wrapcell', r: r => esc(r.move || '—') + (r.was ? `<span class="sub">Was: ${esc(r.was)}</span>` : '') }] : [])
     ],
     summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ${esc(label.toLowerCase())}s <b>${fmt(Math.min(...v.map(r => r.rank)))}</b> to <b>${fmt(Math.max(...v.map(r => r.rank)))}</b>${D.note ? ` · <span class="muted">${esc(D.note)}</span>` : ''}`
       : 'No seats match these filters.',
-    csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled', ...(has('fee') ? ['Course fee (Rs)'] : [])],
-      row: r => [r.rl || r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || '', ...(has('fee') ? [r.fee || ''] : [])] }
+    csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled', ...(has('fee') ? ['Course fee (Rs)'] : []), ...(has('move') ? ['Status', 'Previous seat'] : [])],
+      row: r => [r.rl || r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || '',
+        ...(has('fee') ? [r.fee || ''] : []), ...(has('move') ? [r.move || '', r.was || ''] : [])] }
   });
   if (D.vacant?.length) vacantSeats(host, D.vacant);
 }
@@ -2531,22 +2541,21 @@ async function viewSeats() {
       row: r => [r.state, r.code, r.college, r.type, r.programme, r.course, r.seats] }
   });
   // the analysis sits between the filters and the table, and follows them
+  const legend = `<div class="sm-legend">${SM_TYPES.map((t, i) => `<span><i class="sm-t${i + 1}"></i>${t}</span>`).join('')}</div>`;
   host.querySelector('.rp-filters').insertAdjacentHTML('afterend', `<section class="sm-viz" aria-label="Analysis">
     <div class="sm-kpis" id="sm-kpis"></div>
-    <div class="sm-charts"><figure class="sm-card"><figcaption id="sm-c1t"></figcaption><div class="sm-legend">${SM_TYPES.map((t, i) =>
-      `<span><i class="sm-t${i + 1}"></i>${t}</span>`).join('')}</div><div class="sm-bars" id="sm-c1"></div></figure>
-      <figure class="sm-card"><figcaption id="sm-c2t"></figcaption><div class="sm-bars" id="sm-c2"></div></figure></div>
+    <div class="sm-charts">${[1, 2, 3, 4].map(n => `<figure class="sm-card"><figcaption id="sm-c${n}t"></figcaption>${n < 4 ? legend : ''}<div class="sm-bars" id="sm-c${n}"></div></figure>`).join('')}</div>
     <div class="sm-tip" id="sm-tip" role="tooltip" hidden></div></section>`);
   x.refresh();
   // clicking a state's bar filters the table to that state
-  $('#sm-c1').addEventListener('click', e => {
+  for (const id of ['#sm-c1', '#sm-c3']) $(id).addEventListener('click', e => {
     const b = e.target.closest('[data-state]');
     if (!b) return;
     const sel = host.querySelector('[data-x="state"]');
     sel.value = b.dataset.state; sel.dispatchEvent(new Event('change'));
   });
   addEventListener('resize', () => { const t = $('#sm-tip'); if (t) t.hidden = true; });
-  for (const id of ['#sm-c1', '#sm-c2']) {
+  for (const id of ['#sm-c1', '#sm-c2', '#sm-c3', '#sm-c4']) {
     const box = $(id), tip = $('#sm-tip');
     const show = (row, ev) => {
       if (!row) { tip.hidden = true; return; }
@@ -2585,15 +2594,40 @@ function smCharts(v) {
       data-tip="${esc(`<b>${esc(g.name)}</b>${SM_TYPES.map((t, i) => g.t[i] ? `<span><i class="sm-t${i + 1}"></i>${t} <b>${fmt(g.t[i])}</b></span>` : '').join('')}<span>Total <b>${fmt(g.n)}</b></span>`)}">
       <span class="sm-lab">${esc(g.name)}</span><span class="sm-track"><span class="sm-bar" style="width:${100 * g.n / max}%">${g.t.map((n, i) => n ? `<i class="sm-t${i + 1}" style="flex:${n}"></i>` : '').join('')}</span></span>
       <span class="sm-val">${fmt(g.n)}</span></div>`).join('') || '<p class="muted">No seats match these filters.</p>';
-  // chart 2: the courses with the most seats
+  // chart 2: the courses with the most seats, stacked by college type
   const cs = new Map();
-  for (const r of v) cs.set(r.course, (cs.get(r.course) || 0) + r.seats);
-  const top = [...cs].sort((a, b) => b[1] - a[1]).slice(0, 12), cmax = Math.max(1, ...top.map(c => c[1]));
+  for (const r of v) { const g = cs.get(r.course) || cs.set(r.course, [0, 0, 0]).get(r.course); g[SM_TYPES.indexOf(r.type)] += r.seats; }
+  const top = [...cs].map(([name, t]) => ({ name, t, n: t[0] + t[1] + t[2] })).sort((a, b) => b.n - a.n).slice(0, 12), cmax = Math.max(1, ...top.map(c => c.n));
   $('#sm-c2t').innerHTML = `Courses with the most seats${cs.size > 12 ? ` <small>top 12 of ${cs.size}</small>` : ''}`;
-  $('#sm-c2').innerHTML = top.map(([c, n]) => `<div class="sm-row" tabindex="0" aria-label="${esc(c)}: ${fmt(n)} seats"
-      data-tip="${esc(`<b>${esc(c)}</b><span>${fmt(n)} seats · ${pct(n)} of the seats shown</span>`)}">
-      <span class="sm-lab">${esc(c.replace(/^M\.[DS]\.\s*/, ''))}</span><span class="sm-track"><span class="sm-bar sm-one" style="width:${100 * n / cmax}%"><i></i></span></span>
-      <span class="sm-val">${fmt(n)}</span></div>`).join('') || '<p class="muted">No seats match these filters.</p>';
+  $('#sm-c2').innerHTML = top.map(g => smRow(g.name.replace(/^M\.[DS]\.\s*/, ''), g.t, 100 * g.n / cmax, fmt(g.n),
+      smTip(g.name, g.t, `${fmt(g.n)} seats · ${pct(g.n)} of the seats shown`))).join('') || '<p class="muted">No seats match these filters.</p>';
+  // chart 3: each state's split between government, private and deemed seats (or, in one state, each course's)
+  const share = [...(one ? cs : groups)].map(([name, t]) => ({ name, t, n: t[0] + t[1] + t[2] })).filter(g => g.n)
+    .sort((a, b) => b.t[0] / b.n - a.t[0] / a.n || b.n - a.n).slice(0, one ? 20 : 40);
+  $('#sm-c3t').innerHTML = one ? `Government share of each course in ${esc([...states][0])} <small>${share.length < cs.size ? `the ${share.length} with the highest share` : 'highest first'}</small>`
+    : 'Government share of seats, state by state <small>highest first</small>';
+  $('#sm-c3').innerHTML = share.map(g => smRow(g.name.replace(/^M\.[DS]\.\s*/, ''), g.t, 100, `${Math.round(100 * g.t[0] / g.n)}%`,
+      smTip(g.name, g.t, `${Math.round(100 * g.t[0] / g.n)}% government`), one ? '' : ` data-state="${esc(g.name)}" role="button"`)).join('') || '<p class="muted">No seats match these filters.</p>';
+  // chart 4: how big the institutions are
+  const per = new Map();
+  for (const r of v) per.set(r.college, (per.get(r.college) || 0) + r.seats);
+  const BINS = [[1, 10], [11, 25], [26, 50], [51, 100], [101, 200], [201, Infinity]];
+  const bins = BINS.map(([lo, hi]) => { const c = [...per.values()].filter(n => n >= lo && n <= hi); return { lo, hi, k: c.length, s: c.reduce((a, b) => a + b, 0) }; });
+  const bmax = Math.max(1, ...bins.map(b => b.k)), lab = b => b.hi === Infinity ? `${b.lo}+ seats` : `${b.lo}–${b.hi} seats`;
+  $('#sm-c4t').innerHTML = `Institutions by number of PG seats <small>${fmt(per.size)} institutions</small>`;
+  $('#sm-c4').innerHTML = per.size ? bins.map(b => smRow(lab(b), null, 100 * b.k / bmax, fmt(b.k),
+      `<b>${lab(b)}</b><span>${fmt(b.k)} institution${b.k === 1 ? '' : 's'}</span><span>${fmt(b.s)} seats · ${pct(b.s)} of the seats shown</span>`)).join('')
+    : '<p class="muted">No seats match these filters.</p>';
+}
+// one bar of a seat chart: stacked by college type when t is given, else a single series
+function smRow(label, t, width, value, tip, attrs = '') {
+  return `<div class="sm-row" tabindex="0"${attrs} aria-label="${esc(label)}: ${esc(value)}" data-tip="${esc(tip)}">
+    <span class="sm-lab">${esc(label)}</span><span class="sm-track"><span class="sm-bar${t ? '' : ' sm-one'}" style="width:${width}%">${t
+      ? t.map((n, i) => n ? `<i class="sm-t${i + 1}" style="flex:${n}"></i>` : '').join('') : '<i></i>'}</span></span>
+    <span class="sm-val">${esc(value)}</span></div>`;
+}
+function smTip(name, t, foot) {
+  return `<b>${esc(name)}</b>${SM_TYPES.map((x, i) => t[i] ? `<span><i class="sm-t${i + 1}"></i>${x} <b>${fmt(t[i])}</b></span>` : '').join('')}<span>${esc(foot)}</span>`;
 }
 
 function viewMethod() {

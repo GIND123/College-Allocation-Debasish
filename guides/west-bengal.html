@@ -1,0 +1,356 @@
+<title>West Bengal PG Counselling 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Plain-language guide to West Bengal NEET-PG 2026 counselling (WBMCC): state quota, private management and NRI seats, security deposits, bonds, rounds and documents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column with a sticky section bar; summary first, detail after; tables scroll in their own boxes */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #161b22;
+  --muted: #56606d;
+  --line: #d9dee5;
+  --accent: #1d4f8c;        /* Hooghly blue */
+  --accent-soft: #e3ebf6;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --crit: #a3332b;
+  --crit-soft: #fbe6e3;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1318; --surface: #161c23; --fg: #e3e8ee; --muted: #9aa5b2; --line: #2a323c;
+    --accent: #8db4ea; --accent-soft: #1b2633; --warn: #e8b54f; --warn-soft: #2e2716;
+    --crit: #f08b80; --crit-soft: #351d1a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1318; --surface: #161c23; --fg: #e3e8ee; --muted: #9aa5b2; --line: #2a323c;
+  --accent: #8db4ea; --accent-soft: #1b2633; --warn: #e8b54f; --warn-soft: #2e2716;
+  --crit: #f08b80; --crit-soft: #351d1a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+}
+.wrap {
+  max-width: 820px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; font-weight: 800; }
+h3 { font-size: 1.08rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+header.top { padding-block: 40px 28px; border-bottom: 1px solid var(--line); }
+header.top .wrap { display: grid; gap: 14px; }
+.eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chip { font-size: 0.85rem; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav.sections { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.sections .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; }
+nav.sections a { flex: none; text-decoration: none; color: var(--muted); font-size: 0.88rem; font-weight: 500; padding: 6px 10px; border-radius: 8px; }
+nav.sections a:hover, nav.sections a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+
+main .wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+section { display: grid; gap: 16px; scroll-margin-top: 64px; }
+section > p, section li { max-width: 68ch; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+
+.status { display: grid; gap: 6px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 12px; padding: 16px 18px; }
+.status strong { color: var(--fg); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.fact .label { font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.fact .value { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; }
+.fact .note { font-size: 0.88rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.r, th.r { text-align: right; white-space: nowrap; }
+caption { caption-side: bottom; text-align: left; padding: 8px 12px; font-size: 0.82rem; color: var(--muted); }
+
+.callout { border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; border: 1px solid var(--line); background: var(--surface); }
+.callout.warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+.callout.crit { background: var(--crit-soft); border-color: color-mix(in srgb, var(--crit) 30%, transparent); }
+.callout .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.callout.warn .tag { color: var(--warn); }
+.callout.crit .tag { color: var(--crit); }
+
+ol.steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: s; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); color: var(--accent); font-weight: 500; }
+ol.steps li > div { min-width: 0; }
+ol.steps small { color: var(--muted); }
+
+.checklist { display: grid; gap: 6px; }
+.check { display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; }
+.check input { margin-top: 5px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+.check span { min-width: 0; }
+.check small { color: var(--muted); }
+.check:has(input:checked) span { color: var(--muted); text-decoration: line-through; }
+.progress { font-size: 0.9rem; color: var(--muted); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn { font: inherit; font-size: 0.85rem; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn:focus-visible, .check:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.rounds { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.round { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.round h3 { color: var(--accent); }
+.round ul { margin: 0; padding-left: 1.1em; font-size: 0.9rem; display: grid; gap: 4px; }
+
+footer { border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--muted); font-size: 0.85rem; }
+footer .wrap { display: grid; gap: 6px; }
+
+@media (max-width: 480px) { body { font-size: 15px; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <span class="eyebrow">West Bengal · State, Management &amp; NRI quota · Session 2026–27</span>
+    <h1>West Bengal PG counselling 2026, explained</h1>
+    <p class="lede">A plain-language summary of the Notice cum Information Bulletin (14 October 2026) of the West Bengal Medical Counselling Committee (WBMCC) for MD/MS/DNB degree and diploma seats in WBUHS-affiliated institutes: who can apply, the deposits, the bond, how the rounds work and what to carry.</p>
+    <div class="facts">
+      <span class="chip">1,459 seats in Round 1</span>
+      <span class="chip">66 institutes</span>
+      <span class="chip">Merit: NEET-PG 2026 rank</span>
+      <span class="chip">3 rounds + online stray round</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sections" aria-label="Sections">
+  <div class="wrap">
+    <a href="#now">Where it stands</a>
+    <a href="#eligibility">Who can apply</a>
+    <a href="#seats">Seats &amp; reservation</a>
+    <a href="#money">Fees &amp; deposits</a>
+    <a href="#bond">Bond</a>
+    <a href="#steps">Steps</a>
+    <a href="#rounds">Rounds</a>
+    <a href="#documents">Documents</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <section id="now" aria-labelledby="h-now">
+      <h2 id="h-now">Where Round 1 stands</h2>
+      <div class="status" role="status">
+        <p><strong>Round 1 provisional allotment is out (3 November 2026): 918 seats allotted</strong>, all fresh allotments, against a Round 1 seat matrix of 1,459 seats. Choice filling ran from 30 October, 4 pm to 1 November, 11:59 pm.</p>
+        <p>Allotted candidates go through a second, final document check at the allotted college and pay the college fee to take admission. Watch <a href="https://wbmcc.nic.in" target="_blank" rel="noopener">wbmcc.nic.in</a> for the admission and Round 2 schedule; no one is contacted individually.</p>
+      </div>
+      <div class="grid">
+        <div class="fact"><span class="label">Open quota</span><span class="value num">554</span><span class="note">allotted in Round 1</span></div>
+        <div class="fact"><span class="label">In-service quota</span><span class="value num">211</span><span class="note">plus 34 in-service DNB</span></div>
+        <div class="fact"><span class="label">Private management</span><span class="value num">119</span><span class="note">allotted in Round 1</span></div>
+        <div class="fact"><span class="label">NRI quota</span><span class="value num">59 seats</span><span class="note">in the matrix; not in the published allotment list</span></div>
+      </div>
+    </section>
+
+    <section id="eligibility" aria-labelledby="h-elig">
+      <h2 id="h-elig">Who can apply</h2>
+      <p>Everyone needs a qualifying NEET-PG 2026 percentile, internship completed by <strong>30 September 2026</strong>, and registration with the West Bengal Medical Council or NMC before admission (registration with another state council must be moved to WBMC).</p>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Category</th><th class="r">Minimum percentile</th></tr></thead>
+          <tbody>
+            <tr><td>Unreserved / EWS</td><td class="r num">50th</td></tr>
+            <tr><td>Unreserved / EWS with benchmark disability</td><td class="r num">45th</td></tr>
+            <tr><td>SC / ST / OBC (with or without PwD)</td><td class="r num">40th</td></tr>
+          </tbody>
+          <caption>Unless NBEMS or the Government of India lowers the cut-off during counselling; a cut-off cut before the online stray round lets newly eligible candidates register.</caption>
+        </table>
+      </div>
+      <div class="grid">
+        <div class="fact"><span class="label">State quota</span><span class="value">MBBS from West Bengal</span><span class="note">Or in service with the West Bengal health department. Other-service candidates also need a West Bengal MBBS (after the Supreme Court's Tanvi Behl judgment, domicile alone does not count).</span></div>
+        <div class="fact"><span class="label">In-service</span><span class="value">WBHS / WBMES / WBPHAS</span><span class="note">3 years' regular service in rural, remote or difficult areas by 31 Mar 2026 (COVID duty counts); age up to 50 on 31 Mar 2026; eligible for trainee reserve (TR).</span></div>
+        <div class="fact"><span class="label">Private management quota</span><span class="value">Any Indian national</span><span class="note">Qualified in NEET-PG 2026, whatever the state of MBBS. No reservation: one combined rank list.</span></div>
+        <div class="fact"><span class="label">NRI quota</span><span class="value">NRI, PIO or OCI</span><span class="note">MCC's NRI rules (notice of 27 May 2026). NRI candidates cannot also opt for state or management seats.</span></div>
+      </div>
+      <ul class="plain">
+        <li><strong>Other-service candidates</strong> (3 years' regular service in West Bengal under the state or central government, not the health department) need the employer's permission. If they take a stipend, they are treated as open candidates and serve the bond.</li>
+        <li>Open candidates still doing another course, or its bond, are not eligible unless it ends by 30 September 2025. In-service candidates who already hold or are doing a PG degree cannot take part.</li>
+        <li>Foreign medical graduates need permanent registration and proof of internship in West Bengal for state quota seats.</li>
+      </ul>
+    </section>
+
+    <section id="seats" aria-labelledby="h-seats">
+      <h2 id="h-seats">How seats are shared</h2>
+      <ul class="plain">
+        <li><strong>40% of state quota degree seats</strong> and <strong>50% of state quota diploma seats</strong> are reserved for in-service teachers and medical officers of the health department (WBMES, WBHS, WBPHAS). Open seats left vacant can go to in-service candidates and the other way round, on merit.</li>
+        <li><strong>5% of state quota seats</strong> go to benchmark PwD candidates. PwD status is verified by the primary medical assessment board at NRS Medical College, Kolkata, or a board listed by MCC, and only for those who applied for NEET-PG as PwD.</li>
+        <li>SC, ST and OBC seats follow the Backward Classes Welfare Department's gazette of 18 May 2026. <strong>Only caste certificates issued in West Bengal count</strong>; reserved-category candidates from other states compete as unreserved for state quota seats (they may still get reserved seats in the central institutes in the state).</li>
+        <li>OBC candidates need a non-creamy-layer certificate issued on or after <strong>1 April 2026</strong>; creamy-layer OBC candidates apply as unreserved. EWS needs a certificate in the WBMCC format issued on or after 1 April 2026 and valid for 2026–27. There are no EWS seats for in-service candidates.</li>
+      </ul>
+      <h3>Round 1 seat matrix (printed 31 Oct 2026)</h3>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Quota</th><th class="r">Seats</th><th class="r">Allotted in Round 1</th></tr></thead>
+          <tbody>
+            <tr><td>Open quota</td><td class="r num">655</td><td class="r num">554</td></tr>
+            <tr><td>In-service quota</td><td class="r num">419</td><td class="r num">211</td></tr>
+            <tr><td>In-service DNB quota</td><td class="r num">142</td><td class="r num">34</td></tr>
+            <tr><td>Private management quota</td><td class="r num">184</td><td class="r num">119</td></tr>
+            <tr><td>NRI quota</td><td class="r num">59</td><td class="r">not listed</td></tr>
+            <tr><td><b>Total</b></td><td class="r num"><b>1,459</b></td><td class="r num"><b>918</b></td></tr>
+          </tbody>
+          <caption>1,272 MD/MS, 127 diploma and 60 DNB seats: 936 in 56 state government institutes, 37 in 3 central government institutes and 486 in 7 private institutes.</caption>
+        </table>
+      </div>
+      <p>The full matrix, college by college and category by category, is in the RankRound roadmap for West Bengal (Round 1 → Choice filling).</p>
+      <h3>Conversion of vacant seats in Round 3</h3>
+      <ul class="plain">
+        <li>Open ↔ in-service; UR-PwD → UR, EWS-PwD → EWS, SC-PwD → SC, ST-PwD → ST, OBC-PwD → OBC; SC ↔ ST; EWS → UR (open seats only).</li>
+        <li>SC, ST or OBC seats do not become unreserved without the Backward Classes Welfare Department's permission.</li>
+        <li>Vacant NRI seats can become management quota seats in the online stray round, with WBMCC's permission.</li>
+      </ul>
+    </section>
+
+    <section id="money" aria-labelledby="h-money">
+      <h2 id="h-money">Fees and security deposits</h2>
+      <div class="grid">
+        <div class="fact"><span class="label">Registration fee</span><span class="value num">₹3,000</span><span class="note">One time, non-refundable, online only (net banking, card or UPI)</span></div>
+        <div class="fact"><span class="label">Deposit: private college state quota</span><span class="value num">₹2,00,000</span><span class="note">Needed to fill these choices</span></div>
+        <div class="fact"><span class="label">Deposit: private management quota</span><span class="value num">₹5,00,000</span><span class="note">With or without private state quota choices</span></div>
+      </div>
+      <p>The deposit is paid through BillDesk (RuPay debit card, net banking or credit card; raise your card limit first). If you are allotted a private college seat it is adjusted against the course fee.</p>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>The deposit is refunded, after the whole counselling ends, if you…</th><th>It is forfeited if you…</th></tr></thead>
+          <tbody>
+            <tr><td>get no seat, or get a government college seat</td><td>do not report for a seat allotted from Round 2 onwards</td></tr>
+            <tr><td>surrender your seat in Round 1 or Round 2</td><td>submit a fake or forged document (an FIR is also lodged)</td></tr>
+            <tr><td>do not report in Round 1 (free exit)</td><td>resign your seat after the counselling is over</td></tr>
+            <tr><td>re-register for a later round, or miss the pre-choice document check (the new round needs a fresh fee and deposit)</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <span class="tag">Payment failed?</span>
+        <p>Check your bank account before paying again, and wait at least an hour after a failed payment. The registration fee is never refunded, and a duplicate payment can only be claimed back after reconciliation.</p>
+      </div>
+      <p>Management and NRI fees are set by each private college and shown on the counselling website; WBMCC does not handle fee disputes, so ask the college about the fee and the mode of payment before you fill those choices.</p>
+    </section>
+
+    <section id="bond" aria-labelledby="h-bond">
+      <h2 id="h-bond">The bond</h2>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Who</th><th class="r">Degree</th><th class="r">Diploma</th></tr></thead>
+          <tbody>
+            <tr><td>Leaving the course before it ends</td><td class="r num">₹5 lakh</td><td class="r num">₹2 lakh</td></tr>
+            <tr><td>Open candidates: service to the Government of West Bengal after the course</td><td class="r">3 years</td><td class="r">2 years</td></tr>
+          </tbody>
+          <caption>There is no discontinuation bond for DNB courses at present. Course length: 3 years for MD/MS/DNB degrees, 2 years for diplomas.</caption>
+        </table>
+      </div>
+      <ul class="plain">
+        <li>Open candidates sign a notarised discontinuation and indemnity bond on non-judicial stamp paper of at least ₹100 at admission.</li>
+        <li>In-service candidates sign a discontinuation bond for the college and a post-course service bond under the TR rules for the health department.</li>
+        <li>A seat can be surrendered with the bond penalty only after every round of the 2026–27 counselling is over.</li>
+      </ul>
+    </section>
+
+    <section id="steps" aria-labelledby="h-steps">
+      <h2 id="h-steps">Step by step</h2>
+      <ol class="steps">
+        <li><div><b>Register and apply</b> at wbmcc.nic.in with your NEET-PG roll number, application number, name, mother's name and date of birth. <small>Details can be unlocked and corrected until you pay, not after. You are asked afresh about OBC status and whether your caste certificate is from West Bengal.</small></div></li>
+        <li><div><b>Pay</b> the ₹3,000 fee, and the deposit if you want private college choices, then download the <b>candidate profile letter</b>. <small>It names your verification venue, date and time slot.</small></div></li>
+        <li><div><b>Physical document verification</b> before choice filling, at the venue in your profile letter (Swasthya Bhaban, Salt Lake, for in-service candidates), with originals and one set of self-attested copies. <small>Collect the server-generated verification certificate and check it before signing. Missing your slot means paying again for the next round. NRI candidates skip this step.</small></div></li>
+        <li><div><b>Fill, save and lock choices</b> once you are on the verified list. <small>Saved choices are locked automatically when the window closes; unsaved ones are lost. Open and in-service candidates see only their own seats (both see management seats); management-only candidates see only management seats.</small></div></li>
+        <li><div><b>Allotment</b> by NEET-PG rank, category, PwD status and candidature.</div></li>
+        <li><div><b>Report to the allotted college</b> for a second, final document check and pay the college fee. <small>If your caste or PwD papers fail there, a reserved seat is cancelled for that round and you continue as unreserved or non-PwD if still eligible. Give your willingness for the next round at admission, or you cannot take part in it.</small></div></li>
+      </ol>
+    </section>
+
+    <section id="rounds" aria-labelledby="h-rounds">
+      <h2 id="h-rounds">How the rounds work</h2>
+      <div class="callout crit">
+        <span class="tag">Upgrading is final</span>
+        <p>If you take part in the next round and are upgraded, <strong>you have no claim on your earlier seat</strong>. Fill only choices you would actually take.</p>
+      </div>
+      <div class="rounds">
+        <div class="round"><h3>Round 1</h3><ul><li>Free exit: not reporting costs nothing</li><li>Surrender allowed without penalty</li><li>Give willingness at admission to move on to Round 2</li></ul></div>
+        <div class="round"><h3>Round 2</h3><ul><li>New registrations allowed</li><li>Not reporting forfeits the deposit</li><li>Surrender allowed, but the admission fee is lost</li></ul></div>
+        <div class="round"><h3>Round 3</h3><ul><li>Vacant-seat conversions apply</li><li>No surrender, no upgrade</li><li>Not reporting ends your counselling</li></ul></div>
+        <div class="round"><h3>Online stray round</h3><ul><li>Fresh registration allowed</li><li>No upgrade</li><li>Closed to anyone admitted in Round 3</li></ul></div>
+      </div>
+      <ul class="plain">
+        <li>Candidates not allotted, or allotted but not reporting in Round 1, can fill fresh choices in Round 2 without paying again. Not reporting in Round 2 means paying the fee and deposit again for Round 3.</li>
+        <li>Anyone who surrenders a seat after admission, or is cancelled for missing essential documents, is out of the counselling.</li>
+        <li>A surrender counts only with the server-generated surrender letter from the college; otherwise you still show as admitted.</li>
+      </ul>
+    </section>
+
+    <section id="documents" aria-labelledby="h-docs">
+      <h2 id="h-docs">Document checklist</h2>
+      <p>Originals plus one self-attested copy of each, for both verifications. Tick items off as you go; your ticks are saved only in this browser.</p>
+      <div class="progress"><span id="doc-progress">0 of 0 ready</span><button class="btn" type="button" id="doc-reset">Clear ticks</button></div>
+      <div class="checklist" id="checklist">
+        <label class="check"><input type="checkbox" id="d1"><span>NEET-PG 2026 admit card and rank card</span></label>
+        <label class="check"><input type="checkbox" id="d2"><span>Any two of voter ID (EPIC), Aadhaar and passport</span></label>
+        <label class="check"><input type="checkbox" id="d3"><span>Age proof <small>(birth certificate, or Class 10 admit card or certificate)</small></span></label>
+        <label class="check"><input type="checkbox" id="d4"><span>MBBS certificate <small>(not needed if you finished MBBS in 2026)</small> and final MBBS mark sheet <small>(proof of a West Bengal MBBS for state quota)</small></span></label>
+        <label class="check"><input type="checkbox" id="d5"><span>Permanent registration with NMC or a State Medical Council</span></label>
+        <label class="check"><input type="checkbox" id="d6"><span>Internship completion by 30 Sep 2026</span></label>
+        <label class="check"><input type="checkbox" id="d7"><span>Caste certificate issued in West Bengal <small>(SC, ST, OBC)</small></span></label>
+        <label class="check"><input type="checkbox" id="d8"><span>OBC non-creamy-layer certificate issued on or after 1 Apr 2026</span></label>
+        <label class="check"><input type="checkbox" id="d9"><span>EWS certificate in the WBMCC format, valid for 2026–27</span></label>
+        <label class="check"><input type="checkbox" id="d10"><span>PwD certificate from a board designated by MCC</span></label>
+        <label class="check"><input type="checkbox" id="d11"><span>Proof of any earlier degree, and of its bond being completed by 30 Sep 2026 <small>(if you hold or are doing a PG course)</small></span></label>
+        <label class="check"><input type="checkbox" id="d12"><span>Employer ID, no-objection certificate and 3-year service certificate stating stipend or salary <small>(other-service candidates)</small></span></label>
+        <label class="check"><input type="checkbox" id="d13"><span>Declaration to the health department, certificate from the service-book custodian, and posting order and joining report <small>(in-service candidates)</small></span></label>
+        <label class="check"><input type="checkbox" id="d14"><span>Candidate profile letter, printed</span></label>
+        <label class="check"><input type="checkbox" id="d15"><span>Signed undertaking that the information you gave is true <small>(text in the bulletin)</small></span></label>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Summary of the WBMCC Notice cum Information Bulletin (Memo HFW-23099/320, 14.10.2026) for West Bengal NEET-PG Medical (MD/MS/DNB degree and diploma) state quota, private management quota and NRI quota seats 2026, with the Round 1 seat matrix (31.10.2026) and provisional allotment. This is an independent guide, not an official WBMCC document; the official text at wbmcc.nic.in always prevails.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var KEY = 'wb-pg-2026-docs';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input'));
+  var out = document.getElementById('doc-progress');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+  boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; });
+  function update() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    out.textContent = n + ' of ' + boxes.length + ' ready';
+    var s = {}; boxes.forEach(function (b) { if (b.checked) s[b.id] = 1; });
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  }
+  boxes.forEach(function (b) { b.addEventListener('change', update); });
+  document.getElementById('doc-reset').addEventListener('click', function () { boxes.forEach(function (b) { b.checked = false; }); update(); });
+  update();
+})();
+</script>

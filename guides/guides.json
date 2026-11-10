@@ -24,20 +24,31 @@
         },
         {
           "what": "Round 2 seat matrix verified by institutes",
-          "when": "By 6 Nov, with the seats newly approved by NMC",
+          "when": "Until 9 Nov, 11 am, with the seats newly approved by NMC",
           "from": "2026-11-03T00:00:00+05:30",
-          "to": "2026-11-06T23:59:00+05:30"
+          "to": "2026-11-09T11:00:00+05:30"
         },
         {
-          "what": "Round 2 registration and choices",
-          "when": "Expected from 7 Nov (revised schedule awaited)",
-          "from": "2026-11-07T00:00:00+05:30",
-          "label": "Awaited"
+          "what": "Resign a Round 1 seat without losing the deposit",
+          "when": "Until 9 Nov, 6 pm · freeze: at the institute · float: online",
+          "to": "2026-11-09T18:00:00+05:30"
+        },
+        {
+          "what": "Round 2 registration and payment",
+          "when": "7 Nov, 1 pm – 14 Nov, 3 pm · payment until 6 pm",
+          "from": "2026-11-07T13:00:00+05:30",
+          "to": "2026-11-14T18:00:00+05:30"
+        },
+        {
+          "what": "Round 2 choice filling and locking",
+          "when": "Filling 10 Nov, 1 pm – 15 Nov, 11:55 pm · locking from 14 Nov, 4 pm",
+          "from": "2026-11-10T13:00:00+05:30",
+          "to": "2026-11-15T23:55:00+05:30"
         },
         {
           "what": "Round 2 result",
-          "when": "14 Nov · join 16–23 Nov",
-          "on": "2026-11-14T00:00:00+05:30"
+          "when": "Provisional 16 Nov · final 17 Nov · report 18–24 Nov",
+          "on": "2026-11-17T00:00:00+05:30"
         },
         {
           "what": "Round 3 registration and choices",
@@ -438,8 +449,8 @@
         },
         {
           "what": "Round 1 final allotment",
-          "when": "6 Nov, after 11 am",
-          "on": "2026-11-06T11:00:00+05:30"
+          "when": "7 Nov · 3,268 allotted",
+          "on": "2026-11-07T13:33:00+05:30"
         }
       ]
     },
@@ -696,9 +707,48 @@
           "on": "2026-11-04T00:00:00+05:30"
         },
         {
-          "what": "Upgraded allotment against vacant seats",
-          "when": "8 Nov · report 10 Nov",
-          "on": "2026-11-08T00:00:00+05:30"
+          "what": "Round 1 upgraded allotment",
+          "when": "8 Nov (revised) · 8 upgraded, 7 fresh allotments · report 10 Nov",
+          "on": "2026-11-08T11:03:00+05:30"
+        },
+        {
+          "what": "Round 2 registration and counselling fee",
+          "when": "9 Nov – 10 Nov, 11:55 pm (SB Collect)",
+          "from": "2026-11-09T00:00:00+05:30",
+          "to": "2026-11-10T23:55:00+05:30"
+        },
+        {
+          "what": "Round 2 document verification at MKCG Berhampur",
+          "when": "13 Nov, 10 am – 5 pm · report 9:30 am – 12 noon, LT 650",
+          "from": "2026-11-13T09:30:00+05:30",
+          "to": "2026-11-13T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 provisional seat matrix and merit list",
+          "when": "18 Nov, 12 noon · grievances by email until 19 Nov, 2 pm",
+          "on": "2026-11-18T12:00:00+05:30"
+        },
+        {
+          "what": "Round 2 revised merit list and seat matrix",
+          "when": "21 Nov, 4 pm",
+          "on": "2026-11-21T16:00:00+05:30"
+        },
+        {
+          "what": "Round 2 choice locking",
+          "when": "23–24 Nov, until 11:55 pm",
+          "from": "2026-11-23T00:00:00+05:30",
+          "to": "2026-11-24T23:55:00+05:30"
+        },
+        {
+          "what": "Round 2 allotment-cum-admission letter",
+          "when": "26 Nov, from 10 am",
+          "on": "2026-11-26T10:00:00+05:30"
+        },
+        {
+          "what": "Round 2 reporting at MKCG Berhampur",
+          "when": "27–28 Nov, 10 am – 5 pm, with original CLC and the fee receipt",
+          "from": "2026-11-27T10:00:00+05:30",
+          "to": "2026-11-28T17:00:00+05:30"
         }
       ]
     },
@@ -1032,6 +1082,40 @@
           "to": "2026-10-30T23:59:00+05:30"
         }
       ]
+    },
+    {
+      "slug": "west-bengal",
+      "file": "west-bengal.html",
+      "region": "West Bengal",
+      "title": "West Bengal PG counselling 2026, explained",
+      "label": "WBMCC counselling guide",
+      "authority": "West Bengal Medical Counselling Committee (WBMCC) · State, management and NRI quota",
+      "summary": "Who can apply, how seats are shared, the ₹2 and ₹5 lakh deposits, the bond, the rounds and the documents to carry.",
+      "asOf": "2026-11-03",
+      "official": "https://wbmcc.nic.in",
+      "dates": [
+        {
+          "what": "Round 1 choice filling and locking",
+          "when": "30 Oct, 4 pm – 1 Nov, 11:59 pm",
+          "from": "2026-10-30T16:00:00+05:30",
+          "to": "2026-11-01T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 seat matrix",
+          "when": "31 Oct · 1,459 seats in 66 institutes",
+          "label": "Published"
+        },
+        {
+          "what": "Round 1 provisional allotment",
+          "when": "3 Nov · 918 allotted",
+          "on": "2026-11-03T13:59:00+05:30"
+        },
+        {
+          "what": "Admission at the allotted college and Round 2",
+          "when": "Schedule on wbmcc.nic.in",
+          "label": "Awaited"
+        }
+      ]
     }
   ],
   "compare": {
@@ -1224,26 +1308,30 @@
       {
         "name": "Round 2",
         "from": "2026-11-03T00:00:00+05:30",
-        "to": "2026-11-23T23:59:00+05:30",
-        "detail": "Seats newly approved by NMC were sent to MCC on 3 Nov; institutes verify the seat matrix by 6 Nov and Round 2 is expected from 7 Nov (revised schedule awaited). Not joining or resigning forfeits the security deposit.",
+        "to": "2026-11-25T23:59:00+05:30",
+        "detail": "Revised schedule (MCC notice 5, 7 Nov), after NMC added new seats: registration 7–14 Nov (3 pm), choice filling 10–15 Nov, provisional result 16 Nov, final result 17 Nov, reporting 18–24 Nov. Resign a Round 1 seat by 9 Nov, 6 pm to keep the deposit; after that, not joining forfeits it.",
         "events": [
           {
-            "what": "Seat matrix verified by institutes",
-            "when": "By 6 Nov"
-          },
-          {
             "what": "Registration",
-            "when": "From 7 Nov (expected)"
+            "when": "7–14 Nov, 3 pm"
           },
           {
-            "what": "Academic session begins",
-            "when": "20 Nov"
+            "what": "Choice filling",
+            "when": "10–15 Nov"
+          },
+          {
+            "what": "Result",
+            "when": "17 Nov"
+          },
+          {
+            "what": "Reporting",
+            "when": "18–24 Nov"
           }
         ]
       },
       {
         "name": "Round 3",
-        "from": "2026-11-24T00:00:00+05:30",
+        "from": "2026-11-26T00:00:00+05:30",
         "to": "2026-12-12T23:59:00+05:30",
         "detail": "Registration 26 Nov – 1 Dec, choice locking until 2 Dec, 10 am, result 4 Dec, reporting 5–12 Dec. No resignation; not joining loses the deposit and ends MCC counselling.",
         "events": [
@@ -2907,6 +2995,86 @@
       "date": "2026-11-06",
       "kind": "Seat matrix",
       "kb": 1593
+    },
+    {
+      "region": "All India",
+      "title": "MCC notice 5: revised Round 2 schedule (new NMC seats added)",
+      "file": "mcc/round2-schedule-revised-2026-11-07.pdf",
+      "date": "2026-11-07",
+      "kind": "Schedule",
+      "kb": 358
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 1 final seat allotment (MD/MS), with course fees",
+      "file": "karnataka/round1-final-allotment.pdf",
+      "date": "2026-11-07",
+      "kind": "Allotment",
+      "kb": 1344
+    },
+    {
+      "region": "Odisha",
+      "title": "Revised Round 1 upgraded allotment, with Round 1 seats and admission status",
+      "file": "odisha/round1-upgraded-allotment.pdf",
+      "date": "2026-11-08",
+      "kind": "Allotment",
+      "kb": 631
+    },
+    {
+      "region": "Odisha",
+      "title": "No. 90: tentative Round 2 schedule",
+      "file": "odisha/round2-tentative-schedule.pdf",
+      "date": "2026-11-07",
+      "kind": "Schedule",
+      "kb": 561
+    },
+    {
+      "region": "West Bengal",
+      "title": "Notice cum information bulletin: state, private management and NRI quota seats",
+      "file": "west-bengal/information-bulletin.pdf",
+      "date": "2026-10-14",
+      "kind": "Rules",
+      "kb": 5510
+    },
+    {
+      "region": "West Bengal",
+      "title": "User manual: registration and payment",
+      "file": "west-bengal/user-manual-registration.pdf",
+      "date": "2026-10-22",
+      "kind": "Guidelines",
+      "kb": 6644
+    },
+    {
+      "region": "West Bengal",
+      "title": "User manual: seat choice filling",
+      "file": "west-bengal/user-manual-choice-filling.pdf",
+      "date": "2026-10-30",
+      "kind": "Guidelines",
+      "kb": 2468
+    },
+    {
+      "region": "West Bengal",
+      "title": "Participating institutes, with addresses and contacts",
+      "file": "west-bengal/participating-institutes.pdf",
+      "date": "2026-10-31",
+      "kind": "Notice",
+      "kb": 65
+    },
+    {
+      "region": "West Bengal",
+      "title": "Round 1 seat matrix",
+      "file": "west-bengal/round1-seat-matrix.pdf",
+      "date": "2026-10-31",
+      "kind": "Seat matrix",
+      "kb": 251
+    },
+    {
+      "region": "West Bengal",
+      "title": "Round 1 provisional seat allotment",
+      "file": "west-bengal/round1-provisional-allotment.pdf",
+      "date": "2026-11-03",
+      "kind": "Allotment",
+      "kb": 498
     }
   ],
   "updates": [
@@ -3526,24 +3694,63 @@
       "text": "NMC published the updated PG broad speciality seat matrix for 2026-27 (6 Nov): 68,305 MD, MS and diploma seats in 738 institutions across 33 states and UTs, including the extra seats approved since 29 Sep. Explore it by state, college type and course in the new Seat matrix section.",
       "link": "/seats",
       "doc": "mcc/nmc-pg-seat-matrix-2026-11-06.pdf"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-07",
+      "text": "Round 2 rescheduled (MCC notice 5) because NMC added new seats: resign a Round 1 seat by 9 Nov, 6 pm without losing the deposit; register 7 Nov, 1 pm – 14 Nov, 3 pm (pay by 6 pm); fill choices 10 Nov, 1 pm – 15 Nov, 11:55 pm (locking from 14 Nov, 4 pm); result 17 Nov; report 18–24 Nov.",
+      "doc": "mcc/round2-schedule-revised-2026-11-07.pdf"
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-11-07",
+      "text": "Round 1 final allotment out: 3,268 seats, replacing the provisional list of 5 Nov (3,272). Search it by rank, college, quota and category, with the course fee of each seat.",
+      "link": "/roadmap/karnataka/round-1/allotment",
+      "doc": "karnataka/round1-final-allotment.pdf"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-08",
+      "text": "Revised Round 1 upgraded allotment out: 372 candidates, 8 upgraded to a better seat and 7 fresh allotments; 177 re-allotted the seat they had and 180 keep the Round 1 seat they were admitted to. Report to the convener on 10 Nov.",
+      "link": "/roadmap/odisha/round-1/allotment",
+      "doc": "odisha/round1-upgraded-allotment.pdf"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-07",
+      "text": "Round 2 (tentative): register and pay 9–10 Nov (until 11:55 pm); document verification 13 Nov at MKCG Berhampur; seat matrix and merit list 18 Nov; choice locking 23–24 Nov; allotment letter 26 Nov; reporting 27–28 Nov.",
+      "doc": "odisha/round2-tentative-schedule.pdf"
+    },
+    {
+      "region": "West Bengal",
+      "date": "2026-11-03",
+      "text": "West Bengal on the roadmap: the Round 1 seat matrix (1,459 seats in 66 institutes, by quota and category) and the Round 1 provisional allotment (918 allotted), with a guide to WBMCC counselling.",
+      "link": "/roadmap/west-bengal/round-1/allotment",
+      "doc": "west-bengal/round1-provisional-allotment.pdf"
+    },
+    {
+      "region": "West Bengal",
+      "date": "2026-10-14",
+      "text": "Information bulletin: registration fee ₹3,000; a ₹2 lakh deposit to choose private college state quota seats and ₹5 lakh for management quota seats; 40% of state quota degree and 50% of diploma seats for in-service doctors; bond of 3 years (degree) or 2 years (diploma) for open candidates, ₹5 lakh or ₹2 lakh to leave the course.",
+      "doc": "west-bengal/information-bulletin.pdf"
     }
   ],
   "highlight": {
-    "eyebrow": "New · Round 1 choice filling",
-    "text": "Odisha: your chance at every seat of the revised seat matrix. All India: 17,445 DNB, deemed and central quota seats, and every Round 1 allotment.",
-    "href": "/roadmap",
-    "go": "Open the roadmap"
+    "eyebrow": "New · 8 Nov",
+    "text": "West Bengal on the roadmap: 1,459 seats and 918 Round 1 allotments. Odisha's upgraded allotment, Karnataka's final allotment and MCC's new Round 2 dates.",
+    "href": "/roadmap/west-bengal/round-1/allotment",
+    "go": "Open West Bengal"
   },
   "progress": {
     "All India": {
-      "stage": "Round 1",
-      "note": "Round 1 joining closed 2 Nov. Round 2 expected from 7 Nov, once institutes verify the new seats (by 6 Nov).",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 2 registration until 14 Nov, 3 pm; choice filling 10–15 Nov; result 17 Nov; reporting 18–24 Nov.",
+      "asOf": "2026-11-08"
     },
     "Odisha": {
       "stage": "Round 1",
-      "note": "Round 1 allotment out 4 Nov (374 allotted, 107 seats vacant); report 6–7 Nov and 10 Nov at MKCG Berhampur.",
-      "asOf": "2026-11-04"
+      "note": "Round 1 upgraded allotment out 8 Nov (report 10 Nov); Round 2 registration 9–10 Nov.",
+      "asOf": "2026-11-08"
     },
     "Andhra Pradesh": {
       "stage": "Merit List",
@@ -3642,13 +3849,13 @@
     },
     "Karnataka": {
       "stage": "Round 1",
-      "note": "Round 1 provisional allotment out 5 Nov (3,272 allotted); objections before 10 am, 6 Nov; final allotment 6 Nov after 11 am.",
-      "asOf": "2026-11-05"
+      "note": "Round 1 final allotment out 7 Nov (3,268 allotted).",
+      "asOf": "2026-11-07"
     },
     "West Bengal": {
       "stage": "Round 1",
-      "note": "Choice filling and locking closed 1 Nov, 11:59 pm.",
-      "asOf": "2026-11-02"
+      "note": "Round 1 provisional allotment out 3 Nov (918 allotted); admission at the allotted college.",
+      "asOf": "2026-11-03"
     },
     "Tripura": {
       "stage": "Round 1",
@@ -3843,7 +4050,8 @@
       "title": "Round 1 common allotment (direct and in-service)",
       "date": "2026-11-04",
       "doc": "odisha/round1-allotment.pdf",
-      "file": "odisha/allotment-round1.json"
+      "file": "odisha/allotment-round1.json",
+      "short": "Round 1 allotment"
     },
     {
       "id": "merit-list-2026",
@@ -3918,9 +4126,9 @@
       "region": "Karnataka",
       "kind": "allotment",
       "round": "Round 1",
-      "title": "Round 1 provisional allotment (MD/MS), with course fees",
-      "date": "2026-11-05",
-      "doc": "karnataka/round1-provisional-allotment.pdf",
+      "title": "Round 1 final allotment (MD/MS), with course fees",
+      "date": "2026-11-07",
+      "doc": "karnataka/round1-final-allotment.pdf",
       "file": "karnataka/allotment-round1.json"
     },
     {
@@ -4009,6 +4217,37 @@
       "date": "2026-11-02",
       "doc": "rajasthan/round1-provisional-allotment.pdf",
       "file": "rajasthan/allotment-round1.json"
+    },
+    {
+      "id": "allotment-round-1-upgraded",
+      "region": "Odisha",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Revised Round 1 upgraded allotment",
+      "short": "Upgraded allotment",
+      "date": "2026-11-08",
+      "doc": "odisha/round1-upgraded-allotment.pdf",
+      "file": "odisha/allotment-round1-upgraded.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "West Bengal",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 seat matrix (open, in-service, DNB, management and NRI quotas)",
+      "date": "2026-10-31",
+      "doc": "west-bengal/round1-seat-matrix.pdf",
+      "file": "west-bengal/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "West Bengal",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 provisional allotment",
+      "date": "2026-11-03",
+      "doc": "west-bengal/round1-provisional-allotment.pdf",
+      "file": "west-bengal/allotment-round1.json"
     }
   ]
 }

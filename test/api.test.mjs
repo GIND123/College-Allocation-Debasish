@@ -268,7 +268,7 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   assert.deepEqual(od.stages, ['Registration', 'Merit List', 'Round 1', 'Round 2', 'Round 3', 'Stray Vacancy']);
   assert.equal(od.progress.stage, 'Round 1');
   assert.equal(od.access, 'signin');
-  assert.deepEqual(od.data.map(d => d.id).sort(), ['allotment-round-1', 'merit-list-2026', 'seat-matrix-round-1']);
+  assert.deepEqual(od.data.map(d => d.id).sort(), ['allotment-round-1', 'allotment-round-1-upgraded', 'merit-list-2026', 'seat-matrix-round-1']);
   const guide = od.guides.find(g => g.slug === 'odisha');
   assert.ok(guide.sections.some(s => s.id === 'key-dates'), 'guide sections are listed');
   const sec = (await v('/api/sections/odisha/key-dates')).json;
@@ -336,17 +336,18 @@ test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat 
   assert.deepEqual(cfg.meritByName, ['Tamil Nadu'], 'Tamil Nadu prints no NEET-PG ranks: its CMR is found by name');
 });
 
-test('Odisha allotment; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat and Rajasthan data: as printed', async () => {
+test('Odisha allotments; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat, Rajasthan and West Bengal data: as printed', async () => {
   const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
   const STATES = [
     // state, key, merit lists, seats, allotted
     ['Odisha', 'odisha', null, 463, 374],
     ['Kerala', 'kerala', [['State merit list', 5665], ['Second list (not qualified)', 20]], 1173 + 17, 1082],
     ['Maharashtra', 'maharashtra', [['State merit list', 7242], ['In-service (20% quota)', 65]], 2759, 2112],
-    ['Karnataka', 'karnataka', null, 4892, 3272],
+    ['Karnataka', 'karnataka', null, 4892, 3268],
     ['Madhya Pradesh', 'madhya-pradesh', [['State common merit list', 4777]], 728 + 1413 + 2 + 26, 1110],
     ['Gujarat', 'gujarat', [['General merit list', 6095], ['In-service merit lists', 12], ['NRI merit list', 39], ['PwD merit list', 13]], 2675 + 13, 2329],
-    ['Rajasthan', 'rajasthan', [['State merit list', 3165]], 990 + 1444 + 139, 1366]
+    ['Rajasthan', 'rajasthan', [['State merit list', 3165]], 990 + 1444 + 139, 1366],
+    ['West Bengal', 'west-bengal', null, 1459, 918]
   ];
   // one account (sign-up codes are rate-limited per address), its state switched in the profile
   const b = browser(), phone = '9000000300';
@@ -367,9 +368,15 @@ test('Odisha allotment; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat 
         // every MD/MS seat of the revised matrix is either allotted or listed as vacant
         const md = a.rows.filter(r => r.programme === 'MD/MS').length + sum(a.vacant.filter(v => v.programme === 'MD/MS'));
         assert.equal(md, seats, 'Odisha: allotted + vacant = the MD/MS seat matrix');
+        // the revised upgraded allotment of 8 Nov: each candidate's seat after the upgrade
+        const u = (await b('/api/regions/odisha/data/allotment-round-1-upgraded')).json;
+        const moves = {}; for (const r of u.rows) moves[r.move] = (moves[r.move] || 0) + 1;
+        assert.deepEqual([u.rows.length, moves], [372, { 'Kept Round 1 seat (admitted)': 180, 'Re-allotted the same seat': 177, Upgraded: 8, 'Fresh allotment': 7 }]);
+        assert.ok(u.rows.filter(r => r.move === 'Upgraded').every(r => r.was), 'an upgrade shows the seat it replaced');
+        assert.ok(u.rows.every(r => !('name' in r)), 'no candidate names');
       }
       // no college and course allotted more seats than the seat matrix has (Maharashtra and Madhya Pradesh match it name for name)
-      if (key === 'maharashtra' || key === 'madhya-pradesh') {
+      if (key === 'maharashtra' || key === 'madhya-pradesh' || key === 'west-bengal') {
         const cap = new Map(), got = new Map(), k = r => `${r.college}|${r.course}`;
         for (const r of (await b(`/api/regions/${key}/data/seat-matrix-round-1`)).json.rows) cap.set(k(r), (cap.get(k(r)) || 0) + r.seats);
         for (const r of a.rows) got.set(k(r), (got.get(k(r)) || 0) + 1);
