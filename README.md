@@ -251,7 +251,7 @@ A section of its own in the top bar ("Seat matrix"), for signed-in candidates: e
 
 The data is `server/region-data/all-india/nmc-seat-matrix-2026.json` (colleges, courses and `[college, course, seats, diploma]` rows), built from NMC's PDF; old state spellings (Orissa, Pondicherry, Chhatisgarh …) are merged into the site's names. When NMC republishes the matrix, rebuild the file and update the date in it.
 
-`/healthz` answers `ok` without touching the database or analytics, for an uptime monitor. On Render's free plan the site sleeps after 15 idle minutes, and the first visitor then waits several seconds while it restarts (and the free database starts empty). A monitor that opens `/healthz` every 10 minutes keeps it awake; the lasting fix is a paid instance with a persistent disk.
+`/healthz` answers `ok` without touching the database or analytics, for an uptime monitor. rankround.com runs on a paid Render instance (Starter, Singapore) with a persistent disk at `/var/data`, which doesn't sleep, so no keep-awake ping is needed. On Render's free plan the site sleeps after 15 idle minutes and its database starts empty after each restart; there, a monitor opening `/healthz` every 10 minutes keeps it awake.
 
 ## Coverage map (home page)
 
