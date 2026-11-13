@@ -166,10 +166,13 @@ if (!columns('users').includes('email')) {
 for (const t of ['users', 'signup_attempts']) if (!columns(t).includes('air'))
   db.exec(`ALTER TABLE ${t} ADD COLUMN air INTEGER; UPDATE ${t} SET air = cmr, cmr = NULL;`);
 // Passwords (local test mode and email accounts; phone accounts on Firebase keep theirs there).
+// Review accounts (username + password from the server's settings) open every state's data; they are not leads.
+if (!columns('users').includes('review')) db.exec(`ALTER TABLE users ADD COLUMN review INTEGER NOT NULL DEFAULT 0`);
 if (!columns('users').includes('password_hash')) db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''`);
 if (!columns('aiq_rows').includes('quota')) db.exec(`ALTER TABLE aiq_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
 if (!columns('aiq_rows').includes('state')) db.exec(`ALTER TABLE aiq_rows ADD COLUMN state TEXT NOT NULL DEFAULT ''`);
 if (!columns('state_rows').includes('quota')) db.exec(`ALTER TABLE state_rows ADD COLUMN quota TEXT NOT NULL DEFAULT ''`);
+if (!columns('state_rows').includes('type')) db.exec(`ALTER TABLE state_rows ADD COLUMN type TEXT NOT NULL DEFAULT ''`);
 if (!columns('datasets').includes('state')) {
   // Every dataset before per-state data was the client's Odisha data.
   db.exec(`ALTER TABLE datasets ADD COLUMN state TEXT NOT NULL DEFAULT '';
@@ -211,7 +214,11 @@ const SEEDS = [
   { id: 'mcc-aiq-2026-r1.json#all-india', file: 'mcc-aiq-2026-r1.json', kind: 'aiq', perState: true, year: 2026,
     label: 'All India counselling 2026 · Round 1 allotments (MCC)',
     notes: 'MCC NEET-PG 2026 Round 1 result (MD/MS, DNB and NBEMS diploma), 28,584 allotments rolled up by college, course, category and quota. '
-      + 'Opening and closing ranks are those allotted in Round 1 only. College type is from the quota; for DNB hospitals it is inferred from the name.' }
+      + 'Opening and closing ranks are those allotted in Round 1 only. College type is from the quota; for DNB hospitals it is inferred from the name.' },
+  // One file holding several states ({ state: { note, rows } }), loaded as a dataset per state: each state loads once,
+  // so a state added to the file later still arrives in an existing database.
+  { file: 'state-cutoffs-2026-r1.json', kind: 'state', split: true, year: 2026,
+    label: state => `${state} state counselling 2026 · Round 1 allotments` }
 ];
 function loadSeed(s, state, rows) {
   // Databases from before this list already hold the Odisha data under the same name.
@@ -223,7 +230,19 @@ function loadSeed(s, state, rows) {
     .run(s.kind, state, s.label, s.year, s.notes, t, t);
   insertRows(s.kind, Number(lastInsertRowid), rows);
 }
-for (const s of SEEDS) {
+for (const s of SEEDS.filter(x => x.split)) {
+  const data = JSON.parse(fs.readFileSync(path.join(here, 'seed', s.file), 'utf8'));
+  for (const [state, { note, rows }] of Object.entries(data)) {
+    const id = `${s.file}#${state}`;
+    if (db.prepare('SELECT 1 FROM seeds WHERE file = ?').get(id)) continue;
+    tx(() => {
+      loadSeed({ ...s, label: s.label(state), notes: note }, state, rows);
+      db.prepare('INSERT INTO seeds (file, loaded_at) VALUES (?, ?)').run(id, now());
+    });
+    console.log(`[db] loaded ${s.label(state)}`);
+  }
+}
+for (const s of SEEDS.filter(x => !x.split)) {
   const id = s.id || s.file;
   if (db.prepare('SELECT 1 FROM seeds WHERE file = ?').get(id)) continue;
   const data = JSON.parse(fs.readFileSync(path.join(here, 'seed', s.file), 'utf8'));

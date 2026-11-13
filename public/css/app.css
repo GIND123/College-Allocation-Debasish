@@ -17,6 +17,14 @@
 .mainnav a[aria-current="page"]{color:#0b1422; background:#d6ab5a; border-color:#d6ab5a}
 .mainnav a[aria-current="page"] svg{color:#0b1422}
 .mainnav .nav-short{display:none}
+/* seven links: short labels until the bar has room for the long ones */
+@media (min-width:961px) and (max-width:1640px){
+  .mainnav{gap:4px}
+  .mainnav a{padding:0 10px; gap:6px}
+  .mainnav .nav-full{display:none}
+  .mainnav .nav-short{display:inline}
+  .wordmark small{display:none}
+}
 .topbar-right{margin-left:auto; display:flex; align-items:center; gap:8px}
 .topbar .btn-line{background:transparent; color:var(--bar-ink); border-color:#2d3a50}
 .topbar .btn-line:hover{border-color:var(--bar-ink)}
@@ -351,14 +359,6 @@
 .hero h1 em{font-style:italic; font-weight:500; color:var(--brass)}
 .hero-lede{font-size:17px; line-height:1.6; color:var(--ink-2); max-width:52ch; margin:0 0 30px}
 .hero-cta{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-/* the big arrow from the pitch to the sign-up card */
-.hero-in:has(.hero-arrow){grid-template-columns:minmax(0,1.05fr) auto minmax(0,1fr); gap:28px}
-.hero-arrow{display:grid; justify-items:center; row-gap:10px; color:var(--brass); width:clamp(170px,15vw,240px)}
-.hero-arrow span{font:italic 600 clamp(26px,2.4vw,34px)/1.1 var(--serif); text-align:center}
-.hero-arrow small{display:block; margin-top:6px; font:500 13px/1.3 var(--sans); font-style:normal; color:var(--muted); letter-spacing:.02em}
-.hero-arrow svg{width:100%; height:auto; animation:hero-nudge 1.8s ease-in-out infinite}
-@keyframes hero-nudge{50%{transform:translateX(10px)}}
-@media (prefers-reduced-motion:reduce){.hero-arrow svg{animation:none}}
 .hero-cta .muted{font-size:12.5px; margin-left:6px}
 
 .stats{border-bottom:1px solid var(--rule)}
@@ -508,9 +508,8 @@
 @media (max-width:1180px){
   .ctx-note{margin-left:0; text-align:left; flex-basis:100%}
   .ctx-guide{justify-content:flex-start}
-  .hero-in, .hero-in:has(.hero-arrow){grid-template-columns:1fr; gap:32px; padding-top:40px}
+  .hero-in{grid-template-columns:1fr; gap:32px; padding-top:40px}
   .hero-auth{order:-1; max-width:520px; justify-self:start}
-  .hero-arrow{display:none}
 }
 @media (max-width:960px){
   .gd{padding:28px 16px 48px}
@@ -870,6 +869,27 @@
 :root[data-theme="dark"]{--sm-1:#3987e5; --sm-2:#d95926; --sm-3:#199e70}
 .sm{max-width:1480px; margin:0 auto; padding:28px 24px 48px}
 .sm .page-head{padding:0 0 18px}
+/* stipend and bond */
+.bd-src{max-width:95ch; margin:0 0 16px; color:var(--ink-2); line-height:1.6; font-size:14px}
+.bd-grid td{vertical-align:top}
+.bd-grid td:nth-child(1){min-width:130px}
+.bd-grid td:nth-child(2), .bd-grid th:nth-child(2), .bd-grid td:nth-child(3), .bd-grid td:nth-child(4){width:1%; white-space:nowrap}
+.bd-grid td.wrapcell{min-width:300px; line-height:1.5; white-space:normal}
+.bd-grid .sub-inline{color:var(--muted)}
+.bd-grid a{white-space:nowrap}
+.bd-note{display:block; white-space:normal; max-width:250px; margin-left:auto; text-align:left; font:400 12.5px/1.45 var(--sans)}
+.bd-grid a svg{width:13px; height:13px; vertical-align:-2px}
+.bd-check{display:block; margin-top:4px; font:600 11.5px/1.3 var(--sans)}
+.bd-ok{color:var(--ok, #2e7d4f)} .bd-info{color:var(--link)} .bd-bad{color:var(--err)}
+.bd-mine{align-self:end; padding-bottom:10px}
+/* rank journey */
+.jr-seat{padding:3px 0}
+.jr-seat + .jr-seat{border-top:1px dashed var(--rule); margin-top:4px; padding-top:7px}
+.jr-seat b{display:block; font-weight:600}
+.jr-set{display:block; font:600 11px/1.3 var(--sans); letter-spacing:.04em; text-transform:uppercase; color:var(--muted)}
+.jr-src{margin:4px 0 18px; font-size:13.5px}
+.jr-src summary{cursor:pointer; font-weight:600}
+.jr-src ul{margin:8px 0; padding-left:20px; line-height:1.6}
 .sm .page-head p{max-width:900px}
 .sm-t1{background:var(--sm-1)} .sm-t2{background:var(--sm-2)} .sm-t3{background:var(--sm-3)}
 .sm-dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:1px}

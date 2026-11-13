@@ -40,10 +40,20 @@
           "to": "2026-11-14T18:00:00+05:30"
         },
         {
+          "what": "Round 2 seat matrix",
+          "when": "10 Nov: 15,387 clear vacancies (3,657 newly added) and 15,396 virtual vacancies · re-issued 11 Nov, 4 pm · newly added seats revised 12 Nov",
+          "on": "2026-11-10T20:00:00+05:30"
+        },
+        {
           "what": "Round 2 choice filling and locking",
-          "when": "Filling 10 Nov, 1 pm – 15 Nov, 11:55 pm · locking from 14 Nov, 4 pm",
+          "when": "Opened late on 10 Nov (seat matrix checks) – 15 Nov, 11:55 pm · locking from 14 Nov, 4 pm",
           "from": "2026-11-10T13:00:00+05:30",
           "to": "2026-11-15T23:55:00+05:30"
+        },
+        {
+          "what": "Round 2 PwD certificate portal (re-opened)",
+          "when": "Primary assessment until 12 Nov, 6 pm · appellate board until 14 Nov, 6 pm",
+          "to": "2026-11-14T18:00:00+05:30"
         },
         {
           "what": "Round 2 result",
@@ -82,10 +92,21 @@
           "to": "2026-10-22T22:00:00+05:30"
         },
         {
-          "what": "Round 1 provisional merit lists (in-service and non-service)",
-          "when": "1 Nov · grievances by 3 Nov, 1 pm",
+          "what": "Competent authority quota merit lists (in-service and non-service)",
+          "when": "Provisional 1 Nov · final 6 Nov",
           "from": "2026-11-01T00:00:00+05:30",
-          "to": "2026-11-03T13:00:00+05:30"
+          "to": "2026-11-03T13:00:00+05:30",
+          "on": "2026-11-06T00:00:00+05:30"
+        },
+        {
+          "what": "CQ Phase I seat matrix (AU, SVU, state-wide and minority colleges)",
+          "when": "9 Nov · AU area revised 12 Nov",
+          "on": "2026-11-12T00:00:00+05:30"
+        },
+        {
+          "what": "Management quota merit list",
+          "when": "Provisional 8 Nov (grievances by 10 Nov, 3 pm) · Phase 1 final 12 Nov",
+          "on": "2026-11-12T00:00:00+05:30"
         },
         {
           "what": "Web options",
@@ -231,9 +252,9 @@
         },
         {
           "what": "Round 1 reporting",
-          "when": "2–6 Nov, 10 am – 3 pm · 10–11 Nov, until 5 pm",
+          "when": "2–6 Nov, 10 am – 3 pm · 10 Nov – 12 Nov, 5 pm (extended)",
           "from": "2026-11-02T10:00:00+05:30",
-          "to": "2026-11-11T17:00:00+05:30"
+          "to": "2026-11-12T17:00:00+05:30"
         }
       ]
     },
@@ -331,6 +352,11 @@
           "when": "2 Nov, 10 am – 6 Nov, 4 pm",
           "from": "2026-11-02T10:00:00+05:30",
           "to": "2026-11-06T16:00:00+05:30"
+        },
+        {
+          "what": "Round 2 online registration",
+          "when": "Until 15 Nov, 5 pm · updated eligibility and document list",
+          "to": "2026-11-15T17:00:00+05:30"
         }
       ]
     },
@@ -358,9 +384,15 @@
           "to": "2026-11-02T11:00:00+05:30"
         },
         {
-          "what": "Merit list and seat matrix",
-          "when": "To be notified on amruhp.ac.in (prospectus: seat distribution displayed separately)",
-          "label": "Awaited"
+          "what": "Round 1 final merit list",
+          "when": "10 Nov · revised 12 Nov",
+          "label": "Awaited",
+          "on": "2026-11-12T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 choice filling and locking",
+          "when": "Until 12 Nov (revised schedule)",
+          "to": "2026-11-12T23:59:00+05:30"
         }
       ]
     },
@@ -451,6 +483,11 @@
           "what": "Round 1 final allotment",
           "when": "7 Nov · 3,268 allotted",
           "on": "2026-11-07T13:33:00+05:30"
+        },
+        {
+          "what": "Round 1: exercise of choices by allotted candidates",
+          "when": "Extended to 13 Nov, 2 pm",
+          "to": "2026-11-13T14:00:00+05:30"
         }
       ]
     },
@@ -830,6 +867,12 @@
           "when": "3–6 Nov, 9 am – 4 pm, at SMS MC Jaipur · tuition fee by 3 pm, 6 Nov",
           "from": "2026-11-03T00:00:00+05:30",
           "to": "2026-11-06T16:00:00+05:30"
+        },
+        {
+          "what": "Round 2 online application form",
+          "when": "13 Nov – 17 Nov, 11:55 pm",
+          "from": "2026-11-13T00:00:00+05:30",
+          "to": "2026-11-17T23:55:00+05:30"
         },
         {
           "what": "Academic session begins",
@@ -1309,15 +1352,19 @@
         "name": "Round 2",
         "from": "2026-11-03T00:00:00+05:30",
         "to": "2026-11-25T23:59:00+05:30",
-        "detail": "Revised schedule (MCC notice 5, 7 Nov), after NMC added new seats: registration 7–14 Nov (3 pm), choice filling 10–15 Nov, provisional result 16 Nov, final result 17 Nov, reporting 18–24 Nov. Resign a Round 1 seat by 9 Nov, 6 pm to keep the deposit; after that, not joining forfeits it.",
+        "detail": "Seat matrix out 10 Nov: 15,387 clear vacancies (3,657 of them newly added) and 15,396 virtual vacancies; MCC re-issued it on 11 Nov. Registration until 14 Nov, 3 pm; choice filling until 15 Nov, 11:55 pm (locking from 14 Nov, 4 pm); provisional result 16 Nov, final 17 Nov, reporting 18–24 Nov.",
         "events": [
           {
+            "what": "Seat matrix",
+            "when": "10 Nov · re-issued 11 Nov"
+          },
+          {
             "what": "Registration",
-            "when": "7–14 Nov, 3 pm"
+            "when": "Until 14 Nov, 3 pm"
           },
           {
             "what": "Choice filling",
-            "when": "10–15 Nov"
+            "when": "Until 15 Nov"
           },
           {
             "what": "Result",
@@ -3075,6 +3122,190 @@
       "date": "2026-11-03",
       "kind": "Allotment",
       "kb": 498
+    },
+    {
+      "region": "All India",
+      "title": "Round 2 seat matrix: clear vacancies (first issue, 10 Nov; newly added seats included)",
+      "file": "mcc/round2-clear-vacancy-2026-11-10.pdf",
+      "date": "2026-11-10",
+      "kind": "Seat matrix",
+      "kb": 3772
+    },
+    {
+      "region": "All India",
+      "title": "Round 2 seat matrix: newly added seats (first issue, 10 Nov)",
+      "file": "mcc/round2-newly-added-seats-2026-11-10.pdf",
+      "date": "2026-11-10",
+      "kind": "Seat matrix",
+      "kb": 1210
+    },
+    {
+      "region": "Punjab",
+      "title": "Prospectus: MD/MS, PG diploma, DNB, sports medicine and ultrasonography (BFUHS)",
+      "file": "punjab/prospectus-2026.pdf",
+      "date": "2026-10-13",
+      "kind": "Rules",
+      "kb": 9457
+    },
+    {
+      "region": "Punjab",
+      "title": "Provisional merit list for Round 1, after objections",
+      "file": "punjab/merit-list-round1.pdf",
+      "date": "2026-10-23",
+      "kind": "Merit list",
+      "kb": 343
+    },
+    {
+      "region": "Punjab",
+      "title": "Round 1 allotment",
+      "file": "punjab/round1-allotment.pdf",
+      "date": "2026-11-03",
+      "kind": "Allotment",
+      "kb": 151
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "Competent authority quota: final merit list, non-service",
+      "file": "andhra-pradesh/cq-final-merit-list-non-service.pdf",
+      "date": "2026-11-06",
+      "kind": "Merit list",
+      "kb": 922
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "Competent authority quota: final merit list, in-service",
+      "file": "andhra-pradesh/cq-final-merit-list-in-service.pdf",
+      "date": "2026-11-06",
+      "kind": "Merit list",
+      "kb": 443
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "Management quota: Phase 1 final merit list",
+      "file": "andhra-pradesh/mq-final-merit-list.pdf",
+      "date": "2026-11-12",
+      "kind": "Merit list",
+      "kb": 844
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "PG medical college list, with area and college type",
+      "file": "andhra-pradesh/pg-college-list.pdf",
+      "date": "2026-11-07",
+      "kind": "Notice",
+      "kb": 401
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: AU area, non-service (revised 12 Nov)",
+      "file": "andhra-pradesh/cq-seat-matrix-au-non-service-revised.pdf",
+      "date": "2026-11-12",
+      "kind": "Seat matrix",
+      "kb": 768
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: AU area, in-service (revised 12 Nov)",
+      "file": "andhra-pradesh/cq-seat-matrix-au-service-revised.pdf",
+      "date": "2026-11-12",
+      "kind": "Seat matrix",
+      "kb": 556
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I NET group: AU area, non-service (revised 12 Nov)",
+      "file": "andhra-pradesh/cq-net-group-au-non-service-revised.pdf",
+      "date": "2026-11-12",
+      "kind": "Seat matrix",
+      "kb": 249
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I NET group: AU area, in-service (revised 12 Nov)",
+      "file": "andhra-pradesh/cq-net-group-au-service-revised.pdf",
+      "date": "2026-11-12",
+      "kind": "Seat matrix",
+      "kb": 246
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: SVU area, non-service",
+      "file": "andhra-pradesh/cq-seat-matrix-svu-non-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 363
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: SVU area, in-service",
+      "file": "andhra-pradesh/cq-seat-matrix-svu-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 333
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I NET group: SVU area, non-service",
+      "file": "andhra-pradesh/cq-net-group-svu-non-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 238
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I NET group: SVU area, in-service",
+      "file": "andhra-pradesh/cq-net-group-svu-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 236
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: state-wide institution (SMC Vijayawada), non-service",
+      "file": "andhra-pradesh/cq-seat-matrix-swi-non-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 331
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: state-wide institution (SMC Vijayawada), in-service",
+      "file": "andhra-pradesh/cq-seat-matrix-swi-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 321
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I NET group: state-wide institution, non-service",
+      "file": "andhra-pradesh/cq-net-group-swi-non-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 228
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I NET group: state-wide institution, in-service",
+      "file": "andhra-pradesh/cq-net-group-swi-service.pdf",
+      "date": "2026-11-07",
+      "kind": "Seat matrix",
+      "kb": 231
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: minority colleges, non-service",
+      "file": "andhra-pradesh/cq-seat-matrix-minority-non-service.pdf",
+      "date": "2026-11-11",
+      "kind": "Seat matrix",
+      "kb": 300
+    },
+    {
+      "region": "Andhra Pradesh",
+      "title": "CQ Phase I seat matrix: minority colleges, in-service",
+      "file": "andhra-pradesh/cq-seat-matrix-minority-service.pdf",
+      "date": "2026-11-11",
+      "kind": "Seat matrix",
+      "kb": 299
     }
   ],
   "updates": [
@@ -3733,29 +3964,130 @@
       "date": "2026-10-14",
       "text": "Information bulletin: registration fee ₹3,000; a ₹2 lakh deposit to choose private college state quota seats and ₹5 lakh for management quota seats; 40% of state quota degree and 50% of diploma seats for in-service doctors; bond of 3 years (degree) or 2 years (diploma) for open candidates, ₹5 lakh or ₹2 lakh to leave the course.",
       "doc": "west-bengal/information-bulletin.pdf"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-10",
+      "text": "Round 2 seat matrix out: 15,387 clear vacancies (3,657 of them newly added seats, already counted in the 15,387) and 15,396 virtual vacancies. Choice filling opened late on 10 Nov and runs until 15 Nov, 11:55 pm. Search the clear vacancies by state, college, course, quota and category.",
+      "link": "/roadmap/all-india/round-2/choice-filling",
+      "doc": "mcc/round2-clear-vacancy-2026-11-10.pdf"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-11",
+      "text": "MCC re-issued all three Round 2 seat lists (about 4 pm): 43 new AFMS seats at INHS Asvini, Mumbai; 10 All India seats removed at Dr BR Ambedkar SIMS, Mohali (General Medicine, General Surgery, OBG, Orthopaedics and ENT, 2 each); four armed forces hospitals' DNB seats moved to the AFMS quota. Recheck your choices if you had the Mohali courses."
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-11",
+      "text": "Round 2 PwD certificate portal re-opened: primary assessment board until 12 Nov, 6 pm; appellate board until 14 Nov, 6 pm."
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-12",
+      "text": "Revised newly added seats published. The choice filling portal now has an \"All India & DNB seats (both)\" option to show institutes offering both. MCC re-opens the Round 1 reporting portal for institutes on 13 Nov, 9:30 am – 11 pm."
+    },
+    {
+      "region": "Andhra Pradesh",
+      "date": "2026-11-12",
+      "text": "Competent authority quota Phase I seat matrix (9 Nov; AU area revised 12 Nov) and the final merit lists are now searchable: 1,947 seats in 36 colleges, 4,167 non-service and 364 in-service candidates, and 2,468 on the management quota list (final, 12 Nov).",
+      "link": "/roadmap/andhra-pradesh/round-1/choice-filling",
+      "doc": "andhra-pradesh/cq-seat-matrix-au-non-service-revised.pdf"
+    },
+    {
+      "region": "Andhra Pradesh",
+      "date": "2026-11-08",
+      "text": "Management quota provisional merit list published; grievances with documents through the candidate login by 3 pm, 10 Nov."
+    },
+    {
+      "region": "Assam",
+      "date": "2026-11-11",
+      "text": "Round 1 state health service quota (SHQ): eligible candidates after document verification published; report to the colleges on 12 Nov."
+    },
+    {
+      "region": "Chandigarh",
+      "date": "2026-11-12",
+      "text": "Round 2 schedule and seat matrix published: fresh registration with documents and fee, and Round 1 resignation, 13–15 Nov."
+    },
+    {
+      "region": "Chhattisgarh",
+      "date": "2026-11-11",
+      "text": "Round 1 reporting extended to 12 Nov, 5 pm."
+    },
+    {
+      "region": "Gujarat",
+      "date": "2026-11-12",
+      "text": "Round 2 schedule published: online registration until 15 Nov, 5 pm, with updated eligibility criteria and document list."
+    },
+    {
+      "region": "Haryana",
+      "date": "2026-11-12",
+      "text": "Round 1 provisional allotment published (grievances online until 12 Nov, 4:30 pm), with the tuition fee to deposit and the fee deposit and physical document verification notice. The Round 1 tentative seat matrix came out on 11 Nov."
+    },
+    {
+      "region": "Himachal Pradesh",
+      "date": "2026-11-10",
+      "text": "Round 1 revised schedule: choice filling and locking until 12 Nov. Final merit list out 10 Nov (revised 12 Nov). Job trainee medical officers now apply in the 33.33% direct quota (2 Nov amendment); if the list shows you as in-service, write to counselling.amruhp@gmail.com."
+    },
+    {
+      "region": "Jammu and Kashmir",
+      "date": "2026-11-10",
+      "text": "Round 2 fresh registration (seats added): 10 Nov, 2 pm – 12 Nov, midnight."
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-11-12",
+      "text": "Round 1: exercise of choices by allotted candidates extended to 13 Nov, 2 pm."
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-11",
+      "text": "Round 2 document verification for newly registered candidates: 13 Nov, 10 am – 5 pm."
+    },
+    {
+      "region": "Puducherry",
+      "date": "2026-11-11",
+      "text": "Round 1 revised draft merit list published; objections through the dashboard before 11 Nov, 5 pm."
+    },
+    {
+      "region": "Punjab",
+      "date": "2026-11-03",
+      "text": "Punjab on the roadmap: the Round 1 merit list (1,449 candidates, 23 Oct) and the Round 1 allotment (596 seats, 3 Nov), searchable, with the prospectus.",
+      "link": "/roadmap/punjab/round-1/allotment",
+      "doc": "punjab/round1-allotment.pdf"
+    },
+    {
+      "region": "Rajasthan",
+      "date": "2026-11-12",
+      "text": "Round 2 schedule published: online application form 13 Nov – 17 Nov, 11:55 pm."
+    },
+    {
+      "region": "Tripura",
+      "date": "2026-11-08",
+      "text": "Round 1 choice filling started 8 Nov, 12 noon."
     }
   ],
   "highlight": {
-    "eyebrow": "New · 8 Nov",
-    "text": "West Bengal on the roadmap: 1,459 seats and 918 Round 1 allotments. Odisha's upgraded allotment, Karnataka's final allotment and MCC's new Round 2 dates.",
-    "href": "/roadmap/west-bengal/round-1/allotment",
-    "go": "Open West Bengal"
+    "eyebrow": "New · 12 Nov",
+    "text": "Rank journey: how every rank fared in All India and state counselling. Cut-off tables for 13 states, Punjab and Andhra Pradesh data, MCC's Round 2 seat matrix, and stipend and bond for every state.",
+    "href": "/journey",
+    "go": "Open the rank journey"
   },
   "progress": {
     "All India": {
       "stage": "Round 2",
-      "note": "Round 2 registration until 14 Nov, 3 pm; choice filling 10–15 Nov; result 17 Nov; reporting 18–24 Nov.",
-      "asOf": "2026-11-08"
+      "note": "Round 2 seat matrix out (re-issued 11 Nov); choice filling until 15 Nov, 11:55 pm; result 17 Nov.",
+      "asOf": "2026-11-12"
     },
     "Odisha": {
-      "stage": "Round 1",
-      "note": "Round 1 upgraded allotment out 8 Nov (report 10 Nov); Round 2 registration 9–10 Nov.",
-      "asOf": "2026-11-08"
+      "stage": "Round 2",
+      "note": "Round 2 document verification 13 Nov; seat matrix and merit list 18 Nov.",
+      "asOf": "2026-11-12"
     },
     "Andhra Pradesh": {
       "stage": "Merit List",
-      "note": "Grievances against the provisional merit lists closed 3 Nov, 1 pm.",
-      "asOf": "2026-11-03"
+      "note": "Final merit lists out (CQ 6 Nov, management quota 12 Nov) and the CQ Phase I seat matrix (9 Nov, AU revised 12 Nov); web options next.",
+      "asOf": "2026-11-12"
     },
     "Assam": {
       "stage": "Round 1",
@@ -3768,9 +4100,9 @@
       "asOf": "2026-11-03"
     },
     "Chandigarh": {
-      "stage": "Merit List",
-      "note": "Common merit list 3 Nov; choice filling 3–5 Nov; result 6 Nov.",
-      "asOf": "2026-11-01"
+      "stage": "Round 2",
+      "note": "Round 2 registration and Round 1 resignation 13–15 Nov.",
+      "asOf": "2026-11-12"
     },
     "Chhattisgarh": {
       "stage": "Round 1",
@@ -3788,14 +4120,14 @@
       "asOf": "2026-11-02"
     },
     "Gujarat": {
-      "stage": "Round 1",
-      "note": "Round 1 allotment out 31 Oct (2,329 allotted); reporting closes 6 Nov, 4 pm.",
-      "asOf": "2026-11-06"
+      "stage": "Round 2",
+      "note": "Round 2 registration until 15 Nov, 5 pm.",
+      "asOf": "2026-11-12"
     },
     "Himachal Pradesh": {
-      "stage": "Registration",
-      "note": "Online applications closed 2 Nov, 11 am; merit list and seat distribution awaited.",
-      "asOf": "2026-11-06"
+      "stage": "Round 1",
+      "note": "Round 1 choice filling until 12 Nov; final merit list revised 12 Nov.",
+      "asOf": "2026-11-12"
     },
     "Jharkhand": {
       "stage": "Round 1",
@@ -3828,9 +4160,9 @@
       "asOf": "2026-11-01"
     },
     "Rajasthan": {
-      "stage": "Round 1",
-      "note": "Round 1 allotment out 2 Nov (1,366 allotted); report at SMS MC Jaipur by 6 Nov, 4 pm; session begins 20 Nov.",
-      "asOf": "2026-11-06"
+      "stage": "Round 2",
+      "note": "Round 2 application form 13–17 Nov.",
+      "asOf": "2026-11-12"
     },
     "Sikkim": {
       "stage": "Round 2",
@@ -3849,8 +4181,8 @@
     },
     "Karnataka": {
       "stage": "Round 1",
-      "note": "Round 1 final allotment out 7 Nov (3,268 allotted).",
-      "asOf": "2026-11-07"
+      "note": "Allotted candidates exercise their choice until 13 Nov, 2 pm.",
+      "asOf": "2026-11-12"
     },
     "West Bengal": {
       "stage": "Round 1",
@@ -3884,8 +4216,13 @@
     },
     "Punjab": {
       "stage": "Round 1",
-      "note": "Round 1 provisional allotment out 2 Nov.",
+      "note": "Round 1 allotment out 3 Nov (596 allotted).",
       "asOf": "2026-11-03"
+    },
+    "Haryana": {
+      "stage": "Round 1",
+      "note": "Round 1 provisional allotment out 12 Nov; fee deposit and physical document verification next.",
+      "asOf": "2026-11-12"
     }
   },
   "data": [
@@ -4248,6 +4585,378 @@
       "date": "2026-11-03",
       "doc": "west-bengal/round1-provisional-allotment.pdf",
       "file": "west-bengal/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Punjab",
+      "kind": "merit",
+      "title": "Provisional merit list for Round 1 (after objections)",
+      "date": "2026-10-23",
+      "doc": "punjab/merit-list-round1.pdf",
+      "file": "punjab/merit-list-2026.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Punjab",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 allotment",
+      "date": "2026-11-03",
+      "doc": "punjab/round1-allotment.pdf",
+      "file": "punjab/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Andhra Pradesh",
+      "kind": "merit",
+      "title": "Final merit lists: CQ non-service and in-service, management quota",
+      "date": "2026-11-12",
+      "doc": "andhra-pradesh/cq-final-merit-list-non-service.pdf",
+      "file": "andhra-pradesh/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Andhra Pradesh",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Competent authority quota Phase I seat matrix (AU revised 12 Nov)",
+      "date": "2026-11-12",
+      "doc": "andhra-pradesh/cq-seat-matrix-au-non-service-revised.pdf",
+      "file": "andhra-pradesh/seat-matrix-round1.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "All India",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Round 2 seat matrix: clear vacancies, with the newly added seats marked",
+      "date": "2026-11-10",
+      "doc": "mcc/round2-clear-vacancy-2026-11-10.pdf",
+      "file": "all-india/seat-matrix-round2.json"
     }
-  ]
+  ],
+  "bonds": {
+    "title": "Stipend and service bond, state by state",
+    "asOf": "2026-11-11",
+    "source": "Monthly stipend for PG residents (years 1–3), service bond period and the penalty for not serving, for state quota seats at government colleges, as compiled in a state-wise table shared with us on 11 Nov 2026. Where our guide covers the bond from the state's own prospectus or order, its figures are shown alongside: go by the official document where the two differ. Bonds change from year to year, and often differ for in-service candidates, diplomas and private colleges.",
+    "rows": [
+      {
+        "state": "Andaman and Nicobar Islands",
+        "stipend": [
+          87088,
+          89680,
+          89680
+        ],
+        "years": "1 year",
+        "penalty": "₹10 lakh"
+      },
+      {
+        "state": "Andhra Pradesh",
+        "stipend": [
+          58000,
+          60000,
+          62000
+        ],
+        "years": "1 year",
+        "penalty": "₹10 lakh",
+        "official": "Non-service: 1 year of rural or government service in AP within 18 months of the degree; breaking it costs ₹40 lakh. In-service: 10 years; ₹50 lakh plus pay drawn.",
+        "slug": "andhra-pradesh",
+        "check": "differs"
+      },
+      {
+        "state": "Assam",
+        "stipend": [
+          57700,
+          59400,
+          61200
+        ],
+        "years": "2 years",
+        "penalty": "₹25 lakh"
+      },
+      {
+        "state": "Bihar",
+        "stipend": [
+          92800,
+          102000,
+          112200
+        ],
+        "years": "2 years",
+        "penalty": "₹25 lakh"
+      },
+      {
+        "state": "Chhattisgarh",
+        "stipend": [
+          62200,
+          64100,
+          66100
+        ],
+        "years": "2 years",
+        "penalty": "₹20 lakh",
+        "official": "2 years with the CG health department after PG (government college seats, state and AIQ): ₹50 lakh unreserved, ₹40 lakh reserved.",
+        "slug": "chhattisgarh",
+        "check": "differs"
+      },
+      {
+        "state": "Delhi",
+        "stipend": [
+          134572,
+          138305,
+          142038
+        ],
+        "years": "1 year",
+        "penalty": "₹20 lakh"
+      },
+      {
+        "state": "Goa",
+        "stipend": [
+          66900,
+          68900,
+          71000
+        ],
+        "years": "2 years",
+        "penalty": "₹10 lakh"
+      },
+      {
+        "state": "Gujarat",
+        "stipend": [
+          75000,
+          77250,
+          79550
+        ],
+        "years": "2 years",
+        "penalty": "₹50 lakh"
+      },
+      {
+        "state": "Haryana",
+        "stipend": [
+          91360,
+          94100,
+          96920
+        ],
+        "years": "1 year",
+        "penalty": "₹50 lakh"
+      },
+      {
+        "state": "Himachal Pradesh",
+        "stipend": [
+          70000,
+          72100,
+          74300
+        ],
+        "years": "2 years",
+        "penalty": "₹10 lakh",
+        "official": "Direct candidates: 2 years (1 in the field), bond ₹40 lakh. Leaving the course midway: ₹10 lakh plus interest and stipend.",
+        "slug": "himachal-pradesh",
+        "check": "differs"
+      },
+      {
+        "state": "Jammu and Kashmir",
+        "stipend": [
+          64940,
+          68760,
+          72580
+        ],
+        "years": "None",
+        "penalty": "None"
+      },
+      {
+        "state": "Jharkhand",
+        "stipend": [
+          68000,
+          70000,
+          72000
+        ],
+        "years": "3 years",
+        "penalty": "₹30 lakh"
+      },
+      {
+        "state": "Karnataka",
+        "stipend": [
+          72900,
+          75100,
+          77350
+        ],
+        "years": "1 year",
+        "penalty": "₹10 lakh",
+        "official": "1 year of compulsory government service for everyone; government seat holders also undertake 3 years if asked: ₹50 lakh (degree), ₹25 lakh (diploma). Leaving midway: ₹10 lakh (degree).",
+        "slug": "karnataka",
+        "check": "partly"
+      },
+      {
+        "state": "Kerala",
+        "stipend": [
+          69500,
+          71600,
+          73750
+        ],
+        "years": "1 year",
+        "penalty": "₹10 lakh",
+        "official": "1 year as Senior Resident in Kerala for general merit and AIQ candidates; service candidates 10 years. No amount for general candidates in the prospectus.",
+        "slug": "kerala-prospectus",
+        "check": "partly"
+      },
+      {
+        "state": "Madhya Pradesh",
+        "stipend": [
+          81126,
+          83620,
+          86118
+        ],
+        "years": "1 year",
+        "penalty": "₹10 lakh"
+      },
+      {
+        "state": "Maharashtra",
+        "stipend": [
+          95242,
+          96117,
+          96991
+        ],
+        "years": "1 year",
+        "penalty": "₹50 lakh",
+        "official": "Government seat: 1 year of service or ₹50 lakh.",
+        "slug": "maharashtra",
+        "check": "matches"
+      },
+      {
+        "state": "Meghalaya",
+        "stipend": [
+          null,
+          null,
+          null
+        ],
+        "years": "Institute-specific",
+        "penalty": "None",
+        "stipendNote": "About ₹1.25–1.31 lakh a month; the figures are cut off in the table we received."
+      },
+      {
+        "state": "Odisha",
+        "stipend": [
+          73900,
+          76150,
+          78450
+        ],
+        "years": "2 years",
+        "penalty": "₹25 lakh",
+        "official": "A service bond with sureties for government seats (amount not in the guidelines). Resigning after mop-up: ₹10 lakh plus stipend drawn.",
+        "slug": "odisha",
+        "check": "partly"
+      },
+      {
+        "state": "Puducherry",
+        "stipend": [
+          43456,
+          45447,
+          47260
+        ],
+        "years": "Institute-specific",
+        "penalty": "Up to ₹10 lakh"
+      },
+      {
+        "state": "Punjab",
+        "stipend": [
+          77900,
+          80200,
+          82600
+        ],
+        "years": "3 years",
+        "penalty": "₹30 lakh"
+      },
+      {
+        "state": "Rajasthan",
+        "stipend": [
+          66000,
+          68000,
+          70000
+        ],
+        "years": "1 year",
+        "penalty": "₹50 lakh",
+        "official": "2 years of government service; ₹25 lakh to ₹1.5 crore by branch (non-service), ₹80 lakh for in-service (5 years). Seat-leaving bond ₹10 lakh.",
+        "slug": "rajasthan-bond",
+        "check": "differs"
+      },
+      {
+        "state": "Tamil Nadu",
+        "stipend": [
+          55646,
+          56805,
+          59700
+        ],
+        "years": "2 years",
+        "penalty": "₹40 lakh",
+        "official": "Non-service: serve Tamil Nadu 2 years within 3 years of finishing; ₹40 lakh (degree), ₹20 lakh (diploma).",
+        "slug": "tamil-nadu",
+        "check": "matches"
+      },
+      {
+        "state": "Telangana",
+        "stipend": [
+          118110,
+          121340,
+          124570
+        ],
+        "years": "1 year",
+        "penalty": "₹20 lakh",
+        "official": "1 year of government service: ₹20 lakh (degree), ₹10 lakh (diploma). Leaving the course midway: ₹50 lakh plus stipend.",
+        "slug": "telangana",
+        "check": "matches"
+      },
+      {
+        "state": "Tripura",
+        "stipend": [
+          55200,
+          56925,
+          58650
+        ],
+        "years": "1 year",
+        "penalty": "₹50 lakh"
+      },
+      {
+        "state": "Uttarakhand",
+        "stipend": [
+          71257,
+          71257,
+          71257
+        ],
+        "years": "2 years",
+        "penalty": "₹2.5 crore",
+        "official": "With-bond fee option at government colleges: 2 years in a hilly area, or ₹2.5 crore.",
+        "slug": "uttarakhand",
+        "check": "matches"
+      },
+      {
+        "state": "Uttar Pradesh",
+        "stipend": [
+          116844,
+          120040,
+          123236
+        ],
+        "years": "2 years",
+        "penalty": "₹40 lakh"
+      },
+      {
+        "state": "West Bengal",
+        "stipend": [
+          70386,
+          75031,
+          79677
+        ],
+        "years": "3 years",
+        "penalty": "₹30 lakh",
+        "official": "Open candidates serve 3 years (degree) or 2 years (diploma); leaving the course costs ₹5 lakh (degree) or ₹2 lakh (diploma).",
+        "slug": "west-bengal",
+        "check": "partly"
+      },
+      {
+        "state": "Chandigarh",
+        "stipend": [
+          118000,
+          121540,
+          125186
+        ],
+        "years": "None",
+        "penalty": "None"
+      }
+    ]
+  }
 }

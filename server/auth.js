@@ -110,7 +110,8 @@ export function requireAdmin(req, _res, next) {
 export const isAdmin = req => !!readSession(req, 'rr_admin', 'admin');
 
 export const publicUser = u => u && ({
-  id: u.id, name: u.name, phone: u.phone, email: u.email, air: u.air, cmr: u.cmr, state: u.state, since: u.created_at
+  id: u.id, name: u.name, phone: u.phone, email: u.email, air: u.air, cmr: u.cmr, state: u.state, since: u.created_at,
+  ...(u.review ? { review: true } : {})
 });
 
 // ---- contact details + profile -----------------------------------------
@@ -392,6 +393,27 @@ export async function firebaseSignIn(req, res, body) {
   // account restore a returning student's profile.
   return signIn(res, { channel: 'phone', contact: normPhone(claims.phone_number) }, profile,
     { remember: body.remember !== false, known: profileFromClaims(claims) });
+}
+
+// ---- review account ------------------------------------------------------
+// One username + password (REVIEW_USERNAME, REVIEW_PASSWORD on the server) for the people who check the site's data.
+// It signs in as an ordinary candidate account that opens every state's data, and can switch state freely.
+export const REVIEW_ENABLED = !!(process.env.REVIEW_USERNAME && process.env.REVIEW_PASSWORD);
+const same = (a, b) => crypto.timingSafeEqual(Buffer.from(sha(String(a ?? ''))), Buffer.from(sha(String(b ?? ''))));
+export function reviewSignIn(req, res, body) {
+  if (!REVIEW_ENABLED) throw new HttpError(503, 'The review account is not set up on this server.');
+  limit('review-ip:' + req.ip, 10, 15 * 60e3);
+  const user = String(body.username ?? '').trim().toLowerCase();
+  // Both compared, whatever the first says, so a wrong username takes as long as a wrong password.
+  const okUser = same(user, process.env.REVIEW_USERNAME.trim().toLowerCase()), okPass = same(body.password, process.env.REVIEW_PASSWORD);
+  if (!(okUser && okPass)) throw new HttpError(401, 'Wrong username or password.');
+  const email = `${user.replace(/[^a-z0-9._-]/g, '') || 'review'}@review.rankround.com`, t = now();
+  if (!db.prepare('SELECT 1 FROM users WHERE email = ?').get(email))
+    db.prepare(`INSERT INTO users (email, name, air, state, created_at, last_seen_at, logins, review) VALUES (?, 'Review account', 1000, 'Odisha', ?, ?, 0, 1)`).run(email, t, t);
+  db.prepare('UPDATE users SET logins = logins + 1, last_seen_at = ?, review = 1 WHERE email = ?').run(t, email);
+  const u = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  createSession(res, 'user', u.id, body.remember !== false);
+  return { user: u };
 }
 
 // ---- admin -------------------------------------------------------------

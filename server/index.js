@@ -5,13 +5,14 @@ import { db, now, tx, insertRows, getSettings, putSettings } from './db.js';
 import { KINDS, parseTable, aggregate, validateRecord } from './schema.js';
 import {
   PROVIDER, FIREBASE, OTP_LENGTH, EMAIL_ENABLED, HttpError, attachUser, requireUser, requireAdmin, isAdmin, publicUser,
-  readProfile, requestOtp, verifyOtp, passwordSignIn, firebaseSignIn, adminLogin, endSession,
+  readProfile, requestOtp, verifyOtp, passwordSignIn, firebaseSignIn, reviewSignIn, REVIEW_ENABLED, adminLogin, endSession,
   saveAttempt, firebaseDomainStatus, phoneSignInReady
 } from './auth.js';
 import { visitor, record, ingest, dashboard } from './analytics.js';
 import { STATES, ALL_INDIA, normState } from './states.js';
 import { registry, guideList, compareTable, roadmap, stateSeats, documents, updates, guidePage, GUIDES_DIR, DATA_DIR } from './guides.js';
-import { regionOf, regionKey, regionInfo, sectionOf, regionData, access } from './regions.js';
+import { journeyJson } from './journey.js';
+import { regionOf, regionKey, regionInfo, sectionOf, regionData, access, fullAccess } from './regions.js';
 import { sections } from './sections.js';
 
 registry(); // a malformed guides/guides.json stops the server here, with the reason
@@ -58,7 +59,8 @@ function datasetSummary(d) {
 // Signed-in candidates see All India Quota data and their own state's counselling data (other
 // states' data is locked); visitors see what exists.
 const VISIBLE = `published = 1 AND (kind = 'aiq' OR state = ?)`;
-const publishedSets = user => (user
+// A review account sees every state's datasets (the page shows the ones for the state it is looking at).
+const publishedSets = user => (user && !fullAccess(user)
   ? db.prepare(`SELECT * FROM datasets WHERE ${VISIBLE} ORDER BY year DESC, id DESC`).all(user.state)
   : db.prepare('SELECT * FROM datasets WHERE published = 1 ORDER BY year DESC, id DESC').all()).map(datasetSummary);
 // A dataset is tagged with a state, or "All India" for national All India Quota data.
@@ -80,7 +82,7 @@ app.get('/api/config', (req, res) => {
   const s = getSettings();
   res.json({
     auth: { provider: PROVIDER, otpLength: OTP_LENGTH, email: EMAIL_ENABLED, firebase: PROVIDER === 'firebase' ? FIREBASE : null,
-      phoneReady: phoneSignInReady(req.hostname) },
+      phoneReady: phoneSignInReady(req.hostname), review: REVIEW_ENABLED },
     settings: { brand: s.brand, announcement: s.announcement, whatsapp: s.whatsapp, contactEmail: s.contact_email },
     states: STATES,
     dataStates: dataStates(),
@@ -97,7 +99,7 @@ app.get('/api/config', (req, res) => {
 });
 app.get('/api/guides', (_req, res) => {
   res.set('Cache-Control', 'no-cache');
-  res.json({ guides: guideList(), compare: compareTable(), roadmap: roadmap(), seats: stateSeats(), documents: documents(), updates: updates() });
+  res.json({ guides: guideList(), compare: compareTable(), roadmap: roadmap(), seats: stateSeats(), documents: documents(), updates: updates(), bonds: registry().bonds || null });
 });
 
 // Sign-up details, sent just before a code is requested (stage "send") and again if sending
@@ -128,6 +130,11 @@ app.post('/api/auth/firebase', wrap(async (req, res) => {
   const { user, isNew } = await firebaseSignIn(req, res, req.body || {});
   record(req, 'login', { isNew, via: 'firebase' }, { userId: user.id });
   res.json({ user: publicUser(user), isNew });
+}));
+app.post('/api/auth/review', wrap((req, res) => {
+  const { user } = reviewSignIn(req, res, req.body || {});
+  record(req, 'login', { via: 'review' }, { userId: user.id });
+  res.json({ user: publicUser(user) });
 }));
 app.post('/api/auth/logout', (req, res) => { endSession(req, res, 'user'); res.json({ ok: true }); });
 app.get('/api/me', (req, res) => res.json({ user: publicUser(req.user) }));
@@ -176,9 +183,16 @@ app.get('/api/seat-matrix', requireUser, (req, res) => {
   res.set('Cache-Control', 'private, no-cache').type('json').sendFile(NMC_SEATS);
 });
 
+// Rank journey: every All India Rank's seats in All India and state counselling (any signed-in candidate).
+app.get('/api/journey', requireUser, (req, res) => {
+  record(req, 'region_data', { region: 'All India', id: 'rank-journey' });
+  res.set('Cache-Control', 'private, no-cache').type('json').send(journeyJson());
+});
+
 // Row data is only for signed-in users.
 app.get('/api/datasets/:id', requireUser, (req, res) => {
-  const d = db.prepare(`SELECT * FROM datasets WHERE id = ? AND ${VISIBLE}`).get(int(req.params.id), req.user.state);
+  const d = fullAccess(req.user) ? db.prepare('SELECT * FROM datasets WHERE id = ? AND published = 1').get(int(req.params.id))
+    : db.prepare(`SELECT * FROM datasets WHERE id = ? AND ${VISIBLE}`).get(int(req.params.id), req.user.state);
   if (!d) throw new HttpError(404, 'Dataset not found.');
   const def = KINDS[d.kind];
   const cols = def.columns.map(c => c.name);
@@ -245,7 +259,7 @@ function leads(q) {
       (SELECT COUNT(*) FROM events e WHERE e.user_id = u.id AND e.type = 'predict') predictions,
       (SELECT props FROM events e WHERE e.user_id = u.id AND e.type = 'predict' ORDER BY e.ts DESC LIMIT 1) last_predict,
       (SELECT COUNT(*) FROM shortlist s WHERE s.user_id = u.id) shortlisted
-    FROM users u WHERE u.phone LIKE ? OR u.email LIKE ? OR u.name LIKE ? OR u.state LIKE ?
+    FROM users u WHERE u.review = 0 AND (u.phone LIKE ? OR u.email LIKE ? OR u.name LIKE ? OR u.state LIKE ?)
     ORDER BY u.created_at DESC LIMIT 2000`).all(like, like, like, like)
     .map(u => {
       const p = u.last_predict ? JSON.parse(u.last_predict) : {};
@@ -471,7 +485,7 @@ app.use('/api', (_req, _res, next) => next(new HttpError(404, 'Not found.')));
 // Pages
 // ======================================================================
 const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(PUBLIC, file)); };
-app.get(['/', '/predict', '/cutoffs', '/shortlist', '/seats', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}'], page('index.html'));
+app.get(['/', '/predict', '/cutoffs', '/shortlist', '/seats', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}', '/review', '/journey', '/bonds'], page('index.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
 
 // Counselling guides: one page per guide, framed by server/guides.js.

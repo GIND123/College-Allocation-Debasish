@@ -132,7 +132,7 @@ async function boot() {
 
 const ROUTES = {
   '/': viewHome, '/predict': () => viewWork('predict'), '/cutoffs': () => viewWork('cutoffs'), '/shortlist': viewShortlist,
-  '/method': viewMethod, '/counselling': viewGuides, '/roadmap': viewRoadmap, '/seats': viewSeats
+  '/method': viewMethod, '/counselling': viewGuides, '/roadmap': viewRoadmap, '/seats': viewSeats, '/review': viewReview, '/journey': viewJourney, '/bonds': viewBonds
 };
 const GATED = new Set(['/predict', '/cutoffs', '/shortlist']);
 
@@ -149,12 +149,12 @@ addEventListener('hashchange', () => { if (S.path === '/counselling') viewGuides
 async function route() {
   const path = location.pathname.replace(/(.)\/+$/, '$1');
   let p = path.startsWith('/roadmap') ? '/roadmap' : ROUTES[path] ? path : '/'; // /roadmap/<region>/<stage>/… is one view
-  if (p === '/' && S.user) { history.replaceState({}, '', '/predict'); p = '/predict'; }
+  if ((p === '/' || p === '/review' && S.user?.review) && S.user) { history.replaceState({}, '', '/predict'); p = '/predict'; }
   const changed = p !== S.path;
   S.path = p;
   const tab = GATED.has(p) ? '/predict' : p === '/roadmap' ? '/counselling' : p; // cut-offs and shortlist live under "Intelligent prediction"
   $$('#nav a').forEach(a => a.pathname === tab ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
-  if ((GATED.has(p) || p === '/seats') && !S.user) viewGate(p);
+  if ((GATED.has(p) || p === '/seats' || p === '/journey') && !S.user) viewGate(p);
   else if (GATED.has(p) && !profileComplete()) viewProfile();
   else await ROUTES[p]();
   if (changed) { scrollTo(0, 0); track('pageview'); }
@@ -197,7 +197,8 @@ function toggleMenu() {
   m.setAttribute('role', 'menu');
   m.innerHTML = `
     <div class="menu-head"><b>${esc(S.user.name)}</b><span>${esc(prettyPhone(S.user.phone) || S.user.email || '')}</span>
-      ${S.user.state ? `<span>${esc(S.user.state)}${S.user.air ? ` · AIR ${fmt(S.user.air)}` : ''}${S.user.cmr ? ` · CMR ${fmt(S.user.cmr)}` : ''}</span>` : ''}</div>
+      ${S.user.state ? `<span>${esc(S.user.state)}${S.user.air ? ` · AIR ${fmt(S.user.air)}` : ''}${S.user.cmr ? ` · CMR ${fmt(S.user.cmr)}` : ''}</span>` : ''}
+      ${S.user.review ? '<span><b>Review account</b> · every state open</span>' : ''}</div>
     <a href="/shortlist" data-link role="menuitem">${icon.star} My shortlist</a>
     <button role="menuitem" id="m-name">${icon.user} Edit profile</button>
     <button role="menuitem" id="m-out">${icon.logout} Sign out</button>`;
@@ -213,6 +214,38 @@ function toggleMenu() {
     toast('Signed out.');
   };
   $('#m-name').onclick = () => { m.remove(); editProfile(); };
+}
+// The review account looks at any state: switching moves its profile there, as a candidate's state change would.
+async function reviewState(state) {
+  try {
+    S.user = (await api('/api/me', { method: 'PATCH', body: { name: S.user.name, air: String(S.user.air || 1000), cmr: null, state } })).user;
+    S.f = freshFilters(); S.dsId = { state: null, aiq: null }; S.cache.clear(); S.rpInfo = S.rpData = S.lastYear = null;
+    applyProfile(true); renderTop(); route();
+  } catch (e) { toast(e.message); }
+}
+function viewReview() {
+  view.innerHTML = `<div class="gate">
+    <div class="eyebrow">Review account</div>
+    <h1>Sign in to review the data</h1>
+    <p>For the RankRound team: every state's cut-offs, merit lists, seat matrices and allotments, with a state switcher.
+      Candidates sign in from the home page.</p>
+    <div class="auth-card"><form class="auth" id="rv-form" novalidate>
+      <label class="field"><span class="label">Username</span><input class="input" name="username" autocomplete="username" required></label>
+      <label class="field"><span class="label">Password</span><input class="input" name="password" type="password" autocomplete="current-password" required></label>
+      <div class="alert alert-err form-err" role="alert" id="rv-err" hidden></div>
+      <div class="auth-actions"><button class="btn btn-primary">Sign in</button></div>
+    </form></div>
+  </div>`;
+  const f = $('#rv-form'), err = $('#rv-err');
+  if (!S.cfg.auth?.review) { err.textContent = 'The review account is not set up on this server yet.'; err.hidden = false; }
+  f.onsubmit = async e => {
+    e.preventDefault();
+    err.hidden = true;
+    try {
+      const { user } = await api('/api/auth/review', { method: 'POST', body: { username: f.elements.namedItem('username').value, password: f.elements.namedItem('password').value } });
+      await signedIn(user, false);
+    } catch (x) { err.textContent = x.message; err.hidden = false; }
+  };
 }
 function editProfile() {
   const d = openDialog(`
@@ -661,7 +694,8 @@ async function toggleShort(kind, r) {
 // =====================================================================
 // Data
 // =====================================================================
-const setsOf = kind => (S.cfg.datasets || []).filter(d => d.kind === kind);
+// A review account is sent every state's datasets: state counselling shows the state it is looking at.
+const setsOf = kind => (S.cfg.datasets || []).filter(d => d.kind === kind && (kind !== 'state' || !S.user?.review || d.state === myState()));
 async function load(kind) {
   const sets = setsOf(kind);
   if (!sets.some(d => d.id === S.dsId[kind])) S.dsId[kind] = sets[0]?.id ?? null;
@@ -672,7 +706,7 @@ async function load(kind) {
     const rows = r.rows.map(a => Object.fromEntries(r.columns.map((c, i) => [c, a[i]])));
     for (const o of rows) {
       o._k = rowKey(kind, o); o._prog = progOf(kind === 'state' ? o.programme : o.branch);
-      if (kind === 'state') o.type = PRIVATE_COLLEGE.test(o.college) ? 'Private' : 'Government';
+      if (kind === 'state') o.type ||= PRIVATE_COLLEGE.test(o.college) ? 'Private' : 'Government';
     }
     S.cache.set(id, {
       dataset: r.dataset, rows,
@@ -714,6 +748,8 @@ function ctxbar(kind) {
       <button data-scope="state" aria-pressed="${kind === 'state'}"><b>State counselling</b><span>${esc(myState())} · ranked by CMR</span></button>
       <button data-scope="aiq" aria-pressed="${kind === 'aiq'}"><b>All India Quota</b><span>MCC · ranked by NEET AIR</span></button>
     </div>
+    ${S.user?.review ? `<label class="ctx-ds"><span class="eyebrow">Review · state</span><select class="select" id="rv-state">${S.cfg.states
+      .map(s => `<option ${s === myState() ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select></label>` : ''}
     <div class="ctx-ds">
       <span class="eyebrow">Dataset</span>
       ${sets.length > 1
@@ -737,6 +773,8 @@ function bindCtx() {
   });
   const ds = $('#ds');
   if (ds) ds.onchange = () => { S.dsId[S.scope] = +ds.value; route(); };
+  const rv = $('#rv-state');
+  if (rv) rv.onchange = () => reviewState(rv.value);
 }
 
 // Predictions, the cut-off table and the shortlist are three views of "Intelligent prediction".
@@ -2006,10 +2044,12 @@ function explorer(host, cfg) {
     host.querySelectorAll(`[data-s="${s.id}"]`).forEach(b => { b.hidden = !have.has(b.dataset.v); b.setAttribute('aria-pressed', String(b.dataset.v === f[s.id])); });
   });
   // Each dropdown offers what the other filters leave, so no combination ends in an empty table.
+  // A dropdown's "of" may give several values (a rank with seats in two states): the row matches any of them.
+  const hit = (s, r) => { const v = s.of(r); return Array.isArray(v) ? v.includes(f[s.id]) : v === f[s.id]; };
   const fillSelects = () => {
     const b = base();
     for (const s of selects) {
-      const vals = uniq(b.filter(r => selects.every(o => o === s || !f[o.id] || o.of(r) === f[o.id])).map(s.of).filter(Boolean))
+      const vals = uniq(b.filter(r => selects.every(o => o === s || !f[o.id] || hit(o, r))).flatMap(r => [].concat(s.of(r))).filter(Boolean))
         .sort((x, y) => String(x).localeCompare(String(y)));
       if (f[s.id] && !vals.includes(f[s.id])) f[s.id] = '';
       q(`[data-x="${s.id}"]`).innerHTML = `<option value="">${esc(s.all)}</option>` + vals.map(v => `<option${v === f[s.id] ? ' selected' : ''}>${esc(v)}</option>`).join('');
@@ -2018,7 +2058,7 @@ function explorer(host, cfg) {
   const run = (reset = true) => {
     if (reset) {
       const terms = f.q.toLowerCase().split(/\s+/).filter(Boolean);
-      view = base().filter(r => selects.every(s => !f[s.id] || s.of(r) === f[s.id])
+      view = base().filter(r => selects.every(s => !f[s.id] || hit(s, r))
         && (!terms.length || terms.every(t => cfg.search.of(r).toLowerCase().includes(t)))
         && (!cfg.range || ((!f.lo || cfg.range.of(r) >= f.lo) && (!f.hi || cfg.range.of(r) <= f.hi)))
         && (!cfg.keep || cfg.keep(r)));
@@ -2164,6 +2204,8 @@ function seatExplorer(host, data, info, prev = null) {
     segs: has('stream') ? [{ id: 'stream', label: 'Candidate type', values: ['Direct', 'In-service'], of: r => r.stream, value: 'Direct' }] : [],
     selects: [
       ...(has('state') ? [{ id: 'state', label: 'State', all: 'All states', of: r => r.state }] : []),
+      // MCC Round 2: newly added seats, or seats left after Round 1
+      ...(has('source') ? [{ id: 'source', label: 'Seat', all: 'All seats', of: r => r.source }] : []),
       ...(many('college') <= 300 ? [{ id: 'college', label: 'Institution', all: 'All institutions', of: r => r.college }] : []),
       { id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type },
       ...(many('quota') > 2 ? [{ id: 'quota', label: 'Quota', all: 'All quotas', of: r => r.quota }] : []),
@@ -2178,15 +2220,15 @@ function seatExplorer(host, data, info, prev = null) {
       { t: 'Institution', cls: 'strong wrapcell', r: r => `${esc(r.college)}<span class="sub">${esc([r.type, r.state].filter(Boolean).join(' · '))}</span>` },
       { t: 'Course', cls: 'wrapcell', r: r => `${esc(r.course)}<span class="sub">${esc(r.programme)}</span>` },
       { t: 'Quota', cls: 'wrapcell', r: r => esc(r.quota) + (r.stream ? `<span class="sub">${esc(r.stream)}</span>` : '') },
-      { t: 'Category', r: r => esc(r.category) },
+      { t: 'Category', r: r => esc(r.category) + (r.source ? `<span class="sub">${esc(r.source)}</span>` : '') },
       { t: 'Total seats', cls: 'n r strong', r: r => fmt(r.seats) },
       ...(has('fee') ? [{ t: 'Fee <span class="sub">as published</span>', cls: 'n', r: r => r.fee ? `₹${fmt(r.fee)}` : '—' }] : []),
       ...predCols
     ],
     summary: v => `<b>${fmt(v.reduce((n, r) => n + r.seats, 0))}</b> seats in ${(n => `${fmt(n)} institution${n === 1 ? '' : 's'}`)(new Set(v.map(r => r.college)).size)}${data.note ? ` · <span class="muted">${esc(data.note)}</span>` : ''}`,
     csv: { name: `${slugOf(info.region)}-seat-matrix.csv`,
-      head: ['Institution', 'College type', 'State', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats', ...(has('fee') ? ['Fee (Rs)'] : []), ...(prev ? [`${year} closing CMR`, 'Your chance'] : [])],
-      row: r => [r.college, r.type, r.state || '', r.course, r.programme, r.stream || '', r.quota, r.category, r.seats, ...(has('fee') ? [r.fee || ''] : []),
+      head: ['Institution', 'College type', 'State', 'Course', 'Programme', 'Candidate type', 'Quota', 'Category', 'Seats', ...(has('source') ? ['Seat'] : []), ...(has('fee') ? ['Fee (Rs)'] : []), ...(prev ? [`${year} closing CMR`, 'Your chance'] : [])],
+      row: r => [r.college, r.type, r.state || '', r.course, r.programme, r.stream || '', r.quota, r.category, r.seats, ...(has('source') ? [r.source] : []), ...(has('fee') ? [r.fee || ''] : []),
         ...(prev ? [refOf(r)?.p.cmr_close || '', p.rank && refOf(r) ? BAND[chance(r)] || 'Out of reach' : ''] : [])] }
   });
   if (!prev) return;
@@ -2236,7 +2278,7 @@ function stateAllotExplorer(host, D, info) {
       ...(has('fee') ? [{ t: 'Course fee <span class="sub">as published</span>', cls: 'n', r: r => r.fee ? `₹${fmt(r.fee)}` : '—' }] : []),
       ...(has('move') ? [{ t: 'Status', cls: 'wrapcell', r: r => esc(r.move || '—') + (r.was ? `<span class="sub">Was: ${esc(r.was)}</span>` : '') }] : [])
     ],
-    summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ${esc(label.toLowerCase())}s <b>${fmt(Math.min(...v.map(r => r.rank)))}</b> to <b>${fmt(Math.max(...v.map(r => r.rank)))}</b>${D.note ? ` · <span class="muted">${esc(D.note)}</span>` : ''}`
+    summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ${esc(label.toLowerCase())}s <b>${fmt(Math.min(...v.map(r => r.rank).filter(Number.isFinite)))}</b> to <b>${fmt(Math.max(...v.map(r => r.rank).filter(Number.isFinite)))}</b>${D.note ? ` · <span class="muted">${esc(D.note)}</span>` : ''}`
       : 'No seats match these filters.',
     csv: { name: `${slugOf(info.region)}-round1-allotment.csv`, head: [label, 'NEET AIR', 'List', 'College', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', 'Candidate type', 'Choice allotted', 'Choices filled', ...(has('fee') ? ['Course fee (Rs)'] : []), ...(has('move') ? ['Status', 'Previous seat'] : [])],
       row: r => [r.rl || r.rank, r.air || '', r.list || '', r.college, r.type, r.programme, r.course, r.quota, r.category, r.cand || '', r.note || '', r.pref || '', r.prefs || '',
@@ -2301,8 +2343,118 @@ function allotExplorer(host, D, info) {
 // =====================================================================
 // Gate, home, method
 // =====================================================================
+// ---- stipend and service bond, state by state (public) ----------------------------------------------------
+async function viewBonds() {
+  view.innerHTML = `<div class="sm bd">
+    <div class="page-head"><div><div class="eyebrow">All states · state quota, government colleges</div><h1>Stipend and service bond, state by state</h1>
+      <p>What a PG resident is paid each month, how long the state asks you to serve after the course, and what it costs not to.</p></div></div>
+    <div id="bd-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
+  try { S.guideIndex ||= await api('/api/guides'); }
+  catch (e) { $('#bd-body').innerHTML = `<div class="empty"><h3>Couldn't load the bond table</h3><p>${esc(e.message)}</p></div>`; return; }
+  if (S.path !== '/bonds') return;
+  const B = S.guideIndex.bonds;
+  if (!B) { $('#bd-body').innerHTML = '<div class="empty"><h3>The bond table is coming soon</h3></div>'; return; }
+  const CHECK = { matches: ['Matches the official document', 'ok'], partly: ['Official document adds more', 'info'], differs: ['Differs: go by the official document', 'bad'] };
+  const lakh = s => { const m = /([\d.]+)\s*(lakh|crore)/.exec(s || ''); return m ? +m[1] * (m[2] === 'crore' ? 100 : 1) : 0; };
+  const SORT = { state: ['State A–Z', (a, b) => a.state.localeCompare(b.state)], stipend: ['Highest stipend', (a, b) => (b.stipend[0] || 0) - (a.stipend[0] || 0)],
+    penalty: ['Lowest penalty', (a, b) => lakh(a.penalty) - lakh(b.penalty)], years: ['Shortest bond', (a, b) => (parseInt(a.years, 10) || 0) - (parseInt(b.years, 10) || 0)] };
+  let sort = 'state', q = '', mine = !!S.user?.state;
+  const draw = () => {
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const rows = B.rows.filter(r => (!mine || r.state === S.user?.state || !S.user) && terms.every(t => r.state.toLowerCase().includes(t))).sort(SORT[sort][1]);
+    $('#bd-rows').innerHTML = rows.map(r => `<tr${r.state === S.user?.state ? ' class="me"' : ''}>
+      <td class="strong">${esc(r.state)}</td>
+      <td class="n">${r.stipend[0] ? r.stipend.map(n => `₹${fmt(n)}`).join('<span class="sub-inline"> · </span>') : `<span class="muted bd-note">${esc(r.stipendNote || '—')}</span>`}</td>
+      <td>${esc(r.years)}</td><td class="strong">${esc(r.penalty)}</td>
+      <td class="wrapcell">${r.official ? `${esc(r.official)} <a href="/counselling/${esc(r.slug)}">Guide ${icon.arrowR}</a>
+        <span class="bd-check bd-${CHECK[r.check][1]}">${CHECK[r.check][0]}</span>` : '<span class="muted">Not in our guides yet</span>'}</td></tr>`).join('')
+      || '<tr><td colspan="5" class="rp-none">No state matches.</td></tr>';
+    $('#bd-sum').innerHTML = `<b>${rows.length}</b> of ${B.rows.length} states and UTs`;
+  };
+  $('#bd-body').innerHTML = `
+    <p class="bd-src">${esc(B.source)} <span class="muted">As of ${esc(shortDate(B.asOf))}.</span></p>
+    <div class="rp-filters">
+      <label class="field rp-q"><span class="label">Search</span><span class="search-wrap">${icon.search}<input class="input" id="bd-q" type="search" autocomplete="off" placeholder="State (e.g. Odisha, Tamil Nadu)"></span></label>
+      <label class="field"><span class="label">Sort</span><select class="select" id="bd-sort">${Object.entries(SORT).map(([k, [t]]) => `<option value="${k}">${t}</option>`).join('')}</select></label>
+      ${S.user?.state ? `<label class="check bd-mine"><input type="checkbox" id="bd-mine" checked> Only ${esc(S.user.state)}</label>` : ''}
+    </div>
+    <div class="rp-sum"><p id="bd-sum" aria-live="polite"></p></div>
+    <div class="grid-wrap"><table class="grid bd-grid"><thead><tr><th scope="col">State / UT</th><th scope="col" class="n">Monthly stipend <span class="sub">year 1 · 2 · 3</span></th>
+      <th scope="col">Bond period</th><th scope="col">Penalty</th><th scope="col">From the official document</th></tr></thead><tbody id="bd-rows"></tbody></table></div>`;
+  $('#bd-q').oninput = debounce(e => { q = e.target.value.trim(); if (q) { mine = false; if ($('#bd-mine')) $('#bd-mine').checked = false; } draw(); }, 150);
+  $('#bd-sort').onchange = e => { sort = e.target.value; draw(); };
+  if ($('#bd-mine')) $('#bd-mine').onchange = e => { mine = e.target.checked; draw(); };
+  draw();
+}
+
+// ---- rank journey: each All India Rank's seats in All India and state counselling --------------------------
+async function viewJourney() {
+  view.innerHTML = `<div class="sm jr">
+    <div class="page-head"><div><div class="eyebrow">Counselling 2026 · Round 1</div><h1>Rank journey</h1>
+      <p>How each NEET-PG rank fared in All India and state counselling: the All India (MCC) seat and every state seat it was given, side by side.
+        A rank holding two seats will give one up, and that seat comes back in the next round.</p></div></div>
+    <div id="jr-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
+  let D;
+  try { D = await api('/api/journey'); }
+  catch (e) {
+    if (e.status === 401) { S.user = null; renderTop(); return route(); }
+    $('#jr-body').innerHTML = `<div class="empty"><h3>Couldn't load the rank journey</h3><p>${esc(e.message)}</p></div>`; return;
+  }
+  if (S.path !== '/journey') return;
+  const t = i => D.strings[i];
+  const sets = D.sets;
+  const isAI = set => sets[set].region === D.allIndia;
+  const rows = D.rows.map(([air, seats]) => {
+    const ai = seats.filter(x => isAI(x[0])), st = seats.filter(x => !isAI(x[0]));
+    const states = uniq(st.map(x => sets[x[0]].region));
+    const outcome = ai.length && states.length ? 'All India + state' : states.length > 1 ? 'Seats in 2+ states' : ai.length ? 'All India only' : 'State only';
+    return { air, ai, st, states, outcome: states.length > 1 && ai.length ? 'All India + 2+ states' : outcome };
+  });
+  const count = o => rows.filter(r => r.outcome === o).length;
+  const seat = (x, withSet) => {
+    const set = sets[x[0]], status = !isAI(x[0]) && t(x[7]);
+    return `<div class="jr-seat">${withSet ? `<span class="jr-set">${esc(set.region)} · ${esc(set.label)}</span>` : ''}
+      <b>${esc(t(x[1]))}</b><span class="sub">${esc(t(x[2]))} · ${esc(t(x[3]))} · ${esc(t(x[4]))}${isAI(x[0]) && t(x[7]) ? ` · ${esc(t(x[7]))}` : ''}</span>
+      ${status ? `<span class="rp-chip rp-tag">${esc(status)}</span>` : ''}</div>`;
+  };
+  const unmatched = sets.filter(x => x.region !== D.allIndia && x.matched < x.rows);
+  const me = S.user?.air;
+  explorer($('#jr-body'), {
+    rows,
+    intro: `<div class="rp-stats">${[[rows.length, 'ranks with a seat'], [count('All India only'), 'All India only'], [count('State only'), 'state only'],
+        [count('All India + state') + count('All India + 2+ states'), 'All India + state'], [count('Seats in 2+ states') + count('All India + 2+ states'), 'seats in 2+ states']]
+        .map(([n, l]) => `<div><b>${fmt(n)}</b><span>${l}</span></div>`).join('')}</div>
+      <details class="jr-src"><summary>Which lists are joined (${sets.length})</summary><ul>${sets.map(x =>
+        `<li><b>${esc(x.region)}</b> · ${esc(x.label)} <span class="muted">(${esc(shortDate(x.date))}): ${fmt(x.matched)} of ${fmt(x.rows)} seats matched to a NEET-PG rank</span></li>`).join('')}</ul>
+        ${unmatched.length ? `<p class="muted">Seats are joined on the NEET-PG All India Rank. Where a state's list prints only its own merit position, those seats can't be joined:
+          ${esc(unmatched.filter(x => !x.matched).map(x => x.region).join(', ') || 'none')}${unmatched.some(x => x.matched) ? '; a few seats in other lists have no rank printed (NRI seats, for example)' : ''}.</p>` : ''}</details>`,
+    selects: [{ id: 'outcome', label: 'Outcome', all: 'Every outcome', of: r => r.outcome },
+      { id: 'state', label: 'State counselling', all: 'Any state', of: r => r.states },
+      { id: 'aistate', label: 'All India seat in', all: 'Any state', of: r => r.ai.map(x => t(x[7])) }],
+    search: { placeholder: 'College or course (e.g. SCB, Radiodiagnosis)', of: r => [...r.ai, ...r.st].map(x => `${t(x[1])} ${t(x[2])}`).join(' ') },
+    range: { label: 'NEET-PG rank range', of: r => r.air },
+    find: { label: 'Find a NEET-PG rank (All India Rank)', placeholder: me ? `e.g. ${me}` : 'e.g. 12450', run: n => {
+      const r = rows.find(x => x.air === n);
+      if (!r) return `Rank <b>${fmt(n)}</b> has no seat in these Round 1 lists. Nearby ranks are listed below.`;
+      const bits = [...r.ai.map(x => `All India: <b>${esc(t(x[2]))}</b> at <b>${esc(t(x[1]))}</b>`),
+        ...r.st.map(x => `${esc(sets[x[0]].region)} (${esc(sets[x[0]].label)}): <b>${esc(t(x[2]))}</b> at <b>${esc(t(x[1]))}</b>${t(x[7]) ? ` · ${esc(t(x[7]))}` : ''}`)];
+      return `Rank <b>${fmt(n)}</b>: ${bits.join('; ')}. Nearby ranks are listed below.`;
+    } },
+    mark: (r, f) => r.air === f.find || (!f.find && r.air === me),
+    cols: [
+      { t: 'NEET-PG rank', cls: 'n strong', r: r => fmt(r.air) },
+      { t: 'All India counselling (MCC)', cls: 'wrapcell', r: r => r.ai.map(x => seat(x, false)).join('') || '<span class="muted">—</span>' },
+      { t: 'State counselling', cls: 'wrapcell', r: r => r.st.map(x => seat(x, true)).join('') || '<span class="muted">—</span>' },
+      { t: 'Outcome', r: r => `<span class="rp-chip">${esc(r.outcome)}</span>` }],
+    summary: v => v.length ? `<b>${fmt(v.length)}</b> rank${v.length === 1 ? '' : 's'} · ${fmt(v[0].air)} to ${fmt(v[v.length - 1].air)}` : 'No ranks match.',
+    csv: { name: 'rankround-rank-journey.csv', head: ['NEET-PG rank', 'Outcome', 'All India seat', 'State seats'],
+      row: r => [r.air, r.outcome, r.ai.map(x => `${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}`).join(' ; '),
+        r.st.map(x => `${sets[x[0]].region} (${sets[x[0]].label}): ${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}${t(x[7]) ? ' | ' + t(x[7]) : ''}`).join(' ; ')] }
+  });
+}
+
 function viewGate(p) {
-  const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist', '/seats': 'the seat matrix of India' }[p];
+  const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist', '/seats': 'the seat matrix of India', '/journey': 'the rank journey' }[p];
   S.intended = p;
   view.innerHTML = `<div class="gate">
     <div class="eyebrow" style="display:inline-flex;gap:8px;align-items:center">${icon.lock.replace('<svg', '<svg style="width:13px;height:13px"')} Members' tool</div>
@@ -2437,11 +2589,6 @@ function viewHome() {
       <p class="hero-lede">Every seat in your state's counselling and the All India Quota — by college, speciality, stream and
         category — with the ranks that actually got in. Sign up with your NEET-PG rank and state to see what was within reach.</p>
       <div class="hero-cta"><a class="btn btn-line btn-lg" href="/method" data-link>How it works</a></div>
-    </div>
-    <div class="hero-arrow" aria-hidden="true">
-      <span>Start here<small>free · takes a minute</small></span>
-      <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M8 98 C 40 104, 92 96, 140 54"/><path d="M106 50 L 142 52 L 134 88"/></svg>
     </div>
     <div class="auth-card hero-auth" id="home-auth">
       <div class="auth-card-head"><span class="eyebrow" id="ha-eye"></span><h2 id="ha-title"></h2></div>

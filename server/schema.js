@@ -16,6 +16,8 @@ export const KINDS = {
       { name: 'category', type: 'text', label: 'Category' },
       // Seat pool where a state publishes one (Gujarat: Government, University, Management, NRI, In-service).
       { name: 'quota', type: 'text', label: 'Quota', optional: true },
+      // Government or Private, where the source says (the 2026 Round 1 allotments do); otherwise inferred from the name.
+      { name: 'type', type: 'text', label: 'College type', optional: true },
       // 0 = not published (Gujarat publishes only the last admitted rank per seat group).
       { name: 'seats', type: 'int', label: 'Seats', optional: true },
       { name: 'cmr_open', type: 'int', label: 'CMR opening', min: 1 },

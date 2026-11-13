@@ -14,7 +14,7 @@ export const regionOf = key => [ALL_INDIA, ...STATES].find(r => regionKey(r) ===
 // numbers in FULL_ACCESS_PHONES (comma-separated; spaces and +91 are fine). An env var, as the free tier's database is
 // wiped on every restart.
 const FULL = new Set((process.env.FULL_ACCESS_PHONES || '').split(/[,;\n]+/).map(p => p.replace(/\D/g, '').slice(-10)).filter(p => p.length === 10));
-export const fullAccess = user => !!user?.phone && FULL.has(String(user.phone).replace(/\D/g, '').slice(-10));
+export const fullAccess = user => !!user?.review || (!!user?.phone && FULL.has(String(user.phone).replace(/\D/g, '').slice(-10)));
 /** Who may load a region's data. */
 export const access = (user, region, admin = false) => admin ? 'open' : !user ? 'signin'
   : region === ALL_INDIA || user.state === region || fullAccess(user) ? 'open' : 'locked';
