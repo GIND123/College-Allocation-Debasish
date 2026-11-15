@@ -1932,8 +1932,10 @@ function rpMerit(info, box) {
 
 // ---- Rounds: choice filling (seat matrix), allotment, joining ----
 function rpRound(info, box, stage, rest) {
-  const v = ROUND_VIEWS.find(x => x[0] === rest[0]) || ROUND_VIEWS[0];
-  const pred = info.region === ALL_INDIA || (S.user?.state === info.region && setsOf('state').some(x => x.state === info.region));
+  // with no tab in the link, open on the round's seat matrix, or on its allotment when only that is out (Punjab published no matrix)
+  const has = k => info.data.some(x => x.kind === k && x.round === stage);
+  const v = ROUND_VIEWS.find(x => x[0] === rest[0]) || (!has('seats') && has('allotment') ? ROUND_VIEWS[1] : ROUND_VIEWS[0]);
+  const pred =info.region === ALL_INDIA || (S.user?.state === info.region && setsOf('state').some(x => x.state === info.region));
   box.innerHTML = rpHead(info, stage, 'users', `Explore the seat matrix, fill choices, and view allotment and joining details for ${stage}.`,
     pred ? `<a class="btn btn-line" href="/predict" data-link data-to-scope="${info.region === ALL_INDIA ? 'aiq' : 'state'}">Open the predictor ${icon.arrowR}</a>` : '')
     + `<div class="rp-round"><nav class="rp-sub" aria-label="${stage}">${ROUND_VIEWS.map(([id, t, s, ic]) =>
@@ -2003,7 +2005,7 @@ function rpLock(info, what) {
  *   rows; prog: { of(r) → 'MD/MS' | 'DNB' | 'Diploma', all: offer "All", value }
  *   segs: [{ id, label, values, of, value }]  rows of buttons
  *   selects: [{ id, label, all, of }]  dropdowns, offered the values left by the buttons
- *   search: { placeholder, of(r) → text }; range: { label, of(r) → number }
+ *   search: { placeholder, of(r) → text }; range: { label, of(r) → number }; near(r) → number: with no range box, a found rank lists the rows within 500 of it
  *   find: { label, placeholder, run(n) → html }  look up one rank (it is marked in the table)
  *   cols: [{ t, r(r, i) → html, cls }]; mark(r, f) → highlight; summary(view) → html; csv: { name, head, row }
  *   keep(r) → false hides a row; order(view) → the view sorted. Returns { refresh } to redraw after outside changes.
@@ -2061,6 +2063,7 @@ function explorer(host, cfg) {
       view = base().filter(r => selects.every(s => !f[s.id] || hit(s, r))
         && (!terms.length || terms.every(t => cfg.search.of(r).toLowerCase().includes(t)))
         && (!cfg.range || ((!f.lo || cfg.range.of(r) >= f.lo) && (!f.hi || cfg.range.of(r) <= f.hi)))
+        && (!cfg.near || !f.find || Math.abs(cfg.near(r) - f.find) <= 500)
         && (!cfg.keep || cfg.keep(r)));
       if (cfg.order) view = cfg.order(view);
       shown = 0;
@@ -2432,7 +2435,7 @@ async function viewJourney() {
       { id: 'state', label: 'State counselling', all: 'Any state', of: r => r.states },
       { id: 'aistate', label: 'All India seat in', all: 'Any state', of: r => r.ai.map(x => t(x[7])) }],
     search: { placeholder: 'College or course (e.g. SCB, Radiodiagnosis)', of: r => [...r.ai, ...r.st].map(x => `${t(x[1])} ${t(x[2])}`).join(' ') },
-    range: { label: 'NEET-PG rank range', of: r => r.air },
+    near: r => r.air,
     find: { label: 'Find a NEET-PG rank (All India Rank)', placeholder: me ? `e.g. ${me}` : 'e.g. 12450', run: n => {
       const r = rows.find(x => x.air === n);
       if (!r) return `Rank <b>${fmt(n)}</b> has no seat in these Round 1 lists. Nearby ranks are listed below.`;
@@ -2659,7 +2662,7 @@ async function viewSeats() {
       <p id="sm-lede">Every MD, MS and diploma seat NMC has approved, college by college. Filter by state, college type and course; the totals and charts follow your filters.</p></div></div>
     <div id="sm-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
   let D;
-  try { D = S.nmcSeats ||= await api('/api/seat-matrix'); }
+  try { [D, mapShapes] = await Promise.all([S.nmcSeats || api('/api/seat-matrix'), mapShapes || api('/data/india-map.json').catch(() => null)]); S.nmcSeats = D; }
   catch (e) { $('#sm-body').innerHTML = `<div class="empty"><h3>We couldn't load the seat matrix</h3><p>${esc(e.message)}</p></div>`; return; }
   if (S.path !== '/seats') return;
   const rows = D.rows.map(([c, k, seats, dip]) => {
@@ -2691,19 +2694,28 @@ async function viewSeats() {
   const legend = `<div class="sm-legend">${SM_TYPES.map((t, i) => `<span><i class="sm-t${i + 1}"></i>${t}</span>`).join('')}</div>`;
   host.querySelector('.rp-filters').insertAdjacentHTML('afterend', `<section class="sm-viz" aria-label="Analysis">
     <div class="sm-kpis" id="sm-kpis"></div>
+    ${mapShapes ? `<figure class="sm-card sm-mapcard"><figcaption id="sm-mapt"></figcaption>
+      <div class="sm-mapgrid"><div class="sm-map" id="sm-map"></div><div class="sm-mapside"><div class="sm-mapkey" id="sm-mapkey"></div><div class="sm-bars" id="sm-maplist"></div></div></div>
+      <p class="cov-src">Boundaries: <a href="https://github.com/datameet/maps" target="_blank" rel="noopener">DataMeet</a> (CC BY 4.0); district lines from the 2011 census.
+        Colleges are placed at their town.</p></figure>` : ''}
     <div class="sm-charts">${[1, 2, 3, 4].map(n => `<figure class="sm-card"><figcaption id="sm-c${n}t"></figcaption>${n < 4 ? legend : ''}<div class="sm-bars" id="sm-c${n}"></div></figure>`).join('')}</div>
     <div class="sm-tip" id="sm-tip" role="tooltip" hidden></div></section>`);
   x.refresh();
-  // clicking a state's bar filters the table to that state
-  for (const id of ['#sm-c1', '#sm-c3']) $(id).addEventListener('click', e => {
+  // clicking a state's bar, or the state on the map, filters everything to that state (and the map turns to the state's own map)
+  const pick = st => { const sel = host.querySelector('[data-x="state"]'); sel.value = st; sel.dispatchEvent(new Event('change')); };
+  for (const id of ['#sm-c1', '#sm-c3', '#sm-map', '#sm-maplist', '#sm-mapt']) $(id)?.addEventListener('click', e => {
     const b = e.target.closest('[data-state]');
-    if (!b) return;
-    const sel = host.querySelector('[data-x="state"]');
-    sel.value = b.dataset.state; sel.dispatchEvent(new Event('change'));
+    if (b) pick(b.dataset.state);
+    else if (e.target.closest('[data-allindia]')) pick('');
+  });
+  $('#sm-map')?.addEventListener('keydown', e => {
+    const b = e.target.closest('[data-state]');
+    if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(b.dataset.state); }
   });
   addEventListener('resize', () => { const t = $('#sm-tip'); if (t) t.hidden = true; });
-  for (const id of ['#sm-c1', '#sm-c2', '#sm-c3', '#sm-c4']) {
+  for (const id of ['#sm-c1', '#sm-c2', '#sm-c3', '#sm-c4', '#sm-map', '#sm-maplist']) {
     const box = $(id), tip = $('#sm-tip');
+    if (!box) continue;
     const show = (row, ev) => {
       if (!row) { tip.hidden = true; return; }
       tip.innerHTML = row.dataset.tip; tip.hidden = false;
@@ -2711,9 +2723,9 @@ async function viewSeats() {
       const x0 = (ev?.clientX ?? r.left + 40) - host2.left, y0 = (ev?.clientY ?? r.top) - host2.top;
       tip.style.left = Math.max(0, Math.min(x0 + 14, host2.width - tip.offsetWidth - 4)) + 'px'; tip.style.top = (y0 + 16) + 'px';
     };
-    box.addEventListener('mousemove', e => show(e.target.closest('.sm-row'), e));
+    box.addEventListener('mousemove', e => show(e.target.closest('[data-tip]'), e));
     box.addEventListener('mouseleave', () => show(null));
-    box.addEventListener('focusin', e => show(e.target.closest('.sm-row'), e));
+    box.addEventListener('focusin', e => show(e.target.closest('[data-tip]'), e));
     box.addEventListener('focusout', () => show(null));
   }
 }
@@ -2726,6 +2738,7 @@ function smCharts(v) {
     [fmt(new Set(v.map(r => r.state)).size), 'states and UTs']].map(([n, t]) => `<div><b>${n}</b><span>${t}</span></div>`).join('')
     + `<div class="sm-split"><span>${SM_TYPES.map((t, i) => `<i class="sm-t${i + 1}" style="flex:${byType[i]}"></i>`).join('')}</span>
       <small>${SM_TYPES.map((t, i) => `${t} ${pct(byType[i])}`).join(' · ')}</small></div>`;
+  smMap(v);
   // chart 1: by state (or, within one state, by institution), stacked by college type
   const states = new Set(v.map(r => r.state));
   const one = states.size === 1, key = one ? 'college' : 'state';
@@ -2765,6 +2778,84 @@ function smCharts(v) {
   $('#sm-c4').innerHTML = per.size ? bins.map(b => smRow(lab(b), null, 100 * b.k / bmax, fmt(b.k),
       `<b>${lab(b)}</b><span>${fmt(b.k)} institution${b.k === 1 ? '' : 's'}</span><span>${fmt(b.s)} seats · ${pct(b.s)} of the seats shown</span>`)).join('')
     : '<p class="muted">No seats match these filters.</p>';
+}
+// The seat map follows the filters: all of India shaded by seats (five steps of one hue), or, once a state is chosen,
+// that state's own map with a circle per town, its area the seats.
+const stateMaps = {};
+let smMapDraw = 0;
+const smTypes = rows => SM_TYPES.map(t => rows.reduce((n, r) => n + (r.type === t ? r.seats : 0), 0));
+function smMap(v) {
+  if (!$('#sm-map') || !mapShapes) return;
+  const st = $('#sm-body [data-x="state"]')?.value, draw = ++smMapDraw, tip = $('#sm-tip');
+  if (tip) tip.hidden = true;
+  if (!st) return smIndia(v);
+  (stateMaps[st] ||= api(`/data/seat-maps/${slugOf(st)}.json`).catch(() => null))
+    .then(m => { if (draw === smMapDraw && $('#sm-map')) m ? smState(m, st, v) : smIndia(v); });
+}
+function smIndia(v) {
+  const by = new Map();
+  for (const r of v) (by.get(r.state) || by.set(r.state, []).get(r.state)).push(r);
+  const tot = st => (by.get(st) || []).reduce((n, r) => n + r.seats, 0);
+  const vals = [...by.keys()].map(tot).filter(Boolean).sort((a, b) => a - b);
+  // five steps at the quintiles of the states shown, rounded to a readable number
+  const nice = n => { const p = 10 ** Math.max(0, Math.floor(Math.log10(n)) - 1); return Math.ceil(n / p) * p; };
+  const cuts = vals.length > 4 ? uniq([1, 2, 3, 4].map(i => nice(vals[Math.floor(i * vals.length / 5)]))).filter(c => c < vals[vals.length - 1]) : [];
+  const step = n => n ? 1 + cuts.filter(c => n > c).length : 0;
+  const tip = st => { const rows = by.get(st) || [];
+    return smTip(st, smTypes(rows), rows.length ? `${fmt(tot(st))} seats in ${fmt(new Set(rows.map(r => r.college)).size)} institutions` : 'No seats match these filters'); };
+  $('#sm-mapt').innerHTML = `Seats by state and UT <small>click a state to see its own map</small>`;
+  $('#sm-map').innerHTML = `<svg viewBox="${mapShapes.viewBox}" role="group" aria-label="Map of India: PG seats by state">
+    ${Object.entries(mapShapes.states).map(([st, d]) => { const n = tot(st);
+      return `<path d="${d}" class="sq${step(n)}"${n ? ` data-state="${esc(st)}" tabindex="0" role="button"` : ''} aria-label="${esc(`${st}: ${fmt(n)} seats`)}" data-tip="${esc(tip(st))}"/>`; }).join('')}
+    ${SMALL_AREA.filter(st => mapShapes.centers[st] && tot(st)).map(st => { const [x, y] = mapShapes.centers[st];
+      return `<circle cx="${x}" cy="${y}" r="4" class="sm-pin sq${step(tot(st))}" data-state="${esc(st)}" data-tip="${esc(tip(st))}" aria-hidden="true"/>`; }).join('')}
+  </svg>`;
+  const lows = [1, ...cuts.map(c => c + 1)], highs = [...cuts, vals[vals.length - 1] || 0];
+  $('#sm-mapkey').innerHTML = `<span class="sm-keyt">Seats in the state</span><span class="sm-steps">${vals.length ? lows.map((lo, i) =>
+      `<span><i class="sq${i + 1}"></i>${highs[i] > lo ? `${fmt(lo)}–${fmt(highs[i])}` : fmt(highs[i])}</span>`).join('') : ''}<span><i class="sq0"></i>None</span></span>`;
+  const list = [...by.keys()].map(st => ({ st, n: tot(st), t: smTypes(by.get(st)) })).sort((a, b) => b.n - a.n).slice(0, 10), max = list[0]?.n || 1;
+  $('#sm-maplist').innerHTML = `<p class="sm-listt">Most seats</p>` + (list.map(g => smRow(g.st, g.t, 100 * g.n / max, fmt(g.n),
+    smTip(g.st, g.t, `${fmt(g.n)} seats`), ` data-state="${esc(g.st)}" role="button"`)).join('') || '<p class="muted">No seats match these filters.</p>');
+}
+function smState(m, st, v) {
+  const towns = new Map(), off = [];
+  for (const r of v) {
+    const i = m.colleges[r.code];
+    if (i === undefined) { off.push(r); continue; }
+    (towns.get(i) || towns.set(i, []).get(i)).push(r);
+  }
+  const list = [...towns].map(([i, rows]) => {
+    const per = new Map();
+    for (const r of rows) per.set(r.college, (per.get(r.college) || 0) + r.seats);
+    const [x, y, name] = m.towns[i];
+    return { i, x, y, name, n: rows.reduce((a, r) => a + r.seats, 0), types: smTypes(rows), colleges: [...per].sort((a, b) => b[1] - a[1]) };
+  }).sort((a, b) => b.n - a.n);
+  const max = list[0]?.n || 1, vw = Number(m.viewBox.split(' ')[2]), R = vw / 20;
+  const rad = n => Math.max(R / 5, R * Math.sqrt(n / max));
+  const tip = t => `<b>${esc(t.name)}</b>${SM_TYPES.map((x, i) => t.types[i] ? `<span><i class="sm-t${i + 1}"></i>${x} <b>${fmt(t.types[i])}</b></span>` : '').join('')}`
+    + t.colleges.slice(0, 6).map(([c, n]) => `<span class="sm-tipc">${esc(c)} <b>${fmt(n)}</b></span>`).join('')
+    + (t.colleges.length > 6 ? `<span>and ${t.colleges.length - 6} more</span>` : '') + `<span>Total <b>${fmt(t.n)}</b></span>`;
+  // names for the six biggest towns: above the circle, else below it, else left out where they would run into another name
+  const fs = R / 2, labels = [];
+  for (const t of list.slice(0, 6)) {
+    const w = t.name.length * fs * 0.58, r = rad(t.n);
+    const spot = [t.y - r - fs / 3, t.y + r + fs].map(y => ({ name: t.name, x: t.x, y, box: [t.x - w / 2, y - fs, t.x + w / 2, y + fs * 0.25] }))
+      .find(l => labels.every(o => l.box[2] < o.box[0] || l.box[0] > o.box[2] || l.box[3] < o.box[1] || l.box[1] > o.box[3]));
+    if (spot) labels.push(spot);
+  }
+  const offN = new Set(off.map(r => r.college)).size;
+  $('#sm-mapt').innerHTML = `Seats by town in ${esc(st)} <button type="button" class="linkbtn" data-allindia>Back to the map of India</button>`;
+  $('#sm-map').innerHTML = `<svg viewBox="${m.viewBox}" role="group" aria-label="Map of ${esc(st)}: PG seats by town">
+    <g class="sm-dists">${m.districts.map(d => `<path d="${d}"/>`).join('')}</g>
+    <path class="sm-outline" d="${m.outline}"/>
+    ${[...list].reverse().map(t => `<circle cx="${t.x}" cy="${t.y}" r="${rad(t.n).toFixed(1)}" class="sm-town" tabindex="0" aria-label="${esc(`${t.name}: ${fmt(t.n)} seats`)}" data-tip="${esc(tip(t))}"/>`).join('')}
+    ${labels.map(l => `<text x="${l.x}" y="${l.y.toFixed(1)}" class="sm-tlab" style="font-size:${fs.toFixed(1)}px">${esc(l.name)}</text>`).join('')}
+  </svg>`;
+  $('#sm-mapkey').innerHTML = `<span class="sm-keyt">Circle area = seats in the town</span>${offN
+    ? `<span class="muted">${fmt(off.reduce((a, r) => a + r.seats, 0))} seats at ${fmt(offN)} institution${offN === 1 ? '' : 's'} not placed on the map</span>` : ''}`;
+  const top = list.slice(0, 10), tmax = top[0]?.n || 1;
+  $('#sm-maplist').innerHTML = `<p class="sm-listt">Towns with the most seats</p>` + (top.map(t => smRow(t.name, t.types, 100 * t.n / tmax, fmt(t.n), tip(t))).join('')
+    || '<p class="muted">No seats match these filters.</p>');
 }
 // one bar of a seat chart: stacked by college type when t is given, else a single series
 function smRow(label, t, width, value, tip, attrs = '') {

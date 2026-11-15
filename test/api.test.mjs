@@ -299,11 +299,14 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   await o('/api/auth/otp/request', { method: 'POST', body: { ...signUp, phone: '9000000131' } });
   await o('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000131', code: '1234', password: PW } });
   const merit = (await o('/api/regions/odisha/data/merit-list-2026')).json;
-  assert.deepEqual(merit.lists.map(l => `${l.label} ${l.rows.length}`), ['Direct 1216', 'In-service 312', 'PMN Diploma 185', 'Rejected 34']);
+  // the revised list of 30 Oct (No. 63, after grievances), with its separate DNB list
+  assert.deepEqual(merit.lists.map(l => `${l.label} ${l.rows.length}`), ['Direct 1215', 'In-service 316', 'DNB (in-service) 125', 'PMN Diploma 187', 'Rejected 31']);
+  assert.ok(merit.lists.every(l => l.label === 'Rejected' || l.rows.every((r, i) => r.ranks.UR === i + 1)), 'UR ranks run 1, 2, 3 … in list order');
   const seats = (await o('/api/regions/odisha/data/seat-matrix-round-1')).json.rows;
-  const sum = (stream, quota) => seats.filter(r => r.stream === stream && r.quota === quota).reduce((n, r) => n + r.seats, 0);
+  const sum = (stream, quota) => seats.filter(r => r.programme === 'MD/MS' && r.stream === stream && r.quota === quota).reduce((n, r) => n + r.seats, 0);
   assert.deepEqual([sum('Direct', 'State quota'), sum('In-service', 'State quota'), sum('Direct', 'Management quota'), sum('In-service', 'Management quota')], [193, 193, 39, 38],
     "the printed totals of Odisha's revised seat matrix");
+  assert.deepEqual(['DNB', 'Diploma'].map(p => seats.filter(r => r.programme === p).reduce((n, r) => n + r.seats, 0)), [18, 43], 'Odisha DNB (No. 60) and diploma (No. 59) seats');
   // the two standalone pages moved behind sign-in, into the roadmap pages
   const moved = await v('/counselling/odisha-merit-list');
   assert.equal(moved.status, 301);
@@ -342,7 +345,7 @@ test('Odisha allotments; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat
   const sum = rows => rows.reduce((n, r) => n + r.seats, 0);
   const STATES = [
     // state, key, merit lists, seats, allotted
-    ['Odisha', 'odisha', null, 463, 374],
+    ['Odisha', 'odisha', null, 463 + 18 + 43, 374],
     ['Kerala', 'kerala', [['State merit list', 5665], ['Second list (not qualified)', 20]], 1173 + 17, 1082],
     ['Maharashtra', 'maharashtra', [['State merit list', 7242], ['In-service (20% quota)', 65]], 2759, 2112],
     ['Karnataka', 'karnataka', null, 4892, 3268],
@@ -369,7 +372,7 @@ test('Odisha allotments; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat
       if (key === 'odisha') {
         // every MD/MS seat of the revised matrix is either allotted or listed as vacant
         const md = a.rows.filter(r => r.programme === 'MD/MS').length + sum(a.vacant.filter(v => v.programme === 'MD/MS'));
-        assert.equal(md, seats, 'Odisha: allotted + vacant = the MD/MS seat matrix');
+        assert.equal(md, 463, 'Odisha: allotted + vacant = the MD/MS seat matrix');
         // the revised upgraded allotment of 8 Nov: each candidate's seat after the upgrade
         const u = (await b('/api/regions/odisha/data/allotment-round-1-upgraded')).json;
         const moves = {}; for (const r of u.rows) moves[r.move] = (moves[r.move] || 0) + 1;
@@ -425,6 +428,16 @@ test('the seat matrix of India: NMC’s 6 Nov matrix, for signed-in candidates; 
   assert.ok(!states.has('Orissa') && states.has('Odisha'), 'old state spellings merged');
   const seats = t => d.rows.filter(x => d.colleges[x[0]][3] === t).reduce((n, x) => n + x[2], 0);
   assert.deepEqual([seats('Government'), seats('Private'), seats('Deemed')], [34473, 24732, 9100]);
+  // the seat map: one file per state, its outline, district lines and every town with a college (nearly every college placed)
+  const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  let placed = 0;
+  for (const st of states) {
+    const m = await v(`/data/seat-maps/${slug(st)}.json`);
+    assert.equal(m.status, 200, `${st}: map`);
+    assert.ok(m.json.outline.startsWith('M') && m.json.towns.length, `${st}: outline and towns`);
+    for (const c of d.colleges.filter(c => c[2] === st)) if (m.json.colleges[c[0]] !== undefined) placed++;
+  }
+  assert.ok(placed / d.colleges.length > 0.97, `colleges placed on the map: ${placed} of ${d.colleges.length}`);
 });
 
 test('sign-up asks for the NEET-PG rank; the state CMR is separate, saved later and cleared', async () => {

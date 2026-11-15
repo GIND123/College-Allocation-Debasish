@@ -145,7 +145,7 @@ export function ago(ms) {
 }
 
 // ---- icons (1.5px strokes, square caps) ----------------------------------
-const svg = (d, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" ${extra} aria-hidden="true">${d}</svg>`;
+const svg = (d, extra = '') => `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" ${extra} aria-hidden="true">${d}</svg>`;
 export const icon = {
   x: svg('<path d="M6 6l12 12M18 6L6 18"/>'),
   star: svg('<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8-4.3-4.1 5.9-.8z" stroke-linejoin="miter"/>'),

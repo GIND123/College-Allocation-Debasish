@@ -3306,6 +3306,30 @@
       "date": "2026-11-11",
       "kind": "Seat matrix",
       "kb": 299
+    },
+    {
+      "region": "Odisha",
+      "title": "No. 63: revised merit list after grievances (direct, in-service, DNB, diploma and rejected candidates)",
+      "file": "odisha/revised-merit-list-round1.pdf",
+      "date": "2026-10-30",
+      "kind": "Merit list",
+      "kb": 3011
+    },
+    {
+      "region": "Odisha",
+      "title": "No. 60: Round 1 seat matrix, post-MBBS DNB (after grievances)",
+      "file": "odisha/round1-seat-matrix-dnb.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 1427
+    },
+    {
+      "region": "Odisha",
+      "title": "No. 59: Round 1 seat matrix, post-MBBS NBEMS diploma (after grievances)",
+      "file": "odisha/round1-seat-matrix-diploma.pdf",
+      "date": "2026-10-30",
+      "kind": "Seat matrix",
+      "kb": 583
     }
   ],
   "updates": [
@@ -4065,13 +4089,19 @@
       "region": "Tripura",
       "date": "2026-11-08",
       "text": "Round 1 choice filling started 8 Nov, 12 noon."
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-10-30",
+      "text": "Revised merit list (No. 63) after grievances, with a separate DNB list; revised DNB and diploma seat matrices (No. 59, 60).",
+      "link": "/roadmap/odisha/merit-list"
     }
   ],
   "highlight": {
-    "eyebrow": "New · 12 Nov",
-    "text": "Rank journey: how every rank fared in All India and state counselling. Cut-off tables for 13 states, Punjab and Andhra Pradesh data, MCC's Round 2 seat matrix, and stipend and bond for every state.",
-    "href": "/journey",
-    "go": "Open the rank journey"
+    "eyebrow": "New · 15 Nov",
+    "text": "A map on the seat matrix page: India shaded by PG seats, and each state's own map with every town's seats. It follows the state, course and college type you pick. Odisha's revised merit list and DNB and diploma seats are in too.",
+    "href": "/seats",
+    "go": "Open the seat map"
   },
   "progress": {
     "All India": {
@@ -4230,9 +4260,9 @@
       "id": "merit-list-2026",
       "region": "Odisha",
       "kind": "merit",
-      "title": "Provisional merit list",
-      "date": "2026-10-28",
-      "doc": "odisha/merit-list-round1.pdf",
+      "title": "Revised merit list (after grievances): direct, in-service, DNB and diploma",
+      "date": "2026-10-30",
+      "doc": "odisha/revised-merit-list-round1.pdf",
       "file": "odisha/merit-list-2026.json"
     },
     {
@@ -4240,7 +4270,7 @@
       "region": "Odisha",
       "kind": "seats",
       "round": "Round 1",
-      "title": "Revised provisional seat matrix (MD/MS)",
+      "title": "Revised Round 1 seat matrix: MD/MS, DNB and diploma",
       "date": "2026-10-31",
       "doc": "odisha/round1-revised-seat-matrix.pdf",
       "file": "odisha/seat-matrix-round1.json"
