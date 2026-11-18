@@ -1991,7 +1991,8 @@ function rpLock(info, what) {
   const own = S.user?.state;
   return info.access === 'signin'
     ? `<div class="rp-lock">${icon.lock}<h3>Sign in to see the ${esc(what.toLowerCase())}</h3>
-        <p>It's free. All India data is open to every account, and each state's data to the candidates registered for that state.</p>
+        <p>It's free. ${info.openData ? 'For now, All India data and every state\'s data are open to every account.'
+          : 'All India data is open to every account, and each state\'s data to the candidates registered for that state.'}</p>
         <div class="empty-actions"><button class="btn btn-primary" data-signin="signup">Create a free account</button><button class="btn btn-line" data-signin="signin">Sign in</button></div></div>`
     : `<div class="rp-lock">${icon.lock}<h3>${esc(info.region)} data is for ${esc(info.region)} candidates</h3>
         <p>Your account is registered for ${esc(own)}. You can follow ${esc(info.region)}'s counselling progress, dates and guide here; its data stays locked.
@@ -2005,7 +2006,7 @@ function rpLock(info, what) {
  *   rows; prog: { of(r) → 'MD/MS' | 'DNB' | 'Diploma', all: offer "All", value }
  *   segs: [{ id, label, values, of, value }]  rows of buttons
  *   selects: [{ id, label, all, of }]  dropdowns, offered the values left by the buttons
- *   search: { placeholder, of(r) → text }; range: { label, of(r) → number }; near(r) → number: with no range box, a found rank lists the rows within 500 of it
+ *   search: { placeholder, of(r) → text }; range: { label, of(r) → number }; near(r) → number: a found rank shows its own rows (no seat: the closest rank either side)
  *   find: { label, placeholder, run(n) → html }  look up one rank (it is marked in the table)
  *   cols: [{ t, r(r, i) → html, cls }]; mark(r, f) → highlight; summary(view) → html; csv: { name, head, row }
  *   keep(r) → false hides a row; order(view) → the view sorted. Returns { refresh } to redraw after outside changes.
@@ -2063,8 +2064,12 @@ function explorer(host, cfg) {
       view = base().filter(r => selects.every(s => !f[s.id] || hit(s, r))
         && (!terms.length || terms.every(t => cfg.search.of(r).toLowerCase().includes(t)))
         && (!cfg.range || ((!f.lo || cfg.range.of(r) >= f.lo) && (!f.hi || cfg.range.of(r) <= f.hi)))
-        && (!cfg.near || !f.find || Math.abs(cfg.near(r) - f.find) <= 500)
         && (!cfg.keep || cfg.keep(r)));
+      if (cfg.near && f.find) {        // that rank alone; without a seat, the closest rank on each side
+        let lo = 0, hi = Infinity, hit = false;
+        for (const r of view) { const n = cfg.near(r); if (n === f.find) hit = true; else if (n < f.find) lo = Math.max(lo, n); else hi = Math.min(hi, n); }
+        view = view.filter(r => hit ? cfg.near(r) === f.find : cfg.near(r) === lo || cfg.near(r) === hi);
+      }
       if (cfg.order) view = cfg.order(view);
       shown = 0;
     }
@@ -2438,10 +2443,10 @@ async function viewJourney() {
     near: r => r.air,
     find: { label: 'Find a NEET-PG rank (All India Rank)', placeholder: me ? `e.g. ${me}` : 'e.g. 12450', run: n => {
       const r = rows.find(x => x.air === n);
-      if (!r) return `Rank <b>${fmt(n)}</b> has no seat in these Round 1 lists. Nearby ranks are listed below.`;
+      if (!r) return `Rank <b>${fmt(n)}</b> has no seat in these Round 1 lists. The closest ranks with a seat are shown below.`;
       const bits = [...r.ai.map(x => `All India: <b>${esc(t(x[2]))}</b> at <b>${esc(t(x[1]))}</b>`),
         ...r.st.map(x => `${esc(sets[x[0]].region)} (${esc(sets[x[0]].label)}): <b>${esc(t(x[2]))}</b> at <b>${esc(t(x[1]))}</b>${t(x[7]) ? ` · ${esc(t(x[7]))}` : ''}`)];
-      return `Rank <b>${fmt(n)}</b>: ${bits.join('; ')}. Nearby ranks are listed below.`;
+      return `Rank <b>${fmt(n)}</b>: ${bits.join('; ')}.`;
     } },
     mark: (r, f) => r.air === f.find || (!f.find && r.air === me),
     cols: [
@@ -2449,7 +2454,7 @@ async function viewJourney() {
       { t: 'All India counselling (MCC)', cls: 'wrapcell', r: r => r.ai.map(x => seat(x, false)).join('') || '<span class="muted">—</span>' },
       { t: 'State counselling', cls: 'wrapcell', r: r => r.st.map(x => seat(x, true)).join('') || '<span class="muted">—</span>' },
       { t: 'Outcome', r: r => `<span class="rp-chip">${esc(r.outcome)}</span>` }],
-    summary: v => v.length ? `<b>${fmt(v.length)}</b> rank${v.length === 1 ? '' : 's'} · ${fmt(v[0].air)} to ${fmt(v[v.length - 1].air)}` : 'No ranks match.',
+    summary: v => v.length ? `<b>${fmt(v.length)}</b> rank${v.length === 1 ? '' : 's'}` : 'No ranks match.',
     csv: { name: 'rankround-rank-journey.csv', head: ['NEET-PG rank', 'Outcome', 'All India seat', 'State seats'],
       row: r => [r.air, r.outcome, r.ai.map(x => `${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}`).join(' ; '),
         r.st.map(x => `${sets[x[0]].region} (${sets[x[0]].label}): ${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}${t(x[7]) ? ' | ' + t(x[7]) : ''}`).join(' ; ')] }
@@ -2695,7 +2700,7 @@ async function viewSeats() {
   host.querySelector('.rp-filters').insertAdjacentHTML('afterend', `<section class="sm-viz" aria-label="Analysis">
     <div class="sm-kpis" id="sm-kpis"></div>
     ${mapShapes ? `<figure class="sm-card sm-mapcard"><figcaption id="sm-mapt"></figcaption>
-      <div class="sm-mapgrid"><div class="sm-map" id="sm-map"></div><div class="sm-mapside"><div class="sm-mapkey" id="sm-mapkey"></div><div class="sm-bars" id="sm-maplist"></div></div></div>
+      <div class="sm-mapgrid"><div class="sm-map" id="sm-map"></div><div class="sm-mapside"><div class="sm-mapkey" id="sm-mapkey"></div><div class="sm-info" id="sm-info" aria-live="polite"></div><div class="sm-bars" id="sm-maplist"></div></div></div>
       <p class="cov-src">Boundaries: <a href="https://github.com/datameet/maps" target="_blank" rel="noopener">DataMeet</a> (CC BY 4.0); district lines from the 2011 census.
         Colleges are placed at their town.</p></figure>` : ''}
     <div class="sm-charts">${[1, 2, 3, 4].map(n => `<figure class="sm-card"><figcaption id="sm-c${n}t"></figcaption>${n < 4 ? legend : ''}<div class="sm-bars" id="sm-c${n}"></div></figure>`).join('')}</div>
@@ -2713,7 +2718,22 @@ async function viewSeats() {
     if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(b.dataset.state); }
   });
   addEventListener('resize', () => { const t = $('#sm-tip'); if (t) t.hidden = true; });
-  for (const id of ['#sm-c1', '#sm-c2', '#sm-c3', '#sm-c4', '#sm-map', '#sm-maplist']) {
+  // the map and its list write what they point at into the panel beside the map, so nothing covers the map
+  for (const id of ['#sm-map', '#sm-maplist']) {
+    const box = $(id);
+    if (!box) continue;
+    const show = e => {
+      const el = e.target.closest('[data-tip]'), info = $('#sm-info');
+      if (!el || !info) return;
+      info.innerHTML = el.dataset.tip;
+      $$('#sm-map .on, #sm-maplist .on').forEach(x => x.classList.remove('on'));
+      const key = el.dataset.state || el.dataset.town;
+      $$(`#sm-map [data-${el.dataset.state ? 'state' : 'town'}], #sm-maplist [data-${el.dataset.state ? 'state' : 'town'}]`)
+        .filter(x => (x.dataset.state || x.dataset.town) === key).forEach(x => x.classList.add('on'));
+    };
+    for (const ev of ['mouseover', 'focusin', 'click']) box.addEventListener(ev, show);
+  }
+  for (const id of ['#sm-c1', '#sm-c2', '#sm-c3', '#sm-c4']) {
     const box = $(id), tip = $('#sm-tip');
     if (!box) continue;
     const show = (row, ev) => {
@@ -2816,6 +2836,8 @@ function smIndia(v) {
   const list = [...by.keys()].map(st => ({ st, n: tot(st), t: smTypes(by.get(st)) })).sort((a, b) => b.n - a.n).slice(0, 10), max = list[0]?.n || 1;
   $('#sm-maplist').innerHTML = `<p class="sm-listt">Most seats</p>` + (list.map(g => smRow(g.st, g.t, 100 * g.n / max, fmt(g.n),
     smTip(g.st, g.t, `${fmt(g.n)} seats`), ` data-state="${esc(g.st)}" role="button"`)).join('') || '<p class="muted">No seats match these filters.</p>');
+  $('#sm-info').className = 'sm-info';
+  $('#sm-info').innerHTML = `<p class="sm-hint">Point at a state to see its seats here; click it for the state's own map.</p>`;
 }
 function smState(m, st, v) {
   const towns = new Map(), off = [];
@@ -2848,14 +2870,16 @@ function smState(m, st, v) {
   $('#sm-map').innerHTML = `<svg viewBox="${m.viewBox}" role="group" aria-label="Map of ${esc(st)}: PG seats by town">
     <g class="sm-dists">${m.districts.map(d => `<path d="${d}"/>`).join('')}</g>
     <path class="sm-outline" d="${m.outline}"/>
-    ${[...list].reverse().map(t => `<circle cx="${t.x}" cy="${t.y}" r="${rad(t.n).toFixed(1)}" class="sm-town" tabindex="0" aria-label="${esc(`${t.name}: ${fmt(t.n)} seats`)}" data-tip="${esc(tip(t))}"/>`).join('')}
+    ${[...list].reverse().map(t => `<circle cx="${t.x}" cy="${t.y}" r="${rad(t.n).toFixed(1)}" class="sm-town" tabindex="0" aria-label="${esc(`${t.name}: ${fmt(t.n)} seats`)}" data-town="${t.i}" data-tip="${esc(tip(t))}"/>`).join('')}
     ${labels.map(l => `<text x="${l.x}" y="${l.y.toFixed(1)}" class="sm-tlab" style="font-size:${fs.toFixed(1)}px">${esc(l.name)}</text>`).join('')}
   </svg>`;
   $('#sm-mapkey').innerHTML = `<span class="sm-keyt">Circle area = seats in the town</span>${offN
     ? `<span class="muted">${fmt(off.reduce((a, r) => a + r.seats, 0))} seats at ${fmt(offN)} institution${offN === 1 ? '' : 's'} not placed on the map</span>` : ''}`;
   const top = list.slice(0, 10), tmax = top[0]?.n || 1;
-  $('#sm-maplist').innerHTML = `<p class="sm-listt">Towns with the most seats</p>` + (top.map(t => smRow(t.name, t.types, 100 * t.n / tmax, fmt(t.n), tip(t))).join('')
+  $('#sm-maplist').innerHTML = `<p class="sm-listt">Towns with the most seats</p>` + (top.map(t => smRow(t.name, t.types, 100 * t.n / tmax, fmt(t.n), tip(t), ` data-town="${t.i}"`)).join('')
     || '<p class="muted">No seats match these filters.</p>');
+  $('#sm-info').className = 'sm-info sm-info-town';
+  $('#sm-info').innerHTML = `<p class="sm-hint">${list.length ? 'Point at or tap a town to list its institutions here.' : 'No seats match these filters.'}</p>`;
 }
 // one bar of a seat chart: stacked by college type when t is given, else a single series
 function smRow(label, t, width, value, tip, attrs = '') {

@@ -5,6 +5,9 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+// "openData" in the registry opens every state's data to every account (17 Nov 2026); otherwise another state's data is locked
+const OPEN = !!JSON.parse(fs.readFileSync(new URL('../guides/guides.json', import.meta.url), 'utf8')).openData;
+const OTHER = OPEN ? [200, 'open'] : [403, 'locked'];
 
 const PORT = 4300 + Math.floor(Math.random() * 600);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -284,8 +287,9 @@ test('roadmap pages: guides and stages for everyone, data by account and state',
   const k = browser();
   await k('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Kerala', phone: '9000000130' } });
   await k('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000130', code: '1234', password: PW } });
-  assert.equal((await k('/api/regions/odisha')).json.access, 'locked');
-  assert.equal((await k('/api/regions/odisha/data/merit-list-2026')).status, 403);
+  assert.equal((await k('/api/regions/odisha')).json.access, OTHER[1]);
+  assert.equal((await k('/api/regions/odisha')).json.openData, OPEN);
+  assert.equal((await k('/api/regions/odisha/data/merit-list-2026')).status, OTHER[0]);
   const all = await k('/api/regions/all-india/data/allotment-round-1');
   assert.equal(all.status, 200);
   assert.equal(all.json.rows.length, 28584);
@@ -335,7 +339,7 @@ test('Chhattisgarh, Tamil Nadu, Uttar Pradesh and Uttarakhand: merit list, seat 
     const a = (await b(`/api/regions/${key}/data/allotment-round-1`)).json;
     assert.equal(a.format, 'state');
     assert.equal(a.rows.length, allotted, `${state}: allotted`);
-    assert.equal((await b('/api/regions/odisha/data/merit-list-2026')).status, 403, "another state's data stays locked");
+    assert.equal((await b('/api/regions/odisha/data/merit-list-2026')).status, OTHER[0], "another state's data: locked, or open with openData");
   }
   const cfg = (await browser()('/api/config')).json;
   assert.deepEqual(cfg.meritByName, ['Tamil Nadu'], 'Tamil Nadu prints no NEET-PG ranks: its CMR is found by name');
@@ -389,7 +393,7 @@ test('Odisha allotments; Kerala, Maharashtra, Karnataka, Madhya Pradesh, Gujarat
       }
       if (key === 'karnataka') assert.ok(a.rows.every(r => r.fee > 0), 'Karnataka: every allotment carries its course fee');
     }
-    assert.equal((await b(`/api/regions/${key === 'odisha' ? 'kerala' : 'odisha'}/data/seat-matrix-round-1`)).status, 403, "another state's data stays locked");
+    assert.equal((await b(`/api/regions/${key === 'odisha' ? 'kerala' : 'odisha'}/data/seat-matrix-round-1`)).status, OTHER[0], "another state's data: locked, or open with openData");
   }
 });
 

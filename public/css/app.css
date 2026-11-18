@@ -922,10 +922,19 @@
 .sm-val{font:500 12.5px/1 var(--mono); color:var(--ink); text-align:right}
 .sm-tip{position:absolute; z-index:5; pointer-events:none; display:grid; gap:3px; min-width:170px; padding:9px 11px; font-size:12.5px; color:var(--ink);
   background:var(--surface); border:1px solid var(--rule-2); border-radius:var(--r); box-shadow:var(--shadow-pop)}
-.sm-tip span{display:flex; align-items:center; gap:6px; color:var(--ink-2)}
-.sm-tip span b{margin-left:auto; font:500 12.5px var(--mono); color:var(--ink)}
-.sm-tip i{display:inline-block; width:8px; height:8px; border-radius:2px}
+.sm-tip span, .sm-info span{display:flex; align-items:center; gap:6px; color:var(--ink-2)}
+.sm-tip span b, .sm-info span b{margin-left:auto; font:500 12.5px var(--mono); color:var(--ink)}
+.sm-tip i, .sm-info i{display:inline-block; width:8px; height:8px; border-radius:2px; flex:none}
 .sm-tip .sm-tipc{font-size:12px; max-width:300px}
+/* what the map points at, beside it (below it on a phone), never on top of it */
+.sm-info{display:grid; gap:3px; align-content:start; height:128px; overflow-y:auto; padding:10px 12px; font-size:12.5px; color:var(--ink);
+  background:var(--sunk); border:1px solid var(--rule); border-radius:var(--r)}
+.sm-info.sm-info-town{height:300px}   /* fixed, so the list below does not move under the pointer */
+.sm-info .sm-tipc{font-size:12px}
+.sm-info .sm-hint{margin:0; color:var(--muted); font-size:12.5px}
+.sm-town.on{fill-opacity:1; stroke:var(--ink)}
+.sm-map path.on{stroke:var(--ink); stroke-width:1.4}
+.sm-row.on{background:var(--hover)}
 /* seat map: one brass hue, light to dark for more seats (dark mode: dim to bright) */
 :root{--sq0:#ebe7dd; --sq1:#f2e3bf; --sq2:#e3c47f; --sq3:#c99a43; --sq4:#9c7024; --sq5:#5f4313; --sm-town:#a67a2b; --sm-dist:#f6f3ec}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sq0:#1c2430; --sq1:#3b3322; --sq2:#5f4b22; --sq3:#8c6a2a; --sq4:#bf9140; --sq5:#ecc77c; --sm-town:#d6ab5a; --sm-dist:#18202b}}

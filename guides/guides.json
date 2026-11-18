@@ -46,7 +46,7 @@
         },
         {
           "what": "Round 2 choice filling and locking",
-          "when": "Opened late on 10 Nov (seat matrix checks) – 15 Nov, 11:55 pm · locking from 14 Nov, 4 pm",
+          "when": "10 Nov – 15 Nov, 11:55 pm (closed) · choices saved but not locked are locked by the system",
           "from": "2026-11-10T13:00:00+05:30",
           "to": "2026-11-15T23:55:00+05:30"
         },
@@ -57,8 +57,13 @@
         },
         {
           "what": "Round 2 result",
-          "when": "Provisional 16 Nov · final 17 Nov · report 18–24 Nov",
-          "on": "2026-11-17T00:00:00+05:30"
+          "when": "On hold: seat processing stopped on 17 Nov by the Madras High Court's interim order; the result comes after the court's clarification",
+          "label": "On hold"
+        },
+        {
+          "what": "Round 2 state counselling and joining (revised 17 Nov)",
+          "when": "State Round 2 and the last date of joining: 24 Nov (was 23 Nov) · MCC shares joined candidates' data 25 Nov · may move again while the result is on hold",
+          "on": "2026-11-24T00:00:00+05:30"
         },
         {
           "what": "Round 3 registration and choices",
@@ -117,6 +122,18 @@
           "what": "PwBD certificate and disability verification",
           "when": "From 28 Oct, 10 am",
           "on": "2026-10-28T10:00:00+05:30"
+        },
+        {
+          "what": "CQ Phase I allotment",
+          "when": "In-service 13 Nov (join by 18 Nov, 3 pm, extended) · non-service 15 Nov (report by 18 Nov, 3 pm)",
+          "from": "2026-11-13T00:00:00+05:30",
+          "to": "2026-11-18T15:00:00+05:30"
+        },
+        {
+          "what": "Management quota Phase I",
+          "when": "Web options 14 Nov, 6 pm – 16 Nov, 6 pm · final allotment 17 Nov · report by 20 Nov, 3 pm",
+          "from": "2026-11-14T18:00:00+05:30",
+          "to": "2026-11-20T15:00:00+05:30"
         }
       ]
     },
@@ -255,6 +272,18 @@
           "when": "2–6 Nov, 10 am – 3 pm · 10 Nov – 12 Nov, 5 pm (extended)",
           "from": "2026-11-02T10:00:00+05:30",
           "to": "2026-11-12T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 application, choice filling and locking",
+          "when": "Apply by 19 Nov, 11:59 pm · choices until 20 Nov, 11:59 pm · NRI documents by email by 19 Nov",
+          "from": "2026-11-14T00:00:00+05:30",
+          "to": "2026-11-20T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 seat withdrawal",
+          "when": "18 Nov, 10:30 am – 20 Nov, 5 pm",
+          "from": "2026-11-18T10:30:00+05:30",
+          "to": "2026-11-20T17:00:00+05:30"
         }
       ]
     },
@@ -357,6 +386,11 @@
           "what": "Round 2 online registration",
           "when": "Until 15 Nov, 5 pm · updated eligibility and document list",
           "to": "2026-11-15T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 document verification and provisional merit list",
+          "when": "Verification at help centres from 16 Nov, 10 am – 4 pm · provisional merit list 17 Nov",
+          "on": "2026-11-17T00:00:00+05:30"
         }
       ]
     },
@@ -393,6 +427,12 @@
           "what": "Round 1 choice filling and locking",
           "when": "Until 12 Nov (revised schedule)",
           "to": "2026-11-12T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 seat allocation",
+          "when": "Provisional 16 Nov · final 17 Nov · report by 18 Nov",
+          "from": "2026-11-16T00:00:00+05:30",
+          "to": "2026-11-18T23:59:00+05:30"
         }
       ]
     },
@@ -428,6 +468,12 @@
           "what": "Provisional seat allotment",
           "when": "2 Nov · joining 3–10 Nov",
           "on": "2026-11-02T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 (state quota) and Round 1 (open and NRI quota)",
+          "when": "State quota Round 2 form and documents 14–17 Nov · open and NRI quota Round 1 applications 16–19 Nov",
+          "from": "2026-11-14T00:00:00+05:30",
+          "to": "2026-11-19T23:59:00+05:30"
         }
       ]
     },
@@ -488,6 +534,12 @@
           "what": "Round 1: exercise of choices by allotted candidates",
           "when": "Extended to 13 Nov, 2 pm",
           "to": "2026-11-13T14:00:00+05:30"
+        },
+        {
+          "what": "Round 2 caution deposit and option entry",
+          "when": "16 Nov – 18 Nov, 4 pm",
+          "from": "2026-11-16T00:00:00+05:30",
+          "to": "2026-11-18T16:00:00+05:30"
         }
       ]
     },
@@ -761,6 +813,11 @@
           "to": "2026-11-13T17:00:00+05:30"
         },
         {
+          "what": "Round 2 flow chart",
+          "when": "16 Nov: who can take part, real and virtual vacancies, freeze and float",
+          "label": "Published"
+        },
+        {
           "what": "Round 2 provisional seat matrix and merit list",
           "when": "18 Nov, 12 noon · grievances by email until 19 Nov, 2 pm",
           "on": "2026-11-18T12:00:00+05:30"
@@ -875,6 +932,11 @@
           "to": "2026-11-17T23:55:00+05:30"
         },
         {
+          "what": "Round 2 seat matrix",
+          "when": "15 Nov: MD/MS and post-MBBS diploma",
+          "label": "Published"
+        },
+        {
           "what": "Academic session begins",
           "when": "20 Nov",
           "on": "2026-11-20T00:00:00+05:30"
@@ -940,6 +1002,12 @@
           "what": "Round 1 provisional allotment",
           "when": "5 Nov · Government quota, Management quota, DNB / diploma",
           "on": "2026-11-05T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 registration",
+          "when": "Opened 17 Nov, with more seats · PwD Round 2: registration 17 Nov, 10 am – 1 pm; choices 2–6 pm",
+          "from": "2026-11-17T10:00:00+05:30",
+          "label": "Open"
         }
       ]
     },
@@ -993,6 +1061,17 @@
           "what": "Merit lists and web options",
           "when": "To be notified on knruhs.telangana.gov.in",
           "label": "Awaited"
+        },
+        {
+          "what": "Government quota Phase 1 allotment",
+          "when": "Web options 13–15 Nov, 2 pm · college-wise allotment 16 Nov (revised the same day) · report by 19 Nov, 4 pm",
+          "from": "2026-11-13T14:00:00+05:30",
+          "to": "2026-11-19T16:00:00+05:30"
+        },
+        {
+          "what": "Management quota Round 1 provisional merit list",
+          "when": "15 Nov · grievances by email until 16 Nov, 6 pm",
+          "on": "2026-11-15T00:00:00+05:30"
         }
       ]
     },
@@ -1032,6 +1111,12 @@
           "when": "3–7 Nov and 12–13 Nov",
           "from": "2026-11-03T00:00:00+05:30",
           "to": "2026-11-13T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 registration and payment",
+          "when": "16 Nov, 2 pm – 19 Nov, 11 am · payment until 19 Nov, 2 pm · Round 1 resignation until 18 Nov, 11 am",
+          "from": "2026-11-16T14:00:00+05:30",
+          "to": "2026-11-19T14:00:00+05:30"
         }
       ]
     },
@@ -1083,6 +1168,12 @@
           "when": "By 10 Nov",
           "from": "2026-11-04T00:00:00+05:30",
           "to": "2026-11-10T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 registration",
+          "when": "14 Nov – 17 Nov, 4 pm (NRI until 16 Nov, 2 pm) · Round 1 seat surrender until 17 Nov, 5 pm · seat matrix 16 Nov",
+          "from": "2026-11-14T00:00:00+05:30",
+          "to": "2026-11-17T17:00:00+05:30"
         }
       ]
     },
@@ -1352,27 +1443,23 @@
         "name": "Round 2",
         "from": "2026-11-03T00:00:00+05:30",
         "to": "2026-11-25T23:59:00+05:30",
-        "detail": "Seat matrix out 10 Nov: 15,387 clear vacancies (3,657 of them newly added) and 15,396 virtual vacancies; MCC re-issued it on 11 Nov. Registration until 14 Nov, 3 pm; choice filling until 15 Nov, 11:55 pm (locking from 14 Nov, 4 pm); provisional result 16 Nov, final 17 Nov, reporting 18–24 Nov.",
+        "detail": "Seat matrix out 10 Nov (re-issued 11 and 13 Nov); choice filling closed 15 Nov, 11:55 pm. On 17 Nov MCC put seat processing and the result on hold, following an interim order of the Madras High Court; the result will be declared once the court clarifies. Reporting dates will move.",
         "events": [
           {
             "what": "Seat matrix",
-            "when": "10 Nov · re-issued 11 Nov"
-          },
-          {
-            "what": "Registration",
-            "when": "Until 14 Nov, 3 pm"
+            "when": "10 Nov · re-issued 11 and 13 Nov"
           },
           {
             "what": "Choice filling",
-            "when": "Until 15 Nov"
+            "when": "Closed 15 Nov"
           },
           {
             "what": "Result",
-            "when": "17 Nov"
+            "when": "On hold (court order, 17 Nov)"
           },
           {
             "what": "Reporting",
-            "when": "18–24 Nov"
+            "when": "After the result"
           }
         ]
       },
@@ -3330,6 +3417,22 @@
       "date": "2026-10-30",
       "kind": "Seat matrix",
       "kb": 583
+    },
+    {
+      "region": "All India",
+      "title": "MCC notice 10: Round 2 seat processing and result on hold (Madras High Court interim order of 17 Nov)",
+      "file": "mcc/round2-result-on-hold-2026-11-17.pdf",
+      "date": "2026-11-17",
+      "kind": "Notice",
+      "kb": 238
+    },
+    {
+      "region": "Odisha",
+      "title": "Flow chart for state Round 2: eligibility, real and virtual vacancies, freeze and float",
+      "file": "odisha/round2-flow-chart.pdf",
+      "date": "2026-11-16",
+      "kind": "Notice",
+      "kb": 156
     }
   ],
   "updates": [
@@ -4095,29 +4198,193 @@
       "date": "2026-10-30",
       "text": "Revised merit list (No. 63) after grievances, with a separate DNB list; revised DNB and diploma seat matrices (No. 59, 60).",
       "link": "/roadmap/odisha/merit-list"
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-13",
+      "text": "Round 1 reporting portal re-opened once for institutes on 13 Nov, 12 noon – 2 pm (first announced as 9:30 am – 11 pm); Round 2 choice filling paused for those hours. MCC also issued an updated Round 2 seat matrix with seats added and removed, and AFMS a further list of provisionally eligible Priority III candidates."
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-14",
+      "text": "Sri Venkateshwaraa Medical College Hospital & Research Centre, Puducherry, is now a deemed university in the NMC seat matrix: its seats are offered through MCC from Round 2. Seats already allotted there in Puducherry state counselling stand. Round 2 choice locking opened, and the Round 2 NRI eligible list came out."
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-16",
+      "text": "Round 2 choice filling and locking closed on 15 Nov, 11:55 pm. Choices that were saved but not locked are locked by the system before seat processing; the status may show \"unlocked\" until then."
+    },
+    {
+      "region": "All India",
+      "date": "2026-11-17",
+      "text": "Round 2 result on hold (MCC notice 10): an interim order of the Madras High Court on 17 Nov (WP 46350 of 2026, Sri Venkateshwaraa Medical College vs Union of India) stays further admission proceedings and joining by CENTAC and MCC. The result will be declared after the court's clarification. Earlier that day MCC had moved the state Round 2 last date and Round 2 joining to 24 Nov (from 23 Nov); state Round 2 schedules may now change too.",
+      "link": "/roadmap/all-india/round-2",
+      "doc": "mcc/round2-result-on-hold-2026-11-17.pdf"
+    },
+    {
+      "region": "Odisha",
+      "date": "2026-11-16",
+      "text": "Round 2 flow chart: everyone on the revised Round 2 merit list can take part, with or without a Round 1 seat. Choose from real vacancies (seats left after Round 1, its upgrade and newly added seats) and virtual vacancies. A fresh Round 2 seat cancels your claim to the Round 1 seat; freeze ends your counselling, float keeps you in Round 3 / mop-up.",
+      "link": "/roadmap/odisha/registration/odisha/how-counselling-works",
+      "doc": "odisha/round2-flow-chart.pdf"
+    },
+    {
+      "region": "Andhra Pradesh",
+      "date": "2026-11-13",
+      "text": "Competent authority quota Phase I, in-service: provisional allotment, MRC list and final allotment published; joining extended to 18 Nov, 3 pm."
+    },
+    {
+      "region": "Andhra Pradesh",
+      "date": "2026-11-15",
+      "text": "Competent authority quota Phase I, non-service: provisional and final allotment and the MRC list published; report by 18 Nov, 3 pm. Management quota Phase I: seat matrix, institutional quota (S3) eligible list, and web options 14 Nov, 6 pm – 16 Nov, 6 pm."
+    },
+    {
+      "region": "Andhra Pradesh",
+      "date": "2026-11-17",
+      "text": "Management quota Phase I final allotment published; report to the college by 20 Nov, 3 pm."
+    },
+    {
+      "region": "Arunachal Pradesh",
+      "date": "2026-11-17",
+      "text": "Round 1 rescheduled for in-service candidates."
+    },
+    {
+      "region": "Chandigarh",
+      "date": "2026-11-17",
+      "text": "Round 2: list of candidates with deficient documents; submit them online by 18 Nov."
+    },
+    {
+      "region": "Chhattisgarh",
+      "date": "2026-11-14",
+      "text": "Round 2 schedule and the 200-point reservation roster: apply online by 19 Nov, 11:59 pm; choice filling and locking until 20 Nov, 11:59 pm. NRI quota candidates email their documents by 19 Nov, 11:59 pm."
+    },
+    {
+      "region": "Chhattisgarh",
+      "date": "2026-11-17",
+      "text": "Round 2 clear vacancies published. Round 1 seat withdrawal: 18 Nov, 10:30 am – 20 Nov, 5 pm."
+    },
+    {
+      "region": "Gujarat",
+      "date": "2026-11-17",
+      "text": "Round 2 provisional merit list for General, SC, ST, SEBC, EWS and in-service (General, SC, SEBC) candidates. Round 2 document verification at the help centres began 16 Nov, 10 am – 4 pm."
+    },
+    {
+      "region": "Haryana",
+      "date": "2026-11-17",
+      "text": "Round 1 provisional eligible list after document verification. Physical verification 16–17 Nov; join the allotted college by 18 Nov, 4 pm."
+    },
+    {
+      "region": "Himachal Pradesh",
+      "date": "2026-11-17",
+      "text": "Round 1 final seat allocation (provisional 16 Nov); report to the allotted institute by 18 Nov."
+    },
+    {
+      "region": "Jammu and Kashmir",
+      "date": "2026-11-14",
+      "text": "Round 2 provisional merit list: CDP and missing category certificates at the BOPEE office, Jammu or Srinagar, by 15 Nov, 4 pm."
+    },
+    {
+      "region": "Jammu and Kashmir",
+      "date": "2026-11-17",
+      "text": "Round 2 seat matrix published; online preferences 17 Nov, 1 pm – 19 Nov, midnight."
+    },
+    {
+      "region": "Jharkhand",
+      "date": "2026-11-13",
+      "text": "Round 2 for the state quota: seat matrix out, online form and documents 14–17 Nov. Round 1 for the open (All India candidates) and NRI quota: applications 16–19 Nov."
+    },
+    {
+      "region": "Karnataka",
+      "date": "2026-11-16",
+      "text": "Round 2 schedule, rules and instructions (KEA); caution deposit and option entry open 16 Nov – 18 Nov, 4 pm."
+    },
+    {
+      "region": "Kerala",
+      "date": "2026-11-17",
+      "text": "Service candidates list and the PwD quota eligible list published."
+    },
+    {
+      "region": "Manipur",
+      "date": "2026-11-15",
+      "text": "RIMS Round 1 merit lists (RIMS open and in-service; SAHS state quota and management quota; JNIMS direct, in-service and IP; non-RIMS open) and the Round 1 allotment. Reporting closed 16 Nov; selected in-service candidates follow the NOC guidelines."
+    },
+    {
+      "region": "Punjab",
+      "date": "2026-11-14",
+      "text": "Round 2 schedule and tentative vacancies: fresh registration, fee and willingness with the security deposit 14–16 Nov; form corrections, minority verification (CMC Ludhiana, SGRD Amritsar) and documents at BFUHS, Faridkot, until 17 Nov, 5 pm; NRI forms until 17 Nov, 3 pm."
+    },
+    {
+      "region": "Rajasthan",
+      "date": "2026-11-15",
+      "text": "Round 2 seat matrix for MD/MS and post-MBBS diploma."
+    },
+    {
+      "region": "Sikkim",
+      "date": "2026-11-16",
+      "text": "Round 2 choice filling closed 16 Nov, 1 pm."
+    },
+    {
+      "region": "Tamil Nadu",
+      "date": "2026-11-17",
+      "text": "Round 2 registration open, with a list of added seats. PwD Round 2: registration 17 Nov, 10 am – 1 pm; choices 2–6 pm. Colleges' PG fee and stipend disclosure and bank account guidelines for counselling payments published."
+    },
+    {
+      "region": "Telangana",
+      "date": "2026-11-13",
+      "text": "Government quota Phase 1: final merit list and addendum, seat matrices (minority and non-minority, service and non-service) and the fee structure; web options 13 Nov, 2 pm – 15 Nov, 2 pm."
+    },
+    {
+      "region": "Telangana",
+      "date": "2026-11-15",
+      "text": "Management quota Round 1 provisional merit list and not-eligible list; grievances by email until 16 Nov, 6 pm."
+    },
+    {
+      "region": "Telangana",
+      "date": "2026-11-16",
+      "text": "Government quota Phase 1 college-wise allotment, withheld for a technical problem and re-issued the same day; report by 19 Nov, 4 pm. If you already paid the university fee, you need not pay again for the new allotment order."
+    },
+    {
+      "region": "Uttar Pradesh",
+      "date": "2026-11-16",
+      "text": "Round 2 registration and payment open: register by 19 Nov, 11 am, pay by 19 Nov, 2 pm. Round 1 resignation until 18 Nov, 11 am."
+    },
+    {
+      "region": "Uttar Pradesh",
+      "date": "2026-11-17",
+      "text": "Round 2 instructions: no changes after locking; an upgrade vacates your earlier seat; government college seats report at the college, private college seats at the nodal centre; not joining may forfeit the security deposit."
+    },
+    {
+      "region": "Uttarakhand",
+      "date": "2026-11-14",
+      "text": "Round 2 schedule: registration until 17 Nov, 4 pm (NRI until 16 Nov, 2 pm). Round 1 seat surrender until 17 Nov, 5 pm: freeze candidates at the institute, float candidates online."
+    },
+    {
+      "region": "Uttarakhand",
+      "date": "2026-11-17",
+      "text": "Round 2 seat matrix (16 Nov) and the NRI provisional merit list published."
     }
   ],
   "highlight": {
-    "eyebrow": "New · 15 Nov",
-    "text": "A map on the seat matrix page: India shaded by PG seats, and each state's own map with every town's seats. It follows the state, course and college type you pick. Odisha's revised merit list and DNB and diploma seats are in too.",
-    "href": "/seats",
-    "go": "Open the seat map"
+    "eyebrow": "New · 17 Nov",
+    "text": "Every state's merit lists, seat matrices and allotments are now open to every account while counselling is on hold. MCC's Round 2 result is on hold by a Madras High Court order; Odisha's Round 2 flow chart and state notices to 17 Nov are in.",
+    "href": "/roadmap/all-india/round-2",
+    "go": "See where Round 2 stands"
   },
   "progress": {
     "All India": {
       "stage": "Round 2",
-      "note": "Round 2 seat matrix out (re-issued 11 Nov); choice filling until 15 Nov, 11:55 pm; result 17 Nov.",
-      "asOf": "2026-11-12"
+      "note": "Round 2 result on hold since 17 Nov (Madras High Court order); choices closed 15 Nov.",
+      "asOf": "2026-11-17"
     },
     "Odisha": {
       "stage": "Round 2",
-      "note": "Round 2 document verification 13 Nov; seat matrix and merit list 18 Nov.",
-      "asOf": "2026-11-12"
+      "note": "Round 2 flow chart out 16 Nov; seat matrix and merit list due 18 Nov.",
+      "asOf": "2026-11-17"
     },
     "Andhra Pradesh": {
-      "stage": "Merit List",
-      "note": "Final merit lists out (CQ 6 Nov, management quota 12 Nov) and the CQ Phase I seat matrix (9 Nov, AU revised 12 Nov); web options next.",
-      "asOf": "2026-11-12"
+      "stage": "Round 1",
+      "note": "Phase I allotments out (CQ in-service 13 Nov, non-service 15 Nov, management quota 17 Nov); report by 18–20 Nov.",
+      "asOf": "2026-11-17"
     },
     "Assam": {
       "stage": "Round 1",
@@ -4131,13 +4398,13 @@
     },
     "Chandigarh": {
       "stage": "Round 2",
-      "note": "Round 2 registration and Round 1 resignation 13–15 Nov.",
-      "asOf": "2026-11-12"
+      "note": "Round 2: candidates with deficient documents submit them online by 18 Nov.",
+      "asOf": "2026-11-17"
     },
     "Chhattisgarh": {
-      "stage": "Round 1",
-      "note": "Round 1 allotment out 31 Oct; scrutiny and joining 2–6 Nov and 10–11 Nov (not 7–9 Nov).",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 2 clear vacancies out 17 Nov; apply by 19 Nov, choices until 20 Nov.",
+      "asOf": "2026-11-17"
     },
     "Delhi": {
       "stage": "Round 1",
@@ -4151,23 +4418,23 @@
     },
     "Gujarat": {
       "stage": "Round 2",
-      "note": "Round 2 registration until 15 Nov, 5 pm.",
-      "asOf": "2026-11-12"
+      "note": "Round 2 provisional merit list out 17 Nov.",
+      "asOf": "2026-11-17"
     },
     "Himachal Pradesh": {
       "stage": "Round 1",
-      "note": "Round 1 choice filling until 12 Nov; final merit list revised 12 Nov.",
-      "asOf": "2026-11-12"
+      "note": "Round 1 final allocation out 17 Nov; report by 18 Nov.",
+      "asOf": "2026-11-17"
     },
     "Jharkhand": {
-      "stage": "Round 1",
-      "note": "Round 1 provisional allotment out 3 Nov.",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "State quota Round 2 forms closed 17 Nov; open and NRI quota Round 1 applications until 19 Nov.",
+      "asOf": "2026-11-17"
     },
     "Kerala": {
       "stage": "Round 1",
-      "note": "Round 1 final allotment out 2 Nov; join by 10 Nov, 4 pm.",
-      "asOf": "2026-11-03"
+      "note": "Service candidates and PwD quota eligible lists out 17 Nov.",
+      "asOf": "2026-11-17"
     },
     "Madhya Pradesh": {
       "stage": "Round 1",
@@ -4191,28 +4458,28 @@
     },
     "Rajasthan": {
       "stage": "Round 2",
-      "note": "Round 2 application form 13–17 Nov.",
-      "asOf": "2026-11-12"
+      "note": "Round 2 seat matrix out 15 Nov; applications closed 17 Nov.",
+      "asOf": "2026-11-17"
     },
     "Sikkim": {
       "stage": "Round 2",
-      "note": "Round 2 registration open from 2 Nov.",
-      "asOf": "2026-11-03"
+      "note": "Round 2 choice filling closed 16 Nov, 1 pm.",
+      "asOf": "2026-11-17"
     },
     "Tamil Nadu": {
-      "stage": "Round 1",
-      "note": "Round 1 provisional allotment out 5 Nov: Government quota 1,409, Management quota 468, DNB / diploma 11.",
-      "asOf": "2026-11-05"
+      "stage": "Round 2",
+      "note": "Round 2 registration open from 17 Nov, with more seats.",
+      "asOf": "2026-11-17"
     },
     "Uttarakhand": {
-      "stage": "Round 1",
-      "note": "Round 1 admission: freeze or float online, documents and advance fee by 10 Nov.",
-      "asOf": "2026-11-05"
+      "stage": "Round 2",
+      "note": "Round 2 seat matrix out 16 Nov; registration closed 17 Nov.",
+      "asOf": "2026-11-17"
     },
     "Karnataka": {
-      "stage": "Round 1",
-      "note": "Allotted candidates exercise their choice until 13 Nov, 2 pm.",
-      "asOf": "2026-11-12"
+      "stage": "Round 2",
+      "note": "Round 2 caution deposit and option entry until 18 Nov, 4 pm.",
+      "asOf": "2026-11-17"
     },
     "West Bengal": {
       "stage": "Round 1",
@@ -4225,34 +4492,39 @@
       "asOf": "2026-11-03"
     },
     "Uttar Pradesh": {
-      "stage": "Round 1",
-      "note": "Round 1 allotment out 2 Nov; report 3–7 Nov and 12–13 Nov.",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 2 registration until 19 Nov, 11 am; Round 1 resignation until 18 Nov.",
+      "asOf": "2026-11-17"
     },
     "Jammu and Kashmir": {
-      "stage": "Round 1",
-      "note": "Provisional selection list out 3 Nov; report 4–7 Nov, until 4:30 pm.",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 2 seat matrix out; preferences 17 Nov, 1 pm – 19 Nov.",
+      "asOf": "2026-11-17"
     },
     "Telangana": {
-      "stage": "Registration",
-      "note": "Management quota applications closed 30 Oct; merit lists awaited.",
-      "asOf": "2026-11-02"
+      "stage": "Round 1",
+      "note": "Government quota Phase 1 allotment out 16 Nov (revised); report by 19 Nov, 4 pm.",
+      "asOf": "2026-11-17"
     },
     "Manipur": {
-      "stage": "Registration",
-      "note": "RIMS Round 1 registration and choices 3–10 Nov.",
-      "asOf": "2026-11-03"
+      "stage": "Round 1",
+      "note": "RIMS Round 1 merit lists and allotment out 15 Nov; reporting closed 16 Nov.",
+      "asOf": "2026-11-17"
     },
     "Punjab": {
-      "stage": "Round 1",
-      "note": "Round 1 allotment out 3 Nov (596 allotted).",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 2 registration closed 16 Nov; corrections and documents at BFUHS until 17 Nov.",
+      "asOf": "2026-11-17"
     },
     "Haryana": {
       "stage": "Round 1",
-      "note": "Round 1 provisional allotment out 12 Nov; fee deposit and physical document verification next.",
-      "asOf": "2026-11-12"
+      "note": "Eligible list after document verification out 17 Nov; join the allotted college by 18 Nov, 4 pm.",
+      "asOf": "2026-11-17"
+    },
+    "Arunachal Pradesh": {
+      "stage": "Round 1",
+      "note": "Round 1 rescheduled for in-service candidates (17 Nov).",
+      "asOf": "2026-11-17"
     }
   },
   "data": [
@@ -4988,5 +5260,6 @@
         "penalty": "None"
       }
     ]
-  }
+  },
+  "openData": true
 }

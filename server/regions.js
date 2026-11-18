@@ -1,7 +1,7 @@
 // One counselling roadmap page per region (All India, or a state): where its counselling stands,
 // its dates, its guides in a common layout, and its data (merit list, seat matrix, allotments).
 // Guides and dates are for everyone. Data needs an account: All India data for any signed-in
-// candidate, a state's data only for candidates registered for that state.
+// candidate, a state's data only for candidates registered for that state (or for everyone, with "openData").
 import fs from 'node:fs';
 import path from 'node:path';
 import { registry, guideList, documents, GUIDES_DIR, ALL_INDIA, STAGES, DATA_DIR } from './guides.js';
@@ -15,9 +15,12 @@ export const regionOf = key => [ALL_INDIA, ...STATES].find(r => regionKey(r) ===
 // wiped on every restart.
 const FULL = new Set((process.env.FULL_ACCESS_PHONES || '').split(/[,;\n]+/).map(p => p.replace(/\D/g, '').slice(-10)).filter(p => p.length === 10));
 export const fullAccess = user => !!user?.review || (!!user?.phone && FULL.has(String(user.phone).replace(/\D/g, '').slice(-10)));
+// "openData": true in guides.json opens every state's data to every signed-in candidate (from 17 Nov 2026, while
+// counselling is on hold); without it, a state's data is for candidates registered for that state.
+const openToAll = () => !!registry().openData;
 /** Who may load a region's data. */
 export const access = (user, region, admin = false) => admin ? 'open' : !user ? 'signin'
-  : region === ALL_INDIA || user.state === region || fullAccess(user) ? 'open' : 'locked';
+  : region === ALL_INDIA || user.state === region || fullAccess(user) || openToAll() ? 'open' : 'locked';
 
 const fileOf = g => path.join(GUIDES_DIR, registry().guides.find(x => x.slug === g.slug).file);
 
@@ -32,7 +35,7 @@ export function regionInfo(region, user, admin = false) {
     region, key: regionKey(region), stages: STAGES, progress: reg.progress?.[region] || null,
     guides: guides.map(g => ({ slug: g.slug, label: g.label, title: g.title, summary: g.summary, authority: g.authority, official: g.official,
       sections: sections(fileOf(g)).map(({ id, title, blurb }) => ({ id, title, blurb })) })),
-    dates, documents: documents().filter(d => d.region === region), data, access: access(user, region, admin),
+    dates, documents: documents().filter(d => d.region === region), data, access: access(user, region, admin), openData: openToAll(),
     review: admin ? 'admin' : fullAccess(user) ? 'account' : null
   };
 }
