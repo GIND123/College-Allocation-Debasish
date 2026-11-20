@@ -1,0 +1,303 @@
+<title>Punjab PG Counselling 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Plain-language guide to Punjab NEET-PG 2026 counselling (BFUHS, Faridkot): quotas, fees, security deposits, rounds and documents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column with a sticky section bar; summary first, detail after; tables scroll in their own boxes */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #161b22;
+  --muted: #56606d;
+  --line: #d9dee5;
+  --accent: #2f6b3a;        /* Punjab field green */
+  --accent-soft: #e4f0e4;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --crit: #a3332b;
+  --crit-soft: #fbe6e3;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1318; --surface: #161c23; --fg: #e3e8ee; --muted: #9aa5b2; --line: #2a323c;
+    --accent: #93cf9c; --accent-soft: #1a2a1d; --warn: #e8b54f; --warn-soft: #2e2716;
+    --crit: #f08b80; --crit-soft: #351d1a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1318; --surface: #161c23; --fg: #e3e8ee; --muted: #9aa5b2; --line: #2a323c;
+  --accent: #93cf9c; --accent-soft: #1a2a1d; --warn: #e8b54f; --warn-soft: #2e2716;
+  --crit: #f08b80; --crit-soft: #351d1a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+}
+.wrap {
+  max-width: 820px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; font-weight: 800; }
+h3 { font-size: 1.08rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+header.top { padding-block: 40px 28px; border-bottom: 1px solid var(--line); }
+header.top .wrap { display: grid; gap: 14px; }
+.eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chip { font-size: 0.85rem; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav.sections { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.sections .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; }
+nav.sections a { flex: none; text-decoration: none; color: var(--muted); font-size: 0.88rem; font-weight: 500; padding: 6px 10px; border-radius: 8px; }
+nav.sections a:hover, nav.sections a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+
+main .wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+section { display: grid; gap: 16px; scroll-margin-top: 64px; }
+section > p, section li { max-width: 68ch; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+
+.status { display: grid; gap: 6px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 12px; padding: 16px 18px; }
+.status strong { color: var(--fg); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.fact .label { font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.fact .value { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; }
+.fact .note { font-size: 0.88rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.r, th.r { text-align: right; white-space: nowrap; }
+caption { caption-side: bottom; text-align: left; padding: 8px 12px; font-size: 0.82rem; color: var(--muted); }
+
+.callout { border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; border: 1px solid var(--line); background: var(--surface); }
+.callout.warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+.callout.crit { background: var(--crit-soft); border-color: color-mix(in srgb, var(--crit) 30%, transparent); }
+.callout .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.callout.warn .tag { color: var(--warn); }
+.callout.crit .tag { color: var(--crit); }
+
+ol.steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: s; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); color: var(--accent); font-weight: 500; }
+ol.steps li > div { min-width: 0; }
+ol.steps small { color: var(--muted); }
+
+.checklist { display: grid; gap: 6px; }
+.check { display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; }
+.check input { margin-top: 5px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+.check span { min-width: 0; }
+.check small { color: var(--muted); }
+.check:has(input:checked) span { color: var(--muted); text-decoration: line-through; }
+.progress { font-size: 0.9rem; color: var(--muted); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn { font: inherit; font-size: 0.85rem; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn:focus-visible, .check:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.rounds { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.round { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.round h3 { color: var(--accent); }
+.round ul { margin: 0; padding-left: 1.1em; font-size: 0.9rem; display: grid; gap: 4px; }
+
+footer { border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--muted); font-size: 0.85rem; }
+footer .wrap { display: grid; gap: 6px; }
+
+@media (max-width: 480px) { body { font-size: 15px; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <span class="eyebrow">Punjab · State, management, NRI &amp; minority quota · Session 2026–27</span>
+    <h1>Punjab PG counselling 2026, explained</h1>
+    <p class="lede">A plain-language summary of the NEET-PG 2026 prospectus of Baba Farid University of Health Sciences (BFUHS), Faridkot, for MD/MS, PG diploma and post-MBBS DNB seats in Punjab: who can apply, how seats are shared, what you pay, how the rounds work and what to carry.</p>
+    <div class="facts">
+      <span class="chip">596 seats allotted in Round 1</span>
+      <span class="chip">27 colleges and hospitals</span>
+      <span class="chip">Merit: NEET-PG 2026 score</span>
+      <span class="chip">Online counselling, physical reporting</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sections" aria-label="Sections">
+  <div class="wrap">
+    <a href="#now">Where it stands</a>
+    <a href="#eligibility">Who can apply</a>
+    <a href="#seats">Seats &amp; quotas</a>
+    <a href="#money">Fees &amp; deposits</a>
+    <a href="#steps">Steps</a>
+    <a href="#rounds">Rounds</a>
+    <a href="#documents">Documents</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <section id="now" aria-labelledby="h-now">
+      <h2 id="h-now">Where Punjab stands</h2>
+      <div class="status" role="status">
+        <p><strong>Round 1 is over: 596 seats were allotted</strong> (519 MD/MS, 37 diploma, 29 DNB and 11 in the six-month ultrasonography course), from the merit list of 1,449 candidates published on 23 October after objections.</p>
+        <p><strong>Round 2 registration ran 14–16 November</strong>, with willingness and the security deposit. Corrections, minority status checks and the NRI form closed on 17 November. BFUHS has not yet published the Round 2 seat matrix or result dates; MCC's All India Round 2 result is on hold by a court order of 17 November, and state rounds may move with it. Watch <a href="https://www.bfuhs.ac.in" target="_blank" rel="noopener">bfuhs.ac.in</a>.</p>
+      </div>
+      <div class="grid">
+        <div class="fact"><span class="label">Government quota</span><span class="value num">312</span><span class="note">seats allotted in Round 1</span></div>
+        <div class="fact"><span class="label">Minority seats</span><span class="value num">113</span><span class="note">Sikh minority (57) and CMC Ludhiana categories A–C (56)</span></div>
+        <div class="fact"><span class="label">Management quota</span><span class="value num">44</span><span class="note">private colleges</span></div>
+        <div class="fact"><span class="label">Merit list</span><span class="value num">1,449</span><span class="note">candidates, 23 Oct (after objections)</span></div>
+      </div>
+    </section>
+
+    <section id="eligibility" aria-labelledby="h-elig">
+      <h2 id="h-elig">Who can apply</h2>
+      <p>You need a NEET-PG 2026 qualifying result, a recognised MBBS and to meet the Government of Punjab notifications for the quota you claim. Qualifying or a good rank alone gives no right to a seat: the principal of the allotted college decides final eligibility after checking your originals.</p>
+      <ul class="plain">
+        <li><strong>Category codes</strong> on the form: Open/General 11, SC 12, BC 13, PwBD 14, EWS 15. You may claim more than one. A category not claimed on the form, or claimed without valid papers, is treated as Open. It cannot be changed after the correction window.</li>
+        <li><strong>SC, BC and EWS</strong> certificates must be issued by the Government of Punjab; EWS certificates from other states are not accepted.</li>
+        <li><strong>PwBD</strong> needs a certificate from a centre designated under the RPwD Act (list on the MCC site), or from the State Medical Assessment Board at GGS Medical College, Faridkot.</li>
+        <li><strong>PCMS in-service</strong> candidates (Punjab Civil Medical Services) apply with an NOC and an eligibility certificate from the competent authority, and add incentive marks to their NEET-PG score.</li>
+        <li><strong>Sikh and Christian minority quota</strong>: your minority status is verified by SGRD Institute, Amritsar (Sikh) or CMC Ludhiana (Christian) before counselling; only verified candidates are considered for those seats.</li>
+        <li><strong>NRI quota</strong>: get a provisional eligibility certificate from BFUHS first (US$1,500), then apply (another US$1,500), and submit the hard copy at the university.</li>
+      </ul>
+    </section>
+
+    <section id="seats" aria-labelledby="h-seats">
+      <h2 id="h-seats">How seats are shared</h2>
+      <p>Half the seats in government colleges go to the All India Quota through MCC; the state half is filled by BFUHS. Private colleges offer government quota, management quota and NRI quota seats, and the minority colleges (SGRD Amritsar, CMC Ludhiana) their own minority seats.</p>
+      <ul class="plain">
+        <li>Reserved-category candidates with marks at or above the general qualifying score are considered first for open seats, then for their category.</li>
+        <li>In private colleges, an eligible candidate is considered first against the management quota, then the institutional preference (IP) quota or any other quota. A candidate eligible for both an IP seat and a minority seat is considered for the IP seat first.</li>
+        <li>The complete seat matrix (by speciality, college, quota and category) is shown on the BFUHS site before choice filling. The prospectus's distribution of seats is only tentative.</li>
+      </ul>
+      <div class="callout warn">
+        <span class="tag">Round 1 allotment, by quota</span>
+        <p>Government quota 312 · Sikh minority 57 · General quota under the Punjab notification 54 · Management 44 · General merit (50%) 35 · Open merit (All India basis) 32 · CMC Ludhiana category A 31, B 23, C 2 · State quota (50%) 6.</p>
+      </div>
+    </section>
+
+    <section id="money" aria-labelledby="h-money">
+      <h2 id="h-money">Fees and security deposits</h2>
+      <p>The application fee is <strong>₹5,900</strong> (₹2,950 for SC candidates), including GST, non-refundable. After allotment you pay the first six months' fee online before reporting.</p>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Six-month fee at admission</th><th class="r">Govt college</th><th class="r">Private: govt &amp; mgmt quota</th><th class="r">NRI quota</th></tr></thead>
+          <tbody>
+            <tr><td>MD/MS, basic subjects <small>(anatomy, physiology, biochemistry, pharmacology, microbiology, community and forensic medicine, IHBT)</small></td><td class="r num">₹50,000</td><td class="r num">₹1,37,500</td><td class="r num">US$10,000</td></tr>
+            <tr><td>MD/MS, clinical subjects <small>(medicine, surgery, OBG, paediatrics, radiodiagnosis, anaesthesia and others, pathology included)</small></td><td class="r num">₹62,500</td><td class="r num">₹3,42,500</td><td class="r num">US$65,000</td></tr>
+            <tr><td>Diploma (DA, DCH)</td><td class="r num">₹62,500</td><td class="r num">₹2,05,000</td><td class="r num">US$15,000</td></tr>
+            <tr><td>DNB courses</td><td class="r num">₹37,500</td><td class="r">–</td><td class="r">–</td></tr>
+            <tr><td>Six-month ultrasonography training <small>(full course fee)</small></td><td class="r num">₹20,000</td><td class="r num">₹1,00,000</td><td class="r">–</td></tr>
+          </tbody>
+          <caption>First instalment payable at provisional admission, from the BFUHS prospectus. The full fee is as notified by the Government of Punjab.</caption>
+        </table>
+      </div>
+      <div class="table-box">
+        <table>
+          <thead><tr><th>Security deposit for Round 2 and later</th><th class="r">Amount</th></tr></thead>
+          <tbody>
+            <tr><td>Government medical colleges</td><td class="r num">₹25,000</td></tr>
+            <tr><td>Government colleges, SC / BC / PwBD candidates</td><td class="r num">₹10,000</td></tr>
+            <tr><td>Private colleges (government, management and NRI quota)</td><td class="r num">₹2,00,000</td></tr>
+          </tbody>
+          <caption>Paid once, online, with your willingness. It can be forfeited under the Government and MCC rules.</caption>
+        </table>
+      </div>
+      <p>Stipend and bond for Punjab are on the <a href="/bonds">stipend and bond page</a>.</p>
+    </section>
+
+    <section id="steps" aria-labelledby="h-steps">
+      <h2 id="h-steps">Step by step</h2>
+      <ol class="steps">
+        <li><div><b>Apply online</b> at bfuhs.ac.in and pay the application fee. <small>Upload a recent photo and signature (30 KB each). Only one application per candidate; offline forms are not accepted.</small></div></li>
+        <li><div><b>PCMS, NRI and minority candidates</b> also submit papers at the Admission Branch, BFUHS, Faridkot, or get verified by SGRD Amritsar or CMC Ludhiana. <small>In Round 2 these closed on 17 November.</small></div></li>
+        <li><div><b>Check the merit list</b> and raise any objection in person at BFUHS by the deadline.</div></li>
+        <li><div><b>Fill your choices</b> of course, speciality and college in order of preference. <small>Seats are allotted on merit, reservation, eligibility and your choices.</small></div></li>
+        <li><div><b>Allotment</b>: download the provisional allotment letter from your login.</div></li>
+        <li><div><b>Pay the six-month fee</b> online and <b>report to the college</b> with originals and the fee receipt. <small>Not paying or not reporting in time cancels the allotment and the seat goes to the next round.</small></div></li>
+      </ol>
+    </section>
+
+    <section id="rounds" aria-labelledby="h-rounds">
+      <h2 id="h-rounds">How the rounds work</h2>
+      <div class="callout crit">
+        <span class="tag">Third round is final</span>
+        <p>If you join a seat in Round 3, <strong>you cannot resign afterwards</strong> and cannot take part in any further counselling.</p>
+      </div>
+      <div class="rounds">
+        <div class="round"><h3>Round 1</h3><ul><li>Free exit (only in this round)</li><li>Surrender by written request to the principal, within the set period</li></ul></div>
+        <div class="round"><h3>Round 2</h3><ul><li>Give willingness and pay the security deposit</li><li>Fill fresh choices to upgrade</li><li>Happy with your seat? You need not take part</li></ul></div>
+        <div class="round"><h3>Round 3 and later</h3><ul><li>Fresh willingness and choices</li><li>Joining is final: no resignation</li></ul></div>
+      </div>
+      <ul class="plain">
+        <li>Fill choices in your genuine order, not just from the vacancy list: more seats open up during allotment through upgrades, resignations and conversions.</li>
+        <li>If you are upgraded, the fee you already paid is adjusted; you pay only the balance. A deposit already paid is not asked for again.</li>
+        <li>Registered candidates who sat out Round 1, or got no seat, can still take part in Round 2.</li>
+      </ul>
+    </section>
+
+    <section id="documents" aria-labelledby="h-docs">
+      <h2 id="h-docs">Document checklist</h2>
+      <p>Originals plus one self-attested copy of each, for reporting at the college. Tick items off as you go; your ticks are saved only in this browser.</p>
+      <div class="progress"><span id="doc-progress">0 of 0 ready</span><button class="btn" type="button" id="doc-reset">Clear ticks</button></div>
+      <div class="checklist" id="checklist">
+        <label class="check"><input type="checkbox" id="d1"><span>Government photo ID <small>(Aadhaar, passport, voter ID, driving licence or PAN)</small></span></label>
+        <label class="check"><input type="checkbox" id="d2"><span>Receipt of the six-month fee</span></label>
+        <label class="check"><input type="checkbox" id="d3"><span>NEET-PG 2026 admit card and result</span></label>
+        <label class="check"><input type="checkbox" id="d4"><span>Class 10 certificate or birth certificate <small>(date of birth)</small></span></label>
+        <label class="check"><input type="checkbox" id="d5"><span>Mark sheets of all MBBS professional examinations</span></label>
+        <label class="check"><input type="checkbox" id="d6"><span>MBBS degree or provisional degree certificate</span></label>
+        <label class="check"><input type="checkbox" id="d7"><span>Internship completion certificate</span></label>
+        <label class="check"><input type="checkbox" id="d8"><span>Permanent or provisional registration with a State Medical Council or NMC</span></label>
+        <label class="check"><input type="checkbox" id="d9"><span>SC, BC or EWS certificate from the Government of Punjab <small>(if claimed)</small></span></label>
+        <label class="check"><input type="checkbox" id="d10"><span>Disability certificate from a designated centre <small>(PwBD)</small></span></label>
+        <label class="check"><input type="checkbox" id="d11"><span>Provisional NOC and the undertaking (Annexure B) <small>(in-service candidates)</small></span></label>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Summary of the Baba Farid University of Health Sciences prospectus for NEET-PG 2026 (MD/MS, PG diploma, DNB, sports medicine and ultrasonography), with the Round 1 merit list (23.10.2026), Round 1 allotment and the Round 2 notices of 13–17 November 2026. This is an independent guide, not an official BFUHS document; the official text at bfuhs.ac.in always prevails.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var KEY = 'pb-pg-2026-docs';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input'));
+  var out = document.getElementById('doc-progress');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+  boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; });
+  function update() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    out.textContent = n + ' of ' + boxes.length + ' ready';
+    var s = {}; boxes.forEach(function (b) { if (b.checked) s[b.id] = 1; });
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  }
+  boxes.forEach(function (b) { b.addEventListener('change', update); });
+  document.getElementById('doc-reset').addEventListener('click', function () { boxes.forEach(function (b) { b.checked = false; }); update(); });
+  update();
+})();
+</script>

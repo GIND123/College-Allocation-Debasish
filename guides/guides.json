@@ -391,6 +391,11 @@
           "what": "Round 2 document verification and provisional merit list",
           "when": "Verification at help centres from 16 Nov, 10 am – 4 pm · provisional merit list 17 Nov",
           "on": "2026-11-17T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 provisional merit lists",
+          "when": "18 Nov · 6,181 on the general list",
+          "label": "Published"
         }
       ]
     },
@@ -419,8 +424,7 @@
         },
         {
           "what": "Round 1 final merit list",
-          "when": "10 Nov · revised 12 Nov",
-          "label": "Awaited",
+          "when": "Revised final list 12 Nov · 795 candidates",
           "on": "2026-11-12T00:00:00+05:30"
         },
         {
@@ -430,9 +434,32 @@
         },
         {
           "what": "Round 1 seat allocation",
-          "when": "Provisional 16 Nov · final 17 Nov · report by 18 Nov",
+          "when": "Final 17 Nov · 168 allotted · report by 18 Nov",
           "from": "2026-11-16T00:00:00+05:30",
           "to": "2026-11-18T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 application",
+          "when": "Fresh online form 19 Nov – 21 Nov, 11 am",
+          "from": "2026-11-19T00:00:00+05:30",
+          "to": "2026-11-21T11:00:00+05:30"
+        },
+        {
+          "what": "Round 2 merit list and vacancies",
+          "when": "Merit list 21 Nov · vacancy position 23 Nov",
+          "on": "2026-11-21T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 choice filling and locking",
+          "when": "24 Nov – 26 Nov, 11 am · token amount by 25 Nov, 5 pm",
+          "from": "2026-11-24T00:00:00+05:30",
+          "to": "2026-11-26T11:00:00+05:30"
+        },
+        {
+          "what": "Round 2 seat allocation and joining",
+          "when": "Provisional 27 Nov · final 28 Nov · join by 30 Nov",
+          "from": "2026-11-27T00:00:00+05:30",
+          "to": "2026-11-30T23:59:00+05:30"
         }
       ]
     },
@@ -537,9 +564,14 @@
         },
         {
           "what": "Round 2 caution deposit and option entry",
-          "when": "16 Nov – 18 Nov, 4 pm",
+          "when": "Extended: caution deposit until 21 Nov · options until 23 Nov, 11 am (MCC schedule awaited)",
           "from": "2026-11-16T00:00:00+05:30",
-          "to": "2026-11-18T16:00:00+05:30"
+          "to": "2026-11-23T11:00:00+05:30"
+        },
+        {
+          "what": "Round 2 additional seat matrix",
+          "when": "19 Nov · 860 PG medical seats + 7 at St John's",
+          "label": "Published"
         }
       ]
     },
@@ -871,6 +903,64 @@
       ]
     },
     {
+      "slug": "punjab",
+      "file": "punjab.html",
+      "region": "Punjab",
+      "title": "Punjab PG counselling 2026, explained",
+      "label": "Counselling guide",
+      "authority": "Baba Farid University of Health Sciences (BFUHS), Faridkot · State, management, NRI and minority quota",
+      "summary": "Who can apply, quotas and minority seats, fees and security deposits, how the rounds work and what to carry, from the BFUHS prospectus.",
+      "asOf": "2026-11-19",
+      "official": "https://www.bfuhs.ac.in",
+      "dates": [
+        {
+          "what": "Online application and fee",
+          "when": "14 Oct – 18 Oct · fee and corrections until 19 Oct, 5 pm",
+          "from": "2026-10-14T00:00:00+05:30",
+          "to": "2026-10-19T17:00:00+05:30"
+        },
+        {
+          "what": "Merit list",
+          "when": "Provisional 21 Oct · objections until 22 Oct, 5 pm · revised 23 Oct",
+          "on": "2026-10-23T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 choice filling",
+          "when": "24 Oct – 29 Oct",
+          "from": "2026-10-24T00:00:00+05:30",
+          "to": "2026-10-29T23:59:00+05:30"
+        },
+        {
+          "what": "Round 1 allotment",
+          "when": "Provisional 2 Nov · objections until 3 Nov, 5 pm · revised 4 Nov · 596 allotted",
+          "on": "2026-11-04T00:00:00+05:30"
+        },
+        {
+          "what": "Round 1 reporting and six-month fee",
+          "when": "5 Nov – 10 Nov",
+          "from": "2026-11-05T00:00:00+05:30",
+          "to": "2026-11-10T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 registration, willingness and security deposit",
+          "when": "14 Nov – 16 Nov · tentative vacancies out 13 Nov",
+          "from": "2026-11-14T00:00:00+05:30",
+          "to": "2026-11-16T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 corrections, minority verification and NRI form",
+          "when": "Until 17 Nov (corrections 5 pm, NRI form 3 pm) at BFUHS, CMC Ludhiana and SGRD Amritsar",
+          "from": "2026-11-14T00:00:00+05:30",
+          "to": "2026-11-17T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 seat matrix, choice filling and result",
+          "when": "Schedule on bfuhs.ac.in · may move while MCC Round 2 is on hold",
+          "label": "Awaited"
+        }
+      ]
+    },
+    {
       "slug": "rajasthan",
       "file": "rajasthan.html",
       "region": "Rajasthan",
@@ -932,14 +1022,30 @@
           "to": "2026-11-17T23:55:00+05:30"
         },
         {
+          "what": "Round 2 provisional merit list",
+          "when": "20 Nov",
+          "on": "2026-11-20T00:00:00+05:30"
+        },
+        {
           "what": "Round 2 seat matrix",
-          "when": "15 Nov: MD/MS and post-MBBS diploma",
+          "when": "14 Nov: MD/MS 1,857 seats, in-service diploma 70",
           "label": "Published"
+        },
+        {
+          "what": "Round 2 security deposit and choice filling",
+          "when": "14 Nov – 21 Nov, 11:45 pm · Round 1 choices do not carry over",
+          "from": "2026-11-14T00:00:00+05:30",
+          "to": "2026-11-21T23:45:00+05:30"
         },
         {
           "what": "Academic session begins",
           "when": "20 Nov",
           "on": "2026-11-20T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 provisional allotment",
+          "when": "23 Nov · letters, fee and reporting at SMS MC Jaipur 25 Nov – 30 Nov",
+          "on": "2026-11-23T00:00:00+05:30"
         }
       ]
     },
@@ -1245,9 +1351,28 @@
           "on": "2026-11-03T13:59:00+05:30"
         },
         {
-          "what": "Admission at the allotted college and Round 2",
-          "when": "Schedule on wbmcc.nic.in",
-          "label": "Awaited"
+          "what": "Round 2 registration and fee",
+          "when": "17 Nov, 5 pm – 19 Nov (registration 6 pm, fee midnight) · seat surrender 18–19 Nov",
+          "from": "2026-11-17T17:00:00+05:30",
+          "to": "2026-11-19T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 verification",
+          "when": "18 Nov – 20 Nov, 11 am – 4 pm, at the designated college · verified list and seat matrix 20 Nov, after 5 pm",
+          "from": "2026-11-18T11:00:00+05:30",
+          "to": "2026-11-20T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 choice filling and locking",
+          "when": "20 Nov, 6 pm – 22 Nov, midnight",
+          "from": "2026-11-20T18:00:00+05:30",
+          "to": "2026-11-22T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 allotment and admission",
+          "when": "Result 26 Nov, after 4 pm · admission 27, 28 and 30 Nov, 10 am – 4 pm",
+          "from": "2026-11-26T16:00:00+05:30",
+          "to": "2026-11-30T16:00:00+05:30"
         }
       ]
     }
@@ -3433,6 +3558,230 @@
       "date": "2026-11-16",
       "kind": "Notice",
       "kb": 156
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 provisional merit list: general (MD/MS/diploma)",
+      "file": "gujarat/round2-merit-list-general.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 1299
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 provisional merit list: EWS",
+      "file": "gujarat/round2-merit-list-ews.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 356
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 provisional merit list: SEBC",
+      "file": "gujarat/round2-merit-list-sebc.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 352
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 provisional merit list: SC",
+      "file": "gujarat/round2-merit-list-sc.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 122
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 provisional merit list: ST",
+      "file": "gujarat/round2-merit-list-st.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 120
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 in-service merit list: OPEN",
+      "file": "gujarat/round2-merit-list-in-service-open.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 56
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 in-service merit list: SEBC",
+      "file": "gujarat/round2-merit-list-in-service-sebc.pdf",
+      "date": "2026-11-18",
+      "kind": "Merit list",
+      "kb": 56
+    },
+    {
+      "region": "Gujarat",
+      "title": "Round 2 in-service merit list: SC",
+      "file": "gujarat/round2-merit-list-in-service-sc.pdf",
+      "date": "2026-11-17",
+      "kind": "Merit list",
+      "kb": 55
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 2 additional provisional seat matrix: PG medical",
+      "file": "karnataka/round2-seat-matrix-medical.pdf",
+      "date": "2026-11-19",
+      "kind": "Seat matrix",
+      "kb": 591
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 2 additional provisional seat matrix: St John's Medical College",
+      "file": "karnataka/round2-seat-matrix-st-johns.pdf",
+      "date": "2026-11-19",
+      "kind": "Seat matrix",
+      "kb": 32
+    },
+    {
+      "region": "Karnataka",
+      "title": "Round 2: caution deposit to 21 Nov and option entry to 23 Nov, 11 am (MCC schedule awaited)",
+      "file": "karnataka/round2-dates-extended-2026-11-19.pdf",
+      "date": "2026-11-19",
+      "kind": "Notice",
+      "kb": 57
+    },
+    {
+      "region": "Karnataka",
+      "title": "In-service seats left vacant after the mop-up round go to non-service candidates",
+      "file": "karnataka/in-service-seats-mop-up-2026-11-14.pdf",
+      "date": "2026-11-14",
+      "kind": "Notice",
+      "kb": 459
+    },
+    {
+      "region": "Kerala",
+      "title": "Round 2 in-service list: Health Services Quota (HSQ)",
+      "file": "kerala/in-service-list-hsq.pdf",
+      "date": "2026-11-16",
+      "kind": "Merit list",
+      "kb": 19
+    },
+    {
+      "region": "Kerala",
+      "title": "Round 2 in-service list: Medical Education Service Quota (MESQ)",
+      "file": "kerala/in-service-list-mesq.pdf",
+      "date": "2026-11-16",
+      "kind": "Merit list",
+      "kb": 11
+    },
+    {
+      "region": "Kerala",
+      "title": "Round 2 category list: persons with disability",
+      "file": "kerala/category-list-pwd.pdf",
+      "date": "2026-11-16",
+      "kind": "Merit list",
+      "kb": 11
+    },
+    {
+      "region": "Kerala",
+      "title": "Round 2 DNB post-MBBS in-service list: HSQ",
+      "file": "kerala/dnb-in-service-list-hsq.pdf",
+      "date": "2026-11-16",
+      "kind": "Merit list",
+      "kb": 16
+    },
+    {
+      "region": "Kerala",
+      "title": "Round 2 DNB post-MBBS in-service list: IMQ",
+      "file": "kerala/dnb-in-service-list-imq.pdf",
+      "date": "2026-11-16",
+      "kind": "Merit list",
+      "kb": 11
+    },
+    {
+      "region": "Kerala",
+      "title": "DNB post-MBBS first phase allotment",
+      "file": "kerala/dnb-allotment-phase1.pdf",
+      "date": "2026-11-18",
+      "kind": "Allotment",
+      "kb": 11
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Round 2 schedule (12 Nov): merit list 20 Nov, choices to 21 Nov, allotment 23 Nov",
+      "file": "rajasthan/round2-schedule.pdf",
+      "date": "2026-11-12",
+      "kind": "Schedule",
+      "kb": 551
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Round 2 provisional seat matrix: MD/MS (government, society and private)",
+      "file": "rajasthan/round2-seat-matrix.pdf",
+      "date": "2026-11-14",
+      "kind": "Seat matrix",
+      "kb": 456
+    },
+    {
+      "region": "Rajasthan",
+      "title": "Round 2 provisional seat matrix: post-MBBS diploma and DNB (in-service)",
+      "file": "rajasthan/round2-seat-matrix-dnb-diploma.pdf",
+      "date": "2026-11-14",
+      "kind": "Seat matrix",
+      "kb": 391
+    },
+    {
+      "region": "West Bengal",
+      "title": "Revised tentative schedule for Round 2 (17 Nov)",
+      "file": "west-bengal/round2-schedule-revised.pdf",
+      "date": "2026-11-17",
+      "kind": "Schedule",
+      "kb": 882
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "Revised final merit list, MD/MS/DNB Round 1",
+      "file": "himachal-pradesh/round1-revised-final-merit-list.pdf",
+      "date": "2026-11-12",
+      "kind": "Merit list",
+      "kb": 732
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "State quota seat matrix for Round 1 (MD/MS)",
+      "file": "himachal-pradesh/round1-seat-matrix.pdf",
+      "date": "2026-11-09",
+      "kind": "Seat matrix",
+      "kb": 2310
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "Final seat allocation, MD/MS/DNB Round 1",
+      "file": "himachal-pradesh/round1-final-allocation.pdf",
+      "date": "2026-11-17",
+      "kind": "Allotment",
+      "kb": 675
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "Revised Round 1 schedule (10 Nov)",
+      "file": "himachal-pradesh/round1-revised-schedule.pdf",
+      "date": "2026-11-10",
+      "kind": "Schedule",
+      "kb": 233
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "Round 2 schedule (19 Nov)",
+      "file": "himachal-pradesh/round2-schedule.pdf",
+      "date": "2026-11-19",
+      "kind": "Schedule",
+      "kb": 474
+    },
+    {
+      "region": "Himachal Pradesh",
+      "title": "Application re-opened to 2 Nov; job trainees and the in-service quota",
+      "file": "himachal-pradesh/application-reopened-job-trainees.pdf",
+      "date": "2026-10-30",
+      "kind": "Notice",
+      "kb": 596
     }
   ],
   "updates": [
@@ -4362,13 +4711,55 @@
       "region": "Uttarakhand",
       "date": "2026-11-17",
       "text": "Round 2 seat matrix (16 Nov) and the NRI provisional merit list published."
+    },
+    {
+      "date": "2026-11-19",
+      "region": "Karnataka",
+      "text": "KEA's Round 2 additional seat matrix is out: 860 PG medical seats plus 7 at St John's. With MCC's Round 2 awaited, the caution deposit is open until 21 Nov and option entry until 23 Nov, 11 am.",
+      "link": "/roadmap/karnataka/round-2/choice-filling"
+    },
+    {
+      "date": "2026-11-19",
+      "region": "Himachal Pradesh",
+      "text": "Round 2 schedule: apply afresh 19–21 Nov (11 am), merit list 21 Nov, vacancies 23 Nov, choices 24–26 Nov, allocation 27–28 Nov, join by 30 Nov.",
+      "doc": "himachal-pradesh/round2-schedule.pdf"
+    },
+    {
+      "date": "2026-11-18",
+      "region": "Gujarat",
+      "text": "Round 2 provisional merit lists are out: 6,181 candidates on the general list, with category and in-service lists.",
+      "link": "/roadmap/gujarat/merit-list/round-2"
+    },
+    {
+      "date": "2026-11-18",
+      "region": "Kerala",
+      "text": "DNB post-MBBS first phase allotment: 8 in-service seats allotted. In-service (HSQ, MESQ) and PwD lists for PG medical came out on 16 Nov.",
+      "link": "/roadmap/kerala/merit-list/round-2"
+    },
+    {
+      "date": "2026-11-17",
+      "region": "West Bengal",
+      "text": "Revised Round 2 schedule: register and pay 17–19 Nov, verification 18–20 Nov, choices 20–22 Nov, result 26 Nov, admission 27–30 Nov.",
+      "doc": "west-bengal/round2-schedule-revised.pdf"
+    },
+    {
+      "date": "2026-11-17",
+      "region": "Himachal Pradesh",
+      "text": "Round 1 final seat allocation: 168 seats allotted; report by 18 Nov. Merit list, seat matrix and allotment are now on the roadmap.",
+      "link": "/roadmap/himachal-pradesh/round-1/allotment"
+    },
+    {
+      "date": "2026-11-14",
+      "region": "Rajasthan",
+      "text": "Round 2 seat matrix: 1,857 MD/MS seats (350 in government and society colleges, 1,507 in private colleges) and 70 in-service diploma seats. Fill fresh choices by 21 Nov: Round 1 choices do not carry over.",
+      "link": "/roadmap/rajasthan/round-2/choice-filling"
     }
   ],
   "highlight": {
-    "eyebrow": "New · 17 Nov",
-    "text": "Every state's merit lists, seat matrices and allotments are now open to every account while counselling is on hold. MCC's Round 2 result is on hold by a Madras High Court order; Odisha's Round 2 flow chart and state notices to 17 Nov are in.",
-    "href": "/roadmap/all-india/round-2",
-    "go": "See where Round 2 stands"
+    "eyebrow": "New · 19 Nov",
+    "text": "Round 2 merit lists now have their own place on each state's Merit List step (Gujarat and Kerala are in). Himachal Pradesh's merit list, seats and allotment, Round 2 seat matrices for Karnataka and Rajasthan, and a Punjab guide are in too.",
+    "href": "/roadmap/gujarat/merit-list/round-2",
+    "go": "See Gujarat's Round 2 merit list"
   },
   "progress": {
     "All India": {
@@ -4418,13 +4809,13 @@
     },
     "Gujarat": {
       "stage": "Round 2",
-      "note": "Round 2 provisional merit list out 17 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 provisional merit lists out 18 Nov.",
+      "asOf": "2026-11-19"
     },
     "Himachal Pradesh": {
-      "stage": "Round 1",
-      "note": "Round 1 final allocation out 17 Nov; report by 18 Nov.",
-      "asOf": "2026-11-17"
+      "stage": "Round 2",
+      "note": "Round 1 allotted 168 seats (17 Nov). Round 2: apply 19–21 Nov, merit list 21 Nov.",
+      "asOf": "2026-11-19"
     },
     "Jharkhand": {
       "stage": "Round 2",
@@ -4433,8 +4824,8 @@
     },
     "Kerala": {
       "stage": "Round 1",
-      "note": "Service candidates and PwD quota eligible lists out 17 Nov.",
-      "asOf": "2026-11-17"
+      "note": "In-service and PwD lists out 16 Nov; DNB post-MBBS first phase allotment 18 Nov.",
+      "asOf": "2026-11-19"
     },
     "Madhya Pradesh": {
       "stage": "Round 1",
@@ -4458,8 +4849,8 @@
     },
     "Rajasthan": {
       "stage": "Round 2",
-      "note": "Round 2 seat matrix out 15 Nov; applications closed 17 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 seat matrix out 14 Nov; merit list 20 Nov, choices until 21 Nov.",
+      "asOf": "2026-11-19"
     },
     "Sikkim": {
       "stage": "Round 2",
@@ -4478,13 +4869,13 @@
     },
     "Karnataka": {
       "stage": "Round 2",
-      "note": "Round 2 caution deposit and option entry until 18 Nov, 4 pm.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 seat matrix out 19 Nov; options until 23 Nov, 11 am.",
+      "asOf": "2026-11-19"
     },
     "West Bengal": {
-      "stage": "Round 1",
-      "note": "Round 1 provisional allotment out 3 Nov (918 allotted); admission at the allotted college.",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 2 registration until 19 Nov; choices 20–22 Nov; result 26 Nov.",
+      "asOf": "2026-11-19"
     },
     "Tripura": {
       "stage": "Round 1",
@@ -4513,8 +4904,8 @@
     },
     "Punjab": {
       "stage": "Round 2",
-      "note": "Round 2 registration closed 16 Nov; corrections and documents at BFUHS until 17 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 registration closed 16 Nov; seat matrix and choice filling dates awaited.",
+      "asOf": "2026-11-19"
     },
     "Haryana": {
       "stage": "Round 1",
@@ -4935,6 +5326,86 @@
       "date": "2026-11-10",
       "doc": "mcc/round2-clear-vacancy-2026-11-10.pdf",
       "file": "all-india/seat-matrix-round2.json"
+    },
+    {
+      "id": "merit-list-round-2",
+      "region": "Gujarat",
+      "kind": "merit",
+      "round": "Round 2",
+      "title": "Round 2 provisional merit lists (general and in-service)",
+      "date": "2026-11-18",
+      "doc": "gujarat/round2-merit-list-general.pdf",
+      "file": "gujarat/merit-list-round2.json"
+    },
+    {
+      "id": "merit-list-round-2",
+      "region": "Kerala",
+      "kind": "merit",
+      "round": "Round 2",
+      "title": "In-service quota lists (HSQ, MESQ), PwD list and DNB post-MBBS in-service lists",
+      "date": "2026-11-16",
+      "doc": "kerala/in-service-list-hsq.pdf",
+      "file": "kerala/merit-list-round2.json"
+    },
+    {
+      "id": "dnb-allotment-phase-1",
+      "region": "Kerala",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "DNB post-MBBS first phase allotment",
+      "short": "DNB post-MBBS allotment",
+      "date": "2026-11-18",
+      "doc": "kerala/dnb-allotment-phase1.pdf",
+      "file": "kerala/dnb-allotment-phase1.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "Karnataka",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Round 2 additional seat matrix (PG medical, St John's) with fees",
+      "date": "2026-11-19",
+      "doc": "karnataka/round2-seat-matrix-medical.pdf",
+      "file": "karnataka/seat-matrix-round2.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "Rajasthan",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Round 2 provisional seat matrix: MD/MS, post-MBBS diploma and DNB",
+      "date": "2026-11-14",
+      "doc": "rajasthan/round2-seat-matrix.pdf",
+      "file": "rajasthan/seat-matrix-round2.json"
+    },
+    {
+      "id": "merit-list-2026",
+      "region": "Himachal Pradesh",
+      "kind": "merit",
+      "title": "Revised final merit list for Round 1 (MD/MS/DNB)",
+      "date": "2026-11-12",
+      "doc": "himachal-pradesh/round1-revised-final-merit-list.pdf",
+      "file": "himachal-pradesh/merit-list-2026.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Himachal Pradesh",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Round 1 state quota seat matrix (MD/MS)",
+      "date": "2026-11-09",
+      "doc": "himachal-pradesh/round1-seat-matrix.pdf",
+      "file": "himachal-pradesh/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Himachal Pradesh",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 final seat allocation",
+      "date": "2026-11-17",
+      "doc": "himachal-pradesh/round1-final-allocation.pdf",
+      "file": "himachal-pradesh/allotment-round1.json"
     }
   ],
   "bonds": {

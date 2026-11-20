@@ -89,7 +89,8 @@ function validate(data) {
     if (!SLUG.test(d.id || '') || ids.has(d.region + '/' + d.id)) throw new Error(`${where}: needs an id, unique within its region, in lower-case words joined by hyphens.`);
     ids.add(d.region + '/' + d.id);
     if (!region(d.region) || !DATA_KINDS[d.kind] || !d.title) throw new Error(`${where}: needs a region, a title and a kind (${Object.keys(DATA_KINDS).join(', ')}).`);
-    if (d.kind !== 'merit' && !STAGES.slice(2).includes(d.round)) throw new Error(`${where}: "round" must be one of ${STAGES.slice(2).join(', ')}.`);
+    // a merit list is Round 1's unless it names a later round (it then shows under that round on the Merit List step)
+    if ((d.kind !== 'merit' || d.round) && !STAGES.slice(2).includes(d.round)) throw new Error(`${where}: "round" must be one of ${STAGES.slice(2).join(', ')}.`);
     if (!/^[\w-]+(\/[\w.-]+)+$/.test(d.file || '') || !fs.existsSync(path.join(DATA_DIR, d.file))) throw new Error(`${where}: file "${d.file}" is not in server/region-data/.`);
     if (Number.isNaN(Date.parse(d.date))) throw new Error(`${where}: needs a valid "date".`);
     if (d.doc && !files.has(d.doc)) throw new Error(`${where}: "doc" must be the file of one of the documents.`);
