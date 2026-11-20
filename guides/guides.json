@@ -57,8 +57,14 @@
         },
         {
           "what": "Round 2 result",
-          "when": "On hold: seat processing stopped on 17 Nov by the Madras High Court's interim order; the result comes after the court's clarification",
-          "label": "On hold"
+          "when": "Declared 20 Nov · 29,292 seats held after Round 2",
+          "on": "2026-11-20T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 reporting and joining",
+          "when": "20 Nov – 25 Nov, 10 pm · no extension",
+          "from": "2026-11-20T00:00:00+05:30",
+          "to": "2026-11-25T22:00:00+05:30"
         },
         {
           "what": "Round 2 state counselling and joining (revised 17 Nov)",
@@ -3782,6 +3788,22 @@
       "date": "2026-10-30",
       "kind": "Notice",
       "kb": 596
+    },
+    {
+      "region": "All India",
+      "title": "MCC notice 12: Round 2 result declared; report by 25 Nov, 10 pm (no extension)",
+      "file": "mcc/round2-result-declared-2026-11-20.pdf",
+      "date": "2026-11-20",
+      "kind": "Notice",
+      "kb": 49
+    },
+    {
+      "region": "Kerala",
+      "title": "Round 2 in-service list: Insurance Medical Service Quota (IMSQ)",
+      "file": "kerala/in-service-list-imsq.pdf",
+      "date": "2026-11-16",
+      "kind": "Merit list",
+      "kb": 36
     }
   ],
   "updates": [
@@ -4753,19 +4775,39 @@
       "region": "Rajasthan",
       "text": "Round 2 seat matrix: 1,857 MD/MS seats (350 in government and society colleges, 1,507 in private colleges) and 70 in-service diploma seats. Fill fresh choices by 21 Nov: Round 1 choices do not carry over.",
       "link": "/roadmap/rajasthan/round-2/choice-filling"
+    },
+    {
+      "date": "2026-11-20",
+      "region": "All India",
+      "text": "Round 2 result declared: 29,292 seats held after Round 2. Report to the allotted college by 25 Nov, 10 pm; MCC says there will be no extension.",
+      "doc": "mcc/round2-result-declared-2026-11-20.pdf",
+      "link": "/roadmap/all-india/round-2/allotment"
+    },
+    {
+      "date": "2026-11-20",
+      "region": "All India",
+      "text": "New: Allotment analysis. The first and last rank allotted for any college, course, quota and category, in All India and every state with an allotment list.",
+      "link": "/analysis"
+    },
+    {
+      "date": "2026-11-16",
+      "region": "Kerala",
+      "text": "Insurance Medical Service Quota (IMSQ) in-service list: 6 candidates, ranked on NEET-PG score plus in-service incentive marks.",
+      "doc": "kerala/in-service-list-imsq.pdf",
+      "link": "/roadmap/kerala/merit-list/round-2"
     }
   ],
   "highlight": {
-    "eyebrow": "New · 19 Nov",
-    "text": "Round 2 merit lists now have their own place on each state's Merit List step (Gujarat and Kerala are in). Himachal Pradesh's merit list, seats and allotment, Round 2 seat matrices for Karnataka and Rajasthan, and a Punjab guide are in too.",
-    "href": "/roadmap/gujarat/merit-list/round-2",
-    "go": "See Gujarat's Round 2 merit list"
+    "eyebrow": "New · 20 Nov",
+    "text": "MCC Round 2 result is in (29,292 seats), and a new Allotment analysis section gives the first and last rank allotted for any college, course, quota and category, in All India and every state.",
+    "href": "/analysis",
+    "go": "Open the allotment analysis"
   },
   "progress": {
     "All India": {
       "stage": "Round 2",
-      "note": "Round 2 result on hold since 17 Nov (Madras High Court order); choices closed 15 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 result out 20 Nov; report by 25 Nov, 10 pm. Round 3 registration from 26 Nov.",
+      "asOf": "2026-11-20"
     },
     "Odisha": {
       "stage": "Round 2",
@@ -5342,7 +5384,7 @@
       "region": "Kerala",
       "kind": "merit",
       "round": "Round 2",
-      "title": "In-service quota lists (HSQ, MESQ), PwD list and DNB post-MBBS in-service lists",
+      "title": "In-service quota lists (HSQ, MESQ, IMSQ), PwD list and DNB post-MBBS in-service lists",
       "date": "2026-11-16",
       "doc": "kerala/in-service-list-hsq.pdf",
       "file": "kerala/merit-list-round2.json"
@@ -5406,6 +5448,16 @@
       "date": "2026-11-17",
       "doc": "himachal-pradesh/round1-final-allocation.pdf",
       "file": "himachal-pradesh/allotment-round1.json"
+    },
+    {
+      "id": "allotment-round-2",
+      "region": "All India",
+      "kind": "allotment",
+      "round": "Round 2",
+      "title": "MCC Round 2 result",
+      "date": "2026-11-20",
+      "doc": "mcc/round2-result-declared-2026-11-20.pdf",
+      "file": "all-india/allotment-round2.json"
     }
   ],
   "bonds": {

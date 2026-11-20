@@ -978,3 +978,6 @@
   .sm-charts{grid-template-columns:minmax(0,1fr)}
   .sm-row{grid-template-columns:minmax(0,110px) minmax(0,1fr) 52px; gap:8px}
 }
+/* allotment analysis */
+.an-pick{margin-bottom:6px}
+.an-note{margin:10px 0 14px; font-size:13.5px}

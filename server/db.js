@@ -215,6 +215,11 @@ const SEEDS = [
     label: 'All India counselling 2026 · Round 1 allotments (MCC)',
     notes: 'MCC NEET-PG 2026 Round 1 result (MD/MS, DNB and NBEMS diploma), 28,584 allotments rolled up by college, course, category and quota. '
       + 'Opening and closing ranks are those allotted in Round 1 only. College type is from the quota; for DNB hospitals it is inferred from the name.' },
+  { id: 'mcc-aiq-2026-r2.json#all-india', file: 'mcc-aiq-2026-r2.json', kind: 'aiq', perState: true, year: 2026,
+    label: 'All India counselling 2026 · Round 2 allotments (MCC)',
+    notes: 'MCC NEET-PG 2026 Round 2 result of 20 Nov (MD/MS, DNB and NBEMS diploma): 29,292 seats held after Round 2 (fresh allotments, upgrades and Round 1 seats retained '
+      + 'by candidates who asked to upgrade), rolled up by college, course, category and quota. Round 1 candidates who did not ask to upgrade are not in this list. '
+      + 'College type is from the quota, Round 1 and the Round 2 seat matrix.' },
   // One file holding several states ({ state: { note, rows } }), loaded as a dataset per state: each state loads once,
   // so a state added to the file later still arrives in an existing database.
   { file: 'state-cutoffs-2026-r1.json', kind: 'state', split: true, year: 2026,

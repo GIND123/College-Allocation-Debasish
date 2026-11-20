@@ -485,7 +485,7 @@ app.use('/api', (_req, _res, next) => next(new HttpError(404, 'Not found.')));
 // Pages
 // ======================================================================
 const page = file => (_req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(PUBLIC, file)); };
-app.get(['/', '/predict', '/cutoffs', '/shortlist', '/seats', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}', '/review', '/journey', '/bonds'], page('index.html'));
+app.get(['/', '/predict', '/cutoffs', '/shortlist', '/seats', '/method', '/counselling', '/counselling/', '/roadmap', '/roadmap/{*rest}', '/review', '/journey', '/bonds', '/analysis'], page('index.html'));
 app.get(['/admin', '/admin/'], page('admin.html'));
 
 // Counselling guides: one page per guide, framed by server/guides.js.

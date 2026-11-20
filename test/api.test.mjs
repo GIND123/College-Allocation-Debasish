@@ -158,7 +158,7 @@ test('Gujarat closing-rank data is built in, with quotas, for Gujarat students o
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Gujarat', phone: '9000000105' } });
   await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000105', code: '1234', password: PW } });
   const sets = (await b('/api/config')).json.datasets;
-  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['All India aiq 2026', 'Gujarat state 2024', 'Gujarat state 2025', 'Gujarat state 2026', 'Odisha aiq 2025']);
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`).sort(), ['All India aiq 2026', 'All India aiq 2026', 'Gujarat state 2024', 'Gujarat state 2025', 'Gujarat state 2026', 'Odisha aiq 2025']);
   const d = (await b('/api/datasets/' + sets.find(x => x.kind === 'state' && x.year === 2025).id)).json;
   const col = n => d.columns.indexOf(n);
   assert.ok(d.rows.length > 1800);
@@ -240,20 +240,21 @@ test('"Keep me logged in" decides how long the sign-in lasts', async () => {
   assert.doesNotMatch(brief.headers.getSetCookie().find(c => c.startsWith('rr_sid=')), /Max-Age/, 'ends when the browser closes');
 });
 
-test('MCC 2026 Round 1 is built in as one national All India dataset, with quotas and college states', async () => {
+test('MCC 2026 Rounds 1 and 2 are built in as national All India datasets, with quotas and college states', async () => {
   const visitor = (await browser()('/api/config')).json;
-  const r1 = visitor.datasets.filter(d => d.kind === 'aiq' && d.year === 2026);
-  assert.equal(r1.length, 1, 'one dataset for the whole country');
-  assert.equal(r1[0].state, 'All India');
-  assert.equal(r1[0].seats, 28584, 'every allotment is counted');
+  const mcc = visitor.datasets.filter(d => d.kind === 'aiq' && d.year === 2026);
+  assert.deepEqual(mcc.map(d => d.label), ['All India counselling 2026 · Round 2 allotments (MCC)', 'All India counselling 2026 · Round 1 allotments (MCC)'], 'one dataset per round for the whole country, Round 2 first');
+  assert.ok(mcc.every(d => d.state === 'All India'));
+  assert.deepEqual(mcc.map(d => d.seats), [29292, 28584], 'every allotment is counted');
+  const r1 = mcc.slice(1);
   assert.deepEqual(visitor.stateData, ['Chhattisgarh', 'Gujarat', 'Himachal Pradesh', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Odisha', 'Punjab', 'Rajasthan',
     'Tamil Nadu', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'], 'state-counselling data is listed separately: 2025 data and the 2026 Round 1 cut-offs');
   const b = browser();
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Maharashtra', phone: '9000000120' } });
   await b('/api/auth/otp/verify', { method: 'POST', body: { channel: 'phone', phone: '9000000120', code: '1234', password: PW } });
   const sets = (await b('/api/config')).json.datasets;
-  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`), ['All India aiq 2026', 'Maharashtra state 2026', 'Odisha aiq 2025'], "a Maharashtra candidate sees all All India data, and Maharashtra's own");
-  const d = (await b('/api/datasets/' + sets.find(x => x.kind === 'aiq' && x.year === 2026).id)).json;
+  assert.deepEqual(sets.map(d => `${d.state} ${d.kind} ${d.year}`), ['All India aiq 2026', 'All India aiq 2026', 'Maharashtra state 2026', 'Odisha aiq 2025'], "a Maharashtra candidate sees all All India data, and Maharashtra's own");
+  const d = (await b('/api/datasets/' + r1[0].id)).json;
   const rows = d.rows.map(a => Object.fromEntries(d.columns.map((c, i) => [c, a[i]])));
   assert.equal(new Set(rows.map(r => r.state)).size, 35, 'each seat carries its college state');
   for (const p of [/^MD /, /^MS /, /^DNB (?!Diploma)/, /^DNB Diploma /]) assert.ok(rows.some(r => p.test(r.branch)), `programme ${p}`);
@@ -508,7 +509,7 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   assert.equal(sum(r2.filter(r => r.source === 'Newly added')), 3468);
   // rank journey: AIR 42 took a seat in Odisha's Round 1
   const j = (await b('/api/journey')).json;
-  assert.equal(j.sets.length, 17);
+  assert.equal(j.sets.length, 18);
   const row = j.rows.find(x => x[0] === 42);
   assert.ok(row[1].some(s => j.sets[s[0]].region === 'Odisha'), 'AIR 42: Odisha seat');
   assert.ok(j.rows.every((x, i) => i === 0 || x[0] > j.rows[i - 1][0]), 'one row per rank, in order');
@@ -516,7 +517,7 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   const gj2 = (await b('/api/regions/gujarat/data/merit-list-round-2')).json;
   assert.deepEqual(gj2.lists.map(l => l.rows.length), [6181, 11]);
   const kl2 = (await b('/api/regions/kerala/data/merit-list-round-2')).json;
-  assert.deepEqual(kl2.lists.map(l => l.rows.length), [38, 4, 13, 28, 2, 6]);
+  assert.deepEqual(kl2.lists.map(l => l.rows.length), [38, 4, 6, 13, 28, 2, 6], 'with the IMSQ list (20 Nov folder)');
   assert.equal(sum((await b('/api/regions/karnataka/data/seat-matrix-round-2')).json.rows), 867);
   assert.equal(sum((await b('/api/regions/rajasthan/data/seat-matrix-round-2')).json.rows), 1927);
   assert.equal(sum((await b('/api/regions/himachal-pradesh/data/seat-matrix-round-1')).json.rows), 234);
@@ -525,6 +526,15 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   const reg = (await b('/api/regions/gujarat')).json;
   assert.deepEqual(reg.data.filter(x => x.kind === 'merit').map(x => x.round || 'Round 1'), ['Round 1', 'Round 2']);
   assert.ok((await b('/api/regions/punjab')).json.dates.length >= 8, 'Punjab has a guide with dates');
+  // 20 Nov: MCC Round 2 result, with each seat's status; the allotment analysis page
+  const m2 = (await b('/api/regions/all-india/data/allotment-round-2')).json;
+  assert.equal(m2.rows.length, 29292);
+  const st = {}; for (const r of m2.rows) st[m2.status[r[8]]] = (st[m2.status[r[8]]] || 0) + 1;
+  assert.deepEqual(st, { Retained: 8585, Upgraded: 9650, 'Fresh allotment': 11057 });
+  assert.ok(m2.rows.every((r, i) => i === 0 || r[0] > m2.rows[i - 1][0]), 'one seat per rank, in order');
+  assert.ok(m2.rows.every(r => m2.state[r[2]]), 'every seat has its college state');
+  assert.ok(j.sets.some(x => x.region === 'All India' && x.round === 'Round 2'), 'the journey joins Round 2');
+  assert.equal((await b('/analysis')).status, 200);
   // stipend and bond, for everyone
   const bonds = (await browser()('/api/guides')).json.bonds;
   assert.equal(bonds.rows.length, 28);
