@@ -2351,6 +2351,16 @@ function vacantSeats(host, rows) {
       <td class="wrapcell">${esc(r.quota)}${r.stream ? `<span class="sub">${esc(r.stream)}</span>` : ''}</td><td class="wrapcell">${esc(r.category)}</td><td class="n strong">${fmt(r.seats)}</td></tr>`).join('')}</tbody></table></div></details>`);
 }
 
+// MCC prints each institute as "name, address": under the name, show the address alone (not the name a second time).
+function addrOf(name, full) {
+  let a = String(full || '');
+  const n = name.toLowerCase(), f = a.toLowerCase(), head = n.split(',')[0];
+  if (f.startsWith(n)) a = a.slice(name.length);
+  else if (head.length > 8 && f.startsWith(head)) a = a.slice(head.length);
+  a = a.replace(/^[\s,.-]+/, '').replace(/\s*,(\s*,)+\s*/g, ', ').replace(/\s*,\s*/g, ', ').trim();
+  return a.toLowerCase() === n ? '' : a;
+}
+
 // MCC's result in its compact form: lists of names, and rows of [rank, inst, state, quota, course, seat cat, candidate cat, college type, status]
 // (status from Round 2 on: fresh allotment, upgraded or retained).
 function allotExplorer(host, D, info) {
@@ -2379,7 +2389,7 @@ function allotExplorer(host, D, info) {
     mark: (r, f) => r[0] === f.find,
     cols: [
       { t: 'AIR', cls: 'n strong', r: r => fmt(r[0]) },
-      { t: 'Institution', cls: 'wrapcell', r: r => `<b>${esc(D.inst[r[1]])}</b><span class="sub">${esc(D.full[r[1]])}</span>` },
+      { t: 'Institution', cls: 'wrapcell', r: r => `<b>${esc(D.inst[r[1]])}</b><span class="sub">${esc(addrOf(D.inst[r[1]], D.full[r[1]]))}</span>` },
       { t: 'State', r: r => esc(D.state[r[2]]) },
       { t: 'Course', cls: 'wrapcell', r: r => esc(D.course[r[4]]) },
       { t: 'Quota', cls: 'wrapcell', r: r => `${esc(D.quota[r[3]])}<span class="sub">${esc(at('type', r[7]))}</span>` },
