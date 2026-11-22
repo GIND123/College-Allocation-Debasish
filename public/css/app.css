@@ -16,8 +16,8 @@
 .mainnav a:hover{border-color:#5d6b82; background:rgba(233,237,243,.1)}
 .mainnav a[aria-current="page"]{color:#0b1422; background:#d6ab5a; border-color:#d6ab5a}
 .mainnav a[aria-current="page"] svg{color:#0b1422}
-.mainnav .nav-short{display:none}
-/* seven links: short labels until the bar has room for the long ones */
+.mainnav .nav-short, .mainnav .nav-tiny{display:none}
+/* six links: short labels until the bar has room for the long ones */
 @media (min-width:961px) and (max-width:1640px){
   .mainnav{gap:4px}
   .mainnav a{padding:0 10px; gap:6px}
@@ -531,6 +531,8 @@
   .mainnav a{flex:1; min-width:0; height:48px; flex-direction:column; justify-content:center; gap:4px; padding:0 4px; font-size:12px}
   .mainnav .nav-full{display:none}
   .mainnav .nav-short{display:inline}
+  .mainnav a:has(.nav-tiny) .nav-short{display:none}
+  .mainnav .nav-tiny{display:inline}
   body{padding-bottom:calc(73px + env(safe-area-inset-bottom))}
   .workspace{padding:16px}
   .ctxbar-in{padding:12px 16px; gap:12px}
@@ -978,6 +980,29 @@
   .sm-charts{grid-template-columns:minmax(0,1fr)}
   .sm-row{grid-template-columns:minmax(0,110px) minmax(0,1fr) 52px; gap:8px}
 }
+/* seat matrix at a glance: 100 squares, and fact tiles */
+.sm-facts{display:grid; grid-template-columns:minmax(0,300px) minmax(0,1fr); gap:16px; margin-top:16px}
+.sm-facts:empty{display:none}
+.sm-cells{display:grid; grid-template-columns:repeat(10, 1fr); gap:3px; margin:10px 0 12px; max-width:260px}
+.sm-cells i{aspect-ratio:1; border-radius:3px}
+.sm-waffle .sm-legend b{font-family:var(--mono); margin-left:2px}
+.sm-factgrid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px}
+.sm-fact{display:grid; gap:4px; align-content:center; padding:14px 16px; background:var(--surface); border:1px solid var(--rule); border-radius:var(--r)}
+.sm-fact b{font:600 17px/1.25 var(--serif); color:var(--ink); overflow-wrap:anywhere}
+.sm-fact > span:last-child{font-size:12.5px; color:var(--ink-2)}
+@media (max-width: 900px){ .sm-facts{grid-template-columns:minmax(0,1fr)} .sm-factgrid{grid-template-columns:repeat(2, minmax(0,1fr))} }
+/* bond map */
+.bd-mapcard{margin:8px 0 18px}
+.bd-metric{margin:6px 0 14px}
 /* allotment analysis */
 .an-pick{margin-bottom:6px}
 .an-note{margin:10px 0 14px; font-size:13.5px}
+/* first rank green, last rank red */
+.an-rk{display:inline-block; padding:2px 8px; border-radius:999px; font-family:var(--mono); font-weight:600}
+.an-rk.an-first{color:var(--ok); background:var(--ok-bg)}
+.an-rk.an-last{color:var(--err); background:var(--err-bg)}
+b.an-first:not(.an-rk), .an-key.an-first{color:var(--ok)}
+b.an-last:not(.an-rk), .an-key.an-last{color:var(--err)}
+.an-key{display:inline-flex; align-items:center; gap:6px}
+.an-key::before{content:""; width:8px; height:8px; border-radius:50%; background:currentColor}
+#an-head .rp-sub-title{margin:4px 0 12px}

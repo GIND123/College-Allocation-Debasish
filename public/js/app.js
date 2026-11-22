@@ -141,7 +141,7 @@ document.addEventListener('click', e => {
   const a = e.target.closest('a[data-link]');
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.origin !== location.origin) return;
   e.preventDefault();
-  go(a.pathname);
+  go(a.pathname + a.search);
 });
 addEventListener('popstate', () => { if (location.pathname !== S.path) route(); });
 addEventListener('hashchange', () => { if (S.path === '/counselling') viewGuides(); }); // old /counselling#state links
@@ -152,7 +152,7 @@ async function route() {
   if ((p === '/' || p === '/review' && S.user?.review) && S.user) { history.replaceState({}, '', '/predict'); p = '/predict'; }
   const changed = p !== S.path;
   S.path = p;
-  const tab = GATED.has(p) ? '/predict' : p === '/roadmap' ? '/counselling' : p; // cut-offs and shortlist live under "Intelligent prediction"
+  const tab = GATED.has(p) || p === '/method' ? '/predict' : p === '/roadmap' ? '/counselling' : p; // cut-offs, shortlist and the method live under "Intelligent prediction"
   $$('#nav a').forEach(a => a.pathname === tab ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
   if ((GATED.has(p) || p === '/seats' || p === '/journey' || p === '/analysis') && !S.user) viewGate(p);
   else if (GATED.has(p) && !profileComplete()) viewProfile();
@@ -778,7 +778,7 @@ function bindCtx() {
 }
 
 // Predictions, the cut-off table and the shortlist are three views of "Intelligent prediction".
-const WORK_TABS = [['/predict', 'Predictions'], ['/cutoffs', 'Cut-off table'], ['/shortlist', 'Shortlist']];
+const WORK_TABS = [['/predict', 'Predictions'], ['/cutoffs', 'Cut-off table'], ['/shortlist', 'Shortlist'], ['/method', 'Method & sources']];
 const workTabs = p => `
   <div class="worktabs"><nav class="worktabs-in" aria-label="Prediction views">${WORK_TABS.map(([href, label]) =>
     `<a href="${href}" data-link${href === p ? ' aria-current="page"' : ''}>${label}${href === '/shortlist' ? ' <span class="count num" id="slcount" hidden></span>' : ''}</a>`).join('')}
@@ -850,9 +850,9 @@ async function renderRoadmap() {
         ${S.cfg.regionData?.[myState()]?.includes('seats') ? `<div class="rm-pred-row"><div><b>${esc(myState())} Round 1: your chance at every seat</b> <span class="gd-pill info">New</span>
           <p>This year's seat matrix, each seat graded against last year's closing rank for your CMR.</p></div>
           <a class="btn btn-line btn-sm" href="/roadmap/${esc(slugOf(myState()))}/round-1/choice-filling" data-link>Open the seat matrix ${icon.arrowR}</a></div>` : ''}
-        ${S.cfg.regionData?.[ALL_INDIA]?.includes('allotment') ? `<div class="rm-pred-row"><div><b>MCC Round 1 result</b> <span class="gd-pill info">New</span>
-          <p>Every seat allotted in Round 1, searchable by All India Rank, college, course, quota and Govt / private.</p></div>
-          <a class="btn btn-line btn-sm" href="/roadmap/all-india/round-1/allotment" data-link>Open the result ${icon.arrowR}</a></div>` : ''}
+        ${S.cfg.regionData?.[ALL_INDIA]?.includes('allotment') ? `<div class="rm-pred-row"><div><b>Allotment analysis</b> <span class="gd-pill info">New</span>
+          <p>First and last rank allotted for every college, course, quota and category, in All India (MCC Rounds 1 and 2) and every state.</p></div>
+          <a class="btn btn-line btn-sm" href="/analysis" data-link>Open the analysis ${icon.arrowR}</a></div>` : ''}
       </div>
       <p class="rm-src">${esc(rm.source || '')}</p>
     </div>`;
@@ -1828,7 +1828,7 @@ function rpOut(info, here) {
     const stage = x.kind === 'merit' ? 'Merit List' : x.round;
     if (!stage || stage === here && x.kind !== 'merit') continue;
     const href = x.kind === 'merit' ? `/roadmap/${info.key}/merit-list/${slugOf(meritRound(x))}`
-      : `/roadmap/${info.key}/${slugOf(x.round)}/${x.kind === 'seats' ? 'choice-filling' : 'allotment'}`;
+      : x.kind === 'allotment' ? `/analysis?r=${info.key}&l=${encodeURIComponent(x.id)}` : `/roadmap/${info.key}/${slugOf(x.round)}/choice-filling`;
     const label = x.kind === 'seats' ? 'seat matrix' : x.short || 'allotment';
     const what = x.kind === 'merit' ? `${meritRound(x)} merit list` : /\bround\b/i.test(label) ? label : `${x.round} ${label}`;
     if (location.pathname === href || items.some(i => i.href === href)) continue;
@@ -1955,8 +1955,8 @@ function rpMerit(info, box, rest = []) {
   const host = $('#rp-data');
   if (info.region === ALL_INDIA) {
     host.innerHTML = `<div class="rp-soon">${rpSvg('info')}<h3>No separate merit list</h3>
-      <p>Your NEET-PG 2026 All India Rank is your place in the queue. See where every rank went in Round 1, or where yours can reach.</p>
-      <div class="empty-actions"><a class="btn btn-primary" href="/roadmap/all-india/round-1/allotment" data-link>Round 1 allotments</a>
+      <p>Your NEET-PG 2026 All India Rank is your place in the queue. See where every rank went in each round, or where yours can reach.</p>
+      <div class="empty-actions"><a class="btn btn-primary" href="/analysis?r=all-india" data-link>Allotment analysis</a>
         <a class="btn btn-line" href="/predict" data-link id="rp-aiq">All India predictor</a></div></div>`;
     $('#rp-aiq').addEventListener('click', () => { S.scope = 'aiq'; store.set('rr-scope', 'aiq'); });
     return;
@@ -1992,6 +1992,7 @@ function rpRound(info, box, stage, rest) {
   const pick = `${info.key}/${stage}/${kind}`;
   S.rpPick ||= {};
   const d = sets.find(x => x.id === S.rpPick[pick]) || sets[0];
+  if (kind === 'allotment' && d) { history.replaceState({}, '', `/analysis?r=${info.key}&l=${encodeURIComponent(d.id)}`); return route(); } // one place for every allotment list
   const title = { seats: 'Seat Matrix', allotment: `${stage} allotment` }[kind] || 'Joining status';
   if (!d) {
     const docKind = { seats: 'Seat matrix', allotment: 'Allotment' }[kind];
@@ -2413,7 +2414,7 @@ async function viewBonds() {
     <div class="page-head"><div><div class="eyebrow">All states · state quota, government colleges</div><h1>Stipend and service bond, state by state</h1>
       <p>What a PG resident is paid each month, how long the state asks you to serve after the course, and what it costs not to.</p></div></div>
     <div id="bd-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
-  try { S.guideIndex ||= await api('/api/guides'); }
+  try { [S.guideIndex, mapShapes] = await Promise.all([S.guideIndex || api('/api/guides'), mapShapes || api('/data/india-map.json').catch(() => null)]); }
   catch (e) { $('#bd-body').innerHTML = `<div class="empty"><h3>Couldn't load the bond table</h3><p>${esc(e.message)}</p></div>`; return; }
   if (S.path !== '/bonds') return;
   const B = S.guideIndex.bonds;
@@ -2437,6 +2438,11 @@ async function viewBonds() {
   };
   $('#bd-body').innerHTML = `
     <p class="bd-src">${esc(B.source)} <span class="muted">As of ${esc(shortDate(B.asOf))}.</span></p>
+    ${mapShapes ? `<figure class="sm-card sm-mapcard bd-mapcard"><figcaption>Service bond and stipend on the map <small>click a state to see its row</small></figcaption>
+      <div class="seg bd-metric" role="group" aria-label="Shade the map by">${Object.entries(BD_METRICS).map(([k, m]) => `<button type="button" data-m="${k}">${m.t}</button>`).join('')}</div>
+      <div class="sm-mapgrid"><div class="sm-map" id="bd-map"></div><div class="sm-mapside"><div class="sm-mapkey" id="bd-key"></div>
+        <div class="sm-info" id="bd-info" aria-live="polite"></div><div class="sm-bars" id="bd-list"></div></div></div>
+      <p class="cov-src">Boundaries: <a href="https://github.com/datameet/maps" target="_blank" rel="noopener">DataMeet</a> (CC BY 4.0). Grey: not in the table, or no single figure (set by each institute).</p></figure>` : ''}
     <div class="rp-filters">
       <label class="field rp-q"><span class="label">Search</span><span class="search-wrap">${icon.search}<input class="input" id="bd-q" type="search" autocomplete="off" placeholder="State (e.g. Odisha, Tamil Nadu)"></span></label>
       <label class="field"><span class="label">Sort</span><select class="select" id="bd-sort">${Object.entries(SORT).map(([k, [t]]) => `<option value="${k}">${t}</option>`).join('')}</select></label>
@@ -2448,6 +2454,50 @@ async function viewBonds() {
   $('#bd-q').oninput = debounce(e => { q = e.target.value.trim(); if (q) { mine = false; if ($('#bd-mine')) $('#bd-mine').checked = false; } draw(); }, 150);
   $('#bd-sort').onchange = e => { sort = e.target.value; draw(); };
   if ($('#bd-mine')) $('#bd-mine').onchange = e => { mine = e.target.checked; draw(); };
+  draw();
+  if (mapShapes) bondMap(B, lakh, st => { const el = $('#bd-q'); el.value = st; el.dispatchEvent(new Event('input')); $('.bd-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+}
+// The bond map: every state shaded by its penalty, bond period or year-1 stipend (one hue, five steps; grey where there's no figure).
+const BD_METRICS = {
+  penalty: { t: 'Bond penalty', key: 'Penalty for leaving the bond', cuts: [10, 20, 30, 50], lab: ['Up to ₹10 lakh', '₹11–20 lakh', '₹21–30 lakh', '₹31–50 lakh', 'Over ₹50 lakh'] },
+  years: { t: 'Bond period', key: 'Years of service asked', cuts: [1, 2], lab: ['1 year', '2 years', '3 years'], steps: [1, 3, 5] },
+  stipend: { t: 'Stipend (year 1)', key: 'Monthly stipend, year 1', cuts: [60000, 75000, 90000, 110000], lab: ['Under ₹60,000', '₹60,000–75,000', '₹75,000–90,000', '₹90,000–1.1 lakh', 'Over ₹1.1 lakh'] },
+};
+function bondMap(B, lakh, pick) {
+  let metric = 'penalty';
+  const by = Object.fromEntries(B.rows.map(r => [r.state, r]));
+  const val = (r, m) => !r ? 0 : m === 'penalty' ? lakh(r.penalty) : m === 'years' ? parseInt(r.years, 10) || 0 : r.stipend?.[0] || 0;
+  const said = (r, m) => m === 'penalty' ? r.penalty : m === 'years' ? r.years : r.stipend?.[0] ? `₹${fmt(r.stipend[0])} a month` : '';
+  const info = st => { const r = by[st];
+    if (!r) return `<b>${esc(st)}</b><span>Not in the bond table yet</span>`;
+    return `<b>${esc(st)}</b><span>Stipend ${r.stipend?.[0] ? `<b>${r.stipend.map(n => `₹${fmt(n)}`).join(' · ')}</b>` : `<b>${esc(r.stipendNote || '—')}</b>`}</span>
+      <span>Bond period <b>${esc(r.years || '—')}</b></span><span>Penalty <b>${esc(r.penalty || '—')}</b></span>`; };
+  const draw = () => {
+    const M = BD_METRICS[metric], steps = M.steps || [1, 2, 3, 4, 5];
+    const step = n => n ? steps[M.cuts.filter(c => n > c).length] : 0;
+    $$('.bd-metric [data-m]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === metric)));
+    $('#bd-map').innerHTML = `<svg viewBox="${mapShapes.viewBox}" role="group" aria-label="Map of India: ${esc(M.t)} by state">
+      ${Object.entries(mapShapes.states).map(([st, d]) => { const r = by[st], n = val(r, metric);
+        return `<path d="${d}" class="sq${step(n)}"${r ? ` data-state="${esc(st)}" tabindex="0" role="button"` : ''} aria-label="${esc(`${st}: ${r ? said(r, metric) || 'no single figure' : 'not in the table'}`)}" data-tip="${esc(info(st))}"/>`; }).join('')}
+      ${SMALL_AREA.filter(st => mapShapes.centers[st] && by[st]).map(st => { const [x, y] = mapShapes.centers[st];
+        return `<circle cx="${x}" cy="${y}" r="4" class="sm-pin sq${step(val(by[st], metric))}" data-state="${esc(st)}" data-tip="${esc(info(st))}" aria-hidden="true"/>`; }).join('')}
+    </svg>`;
+    $('#bd-key').innerHTML = `<span class="sm-keyt">${esc(M.key)}</span><span class="sm-steps">${M.lab.map((l, i) => `<span><i class="sq${steps[i]}"></i>${esc(l)}</span>`).join('')}<span><i class="sq0"></i>No figure</span></span>`;
+    const top = B.rows.filter(r => val(r, metric)).sort((a, b) => val(b, metric) - val(a, metric)).slice(0, 8), max = val(top[0], metric) || 1;
+    $('#bd-list').innerHTML = `<p class="sm-listt">${metric === 'stipend' ? 'Highest stipend' : metric === 'years' ? 'Longest bond' : 'Highest penalty'}</p>`
+      + top.map(r => smRow(r.state, null, 100 * val(r, metric) / max, said(r, metric).replace(' a month', ''), info(r.state), ` data-state="${esc(r.state)}" role="button"`)).join('');
+    $('#bd-info').innerHTML = '<p class="sm-hint">Point at a state to see its stipend, bond period and penalty here; click it to see its row in the table.</p>';
+  };
+  $$('.bd-metric [data-m]').forEach(b => b.onclick = () => { metric = b.dataset.m; draw(); });
+  for (const id of ['#bd-map', '#bd-list']) {
+    const box = $(id);
+    const show = e => { const el = e.target.closest('[data-tip]'); if (!el) return; $('#bd-info').innerHTML = el.dataset.tip;
+      $$('#bd-map .on, #bd-list .on').forEach(x => x.classList.remove('on'));
+      $$(`#bd-map [data-state="${CSS.escape(el.dataset.state || '')}"], #bd-list [data-state="${CSS.escape(el.dataset.state || '')}"]`).forEach(x => x.classList.add('on')); };
+    for (const ev of ['mouseover', 'focusin']) box.addEventListener(ev, show);
+    box.addEventListener('click', e => { const el = e.target.closest('[data-state]'); if (el) pick(el.dataset.state); });
+    box.addEventListener('keydown', e => { const el = e.target.closest('[data-state]'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(el.dataset.state); } });
+  }
   draw();
 }
 
@@ -2521,7 +2571,7 @@ async function viewJourney() {
 // ---- allotment analysis: first and last rank allotted, for any selection, in All India and every state ------------------
 // One allotment list at a time. The filters pick seats; the table rolls what's left up by college, course, quota and category
 // (or by course or college alone) and shows the first and last rank allotted in each.
-const AN_GROUPS = { cc: 'College and course', course: 'Course', college: 'College' };
+const AN_GROUPS = { cc: 'College and course', course: 'Course', college: 'College', seat: 'Each seat' };
 // Rows of { rank, air, college, type, state, course, programme, quota, category, status } from either allotment format.
 function anRows(D) {
   if (D.format === 'mcc') return D.rows.map(r => ({ rank: r[0], air: r[0], college: D.inst[r[1]], state: D.state[r[2]], quota: D.quota[r[3]],
@@ -2533,8 +2583,8 @@ function anRows(D) {
 async function viewAnalysis() {
   view.innerHTML = `<div class="sm an">
     <div class="page-head"><div><div class="eyebrow">Counselling 2026 · All India and states</div><h1>Allotment analysis</h1>
-      <p>The first and last rank allotted for every college, course, quota and category, from the official allotment lists.
-        Narrow it with the filters: the summary gives the first and last rank for whatever is left.</p></div></div>
+      <p>Every allotment list in one place: the <b class="an-first">first rank</b> and <b class="an-last">last rank</b> allotted for every college, course, quota and category,
+        or each seat with its rank. Narrow it with the filters: the summary gives the first and last rank for whatever is left.</p></div></div>
     <div class="rp-filters an-pick">
       <label class="field"><span class="label">Counselling</span><select class="select" id="an-region"></select></label>
       <label class="field"><span class="label">Allotment list</span><select class="select" id="an-list"></select></label>
@@ -2542,6 +2592,7 @@ async function viewAnalysis() {
       <div class="field rp-wide"><span class="label">One row per</span><div class="seg" role="group" aria-label="One row per" id="an-group">${Object.entries(AN_GROUPS).map(([k, t]) =>
         `<button type="button" data-g="${k}">${t}</button>`).join('')}</div></div>
     </div>
+    <div id="an-head"></div>
     <div id="an-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
   const qs = new URLSearchParams(location.search);
   const regions = Object.entries(S.cfg.regionData || {}).filter(([, k]) => k.includes('allotment')).map(([r]) => r)
@@ -2566,6 +2617,8 @@ async function viewAnalysis() {
   const loadList = async () => {
     $('#an-body').innerHTML = '<div class="rp-wait"><span class="spinner"></span></div>';
     const d = info.data.find(x => x.id === listId);
+    $('#an-head').innerHTML = d ? `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}${d.doc
+      ? ` · <a href="/counselling/assets/${esc(d.doc)}" target="_blank" rel="noopener">Official PDF</a>` : ''} · <a href="/roadmap/${info.key}" data-link>${esc(region)} roadmap and guide</a></small></h3>` : '';
     if (!d) { $('#an-body').innerHTML = '<div class="empty"><h3>No allotment list for this counselling yet</h3></div>'; return; }
     S.rpData ||= {};
     const ck = info.key + '/' + d.id;
@@ -2581,6 +2634,7 @@ async function viewAnalysis() {
       x: Object.fromEntries($$('#an-body [data-x]').map(el => [el.dataset.x, el.value])) } : { prog: '', q: '', x: {} };
     keep();
     $$('#an-group [data-g]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.g === group)));
+    if (group === 'seat') { $('#an-basis-f').hidden = true; return allotExplorer($('#an-body'), D, info); }
     const label = D.format === 'mcc' ? 'NEET AIR' : D.rankLabel || 'State rank';
     const canAir = D.format !== 'mcc' && !/NEET AIR/i.test(label) && rows.filter(r => r.air > 0).length >= rows.length * 0.8;
     if (!canAir) basis = 'rank';
@@ -2604,7 +2658,8 @@ async function viewAnalysis() {
       }
       return [...m.values()].sort((a, b) => (a.first ? rk(a.first) : Infinity) - (b.first ? rk(b.first) : Infinity) || a.seats - b.seats);
     };
-    const rankCell = r => r ? `${esc(said(r))}${other && r.air ? `<span class="sub">AIR ${fmt(r.air)}</span>` : ''}` : '<span class="muted">—</span>';
+    // first rank green, last rank red, in the table, the headings and the summary alike
+    const rankCell = (r, k) => r ? `<span class="an-rk an-${k}">${esc(said(r))}</span>${other && r.air ? `<span class="sub">AIR ${fmt(r.air)}</span>` : ''}` : '<span class="muted">—</span>';
     const inst = { t: 'Institution', cls: 'wrapcell', r: g => `<b>${esc(g.college)}</b><span class="sub">${esc([g.state, g.type].filter(Boolean).join(' · '))}</span>` };
     const course = { t: 'Course', cls: 'wrapcell', r: g => `${esc(g.course)}<span class="sub">${esc(g.programme)}${group === 'course' && g.type ? ` · ${esc(g.type)}` : ''}</span>` };
     const head = rkLabel === 'NEET AIR' ? 'NEET AIR' : esc(rkLabel);
@@ -2618,6 +2673,7 @@ async function viewAnalysis() {
         ...(many('state') ? [{ id: 'state', label: 'State', all: 'All states', of: r => r.state }] : []),
         ...(many('type') ? [{ id: 'type', label: 'College type', all: 'All (Govt + Private)', of: r => r.type }] : []),
         ...(many('quota') ? [{ id: 'quota', label: 'Quota', all: 'All quotas', of: r => r.quota }] : []),
+        { id: 'inst', label: 'Institution', all: 'All institutions', of: r => r.college },
         { id: 'cat', label: 'Category', all: 'All categories', of: r => r.category },
         { id: 'course', label: 'Course', all: 'All courses', of: r => r.course },
         ...(many('status') ? [{ id: 'status', label: 'Status', all: 'Every status', of: r => r.status }] : [])].map(x => ({ ...x, value: was.x[x.id] || '' })),
@@ -2627,13 +2683,13 @@ async function viewAnalysis() {
         { t: 'Quota', cls: 'wrapcell', r: g => esc(g.quota || '—') },
         { t: 'Category', cls: 'wrapcell', r: g => esc(g.category || '—') },
         { t: 'Seats', cls: 'n', r: g => fmt(g.seats) },
-        { t: `First rank <span class="sub">${head}</span>`, cls: 'n strong', r: g => rankCell(g.first) },
-        { t: `Last rank <span class="sub">${head}</span>`, cls: 'n strong', r: g => rankCell(g.last) }],
+        { t: `<span class="an-key an-first">First rank</span><span class="sub">${head}</span>`, cls: 'n strong', r: g => rankCell(g.first, 'first') },
+        { t: `<span class="an-key an-last">Last rank</span><span class="sub">${head}</span>`, cls: 'n strong', r: g => rankCell(g.last, 'last') }],
       summary: v => {
         if (!v.length) return 'No seats match these filters.';
         const seats = v.reduce((a, g) => a + g.seats, 0), firsts = v.map(g => g.first).filter(Boolean), lasts = v.map(g => g.last).filter(Boolean);
         const lo = firsts.reduce((a, r) => !a || rk(r) < rk(a) ? r : a, null), hi = lasts.reduce((a, r) => !a || rk(r) > rk(a) ? r : a, null);
-        return `<b>${fmt(seats)}</b> seat${seats === 1 ? '' : 's'} in <b>${fmt(v.length)}</b> row${v.length === 1 ? '' : 's'}${lo ? ` · first rank <b>${esc(said(lo))}</b>, last rank <b>${esc(said(hi))}</b> (${esc(rkLabel)})` : ''}`;
+        return `<b>${fmt(seats)}</b> seat${seats === 1 ? '' : 's'} in <b>${fmt(v.length)}</b> row${v.length === 1 ? '' : 's'}${lo ? ` · first rank <b class="an-rk an-first">${esc(said(lo))}</b>, last rank <b class="an-rk an-last">${esc(said(hi))}</b> (${esc(rkLabel)})` : ''}`;
       },
       csv: { name: `${slugOf(region)}-${listId}-analysis.csv`,
         head: [...(group !== 'course' ? ['Institution', 'State', 'College type'] : []), ...(group !== 'college' ? ['Course', 'Programme'] : []), ...(group === 'course' ? ['College type'] : []),
@@ -2887,6 +2943,7 @@ async function viewSeats() {
   const legend = `<div class="sm-legend">${SM_TYPES.map((t, i) => `<span><i class="sm-t${i + 1}"></i>${t}</span>`).join('')}</div>`;
   host.querySelector('.rp-filters').insertAdjacentHTML('afterend', `<section class="sm-viz" aria-label="Analysis">
     <div class="sm-kpis" id="sm-kpis"></div>
+    <div class="sm-facts" id="sm-facts"></div>
     ${mapShapes ? `<figure class="sm-card sm-mapcard"><figcaption id="sm-mapt"></figcaption>
       <div class="sm-mapgrid"><div class="sm-map" id="sm-map"></div><div class="sm-mapside"><div class="sm-mapkey" id="sm-mapkey"></div><div class="sm-info" id="sm-info" aria-live="polite"></div><div class="sm-bars" id="sm-maplist"></div></div></div>
       <p class="cov-src">Boundaries: <a href="https://github.com/datameet/maps" target="_blank" rel="noopener">DataMeet</a> (CC BY 4.0); district lines from the 2011 census.
@@ -2946,6 +3003,7 @@ function smCharts(v) {
     [fmt(new Set(v.map(r => r.state)).size), 'states and UTs']].map(([n, t]) => `<div><b>${n}</b><span>${t}</span></div>`).join('')
     + `<div class="sm-split"><span>${SM_TYPES.map((t, i) => `<i class="sm-t${i + 1}" style="flex:${byType[i]}"></i>`).join('')}</span>
       <small>${SM_TYPES.map((t, i) => `${t} ${pct(byType[i])}`).join(' · ')}</small></div>`;
+  smFacts(v, byType, total);
   smMap(v);
   // chart 1: by state (or, within one state, by institution), stacked by college type
   const states = new Set(v.map(r => r.state));
@@ -3069,6 +3127,34 @@ function smState(m, st, v) {
   $('#sm-info').className = 'sm-info sm-info-town';
   $('#sm-info').innerHTML = `<p class="sm-hint">${list.length ? 'Point at or tap a town to list its institutions here.' : 'No seats match these filters.'}</p>`;
 }
+// At a glance: 100 squares for 100 seats by college type, and the facts behind the filters (biggest institution, course and state).
+function smFacts(v, byType, total) {
+  const box = $('#sm-facts');
+  if (!box) return;
+  if (!total) { box.innerHTML = ''; return; }
+  // 100 squares split by largest remainder, so they always add up to 100
+  const raw = byType.map(n => 100 * n / total), sq = raw.map(Math.floor);
+  raw.map((x, i) => [x - sq[i], i]).sort((a, b) => b[0] - a[0]).slice(0, 100 - sq.reduce((a, b) => a + b, 0)).forEach(([, i]) => sq[i]++);
+  const cells = sq.flatMap((n, i) => Array(n).fill(i + 1));
+  const top = (key, w = r => r.seats) => { const m = new Map(); for (const r of v) m.set(r[key], (m.get(r[key]) || 0) + w(r)); return [...m].sort((a, b) => b[1] - a[1])[0] || ['—', 0]; };
+  const inst = top('college'), course = top('course'), state = top('state');
+  const reach = new Map(); for (const r of v) (reach.get(r.course) || reach.set(r.course, new Set()).get(r.course)).add(r.college);
+  const wide = [...reach].sort((a, b) => b[1].size - a[1].size)[0];
+  const colleges = new Set(v.map(r => r.college)).size, dip = v.filter(r => r.programme === 'Diploma').reduce((n, r) => n + r.seats, 0);
+  const one = new Set(v.map(r => r.state)).size === 1;
+  const tile = (eye, big, small) => `<div class="sm-fact"><span class="eyebrow">${eye}</span><b>${big}</b><span>${small}</span></div>`;
+  box.innerHTML = `<figure class="sm-card sm-waffle"><figcaption>Of every 100 PG seats <small>by college type</small></figcaption>
+      <div class="sm-cells" role="img" aria-label="${esc(SM_TYPES.map((t, i) => `${t} ${sq[i]}`).join(', '))} of every 100 seats">${cells.map(i => `<i class="sm-t${i}"></i>`).join('')}</div>
+      <div class="sm-legend">${SM_TYPES.map((t, i) => `<span><i class="sm-t${i + 1}"></i>${t} <b>${sq[i]}</b></span>`).join('')}</div></figure>
+    <div class="sm-factgrid">
+      ${tile('Largest institution', esc(inst[0]), `${fmt(inst[1])} PG seats`)}
+      ${tile('Course with the most seats', esc(String(course[0]).replace(/^M\.[DS]\.\s*/, '')), `${fmt(course[1])} seats · ${Math.round(100 * course[1] / total)}% of the seats shown`)}
+      ${tile('Most widely offered', esc(String(wide[0]).replace(/^M\.[DS]\.\s*/, '')), `at ${fmt(wide[1].size)} of ${fmt(colleges)} institutions`)}
+      ${one ? tile('Diploma seats', fmt(dip), `${Math.round(100 * dip / total)}% of the seats shown`) : tile('State with the most seats', esc(state[0]), `${fmt(state[1])} seats · ${Math.round(100 * state[1] / total)}% of the seats shown`)}
+      ${tile('Seats per institution', (total / colleges).toFixed(1), 'on average')}
+      ${tile('Diploma share', `${Math.round(100 * dip / total)}%`, `${fmt(dip)} diploma seats, ${fmt(total - dip)} MD/MS`)}
+    </div>`;
+}
 // one bar of a seat chart: stacked by college type when t is given, else a single series
 function smRow(label, t, width, value, tip, attrs = '') {
   return `<div class="sm-row" tabindex="0"${attrs} aria-label="${esc(label)}: ${esc(value)}" data-tip="${esc(tip)}">
@@ -3082,7 +3168,7 @@ function smTip(name, t, foot) {
 
 function viewMethod() {
   const sets = S.cfg.datasets || [];
-  view.innerHTML = `<div class="doc">
+  view.innerHTML = workTabs('/method') + `<div class="doc">
     <nav class="toc" aria-label="On this page">
       <a href="#sources">Sources</a><a href="#ranks">CMR and AIR</a><a href="#chance">The chance grade</a>
       <a href="#rounds">Rounds</a><a href="#limits">Limits</a><a href="#data">Datasets</a>
