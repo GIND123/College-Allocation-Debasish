@@ -891,7 +891,9 @@
 .bd-check{display:block; margin-top:4px; font:600 11.5px/1.3 var(--sans)}
 .bd-ok{color:var(--ok, #2e7d4f)} .bd-info{color:var(--link)} .bd-bad{color:var(--err)}
 .bd-mine{align-self:end; padding-bottom:10px}
-/* rank journey */
+/* rank track */
+.jr-elig{display:flex; flex-wrap:wrap; gap:4px}
+.jr-elig .jr-st{background:var(--ok-bg); color:var(--ok)}
 .jr-seat{padding:3px 0}
 .jr-seat + .jr-seat{border-top:1px dashed var(--rule); margin-top:4px; padding-top:7px}
 .jr-seat b{display:block; font-weight:600}

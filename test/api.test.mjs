@@ -513,6 +513,11 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   const row = j.rows.find(x => x[0] === 42);
   assert.ok(row[1].some(s => j.sets[s[0]].region === 'Odisha'), 'AIR 42: Odisha seat');
   assert.ok(j.rows.every((x, i) => i === 0 || x[0] > j.rows[i - 1][0]), 'one row per rank, in order');
+  // 22 Nov: eligibility from the state merit lists (rank and state only, never a name)
+  assert.ok(j.rows.filter(x => x[2]?.length > 1).length > 1000, 'many ranks are on two or more state merit lists');
+  assert.ok(j.rows.some(x => !x[1].length && x[2]?.length), 'a rank on a merit list with no seat yet is listed');
+  assert.ok(!/"name"|"roll"/.test(JSON.stringify(j)), 'no names or roll numbers');
+  assert.ok(!j.regions.includes('All India'));
   // 19 Nov: Round 2 merit lists, Round 2 seat matrices, Himachal Pradesh, as printed
   const gj2 = (await b('/api/regions/gujarat/data/merit-list-round-2')).json;
   assert.deepEqual(gj2.lists.map(l => l.rows.length), [6181, 11]);
@@ -528,9 +533,9 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   assert.ok((await b('/api/regions/punjab')).json.dates.length >= 8, 'Punjab has a guide with dates');
   // 20 Nov: MCC Round 2 result, with each seat's status; the allotment analysis page
   const m2 = (await b('/api/regions/all-india/data/allotment-round-2')).json;
-  assert.equal(m2.rows.length, 29292);
-  const st = {}; for (const r of m2.rows) st[m2.status[r[8]]] = (st[m2.status[r[8]]] || 0) + 1;
-  assert.deepEqual(st, { Retained: 8585, Upgraded: 9650, 'Fresh allotment': 11057 });
+  assert.equal(m2.rows.length, 31082, 'with the 1,790 frozen Round 1 seats (22 Nov)');
+  const st = {}; for (const r of m2.rows) { const k = m2.status[r[8]] + (r[9] != null ? ' ' + m2.move[r[9]] : ''); st[k] = (st[k] || 0) + 1; }
+  assert.deepEqual(st, { 'Float Retained': 8585, 'Float Upgraded': 9650, 'Fresh allotment': 11057, Freeze: 1790 }, 'Fresh allotment, Freeze and Float');
   assert.ok(m2.rows.every((r, i) => i === 0 || r[0] > m2.rows[i - 1][0]), 'one seat per rank, in order');
   assert.ok(m2.rows.every(r => m2.state[r[2]]), 'every seat has its college state');
   assert.ok(j.sets.some(x => x.region === 'All India' && x.round === 'Round 2'), 'the journey joins Round 2');

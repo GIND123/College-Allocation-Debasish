@@ -1,5 +1,6 @@
-// Rank journey: for every NEET-PG All India Rank, the seat it was given in All India counselling (MCC) and in each state's
-// counselling, from the allotment lists on the roadmap pages. A state seat is matched only where the state's list gives the
+// Rank track: for every NEET-PG All India Rank, the seat it was given in All India counselling (MCC) and in each state's
+// counselling, from the allotment lists on the roadmap pages, and the state merit lists it is on (where it can take part).
+// Only ranks and state names leave the server: never a candidate's name or roll number. A state seat is matched only where the state's list gives the
 // candidate's NEET-PG rank (some lists print only the state merit position, and those can't be joined).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -7,11 +8,12 @@ import { registry, DATA_DIR, ALL_INDIA } from './guides.js';
 
 let cache = { key: '', json: '' };
 
-/** The journey data as one compact JSON string: string tables plus [air, [set, college, course, quota, category, type, programme, status]…] rows. */
+/** The journey data as one compact JSON string: string tables plus [air, [set, college, course, quota, category, type, programme, status]…, [merit region…]?] rows. */
 export function journeyJson() {
   const sets = (registry().data || []).filter(d => d.kind === 'allotment');
-  const files = sets.map(d => path.join(DATA_DIR, d.file));
-  const key = files.map(f => `${f}:${fs.statSync(f).mtimeMs}`).join('|');
+  const merits = (registry().data || []).filter(d => d.kind === 'merit' && d.region !== ALL_INDIA);
+  const files = sets.map(d => path.join(DATA_DIR, d.file)), mfiles = merits.map(d => path.join(DATA_DIR, d.file));
+  const key = [...files, ...mfiles].map(f => `${f}:${fs.statSync(f).mtimeMs}`).join('|');
   if (cache.key === key) return cache.json;
 
   const strings = [], index = new Map();
@@ -38,8 +40,25 @@ export function journeyJson() {
     }
     out.push({ region: d.region, label: d.short || d.title, round: d.round, date: d.date, id: d.id, rows: D.rows.length, matched });
   });
-  const rows = [...byAir.entries()].sort((a, b) => a[0] - b[0]).map(([air, seats]) => [air, seats]);
-  cache = { key, json: JSON.stringify({ allIndia: ALL_INDIA, sets: out, strings, rows }) };
+  // State merit lists: every rank printed with its NEET AIR is eligible for that state's counselling. Lists of candidates turned away
+  // (rows with a reason) are left out, and so are lists that print no AIR (Tamil Nadu's, for example).
+  const regions = [], onList = new Map(), meritSets = [];
+  merits.forEach((d, i) => {
+    const D = JSON.parse(fs.readFileSync(mfiles[i], 'utf8'));
+    let ri = regions.indexOf(d.region);
+    if (ri < 0) ri = regions.push(d.region) - 1;
+    let n = 0;
+    for (const L of D.lists || [D]) for (const r of L.rows || []) {
+      if (!r || r.reason || !(r.air > 0)) continue;
+      if (!onList.has(r.air)) onList.set(r.air, new Set());
+      onList.get(r.air).add(ri); n++;
+    }
+    meritSets.push({ region: d.region, label: d.round ? `${d.round} merit list` : 'Merit list', date: d.date, ranks: n });
+  });
+  for (const air of onList.keys()) if (!byAir.has(air)) byAir.set(air, []);
+  const rows = [...byAir.entries()].sort((a, b) => a[0] - b[0])
+    .map(([air, seats]) => onList.has(air) ? [air, seats, [...onList.get(air)].sort((a, b) => a - b)] : [air, seats]);
+  cache = { key, json: JSON.stringify({ allIndia: ALL_INDIA, sets: out, regions, meritSets, strings, rows }) };
   return cache.json;
 }
 

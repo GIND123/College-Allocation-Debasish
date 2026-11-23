@@ -2363,7 +2363,8 @@ function addrOf(name, full) {
 }
 
 // MCC's result in its compact form: lists of names, and rows of [rank, inst, state, quota, course, seat cat, candidate cat, college type, status]
-// (status from Round 2 on: fresh allotment, upgraded or retained).
+// (status from Round 2 on: Fresh allotment, Freeze or Float, and for a Float, [9] the move: Upgraded or Retained).
+const MOVE_SAID = { Upgraded: 'Upgraded to a new seat', Retained: 'Kept the Round 1 seat' };
 function allotExplorer(host, D, info) {
   if (D.format === 'state') return stateAllotExplorer(host, D, info);
   const at = (k, i) => D[k]?.[i] ?? '';
@@ -2396,12 +2397,12 @@ function allotExplorer(host, D, info) {
       { t: 'Quota', cls: 'wrapcell', r: r => `${esc(D.quota[r[3]])}<span class="sub">${esc(at('type', r[7]))}</span>` },
       { t: 'Category', r: r => { const seat = D.cat[r[5]], cand = D.cand[r[6]];
         return esc(seat) + (cand.replace('General', 'OPEN').toUpperCase() !== seat.toUpperCase() ? `<span class="sub">Candidate: ${esc(cand)}</span>` : ''); } },
-      ...(D.status ? [{ t: 'Status', r: r => `<span class="rp-chip">${esc(at('status', r[8]))}</span>` }] : [])
+      ...(D.status ? [{ t: 'Status', r: r => `<span class="rp-chip">${esc(at('status', r[8]))}</span>${r[9] != null ? `<span class="sub">${esc(MOVE_SAID[at('move', r[9])] || at('move', r[9]))}</span>` : ''}` }] : [])
     ],
     summary: v => v.length ? `<b>${fmt(v.length)}</b> seat${v.length === 1 ? '' : 's'} · ranks <b>${fmt(v[0][0])}</b> to <b>${fmt(v[v.length - 1][0])}</b>${v.length < D.rows.length ? ' (opening to closing rank for this selection)' : ''}`
       : 'No seats match these filters.',
-    csv: { name: `neet-pg-2026-${D.status ? 'round2' : 'round1'}-result.csv`, head: ['AIR', 'College', 'Full name', 'State', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', ...(D.status ? ['Status'] : [])],
-      row: r => [r[0], D.inst[r[1]], D.full[r[1]], D.state[r[2]], at('type', r[7]), prog(r), D.course[r[4]], D.quota[r[3]], D.cat[r[5]], D.cand[r[6]], ...(D.status ? [at('status', r[8])] : [])] }
+    csv: { name: `neet-pg-2026-${D.status ? 'round2' : 'round1'}-result.csv`, head: ['AIR', 'College', 'Full name', 'State', 'College type', 'Programme', 'Course', 'Quota', 'Seat category', 'Candidate category', ...(D.status ? ['Status', 'Float result'] : [])],
+      row: r => [r[0], D.inst[r[1]], D.full[r[1]], D.state[r[2]], at('type', r[7]), prog(r), D.course[r[4]], D.quota[r[3]], D.cat[r[5]], D.cand[r[6]], ...(D.status ? [at('status', r[8]), r[9] != null ? MOVE_SAID[at('move', r[9])] || at('move', r[9]) : ''] : [])] }
   });
 }
 
@@ -2501,30 +2502,34 @@ function bondMap(B, lakh, pick) {
   draw();
 }
 
-// ---- rank journey: each All India Rank's seats in All India and state counselling --------------------------
+// ---- rank track: each All India Rank's seats in All India and state counselling, and the state merit lists it is on ----------
 async function viewJourney() {
   view.innerHTML = `<div class="sm jr">
-    <div class="page-head"><div><div class="eyebrow">Counselling 2026 · Rounds 1 and 2</div><h1>Rank journey</h1>
-      <p>How each NEET-PG rank fared in All India and state counselling: the All India (MCC) seat and every state seat it was given, side by side.
+    <div class="page-head"><div><div class="eyebrow">Counselling 2026 · Rounds 1 and 2</div><h1>Rank track</h1>
+      <p>How each NEET-PG rank fared in All India and state counselling: the All India (MCC) seat and every state seat it was given, side by side,
+        and the state merit lists it is on. Every rank can take part in All India counselling; the state merit lists show which states' counselling it is eligible for too.
         A rank holding two seats will give one up, and that seat comes back in the next round.</p></div></div>
     <div id="jr-body"><div class="rp-wait"><span class="spinner"></span></div></div></div>`;
   let D;
   try { D = await api('/api/journey'); }
   catch (e) {
     if (e.status === 401) { S.user = null; renderTop(); return route(); }
-    $('#jr-body').innerHTML = `<div class="empty"><h3>Couldn't load the rank journey</h3><p>${esc(e.message)}</p></div>`; return;
+    $('#jr-body').innerHTML = `<div class="empty"><h3>Couldn't load the rank track</h3><p>${esc(e.message)}</p></div>`; return;
   }
   if (S.path !== '/journey') return;
   const t = i => D.strings[i];
   const sets = D.sets;
   const isAI = set => sets[set].region === D.allIndia;
   const aiMany = sets.filter(x => x.region === D.allIndia).length > 1; // Round 1 and Round 2: say which
-  const rows = D.rows.map(([air, seats]) => {
+  const rows = D.rows.map(([air, seats, m = []]) => {
     const ai = seats.filter(x => isAI(x[0])), st = seats.filter(x => !isAI(x[0]));
-    const states = uniq(st.map(x => sets[x[0]].region));
-    const outcome = ai.length && states.length ? 'All India + state' : states.length > 1 ? 'Seats in 2+ states' : ai.length ? 'All India only' : 'State only';
-    return { air, ai, st, states, outcome: states.length > 1 && ai.length ? 'All India + 2+ states' : outcome };
+    const states = uniq(st.map(x => sets[x[0]].region)), elig = m.map(i => D.regions[i]);
+    const outcome = !seats.length ? 'No seat yet' : ai.length && states.length ? 'All India + state' : states.length > 1 ? 'Seats in 2+ states' : ai.length ? 'All India only' : 'State only';
+    return { air, ai, st, states, elig, outcome: states.length > 1 && ai.length ? 'All India + 2+ states' : outcome };
   });
+  const seated = rows.filter(r => r.ai.length || r.st.length).length, onMerit = rows.filter(r => r.elig.length).length, many = rows.filter(r => r.elig.length > 1).length;
+  const eligCell = r => r.elig.length ? `<span class="jr-elig"><span class="rp-chip">All India</span>${r.elig.map(x => `<span class="rp-chip jr-st">${esc(x)}</span>`).join('')}</span>`
+    : '<span class="muted">All India; on no state merit list we hold</span>';
   const count = o => rows.filter(r => r.outcome === o).length;
   const seat = (x, withSet) => {
     const set = sets[x[0]], status = !isAI(x[0]) && t(x[7]);
@@ -2536,35 +2541,44 @@ async function viewJourney() {
   const me = S.user?.air;
   explorer($('#jr-body'), {
     rows,
-    intro: `<div class="rp-stats">${[[rows.length, 'ranks with a seat'], [count('All India only'), 'All India only'], [count('State only'), 'state only'],
-        [count('All India + state') + count('All India + 2+ states'), 'All India + state'], [count('Seats in 2+ states') + count('All India + 2+ states'), 'seats in 2+ states']]
+    intro: `<div class="rp-stats">${[[seated, 'ranks with a seat'], [count('All India only'), 'All India only'], [count('State only'), 'state only'],
+        [count('All India + state') + count('All India + 2+ states'), 'All India + state'], [count('Seats in 2+ states') + count('All India + 2+ states'), 'seats in 2+ states'],
+        [onMerit, 'on a state merit list'], [many, 'on 2+ state merit lists']]
         .map(([n, l]) => `<div><b>${fmt(n)}</b><span>${l}</span></div>`).join('')}</div>
       <details class="jr-src"><summary>Which lists are joined (${sets.length})</summary><ul>${sets.map(x =>
         `<li><b>${esc(x.region)}</b> · ${esc(x.label)} <span class="muted">(${esc(shortDate(x.date))}): ${fmt(x.matched)} of ${fmt(x.rows)} seats matched to a NEET-PG rank</span></li>`).join('')}</ul>
         ${unmatched.length ? `<p class="muted">Seats are joined on the NEET-PG All India Rank. Where a state's list prints only its own merit position, those seats can't be joined:
-          ${esc(unmatched.filter(x => !x.matched).map(x => x.region).join(', ') || 'none')}${unmatched.some(x => x.matched) ? '; a few seats in other lists have no rank printed (NRI seats, for example)' : ''}.</p>` : ''}</details>`,
+          ${esc(unmatched.filter(x => !x.matched).map(x => x.region).join(', ') || 'none')}${unmatched.some(x => x.matched) ? '; a few seats in other lists have no rank printed (NRI seats, for example)' : ''}.</p>` : ''}</details>
+      <details class="jr-src"><summary>Which merit lists show eligibility (${(D.meritSets || []).filter(x => x.ranks).length})</summary><ul>${(D.meritSets || []).filter(x => x.ranks).map(x =>
+        `<li><b>${esc(x.region)}</b> · ${esc(x.label)} <span class="muted">(${esc(shortDate(x.date))}): ${fmt(x.ranks)} candidates with a NEET-PG rank</span></li>`).join('')}</ul>
+        <p class="muted">A rank on a state's merit list can take part in that state's counselling. ${esc(uniq((D.meritSets || []).filter(x => !x.ranks).map(x => x.region)).join(', ') || 'No list')}: no NEET-PG rank printed, so it can't be matched.
+          Only the rank and the state are used here, never a name.</p></details>`,
     selects: [{ id: 'outcome', label: 'Outcome', all: 'Every outcome', of: r => r.outcome },
       { id: 'state', label: 'State counselling', all: 'Any state', of: r => r.states },
-      { id: 'aistate', label: 'All India seat in', all: 'Any state', of: r => r.ai.map(x => t(x[7])) }],
+      { id: 'aistate', label: 'All India seat in', all: 'Any state', of: r => r.ai.map(x => t(x[7])) },
+      { id: 'elig', label: 'On the merit list of', all: 'Any state', of: r => r.elig }],
     search: { placeholder: 'College or course (e.g. SCB, Radiodiagnosis)', of: r => [...r.ai, ...r.st].map(x => `${t(x[1])} ${t(x[2])}`).join(' ') },
     near: r => r.air,
     find: { label: 'Find a NEET-PG rank (All India Rank)', placeholder: me ? `e.g. ${me}` : 'e.g. 12450', run: n => {
       const r = rows.find(x => x.air === n);
-      if (!r) return `Rank <b>${fmt(n)}</b> has no seat in these lists. The closest ranks with a seat are shown below.`;
+      if (!r) return `Rank <b>${fmt(n)}</b> has no seat in these lists and is on no state merit list we hold. The closest ranks are shown below.`;
+      const on = r.elig.length ? ` Eligible for All India and ${r.elig.length} state${r.elig.length > 1 ? 's' : ''}: <b>${esc(r.elig.join(', '))}</b>.` : '';
+      if (!r.ai.length && !r.st.length) return `Rank <b>${fmt(n)}</b> has no seat in these lists yet.${on}`;
       const bits = [...r.ai.map(x => `All India${aiMany ? ` (${esc(sets[x[0]].label)})` : ''}: <b>${esc(t(x[2]))}</b> at <b>${esc(t(x[1]))}</b>`),
         ...r.st.map(x => `${esc(sets[x[0]].region)} (${esc(sets[x[0]].label)}): <b>${esc(t(x[2]))}</b> at <b>${esc(t(x[1]))}</b>${t(x[7]) ? ` · ${esc(t(x[7]))}` : ''}`)];
-      return `Rank <b>${fmt(n)}</b>: ${bits.join('; ')}.`;
+      return `Rank <b>${fmt(n)}</b>: ${bits.join('; ')}.${on}`;
     } },
     mark: (r, f) => r.air === f.find || (!f.find && r.air === me),
     cols: [
       { t: 'NEET-PG rank', cls: 'n strong', r: r => fmt(r.air) },
       { t: 'All India counselling (MCC)', cls: 'wrapcell', r: r => r.ai.map(x => seat(x, aiMany)).join('') || '<span class="muted">—</span>' },
       { t: 'State counselling', cls: 'wrapcell', r: r => r.st.map(x => seat(x, true)).join('') || '<span class="muted">—</span>' },
+      { t: 'Eligible for <span class="sub">from the state merit lists</span>', cls: 'wrapcell', r: eligCell },
       { t: 'Outcome', r: r => `<span class="rp-chip">${esc(r.outcome)}</span>` }],
     summary: v => v.length ? `<b>${fmt(v.length)}</b> rank${v.length === 1 ? '' : 's'}` : 'No ranks match.',
-    csv: { name: 'rankround-rank-journey.csv', head: ['NEET-PG rank', 'Outcome', 'All India seat', 'State seats'],
+    csv: { name: 'rankround-rank-track.csv', head: ['NEET-PG rank', 'Outcome', 'All India seat', 'State seats', 'On the merit lists of'],
       row: r => [r.air, r.outcome, r.ai.map(x => `${aiMany ? sets[x[0]].label + ": " : ""}${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}`).join(' ; '),
-        r.st.map(x => `${sets[x[0]].region} (${sets[x[0]].label}): ${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}${t(x[7]) ? ' | ' + t(x[7]) : ''}`).join(' ; ')] }
+        r.st.map(x => `${sets[x[0]].region} (${sets[x[0]].label}): ${t(x[1])} | ${t(x[2])} | ${t(x[3])} | ${t(x[4])}${t(x[7]) ? ' | ' + t(x[7]) : ''}`).join(' ; '), r.elig.join(', ')] }
   });
 }
 
@@ -2706,7 +2720,7 @@ async function viewAnalysis() {
 }
 
 function viewGate(p) {
-  const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist', '/seats': 'the seat matrix of India', '/journey': 'the rank journey', '/analysis': 'the allotment analysis' }[p];
+  const what = { '/predict': 'the predictor', '/cutoffs': 'the cut-off tables', '/shortlist': 'your shortlist', '/seats': 'the seat matrix of India', '/journey': 'the rank track', '/analysis': 'the allotment analysis' }[p];
   S.intended = p;
   view.innerHTML = `<div class="gate">
     <div class="eyebrow" style="display:inline-flex;gap:8px;align-items:center">${icon.lock.replace('<svg', '<svg style="width:13px;height:13px"')} Members' tool</div>
