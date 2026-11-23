@@ -33,7 +33,7 @@ export function regionInfo(region, user, admin = false) {
     .map(({ file, ...d }) => ({ ...d, size: fs.statSync(path.join(DATA_DIR, file)).size }));
   return {
     region, key: regionKey(region), stages: STAGES, progress: reg.progress?.[region] || null,
-    guides: guides.map(g => ({ slug: g.slug, label: g.label, title: g.title, summary: g.summary, authority: g.authority, official: g.official,
+    guides: guides.map(g => ({ slug: g.slug, label: g.label, title: g.title, summary: g.summary, authority: g.authority, official: g.official, links: g.links || [],
       sections: sections(fileOf(g)).map(({ id, title, blurb }) => ({ id, title, blurb })) })),
     dates, documents: documents().filter(d => d.region === region), data, access: access(user, region, admin), openData: openToAll(),
     review: admin ? 'admin' : fullAccess(user) ? 'account' : null

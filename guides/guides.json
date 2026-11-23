@@ -203,7 +203,7 @@
       "label": "PGMAC counselling guide",
       "authority": "BCECEB · State quota",
       "summary": "Rounds 1 and 2 schedule, fees and deposits, freeze vs float, a seat finder by branch and category, and documents.",
-      "asOf": "2026-10-18",
+      "asOf": "2026-11-23",
       "official": "https://bceceboard.bihar.gov.in",
       "dates": [
         {
@@ -220,23 +220,52 @@
         },
         {
           "what": "Round 1 rank cards (PG degree and diploma)",
-          "when": "31 Oct · on bceceboard.bihar.gov.in",
+          "when": "31 Oct · look up yours by roll number and date of birth (link above)",
           "label": "Published"
         },
         {
           "what": "Round 1 result",
-          "when": "6 Nov (revised schedule)",
+          "when": "6 Nov · 765 seats allotted",
           "on": "2026-11-06T00:00:00+05:30"
         },
         {
+          "what": "Round 1 free exit (resignation)",
+          "when": "22 Nov – 23 Nov",
+          "from": "2026-11-22T00:00:00+05:30",
+          "to": "2026-11-23T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 choice filling, editing and locking",
+          "when": "24 Nov – 25 Nov",
+          "from": "2026-11-24T00:00:00+05:30",
+          "to": "2026-11-25T23:59:00+05:30"
+        },
+        {
           "what": "Round 2 result",
-          "when": "25 Nov · admission 27–30 Nov",
-          "on": "2026-11-25T00:00:00+05:30"
+          "when": "Revised: 28 Nov · allotment orders 28 Nov – 1 Dec",
+          "on": "2026-11-28T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 document verification and admission",
+          "when": "30 Nov – 1 Dec",
+          "from": "2026-11-30T00:00:00+05:30",
+          "to": "2026-12-01T23:59:00+05:30"
         },
         {
           "what": "Fee structure (every college)",
-          "when": "28 Oct · in Official documents",
+          "when": "Revised 30 Oct · in Official documents",
           "label": "Published"
+        }
+      ],
+      "links": [
+        {
+          "label": "PGMAC counselling portal",
+          "href": "https://admissions.nic.in/bihar/Applicant/Root/OTHome.aspx?enc=k5U5Gp8NR6abhZ8Lld4oWvvSsCkKcG+Kcizck0pVdCvJE10jNAB9fCwdCq9SngLzPjXp3PQmL92DLwnOK07FmQ=="
+        },
+        {
+          "label": "Rank card (merit position)",
+          "href": "https://bceceboard.bihar.gov.in/web_RankCard/PGMAC2026_MERIT_R1/PGMAC_DEG_MERIT/PGMAC_Deg_Rank.php",
+          "merit": true
         }
       ]
     },
@@ -290,6 +319,17 @@
           "when": "18 Nov, 10:30 am – 20 Nov, 5 pm",
           "from": "2026-11-18T10:30:00+05:30",
           "to": "2026-11-20T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 provisional allotment",
+          "when": "22 Nov · 175 fresh, 40 upgraded, 84 keep their Round 1 seat",
+          "on": "2026-11-22T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 scrutiny and admission",
+          "when": "25 Nov – 28 Nov and 30 Nov, 10 am – 4 pm (admission until 5 pm)",
+          "from": "2026-11-25T10:00:00+05:30",
+          "to": "2026-11-30T17:00:00+05:30"
         }
       ]
     },
@@ -477,7 +517,7 @@
       "label": "Round 1 guide",
       "authority": "JCECEB · State quota",
       "summary": "The Round 1 schedule, who can apply, a document checklist and the fees for JCECEB state-quota seats.",
-      "asOf": "2026-10-16",
+      "asOf": "2026-11-23",
       "official": "https://jceceb.jharkhand.gov.in",
       "dates": [
         {
@@ -507,6 +547,28 @@
           "when": "State quota Round 2 form and documents 14–17 Nov · open and NRI quota Round 1 applications 16–19 Nov",
           "from": "2026-11-14T00:00:00+05:30",
           "to": "2026-11-19T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 final state merit list",
+          "when": "20 Nov · 346 candidates (provisional 18 Nov)",
+          "on": "2026-11-20T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 registration and choice filling",
+          "when": "21 Nov – 24 Nov · 66 state quota seats vacant",
+          "from": "2026-11-21T00:00:00+05:30",
+          "to": "2026-11-24T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 provisional allotment",
+          "when": "25 Nov",
+          "on": "2026-11-25T00:00:00+05:30"
+        },
+        {
+          "what": "Round 2 certificate verification and admission",
+          "when": "26 Nov – 30 Nov, at the allotted institute",
+          "from": "2026-11-26T00:00:00+05:30",
+          "to": "2026-11-30T23:59:00+05:30"
         }
       ]
     },
@@ -577,6 +639,11 @@
         {
           "what": "Round 2 additional seat matrix",
           "when": "19 Nov · 860 PG medical seats + 7 at St John's",
+          "label": "Published"
+        },
+        {
+          "what": "Round 1 Choice-2 seats and revised fee structure",
+          "when": "20–21 Nov · in Official documents",
           "label": "Published"
         }
       ]
@@ -1120,6 +1187,11 @@
           "when": "Opened 17 Nov, with more seats · PwD Round 2: registration 17 Nov, 10 am – 1 pm; choices 2–6 pm",
           "from": "2026-11-17T10:00:00+05:30",
           "label": "Open"
+        },
+        {
+          "what": "Round 2 virtual vacancy",
+          "when": "22 Nov · 731 seats may fall vacant",
+          "label": "Published"
         }
       ]
     },
@@ -1283,9 +1355,30 @@
         },
         {
           "what": "Round 2 registration",
-          "when": "14 Nov – 17 Nov, 4 pm (NRI until 16 Nov, 2 pm) · Round 1 seat surrender until 17 Nov, 5 pm · seat matrix 16 Nov",
+          "when": "14 Nov – 23 Nov, 2 pm (revised) · float candidates re-register without a fee",
           "from": "2026-11-14T00:00:00+05:30",
-          "to": "2026-11-17T17:00:00+05:30"
+          "to": "2026-11-23T14:00:00+05:30"
+        },
+        {
+          "what": "Round 1 seat surrender without losing the deposit",
+          "when": "Until 23 Nov, 2 pm · freeze: at the college · float: online",
+          "to": "2026-11-23T14:00:00+05:30"
+        },
+        {
+          "what": "Round 2 state merit list",
+          "when": "24 Nov, after 1 pm",
+          "on": "2026-11-24T13:00:00+05:30"
+        },
+        {
+          "what": "Round 2 choice filling and locking",
+          "when": "24 Nov, 9 pm – 25 Nov, 11:59 pm",
+          "from": "2026-11-24T21:00:00+05:30",
+          "to": "2026-11-25T23:59:00+05:30"
+        },
+        {
+          "what": "Round 2 result",
+          "when": "27 Nov, after 8 pm · join by 30 Nov",
+          "on": "2026-11-27T20:00:00+05:30"
         }
       ]
     },
@@ -1367,6 +1460,11 @@
           "when": "18 Nov – 20 Nov, 11 am – 4 pm, at the designated college · verified list and seat matrix 20 Nov, after 5 pm",
           "from": "2026-11-18T11:00:00+05:30",
           "to": "2026-11-20T17:00:00+05:30"
+        },
+        {
+          "what": "Round 2 eligible list and seat matrix",
+          "when": "21 Nov · 2,282 eligible · 1,026 seats",
+          "label": "Published"
         },
         {
           "what": "Round 2 choice filling and locking",
@@ -1783,11 +1881,11 @@
   "documents": [
     {
       "region": "Bihar",
-      "title": "PGMAC 2026 fee structure (every college)",
+      "title": "PGMAC 2026 fee structure (every college, revised)",
       "file": "bihar/pgmac-fee-structure-2026.pdf",
-      "date": "2026-10-28",
+      "date": "2026-10-30",
       "kind": "Fees",
-      "kb": 4680
+      "kb": 6977
     },
     {
       "region": "Bihar",
@@ -3804,6 +3902,158 @@
       "date": "2026-11-16",
       "kind": "Merit list",
       "kb": 36
+    },
+    {
+      "region": "Bihar",
+      "title": "Round 1 seat allotment result (PGMAC-2026)",
+      "file": "bihar/round1-allotment-result.pdf",
+      "date": "2026-11-06",
+      "kind": "Allotment",
+      "kb": 439
+    },
+    {
+      "region": "Bihar",
+      "title": "Revised Round 1 seat matrix: government, diploma, DNB and private colleges",
+      "file": "bihar/round1-seat-matrix-revised.pdf",
+      "date": "2026-10-22",
+      "kind": "Seat matrix",
+      "kb": 257
+    },
+    {
+      "region": "Bihar",
+      "title": "Round 2 revised schedule (21 Nov): free exit 22–23 Nov, choices 24–25 Nov, result 28 Nov",
+      "file": "bihar/round2-schedule-revised-2026-11-21.pdf",
+      "date": "2026-11-21",
+      "kind": "Schedule",
+      "kb": 139
+    },
+    {
+      "region": "Bihar",
+      "title": "PGMAC-2026 prospectus (images compressed)",
+      "file": "bihar/prospectus-2026.pdf",
+      "date": "2026-10-18",
+      "kind": "Prospectus",
+      "kb": 4353
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 2 provisional merit list (MD/MS)",
+      "file": "chhattisgarh/round2-provisional-merit-list.pdf",
+      "date": "2026-11-22",
+      "kind": "Merit list",
+      "kb": 1381
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 2 clear vacancy (14 Nov)",
+      "file": "chhattisgarh/round2-clear-vacancy.pdf",
+      "date": "2026-11-14",
+      "kind": "Seat matrix",
+      "kb": 629
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 2 provisional allotment list (MD/MS)",
+      "file": "chhattisgarh/round2-provisional-allotment.pdf",
+      "date": "2026-11-22",
+      "kind": "Allotment",
+      "kb": 943
+    },
+    {
+      "region": "Chhattisgarh",
+      "title": "Round 2 allotment notice: scrutiny and admission 25–28 Nov and 30 Nov (Hindi)",
+      "file": "chhattisgarh/round2-allotment-notice-2026-11-22.pdf",
+      "date": "2026-11-22",
+      "kind": "Notice",
+      "kb": 2289
+    },
+    {
+      "region": "Jharkhand",
+      "title": "Final state merit list for Round 2 (state quota)",
+      "file": "jharkhand/round2-final-merit-list.pdf",
+      "date": "2026-11-20",
+      "kind": "Merit list",
+      "kb": 697
+    },
+    {
+      "region": "Jharkhand",
+      "title": "Provisional vacant seat matrix for Round 2",
+      "file": "jharkhand/round2-vacant-seat-matrix.pdf",
+      "date": "2026-11-13",
+      "kind": "Seat matrix",
+      "kb": 88
+    },
+    {
+      "region": "Jharkhand",
+      "title": "Round 2 notice and schedule (13 Nov): choices 21–24 Nov, allotment 25 Nov",
+      "file": "jharkhand/round2-notice-and-schedule.pdf",
+      "date": "2026-11-13",
+      "kind": "Schedule",
+      "kb": 650
+    },
+    {
+      "region": "Karnataka",
+      "title": "Choice-2 seats of Round 1: offered in Round 2 if their holder gets a higher option",
+      "file": "karnataka/round1-choice-2-seats.pdf",
+      "date": "2026-11-20",
+      "kind": "Seat matrix",
+      "kb": 482
+    },
+    {
+      "region": "Karnataka",
+      "title": "PG medical fee structure (21 Nov), with the additional colleges",
+      "file": "karnataka/fee-structure-2026-11-21.pdf",
+      "date": "2026-11-21",
+      "kind": "Fees",
+      "kb": 147
+    },
+    {
+      "region": "Tamil Nadu",
+      "title": "Virtual vacancy for Round 2: PG degree and diploma",
+      "file": "tamil-nadu/round2-virtual-vacancy.pdf",
+      "date": "2026-11-22",
+      "kind": "Seat matrix",
+      "kb": 470
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Revised Round 2 schedule: registration to 23 Nov, merit list 24 Nov, result 27 Nov",
+      "file": "uttarakhand/round2-schedule-revised.pdf",
+      "date": "2026-11-21",
+      "kind": "Schedule",
+      "kb": 410
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Instructions for the second round: who can take part, re-registration and security fee",
+      "file": "uttarakhand/round2-instructions.pdf",
+      "date": "2026-11-21",
+      "kind": "Notice",
+      "kb": 763
+    },
+    {
+      "region": "Uttarakhand",
+      "title": "Surrendering a Round 1 seat without losing the security deposit: by 23 Nov, 2 pm",
+      "file": "uttarakhand/round1-seat-surrender.pdf",
+      "date": "2026-11-21",
+      "kind": "Notice",
+      "kb": 476
+    },
+    {
+      "region": "West Bengal",
+      "title": "Provisional list of candidates eligible for choice filling in Round 2",
+      "file": "west-bengal/round2-eligible-candidates.pdf",
+      "date": "2026-11-21",
+      "kind": "Merit list",
+      "kb": 379
+    },
+    {
+      "region": "West Bengal",
+      "title": "Round 2 seat matrix",
+      "file": "west-bengal/round2-seat-matrix.pdf",
+      "date": "2026-11-21",
+      "kind": "Seat matrix",
+      "kb": 218
     }
   ],
   "updates": [
@@ -4795,13 +5045,56 @@
       "text": "Insurance Medical Service Quota (IMSQ) in-service list: 6 candidates, ranked on NEET-PG score plus in-service incentive marks.",
       "doc": "kerala/in-service-list-imsq.pdf",
       "link": "/roadmap/kerala/merit-list/round-2"
+    },
+    {
+      "date": "2026-11-22",
+      "region": "Chhattisgarh",
+      "text": "Round 2 provisional allotment: 175 fresh allotments, 40 upgrades and 84 candidates keeping their Round 1 seat. Scrutiny and admission 25–28 Nov and 30 Nov.",
+      "link": "/analysis?r=chhattisgarh&l=allotment-round-2"
+    },
+    {
+      "date": "2026-11-22",
+      "region": "Tamil Nadu",
+      "text": "Round 2 virtual vacancy: 731 PG degree and diploma seats that may fall vacant, by quota and community.",
+      "link": "/roadmap/tamil-nadu/round-2/choice-filling"
+    },
+    {
+      "date": "2026-11-21",
+      "region": "West Bengal",
+      "text": "Round 2: 2,282 candidates are eligible for choice filling, and the seat matrix lists 1,026 seats. Result 26 Nov, after 4 pm.",
+      "link": "/roadmap/west-bengal/round-2/choice-filling"
+    },
+    {
+      "date": "2026-11-21",
+      "region": "Uttarakhand",
+      "text": "Round 2 revised: registration until 23 Nov, 2 pm (also the last time to surrender a Round 1 seat and keep the deposit), merit list 24 Nov, choices 24–25 Nov, result 27 Nov.",
+      "doc": "uttarakhand/round2-schedule-revised.pdf"
+    },
+    {
+      "date": "2026-11-21",
+      "region": "Bihar",
+      "text": "Round 2 revised: free exit from Round 1 22–23 Nov, choices 24–25 Nov, result 28 Nov, admission 30 Nov – 1 Dec. The Round 1 seat matrix and allotment (765 seats) are now on the roadmap.",
+      "doc": "bihar/round2-schedule-revised-2026-11-21.pdf",
+      "link": "/roadmap/bihar"
+    },
+    {
+      "date": "2026-11-20",
+      "region": "Jharkhand",
+      "text": "Final state merit list for Round 2: 346 candidates. 66 state quota seats are vacant; choices 21–24 Nov, allotment 25 Nov.",
+      "link": "/roadmap/jharkhand/merit-list/round-2"
+    },
+    {
+      "date": "2026-11-20",
+      "region": "Karnataka",
+      "text": "KEA lists the Round 1 Choice-2 seats that will be offered in Round 2 if their holders get a higher option, and published a revised fee structure (21 Nov).",
+      "doc": "karnataka/round1-choice-2-seats.pdf"
     }
   ],
   "highlight": {
-    "eyebrow": "New · 20 Nov",
-    "text": "MCC Round 2 result is in (29,292 seats), and a new Allotment analysis section gives the first and last rank allotted for any college, course, quota and category, in All India and every state.",
-    "href": "/analysis",
-    "go": "Open the allotment analysis"
+    "eyebrow": "New · 23 Nov",
+    "text": "Bihar's Round 1 seat matrix and allotment, Chhattisgarh's Round 2 allotment, and Round 2 merit lists and seat matrices for Jharkhand, West Bengal and Tamil Nadu are in.",
+    "href": "/analysis?r=chhattisgarh&l=allotment-round-2",
+    "go": "See Chhattisgarh Round 2"
   },
   "progress": {
     "All India": {
@@ -4825,9 +5118,9 @@
       "asOf": "2026-11-03"
     },
     "Bihar": {
-      "stage": "Merit List",
-      "note": "Round 1 result due 6 Nov (revised schedule).",
-      "asOf": "2026-11-03"
+      "stage": "Round 2",
+      "note": "Round 1 allotted 765 seats. Round 2: free exit 22–23 Nov, choices 24–25 Nov, result 28 Nov.",
+      "asOf": "2026-11-23"
     },
     "Chandigarh": {
       "stage": "Round 2",
@@ -4836,8 +5129,8 @@
     },
     "Chhattisgarh": {
       "stage": "Round 2",
-      "note": "Round 2 clear vacancies out 17 Nov; apply by 19 Nov, choices until 20 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 allotment out 22 Nov; scrutiny and admission 25–28 Nov and 30 Nov.",
+      "asOf": "2026-11-23"
     },
     "Delhi": {
       "stage": "Round 1",
@@ -4861,8 +5154,8 @@
     },
     "Jharkhand": {
       "stage": "Round 2",
-      "note": "State quota Round 2 forms closed 17 Nov; open and NRI quota Round 1 applications until 19 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 final merit list out 20 Nov; choices 21–24 Nov, allotment 25 Nov.",
+      "asOf": "2026-11-23"
     },
     "Kerala": {
       "stage": "Round 1",
@@ -4901,13 +5194,13 @@
     },
     "Tamil Nadu": {
       "stage": "Round 2",
-      "note": "Round 2 registration open from 17 Nov, with more seats.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 virtual vacancy out 22 Nov (731 seats).",
+      "asOf": "2026-11-23"
     },
     "Uttarakhand": {
       "stage": "Round 2",
-      "note": "Round 2 seat matrix out 16 Nov; registration closed 17 Nov.",
-      "asOf": "2026-11-17"
+      "note": "Round 2 registration until 23 Nov, 2 pm; merit list 24 Nov, result 27 Nov.",
+      "asOf": "2026-11-23"
     },
     "Karnataka": {
       "stage": "Round 2",
@@ -4916,8 +5209,8 @@
     },
     "West Bengal": {
       "stage": "Round 2",
-      "note": "Round 2 registration until 19 Nov; choices 20–22 Nov; result 26 Nov.",
-      "asOf": "2026-11-19"
+      "note": "Round 2 eligible list and seat matrix out 21 Nov; result 26 Nov.",
+      "asOf": "2026-11-23"
     },
     "Tripura": {
       "stage": "Round 1",
@@ -5458,6 +5751,106 @@
       "date": "2026-11-20",
       "doc": "mcc/round2-result-declared-2026-11-20.pdf",
       "file": "all-india/allotment-round2.json"
+    },
+    {
+      "id": "seat-matrix-round-1",
+      "region": "Bihar",
+      "kind": "seats",
+      "round": "Round 1",
+      "title": "Revised Round 1 seat matrix: government, diploma, DNB and private colleges",
+      "date": "2026-10-22",
+      "doc": "bihar/round1-seat-matrix-revised.pdf",
+      "file": "bihar/seat-matrix-round1.json"
+    },
+    {
+      "id": "allotment-round-1",
+      "region": "Bihar",
+      "kind": "allotment",
+      "round": "Round 1",
+      "title": "Round 1 seat allotment result",
+      "date": "2026-11-06",
+      "doc": "bihar/round1-allotment-result.pdf",
+      "file": "bihar/allotment-round1.json"
+    },
+    {
+      "id": "merit-list-round-2",
+      "region": "Chhattisgarh",
+      "kind": "merit",
+      "round": "Round 2",
+      "title": "Round 2 provisional merit list (MD/MS)",
+      "date": "2026-11-22",
+      "doc": "chhattisgarh/round2-provisional-merit-list.pdf",
+      "file": "chhattisgarh/merit-list-round2.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "Chhattisgarh",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Round 2 clear vacancy",
+      "date": "2026-11-14",
+      "doc": "chhattisgarh/round2-clear-vacancy.pdf",
+      "file": "chhattisgarh/seat-matrix-round2.json"
+    },
+    {
+      "id": "allotment-round-2",
+      "region": "Chhattisgarh",
+      "kind": "allotment",
+      "round": "Round 2",
+      "title": "Round 2 provisional allotment",
+      "date": "2026-11-22",
+      "doc": "chhattisgarh/round2-provisional-allotment.pdf",
+      "file": "chhattisgarh/allotment-round2.json"
+    },
+    {
+      "id": "merit-list-round-2",
+      "region": "Jharkhand",
+      "kind": "merit",
+      "round": "Round 2",
+      "title": "Final state merit list for Round 2",
+      "date": "2026-11-20",
+      "doc": "jharkhand/round2-final-merit-list.pdf",
+      "file": "jharkhand/merit-list-round2.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "Jharkhand",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Provisional vacant seat matrix for Round 2",
+      "date": "2026-11-13",
+      "doc": "jharkhand/round2-vacant-seat-matrix.pdf",
+      "file": "jharkhand/seat-matrix-round2.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "Tamil Nadu",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Round 2 virtual vacancy (PG degree and diploma)",
+      "date": "2026-11-22",
+      "doc": "tamil-nadu/round2-virtual-vacancy.pdf",
+      "file": "tamil-nadu/seat-matrix-round2.json"
+    },
+    {
+      "id": "merit-list-round-2",
+      "region": "West Bengal",
+      "kind": "merit",
+      "round": "Round 2",
+      "title": "Candidates eligible for choice filling in Round 2",
+      "date": "2026-11-21",
+      "doc": "west-bengal/round2-eligible-candidates.pdf",
+      "file": "west-bengal/merit-list-round2.json"
+    },
+    {
+      "id": "seat-matrix-round-2",
+      "region": "West Bengal",
+      "kind": "seats",
+      "round": "Round 2",
+      "title": "Round 2 seat matrix",
+      "date": "2026-11-21",
+      "doc": "west-bengal/round2-seat-matrix.pdf",
+      "file": "west-bengal/seat-matrix-round2.json"
     }
   ],
   "bonds": {

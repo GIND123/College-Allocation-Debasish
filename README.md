@@ -157,7 +157,7 @@ No iframes are involved, so each guide scrolls, searches and jumps between secti
 }
 ```
 
-(The comments above are for explanation only; JSON files can't contain them.) A date step is a window (`from`/`to`; `from` is optional), a single day (`on`), or a fixed status (`label`: `Awaited`, `Published` or `Reference`). Times are Indian Standard Time. The server checks `guides.json` when it starts and refuses to run with a clear message if an entry is wrong, for example a misspelt state or a missing file.
+(The comments above are for explanation only; JSON files can't contain them.) A date step is a window (`from`/`to`; `from` is optional), a single day (`on`), or a fixed status (`label`: `Awaited`, `Published` or `Reference`). Times are Indian Standard Time. An optional `"links"` list (`{ "label", "href", "merit"? }`) adds official pages beside the website button on the roadmap's Registration step; a link with `"merit": true` (Bihar's rank card lookup) also shows on the Merit List step while there is no merit list. The server checks `guides.json` when it starts and refuses to run with a clear message if an entry is wrong, for example a misspelt state or a missing file.
 
 Big files a guide links to (scanned notices, PDFs) belong in `guides/assets/` and are linked as `/counselling/assets/<file>`, rather than embedded in the page.
 
@@ -242,6 +242,14 @@ From the client's 6 Nov folder (with its subfolders):
 - **Gujarat**: the provisional merit lists (27 Oct; general 6,095 with category and university merit numbers, ranks 1 to 5,970 without a gap plus 125 fractional PwD ranks such as 256.5; in-service OPEN, SEBC and SC lists; NRI 39; PwD 13), the Round 1 tentative vacant seats (27 Oct; 2,675 by quota and category, matching the printed summary by quota and programme) with the 13 in-service NBEMS DNB seats from the scanned sheet, and the Round 1 merit-wise allotment (31 Oct; 2,329, read by word position as the PDFs have no ruling lines). College codes come from the institute-wise list, and names, quotas ("Government (GQ)") and categories (OPEN, SEBC, EWS, SC, ST) follow the 2025 data built into the site, so 97% of the 2026 seats are graded against a 2025 closing rank (an unreserved seat falls back to Gujarat's OPEN seat).
 - **Rajasthan**: the revised provisional merit list (28 Oct; 3,165), the Round 1 seat matrix (990 state quota seats in government, RUHS-CMS and society colleges and 1,444 private seats, matching both printed totals; 139 post-MBBS diploma and DNB seats for in-service candidates; not split by category) and the Round 1 allotment (2 Nov; 1,366, every candidate at the same rank as on the merit list).
 - **Himachal Pradesh**: the prospectus only (seat distribution and merit list still to come).
+
+From the client's 23 Nov folder (each checked against the printed totals):
+
+- **Bihar**: the revised Round 1 seat matrix (1,148: 386 state quota MD/MS seats in government colleges by category with women's seats, 5 + 5 diploma open and remote-area seats, 41 post-MBBS DNB and 63 NBEMS diploma seats for in-service doctors, 648 private seats split into state, Muslim or Sikh minority and NRI) and the Round 1 allotment (6 Nov; 765, every seat inside the matrix), which also gives Bihar its 2026 Round 1 cut-offs. RCG is the 3% for reserved-category girls and DQ the 5% disabled quota. The rank card page only looks up one candidate, so Bihar has no merit list here; it is linked instead.
+- **Chhattisgarh** Round 2: the provisional merit list (793, no names printed), the clear vacancy (460) and the provisional allotment (22 Nov; 175 fresh, 40 upgraded with the Round 1 seat they leave, 84 who keep their Round 1 seat, filled in from the Round 1 allotment by AIR).
+- **Jharkhand** Round 2: the final state merit list (20 Nov; 346) and the vacant seat matrix (66 state quota and 2 in-service DNB seats of 155).
+- **West Bengal** Round 2: the seat matrix (1,026) and the list of 2,282 candidates eligible for choice filling. That PDF's text layer is scrambled, so it is read by OCR (`ocr_grid.py`); ranks rise without a break and the serial numbers match, and names are left out.
+- **Tamil Nadu**: the Round 2 virtual vacancy (731 seats that may fall vacant).
 
 A state with documents but no guide yet (Punjab) still gets a card. The server refuses to start if a document's file is missing or an update points to a document that isn't listed.
 

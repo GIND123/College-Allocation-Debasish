@@ -619,7 +619,8 @@
 .rp-hicon svg{width:22px; height:22px}
 .rp-head h2{margin:0; display:flex; flex-wrap:wrap; align-items:center; gap:10px; font:600 22px/1.2 var(--serif); letter-spacing:-.01em}
 .rp-head p{margin:4px 0 0; font-size:13.5px; color:var(--ink-2); max-width:72ch}
-.rp-head-act{margin-left:auto; flex:none}
+.rp-head-act{margin-left:auto; flex:none; display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
+.rp-links{margin:-6px 0 18px}
 .rp-head-act svg{width:15px; height:15px}
 
 .rp-guides{display:flex; flex-wrap:wrap; gap:6px; margin-top:16px}
@@ -834,7 +835,7 @@
   .rp-steps li:nth-child(4)::before{display:none}
   .rp-panel{padding:16px 14px 20px}
   .rp-head{flex-wrap:wrap}
-  .rp-head-act{margin-left:56px}
+  .rp-head-act{margin-left:56px; justify-content:flex-start; flex:1 1 calc(100% - 56px); min-width:0}
   .rp-glance{grid-template-columns:minmax(0,1fr)}
   .rp-round{grid-template-columns:minmax(0,1fr)}
   .rp-sub{grid-template-columns:repeat(3, minmax(0,1fr))}

@@ -1883,6 +1883,9 @@ const rpHead = (info, stage, ic, text, action = '') => `
   <div class="rp-head"><span class="rp-hicon">${rpSvg(ic)}</span>
     <div><h2>${esc(stage)} ${rpPill(rpStatus(info, stage))}</h2><p>${text}</p></div>
     ${action ? `<div class="rp-head-act">${action}</div>` : ''}</div>`;
+// Official pages a guide links to besides its website (Bihar's counselling portal and rank card lookup); merit-only ones with merit = true.
+const rpLinks = (info, merit = false) => info.guides.flatMap(g => g.links || []).filter(l => !merit || l.merit)
+  .map(l => `<a class="btn btn-line" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ${icon.ext}</a>`).join('');
 const rpSoon = (ic, title, text) => `<div class="rp-soon">${rpSvg(ic)}<h3>${esc(title)}</h3><p>${esc(text)}</p></div>`;
 const rpDocList = (docs, title, open = false) => docs.length ? `<details class="rp-docs"${open ? ' open' : ''}><summary>${esc(title)} <span>${docs.length}</span></summary>
   <ul>${docs.map(d => `<li><a href="/counselling/assets/${esc(d.file)}" target="_blank" rel="noopener"><span class="gd-doc-kind">${esc(d.kind)}</span>
@@ -1896,7 +1899,7 @@ async function rpRegistration(info, box, rest) {
   const official = (g || info.guides[0])?.official;
   const href = (...p) => `/roadmap/${info.key}/registration/${p.join('/')}`;
   box.innerHTML = rpHead(info, 'Registration', 'doc', 'Complete online registration, fill choices and upload the documents the official notification asks for.',
-    official ? `<a class="btn btn-primary" href="${esc(official)}" target="_blank" rel="noopener">Go to official website ${icon.ext}</a>` : '')
+    (official ? `<a class="btn btn-primary" href="${esc(official)}" target="_blank" rel="noopener">Go to official website ${icon.ext}</a>` : '') + rpLinks(info))
     + (g ? `${guides.length > 1 ? `<div class="rp-guides" role="group" aria-label="Guide">${guides.map(x =>
         `<a href="${href(x.slug)}" data-rp${x === g ? ' aria-current="true"' : ''}>${esc(x.label)}</a>`).join('')}</div>` : ''}
       <nav class="rp-chips" aria-label="Sections"><a href="${href(g.slug)}" data-rp${secId ? '' : ' aria-current="true"'}>At a glance</a>${g.sections.map(s =>
@@ -1964,7 +1967,7 @@ function rpMerit(info, box, rest = []) {
   if (!d) {
     const due = round === 'Round 1' ? null : rpDue(info, new RegExp(`${round}.*merit|merit.*${round}`, 'i'));
     host.innerHTML = rpSoon('list', `${round} merit list data will be available soon.`, `The ${info.region} ${round} merit list will be published here once it is released by the competent authority.`
-      + (due ? ` Expected: ${due}.` : '')) + rpOut(info, 'Merit List');
+      + (due ? ` Expected: ${due}.` : '')) + (rpLinks(info, true) ? `<div class="empty-actions rp-links">${rpLinks(info, true)}</div>` : '') + rpOut(info, 'Merit List');
     return;
   }
   host.insertAdjacentHTML('beforebegin', `<h3 class="rp-sub-title">${esc(d.title)} <small>${esc(shortDate(d.date))}</small></h3>

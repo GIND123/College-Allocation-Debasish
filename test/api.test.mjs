@@ -247,7 +247,7 @@ test('MCC 2026 Rounds 1 and 2 are built in as national All India datasets, with 
   assert.ok(mcc.every(d => d.state === 'All India'));
   assert.deepEqual(mcc.map(d => d.seats), [29292, 28584], 'every allotment is counted');
   const r1 = mcc.slice(1);
-  assert.deepEqual(visitor.stateData, ['Chhattisgarh', 'Gujarat', 'Himachal Pradesh', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Odisha', 'Punjab', 'Rajasthan',
+  assert.deepEqual(visitor.stateData, ['Bihar', 'Chhattisgarh', 'Gujarat', 'Himachal Pradesh', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Odisha', 'Punjab', 'Rajasthan',
     'Tamil Nadu', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'], 'state-counselling data is listed separately: 2025 data and the 2026 Round 1 cut-offs');
   const b = browser();
   await b('/api/auth/otp/request', { method: 'POST', body: { ...signUp, state: 'Maharashtra', phone: '9000000120' } });
@@ -489,7 +489,7 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   assert.equal((await b('/api/journey')).status, 401);
   assert.equal((await b('/api/auth/review', { method: 'POST', body: { username: 'reviewer', password: 'review-pw-1' } })).status, 200);
   const sets = (await b('/api/config')).json.datasets.filter(d => d.kind === 'state' && d.year === 2026);
-  assert.equal(sets.length, 14);
+  assert.equal(sets.length, 15, 'Bihar joined on 23 Nov');
   const pb = sets.find(d => d.state === 'Punjab');
   assert.deepEqual([pb.rows, pb.seats], [382, 579], 'Punjab: every ranked Round 1 seat (no NRI or ultrasonography seats)');
   const d = (await b('/api/datasets/' + pb.id)).json, col = n => d.columns.indexOf(n);
@@ -509,7 +509,27 @@ test('2026 Round 1 cut-offs for every state with an allotment; Punjab, Andhra Pr
   assert.equal(sum(r2.filter(r => r.source === 'Newly added')), 3468);
   // rank journey: AIR 42 took a seat in Odisha's Round 1
   const j = (await b('/api/journey')).json;
-  assert.equal(j.sets.length, 18);
+  assert.equal(j.sets.length, 20, 'with Bihar Round 1 and Chhattisgarh Round 2 (23 Nov)');
+  assert.ok(['West Bengal', 'Jharkhand'].every(r => j.regions.includes(r)), 'Round 2 lists of West Bengal and Jharkhand show eligibility');
+  // 23 Nov: each new list as printed
+  const bs = (await b('/api/regions/bihar/data/seat-matrix-round-1')).json.rows, ba = (await b('/api/regions/bihar/data/allotment-round-1')).json.rows;
+  assert.equal(sum(bs), 1148, '386 + 5 + 5 + 41 + 63 government, 648 private');
+  assert.equal(ba.length, 765);
+  const cg = (await b('/api/regions/chhattisgarh/data/allotment-round-2')).json.rows, mv = {};
+  for (const r of cg) mv[r.move] = (mv[r.move] || 0) + 1;
+  assert.deepEqual(mv, { 'Fresh allotment': 175, Upgraded: 40, 'Kept Round 1 seat': 84 });
+  assert.ok(cg.filter(r => r.move === 'Upgraded').every(r => r.was), 'an upgrade names the Round 1 seat');
+  assert.equal(sum((await b('/api/regions/chhattisgarh/data/seat-matrix-round-2')).json.rows), 460);
+  assert.equal((await b('/api/regions/chhattisgarh/data/merit-list-round-2')).json.lists[0].rows.length, 793);
+  assert.equal((await b('/api/regions/jharkhand/data/merit-list-round-2')).json.lists[0].rows.length, 346);
+  assert.equal(sum((await b('/api/regions/jharkhand/data/seat-matrix-round-2')).json.rows), 68);
+  assert.equal(sum((await b('/api/regions/tamil-nadu/data/seat-matrix-round-2')).json.rows), 731);
+  assert.equal(sum((await b('/api/regions/west-bengal/data/seat-matrix-round-2')).json.rows), 1026);
+  const wb = (await b('/api/regions/west-bengal/data/merit-list-round-2')).json.lists[0].rows;
+  assert.equal(wb.length, 2282);
+  assert.ok(wb.every(r => !r.name), 'names read by OCR are not published');
+  const bi = (await b('/api/regions/bihar')).json;
+  assert.ok(bi.guides[0].links.some(l => l.merit && /bceceboard/.test(l.href)), 'Bihar rank card link');
   const row = j.rows.find(x => x[0] === 42);
   assert.ok(row[1].some(s => j.sets[s[0]].region === 'Odisha'), 'AIR 42: Odisha seat');
   assert.ok(j.rows.every((x, i) => i === 0 || x[0] > j.rows[i - 1][0]), 'one row per rank, in order');
