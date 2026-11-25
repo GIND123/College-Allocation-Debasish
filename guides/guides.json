@@ -263,8 +263,13 @@
           "href": "https://admissions.nic.in/bihar/Applicant/Root/OTHome.aspx?enc=k5U5Gp8NR6abhZ8Lld4oWvvSsCkKcG+Kcizck0pVdCvJE10jNAB9fCwdCq9SngLzPjXp3PQmL92DLwnOK07FmQ=="
         },
         {
-          "label": "Rank card (merit position)",
+          "label": "Rank card: degree",
           "href": "https://bceceboard.bihar.gov.in/web_RankCard/PGMAC2026_MERIT_R1/PGMAC_DEG_MERIT/PGMAC_Deg_Rank.php",
+          "merit": true
+        },
+        {
+          "label": "Rank card: diploma (open / remote)",
+          "href": "https://bceceboard.bihar.gov.in/web_RankCard/PGMAC2026_MERIT_R1/PGMAC_DIP_MERIT/PGMAC_Dipo_Rank.php",
           "merit": true
         }
       ]
@@ -984,7 +989,7 @@
       "authority": "Baba Farid University of Health Sciences (BFUHS), Faridkot · State, management, NRI and minority quota",
       "summary": "Who can apply, quotas and minority seats, fees and security deposits, how the rounds work and what to carry, from the BFUHS prospectus.",
       "asOf": "2026-11-19",
-      "official": "https://www.bfuhs.ac.in",
+      "official": "https://bfuhs.ggsmch.org/",
       "dates": [
         {
           "what": "Online application and fee",
@@ -1028,7 +1033,7 @@
         },
         {
           "what": "Round 2 seat matrix, choice filling and result",
-          "when": "Schedule on bfuhs.ac.in · may move while MCC Round 2 is on hold",
+          "when": "Schedule on bfuhs.ggsmch.org · may move while MCC Round 2 is on hold",
           "label": "Awaited"
         }
       ]

@@ -148,7 +148,7 @@ No iframes are involved, so each guide scrolls, searches and jumps between secti
   "authority": "BFUHS · State quota",
   "summary": "One line about what the guide covers.",
   "asOf": "2026-10-20",                   // date of the notice it is based on
-  "official": "https://bfuhs.ac.in",
+  "official": "https://bfuhs.ggsmch.org/",
   "dates": [
     { "what": "Online application", "when": "21 Oct, 10 am – 28 Oct, 5 pm", "from": "2026-10-21T10:00:00+05:30", "to": "2026-10-28T17:00:00+05:30" },
     { "what": "Merit list", "when": "30 Oct", "on": "2026-10-30T00:00:00+05:30" },
