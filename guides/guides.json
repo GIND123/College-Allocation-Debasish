@@ -203,7 +203,7 @@
       "label": "PGMAC counselling guide",
       "authority": "BCECEB · State quota",
       "summary": "Rounds 1 and 2 schedule, fees and deposits, freeze vs float, a seat finder by branch and category, and documents.",
-      "asOf": "2026-11-23",
+      "asOf": "2026-11-21",
       "official": "https://bceceboard.bihar.gov.in",
       "dates": [
         {
@@ -220,7 +220,7 @@
         },
         {
           "what": "Round 1 rank cards (PG degree and diploma)",
-          "when": "31 Oct · look up yours by roll number and date of birth (link above)",
+          "when": "31 Oct · look up yours by roll number and date of birth (Rank card button under Registration)",
           "label": "Published"
         },
         {
@@ -273,11 +273,11 @@
       "slug": "chhattisgarh",
       "file": "chhattisgarh.html",
       "region": "Chhattisgarh",
-      "title": "Chhattisgarh NEET-PG 2026: Round 1 state counselling",
+      "title": "Chhattisgarh NEET-PG 2026: state counselling",
       "label": "Round 1 guide",
       "authority": "DME Chhattisgarh · State quota",
-      "summary": "Round 1 dates, fees and deposits, the 2026 rule change on who gets which seat, reservation, round rules, bond and NRI quota.",
-      "asOf": "2026-10-21",
+      "summary": "Where Round 2 stands, fees and deposits, the 2026 rule change on who gets which seat, reservation, round rules, bond and NRI quota.",
+      "asOf": "2026-11-22",
       "official": "https://cgdme.admissions.nic.in",
       "dates": [
         {
@@ -513,11 +513,11 @@
       "slug": "jharkhand",
       "file": "jharkhand.html",
       "region": "Jharkhand",
-      "title": "Jharkhand PG medical counselling 2026: Round 1",
-      "label": "Round 1 guide",
+      "title": "Jharkhand PG medical counselling 2026",
+      "label": "Counselling guide",
       "authority": "JCECEB · State quota",
-      "summary": "The Round 1 schedule, who can apply, a document checklist and the fees for JCECEB state-quota seats.",
-      "asOf": "2026-11-23",
+      "summary": "The Round 2 and Round 1 schedules, who can apply, a document checklist and the fees for JCECEB state-quota seats.",
+      "asOf": "2026-11-20",
       "official": "https://jceceb.jharkhand.gov.in",
       "dates": [
         {
@@ -1430,7 +1430,7 @@
       "label": "WBMCC counselling guide",
       "authority": "West Bengal Medical Counselling Committee (WBMCC) · State, management and NRI quota",
       "summary": "Who can apply, how seats are shared, the ₹2 and ₹5 lakh deposits, the bond, the rounds and the documents to carry.",
-      "asOf": "2026-11-03",
+      "asOf": "2026-11-21",
       "official": "https://wbmcc.nic.in",
       "dates": [
         {

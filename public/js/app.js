@@ -1813,7 +1813,8 @@ async function viewRoadmap() {
 
 // The stage a roadmap opens on: the current stage, unless it is a round with nothing published yet (Punjab's Round 2
 // before its seat matrix): then the latest earlier stage that has data, so the page opens on something to see.
-const rpHasData = (info, s) => s === 'Merit List' ? info.data.some(x => x.kind === 'merit') : info.data.some(x => x.round === s);
+// A round with only an allotment does not count: allotments open in Allotment analysis, so opening there would leave the roadmap.
+const rpHasData = (info, s) => s === 'Merit List' ? info.data.some(x => x.kind === 'merit') : info.data.some(x => x.round === s && x.kind === 'seats');
 function rpOpening(info) {
   const cur = info.progress?.stage || 'Registration';
   if (info.region === ALL_INDIA || !/^(Round|Stray)/.test(cur) || rpHasData(info, cur)) return cur;
@@ -1826,7 +1827,7 @@ function rpOut(info, here) {
   const items = [];
   for (const x of info.data) {
     const stage = x.kind === 'merit' ? 'Merit List' : x.round;
-    if (!stage || stage === here && x.kind !== 'merit') continue;
+    if (!stage || stage === here && !['merit', 'allotment'].includes(x.kind)) continue;
     const href = x.kind === 'merit' ? `/roadmap/${info.key}/merit-list/${slugOf(meritRound(x))}`
       : x.kind === 'allotment' ? `/analysis?r=${info.key}&l=${encodeURIComponent(x.id)}` : `/roadmap/${info.key}/${slugOf(x.round)}/choice-filling`;
     const label = x.kind === 'seats' ? 'seat matrix' : x.short || 'allotment';
@@ -1836,7 +1837,7 @@ function rpOut(info, here) {
   }
   items.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   return items.length ? `<div class="rp-out"><h4>Already out for ${esc(info.region)}</h4><div class="empty-actions">${items.slice(0, 4).map(i =>
-    `<a class="btn btn-line" href="${esc(i.href)}" data-rp>${esc(i.what)}<small>${esc(shortDate(i.date))}</small></a>`).join('')}</div></div>` : '';
+    `<a class="btn btn-line" href="${esc(i.href)}" ${i.href.startsWith('/analysis') ? 'data-link' : 'data-rp'}>${esc(i.what)}<small>${esc(shortDate(i.date))}</small></a>`).join('')}</div></div>` : '';
 }
 
 function rpPanel(info) {
@@ -1953,7 +1954,7 @@ function rpMerit(info, box, rest = []) {
     pdf ? `<a class="btn btn-line" href="/counselling/assets/${esc(pdf)}" target="_blank" rel="noopener">${icon.download} Download (PDF)</a>` : '')
     + (info.region === ALL_INDIA ? '' : `<div class="rp-versions rp-merit-rounds" role="group" aria-label="Which round's merit list">${rounds.map(r => {
       const x = all.find(y => meritRound(y) === r);
-      return `<a href="/roadmap/${info.key}/merit-list/${slugOf(r)}" data-rp${r === round ? ' aria-current="page"' : ''}>${r} merit list<small>${x ? esc(shortDate(x.date)) : 'Not out yet'}</small></a>`; }).join('')}</div>`)
+      return `<a href="/roadmap/${info.key}/merit-list/${slugOf(r)}" data-rp${r === round ? ' aria-current="page"' : ''}>${r} merit list<small>${x ? esc(shortDate(x.date)) : info.documents.some(y => y.kind === 'Merit list' && meritRound(y) === r) ? 'Official PDF' : 'Not on the site yet'}</small></a>`; }).join('')}</div>`)
     + '<div id="rp-data"></div>' + rpDocList(docs, `Official ${round} merit list documents`);
   const host = $('#rp-data');
   if (info.region === ALL_INDIA) {
@@ -1966,7 +1967,10 @@ function rpMerit(info, box, rest = []) {
   }
   if (!d) {
     const due = round === 'Round 1' ? null : rpDue(info, new RegExp(`${round}.*merit|merit.*${round}`, 'i'));
-    host.innerHTML = rpSoon('list', `${round} merit list data will be available soon.`, `The ${info.region} ${round} merit list will be published here once it is released by the competent authority.`
+    const card = round === 'Round 1' && rpLinks(info, true);
+    host.innerHTML = rpSoon('list', card ? 'Merit positions are on individual rank cards' : docs.length ? `${round} merit list: official PDF` : `We don't have the ${round} merit list yet.`,
+      (card ? `${info.region} gives each candidate a rank card: open the official page and enter your roll number and date of birth.`
+        : docs.length ? 'The official list is below; it is not in the searchable table yet.' : `It will be added here once we receive the official ${info.region} list.`)
       + (due ? ` Expected: ${due}.` : '')) + (rpLinks(info, true) ? `<div class="empty-actions rp-links">${rpLinks(info, true)}</div>` : '') + rpOut(info, 'Merit List');
     return;
   }
@@ -1978,9 +1982,8 @@ function rpMerit(info, box, rest = []) {
 
 // ---- Rounds: choice filling (seat matrix), allotment, joining ----
 function rpRound(info, box, stage, rest) {
-  // with no tab in the link, open on the round's seat matrix, or on its allotment when only that is out (Punjab published no matrix)
-  const has = k => info.data.some(x => x.kind === k && x.round === stage);
-  const v = ROUND_VIEWS.find(x => x[0] === rest[0]) || (!has('seats') && has('allotment') ? ROUND_VIEWS[1] : ROUND_VIEWS[0]);
+  // with no tab in the link, open on the round's seat matrix; only a click on Allotment goes to Allotment analysis
+  const v = ROUND_VIEWS.find(x => x[0] === rest[0]) || ROUND_VIEWS[0];
   const pred =info.region === ALL_INDIA || (S.user?.state === info.region && setsOf('state').some(x => x.state === info.region));
   box.innerHTML = rpHead(info, stage, 'users', `Explore the seat matrix, fill choices, and view allotment and joining details for ${stage}.`,
     pred ? `<a class="btn btn-line" href="/predict" data-link data-to-scope="${info.region === ALL_INDIA ? 'aiq' : 'state'}">Open the predictor ${icon.arrowR}</a>` : '')
